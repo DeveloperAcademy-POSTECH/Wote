@@ -81,9 +81,13 @@ extension ProfileSettingsView {
                     .foregroundStyle(.black)
             }
             .onChange(of: selectedPhoto) { _, newValue in
-                Task {
-                    if let data = try? await newValue?.loadTransferable(type: Data.self) {
-                        selectedImageData = data
+                PHPhotoLibrary.requestAuthorization { status in
+                    guard status == .authorized else { return }
+
+                    Task {
+                        if let data = try? await newValue?.loadTransferable(type: Data.self) {
+                            selectedImageData = data
+                        }
                     }
                 }
             }
