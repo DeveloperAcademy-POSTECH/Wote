@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AB0793D22ADC3F0900D4DF3B /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0793D12ADC3F0900D4DF3B /* ProfileSettingsView.swift */; };
 		FD003B4F2ADC2939002912CB /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FD003B4E2ADC2939002912CB /* Alamofire */; };
 		FD132BEE2ADBE8FA00F31AAF /* TwoHoSunApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD132BED2ADBE8FA00F31AAF /* TwoHoSunApp.swift */; };
 		FD132BF02ADBE8FA00F31AAF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD132BEF2ADBE8FA00F31AAF /* ContentView.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AB0793D12ADC3F0900D4DF3B /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
 		FD132BEA2ADBE8FA00F31AAF /* TwoHoSun.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwoHoSun.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD132BED2ADBE8FA00F31AAF /* TwoHoSunApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoHoSunApp.swift; sourceTree = "<group>"; };
 		FD132BEF2ADBE8FA00F31AAF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -37,6 +39,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AB0793CF2ADC3EE200D4DF3B /* ProfileSettings */ = {
+			isa = PBXGroup;
+			children = (
+				AB0793D02ADC3EFA00D4DF3B /* View */,
+			);
+			path = ProfileSettings;
+			sourceTree = "<group>";
+		};
+		AB0793D02ADC3EFA00D4DF3B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				AB0793D12ADC3F0900D4DF3B /* ProfileSettingsView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		FD132BE12ADBE8FA00F31AAF = {
 			isa = PBXGroup;
 			children = (
@@ -97,6 +115,7 @@
 			children = (
 				FD1DEBA92ADC212500588CE6 /* Component */,
 				FD1DEBAA2ADC213C00588CE6 /* ContentView */,
+				AB0793CF2ADC3EE200D4DF3B /* ProfileSettings */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -229,6 +248,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB0793D22ADC3F0900D4DF3B /* ProfileSettingsView.swift in Sources */,
 				FD132BF02ADBE8FA00F31AAF /* ContentView.swift in Sources */,
 				FD132BEE2ADBE8FA00F31AAF /* TwoHoSunApp.swift in Sources */,
 			);
