@@ -4,9 +4,9 @@
 //
 //  Created by 235 on 10/15/23.
 //
-
-import SwiftUI
 import AuthenticationServices
+import SwiftUI
+
 struct LoginView: View {
     let viewModel = LoginViewModel()
     var body: some View {
@@ -26,7 +26,6 @@ struct LoginView: View {
                     guard let authcode = authorizationCode else { return }
                     print(authcode)
                     viewModel.postAuthorCode(authorizationCode: authcode)
-
                 default:
                     break
                 }
@@ -34,6 +33,6 @@ struct LoginView: View {
                 print(err.localizedDescription)
             }
         })
-        .frame(width: 300,height: 50)
+        .frame(width: 336,height: 54)
     }
 }
