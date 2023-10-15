@@ -35,4 +35,15 @@ class KeychainManager {
             return nil
         }
     }
+    
+    private func updateToken(key: String, token: String) -> {
+        let previousQuery: NSDictionary = [
+            kSecClass: kSecClassInternetPassword,
+            kSecAttrAccount: key
+        ]
+        let updateQuery: NSDictionary = [
+            kSecValueData: token.data(using: .utf8, allowLossyConversion: false) as Any
+        ]
+        return SecItemUpdate(previousQuery, updateQuery) == errSecSuccess
+    }
 }
