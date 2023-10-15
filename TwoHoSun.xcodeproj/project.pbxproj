@@ -57,8 +57,11 @@
 				FDDB99042ADBF37100B1163F /* TwoHoSun.entitlements */,
 				FDDB990B2ADC1BEC00B1163F /* .swiftlint.yml */,
 				FD132BED2ADBE8FA00F31AAF /* TwoHoSunApp.swift */,
-				FD132BEF2ADBE8FA00F31AAF /* ContentView.swift */,
-				FD132BF12ADBE8FB00F31AAF /* Assets.xcassets */,
+				FD1DEBA82ADC210B00588CE6 /* Screens */,
+				FD1DEBA72ADC20EE00588CE6 /* Model */,
+				FD1DEBAC2ADC219D00588CE6 /* Network */,
+				FD1DEBAB2ADC218800588CE6 /* Utility */,
+				FD1DEBA62ADC20E400588CE6 /* Resources */,
 				FD132BF32ADBE8FB00F31AAF /* Preview Content */,
 			);
 			path = TwoHoSun;
@@ -70,6 +73,59 @@
 				FD132BF42ADBE8FB00F31AAF /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		FD1DEBA62ADC20E400588CE6 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FD132BF12ADBE8FB00F31AAF /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		FD1DEBA72ADC20EE00588CE6 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		FD1DEBA82ADC210B00588CE6 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				FD1DEBA92ADC212500588CE6 /* Component */,
+				FD1DEBAA2ADC213C00588CE6 /* ContentView */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		FD1DEBA92ADC212500588CE6 /* Component */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
+		FD1DEBAA2ADC213C00588CE6 /* ContentView */ = {
+			isa = PBXGroup;
+			children = (
+				FD132BEF2ADBE8FA00F31AAF /* ContentView.swift */,
+			);
+			path = ContentView;
+			sourceTree = "<group>";
+		};
+		FD1DEBAB2ADC218800588CE6 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		FD1DEBAC2ADC219D00588CE6 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
