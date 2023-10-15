@@ -46,4 +46,12 @@ class KeychainManager {
         ]
         return SecItemUpdate(previousQuery, updateQuery) == errSecSuccess
     }
+    
+    private func deleteToken(key: String) -> Bool {
+        let query: NSDictionary = [
+            kSecClass: kSecClassInternetPassword,
+            kSecAttrAccount: key
+        ]
+        return SecItemDelete(query) == errSecSuccess
+    }
 }
