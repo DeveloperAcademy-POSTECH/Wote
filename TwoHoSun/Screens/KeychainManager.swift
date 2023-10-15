@@ -36,7 +36,7 @@ class KeychainManager {
         }
     }
     
-    private func updateToken(key: String, token: String) -> {
+    private func updateToken(key: String, token: String) -> Bool {
         let previousQuery: NSDictionary = [
             kSecClass: kSecClassInternetPassword,
             kSecAttrAccount: key
