@@ -4,17 +4,19 @@
 //
 //  Created by 235 on 10/15/23.
 //
-import AuthenticationServices
 import SwiftUI
+
+import AuthenticationServices
 
 struct LoginView: View {
     let viewModel = LoginViewModel()
+    
     var body: some View {
         VStack {
-            appleLoginBtn
+            appleLoginButton
         }
     }
-    var appleLoginBtn: some View {
+    var appleLoginButton: some View {
         SignInWithAppleButton( onRequest: { request in
             request.requestedScopes = [.fullName, .email]
         }, onCompletion: {result in
@@ -34,5 +36,9 @@ struct LoginView: View {
             }
         })
         .frame(width: 336,height: 54)
+        .cornerRadius(46)
     }
+}
+#Preview {
+    LoginView()
 }

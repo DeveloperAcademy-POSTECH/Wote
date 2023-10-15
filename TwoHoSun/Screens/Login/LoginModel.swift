@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 struct LoginModel: Codable {
     var status: String
     var data: Tokens
