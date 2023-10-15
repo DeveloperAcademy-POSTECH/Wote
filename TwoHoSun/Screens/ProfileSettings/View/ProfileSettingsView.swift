@@ -5,9 +5,12 @@
 //  Created by 김민 on 10/16/23.
 //
 
+import PhotosUI
 import SwiftUI
 
 struct ProfileSettingsView: View {
+    @State private var selectedPhoto: PhotosPickerItem?
+    @State private var selectedImageData: Data?
     @State private var nickname: String = ""
     @State private var schoolName: String = ""
     @State private var grade: String = ""
@@ -54,20 +57,36 @@ extension ProfileSettingsView {
             Circle()
                 .frame(width: 130, height: 130)
                 .foregroundStyle(.gray)
+            if let selectedImageData,
+               let uiImage = UIImage(data: selectedImageData) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .frame(width: 130, height: 130)
+                    .clipShape(Circle())
+            }
             selectProfileButton
         }
     }
 
     private var selectProfileButton: some View {
-        ZStack {
-            Circle()
-                .frame(width: 40, height: 40)
-                .foregroundStyle(.blue)
-            Image(systemName: "camera")
-                .font(.system(size: 20))
-        }
-        .onTapGesture {
-            print("Go to Album")
+        PhotosPicker(selection: $selectedPhoto,
+                     matching: .images,
+                     photoLibrary: .shared()) {
+            ZStack {
+                Circle()
+                    .frame(width: 40, height: 40)
+                    .foregroundStyle(.blue)
+                Image(systemName: "camera")
+                    .font(.system(size: 20))
+                    .foregroundStyle(.black)
+            }
+            .onChange(of: selectedPhoto) { _, newValue in
+                Task {
+                    if let data = try? await newValue?.loadTransferable(type: Data.self) {
+                        selectedImageData = data
+                    }
+                }
+            }
         }
     }
 
