@@ -69,19 +69,11 @@
 		AB4D82662ADD7F3700F35CCB /* ProfileSettings */ = {
 			isa = PBXGroup;
 			children = (
-				AB4D82672ADD7F3E00F35CCB /* View */,
+				AB4D82682ADD7F4D00F35CCB /* ProfileSettingsView.swift */,
+				AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */,
 				AB4522592ADDDC9E00B69F24 /* SchoolSearchViewModel.swift */,
 			);
 			path = ProfileSettings;
-			sourceTree = "<group>";
-		};
-		AB4D82672ADD7F3E00F35CCB /* View */ = {
-			isa = PBXGroup;
-			children = (
-				AB4D82682ADD7F4D00F35CCB /* ProfileSettingsView.swift */,
-				AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */,
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		C7F1FD822ADDA2D900C5A2A1 /* OnBoarding */ = {
