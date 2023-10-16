@@ -127,9 +127,11 @@ struct OnBoardingView : View {
             case .success(let authResults):
                 switch authResults.credential {
                 case let appleIDCredential as ASAuthorizationAppleIDCredential:
-                    let authorizationCode = String(data: appleIDCredential.authorizationCode!, encoding:  .utf8)
-                    guard let authcode = authorizationCode else { return }
-                    viewModel.postAuthorCode(authorizationCode: authcode)
+                    let identifier = appleIDCredential.user
+                    KeychainManager.shared.saveToken(key: "identifier", token: identifier)
+                    let authorization = String(data: appleIDCredential.authorizationCode!, encoding:  .utf8)
+                    guard let authorizationCode = authorization else { return }
+                    viewModel.postAuthorCode(authorizationCode)
                     showSheet = true
                 default:
                     break
