@@ -10,7 +10,7 @@ import SwiftUI
 import AuthenticationServices
 
 struct OnBoardingView : View {
-    @State private var currentpage = 0
+    @State private var currentpage = 2
     let viewModel = LoginViewModel()
     var body: some View {
         VStack {
@@ -55,7 +55,7 @@ struct OnBoardingView : View {
                     .font(.system(size: 14))
                     .frame(maxWidth: .infinity, alignment: .leading)
             }.padding(.leading, 40)
-            //MARK: 여기에 이미지 들어가야하기에 크기는 임의로 잡아서 잡아둠.
+            // MARK: 여기에 이미지 들어가야하기에 크기는 임의로 잡아서 잡아둠.
             Image(uiImage: onboardingImage)
                 .resizable()
                 .frame(width: 52,height: 52)
@@ -73,7 +73,7 @@ struct OnBoardingView : View {
 
     var loginboadingPage: some View {
         VStack {
-            //MARK: 현재는 임의의 로고 추후에 로고 이미지박스로 변경 예정
+            // MARK: 현재는 임의의 로고 추후에 로고 이미지박스로 변경 예정
             Image(systemName: "keyboard")
                 .resizable()
                 .frame(width: 234, height: 72)
@@ -90,7 +90,7 @@ struct OnBoardingView : View {
                 .font(Font.system(size: 16))
                 .padding(.bottom, 8)
             appleLoginButton
-            Text("이용 약관 및 개인정보 보호정책 확인하기")
+            hyeprLinkText
                 .font(.system(size: 10))
                 .padding(.vertical,8)
         }
@@ -121,7 +121,7 @@ struct OnBoardingView : View {
 
     var hyeprLinkText: some View {
         HStack {
-
+            Text("[이용 약관](https://codeisfuture.tistory.com/59)")+Text(" 및 ") + Text("[개인정보 보호정책](https://codeisfuture.tistory.com/)") + Text(" 확인하기")
         }
     }
 }
