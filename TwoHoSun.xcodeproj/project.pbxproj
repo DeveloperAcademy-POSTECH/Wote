@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C748E9382ADD4DF400F07849 /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C748E9372ADD4DF400F07849 /* DescriptionView.swift */; };
 		C75627912ADD0284003D0914 /* OnBoardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75627902ADD0284003D0914 /* OnBoardingView.swift */; };
 		C75627932ADD2F3F003D0914 /* BottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75627922ADD2F3F003D0914 /* BottomSheetView.swift */; };
 		C7E30E2B2ADC40E4001AE89B /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E30E2A2ADC40E4001AE89B /* LoginViewModel.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C748E9372ADD4DF400F07849 /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		C75627902ADD0284003D0914 /* OnBoardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingView.swift; sourceTree = "<group>"; };
 		C75627922ADD2F3F003D0914 /* BottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetView.swift; sourceTree = "<group>"; };
 		C7E30E2A2ADC40E4001AE89B /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
@@ -53,6 +55,7 @@
 				C75627902ADD0284003D0914 /* OnBoardingView.swift */,
 				C7E30E2A2ADC40E4001AE89B /* LoginViewModel.swift */,
 				C75627922ADD2F3F003D0914 /* BottomSheetView.swift */,
+				C748E9372ADD4DF400F07849 /* DescriptionView.swift */,
 			);
 			path = OnBoarding;
 			sourceTree = "<group>";
@@ -259,6 +262,7 @@
 				C75627932ADD2F3F003D0914 /* BottomSheetView.swift in Sources */,
 				FD8D9F812ADC5FAD0072F4BA /* KeychainManager.swift in Sources */,
 				FD132BEE2ADBE8FA00F31AAF /* TwoHoSunApp.swift in Sources */,
+				C748E9382ADD4DF400F07849 /* DescriptionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
