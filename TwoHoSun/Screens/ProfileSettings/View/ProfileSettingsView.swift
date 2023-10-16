@@ -173,7 +173,11 @@ extension ProfileSettingsView {
 
     private var nextButton: some View {
         Button {
-            print("go to next")
+            guard selectedSchool != nil, selectedGrade != nil else {
+                print("button deactivated")
+                return
+            }
+            print("Go to the next step")
         } label: {
             Text("완료")
                 .font(.system(size: 20))
@@ -185,20 +189,22 @@ extension ProfileSettingsView {
     }
 
     private func roundedIconTextField(iconName: String, text: String) -> some View {
-        HStack(spacing: 0) {
-            Text(text)
-                .font(.system(size: 12))
-                .frame(height: 44)
-                .padding(.leading, 17)
-            Spacer()
-            Image(systemName: iconName)
-                .font(.system(size: 16))
-                .padding(.trailing, 18)
-        }
-        .frame(maxWidth: .infinity)
-        .overlay {
-            RoundedRectangle(cornerRadius: 10)
-                .strokeBorder(.black, lineWidth: 1)
+        VStack {
+            HStack(spacing: 0) {
+                Text(text)
+                    .font(.system(size: 12))
+                    .frame(height: 44)
+                    .padding(.leading, 17)
+                Spacer()
+                Image(systemName: iconName)
+                    .font(.system(size: 16))
+                    .padding(.trailing, 18)
+            }
+            .frame(maxWidth: .infinity)
+            .overlay {
+                RoundedRectangle(cornerRadius: 10)
+                    .strokeBorder(.black, lineWidth: 1)
+            }
         }
     }
 }
