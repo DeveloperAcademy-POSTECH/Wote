@@ -18,8 +18,8 @@ struct OnBoardingView : View {
         VStack {
             ZStack {
                 if currentpage != 0 {
-                  backButton
-                    .padding(EdgeInsets(top: 8, leading: 24, bottom: 47, trailing: 350))
+                    backButton
+                        .padding(EdgeInsets(top: 8, leading: 24, bottom: 47, trailing: 350))
                 }
                 horizontalScroll
                     .padding(EdgeInsets(top: 14, leading: 0, bottom: 47, trailing: 40))

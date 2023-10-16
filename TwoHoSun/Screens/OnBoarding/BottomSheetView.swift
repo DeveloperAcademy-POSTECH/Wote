@@ -89,7 +89,7 @@ struct BottomSheetView: View {
         }, label: {
             Text("동의하고 계속하기")
                 .font(Font.system(size: 16))
-                .frame(width: 336,height: 54)
+                .frame(width: 336, height: 54)
                 .background(Color.gray)
         })
         .clipShape(RoundedRectangle(cornerRadius: 10))
@@ -100,7 +100,7 @@ struct BottomSheetView: View {
         HStack {
             Image(systemName: allChecked ? "checkmark.square.fill" : "square")
                 .resizable()
-                .frame(width: 28,height: 28)
+                .frame(width: 28, height: 28)
                 .foregroundColor(allChecked ? Color(UIColor.black) : Color.gray)
                 .onTapGesture {
                     checked = Array(repeating: !allChecked, count: checked.count)
@@ -140,13 +140,12 @@ struct BottomSheetView: View {
                     })
                     .padding(.trailing, 13)
                 }
-                .padding(.leading , 10)
+                .padding(.leading, 10)
                 if agreeType.rawValue == 2 {
                     Text("마케팅 정보는 문자, E-mail, Push알림으로 받을 수 있으면 동의 여부는 알림설정에서 확인 가능합니다.")
                         .font(Font.system(size: 10))
                         .padding(.leading, 37)
                         .padding(.trailing, 85)
-
                 }
             }
         }
