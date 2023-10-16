@@ -7,9 +7,11 @@
 
 import SwiftUI
 
+import AuthenticationServices
+
 struct OnBoardingView : View {
     @State private var currentpage = 0
-
+    let viewModel = LoginViewModel()
     var body: some View {
         VStack {
             horizontalScroll
@@ -20,7 +22,7 @@ struct OnBoardingView : View {
                     .tag(0)
                 onboardingPage(title: "두번째 온보딩\n여기에 들어가", description: "대충두번재 온보딩이란뜻어쩌고저쩌고", onboardingImage: UIImage(systemName: "photo")!)
                     .tag(1)
-                LoginView().tag(2)
+                loginboadingPage.tag(2)
             })
             .tabViewStyle(.page(indexDisplayMode: .never))
         }
@@ -65,6 +67,60 @@ struct OnBoardingView : View {
                     .clipShape(RoundedRectangle(cornerRadius: 10))
             })
             .buttonStyle(PlainButtonStyle())
+
+        }
+    }
+
+    var loginboadingPage: some View {
+        VStack {
+            //MARK: 현재는 임의의 로고 추후에 로고 이미지박스로 변경 예정
+            Image(systemName: "keyboard")
+                .resizable()
+                .frame(width: 234, height: 72)
+                .padding(.top, 65)
+            Text("중고등 학생들의 소비고민을 어쩌고 할거야")
+                .font(Font.system(size: 16))
+                .padding(.top,18)
+            Image(systemName: "photo")
+                .resizable()
+                .frame(width: 52, height: 52)
+                .padding(.top,128)
+                .padding(.bottom, 190)
+            Text("계속하려면 로그인 하세요")
+                .font(Font.system(size: 16))
+                .padding(.bottom, 8)
+            appleLoginButton
+            Text("이용 약관 및 개인정보 보호정책 확인하기")
+                .font(.system(size: 10))
+                .padding(.vertical,8)
+        }
+    }
+
+    var appleLoginButton: some View {
+        SignInWithAppleButton( onRequest: { request in
+            request.requestedScopes = [.fullName, .email]
+        }, onCompletion: {result in
+            switch result {
+            case .success(let authResults):
+                switch authResults.credential {
+                case let appleIDCredential as ASAuthorizationAppleIDCredential:
+                    let authorizationCode = String(data: appleIDCredential.authorizationCode!, encoding:  .utf8)
+                    guard let authcode = authorizationCode else { return }
+                    print(authcode)
+                    viewModel.postAuthorCode(authorizationCode: authcode)
+                default:
+                    break
+                }
+            case .failure(let err):
+                print(err.localizedDescription)
+            }
+        })
+        .frame(width: 336,height: 54)
+        .cornerRadius(46)
+    }
+
+    var hyeprLinkText: some View {
+        HStack {
 
         }
     }
