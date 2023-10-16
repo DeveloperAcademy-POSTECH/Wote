@@ -8,7 +8,7 @@
 import SwiftUI
 
 enum AgreeType: Int {
-    case needs, personaldata, marketing
+    case needs, personalData, marketing
     static func fromRawValue(_ rawValue: Int) -> AgreeType? {
         return AgreeType(rawValue: rawValue)
     }
@@ -16,7 +16,7 @@ enum AgreeType: Int {
         switch self {
         case .needs:
             return "서비스 이용약관, 개인정보 수집 및 이용 동의 (필수)"
-        case .personaldata:
+        case .personalData:
             return "개인정보 수집 및 이용 동의 (선택)"
         case .marketing:
             return "마케팅 정보 수신 동의 (선택)"
@@ -26,7 +26,7 @@ enum AgreeType: Int {
         switch self {
         case .needs:
             return DescriptionView()
-        case .personaldata:
+        case .personalData:
             return DescriptionView()
         case .marketing:
             return DescriptionView()
@@ -79,43 +79,6 @@ struct BottomSheetView: View {
         }
     }
 
-    var nextButtonView: some View {
-        Button(action: {
-            if checked[0] == false {
-                showAlert = true
-            } else {
-                // TODO: 프로필등록으로 이동.
-            }
-        }, label: {
-            Text("동의하고 계속하기")
-                .font(Font.system(size: 16))
-                .frame(width: 336, height: 54)
-                .background(Color.gray)
-        })
-        .clipShape(RoundedRectangle(cornerRadius: 10))
-        .buttonStyle(PlainButtonStyle())
-    }
-
-    var allCheckBoxView: some View {
-        HStack {
-            Image(systemName: allChecked ? "checkmark.square.fill" : "square")
-                .resizable()
-                .frame(width: 28, height: 28)
-                .foregroundColor(allChecked ? Color(UIColor.black) : Color.gray)
-                .onTapGesture {
-                    checked = Array(repeating: !allChecked, count: checked.count)
-                }
-            Text("전체 동의")
-                .font(Font.system(size: 18, weight: .bold)) + Text(" (선택 포함)").font(Font.system(size: 14))
-        }
-        .padding(.leading, 13)
-        .frame(width: 361, height: 58, alignment: .leading)
-        .overlay(
-            RoundedRectangle(cornerRadius: 5)
-                .stroke(Color.gray, lineWidth: 1)
-        )
-    }
-
     struct CheckBoxView: View {
         @Binding var checked: Bool
         var agreeType: AgreeType
@@ -149,6 +112,45 @@ struct BottomSheetView: View {
                 }
             }
         }
+    }
+}
+
+extension BottomSheetView {
+    private var nextButtonView: some View {
+        Button(action: {
+            if checked[0] == false {
+                showAlert = true
+            } else {
+                // TODO: 프로필등록으로 이동.
+            }
+        }, label: {
+            Text("동의하고 계속하기")
+                .font(Font.system(size: 16))
+                .frame(width: 336, height: 54)
+                .background(Color.gray)
+        })
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .buttonStyle(PlainButtonStyle())
+    }
+
+    private var allCheckBoxView: some View {
+        HStack {
+            Image(systemName: allChecked ? "checkmark.square.fill" : "square")
+                .resizable()
+                .frame(width: 28, height: 28)
+                .foregroundColor(allChecked ? Color(UIColor.black) : Color.gray)
+                .onTapGesture {
+                    checked = Array(repeating: !allChecked, count: checked.count)
+                }
+            Text("전체 동의")
+                .font(Font.system(size: 18, weight: .bold)) + Text(" (선택 포함)").font(Font.system(size: 14))
+        }
+        .padding(.leading, 13)
+        .frame(width: 361, height: 58, alignment: .leading)
+        .overlay(
+            RoundedRectangle(cornerRadius: 5)
+                .stroke(Color.gray, lineWidth: 1)
+        )
     }
 }
 

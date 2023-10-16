@@ -35,7 +35,9 @@ struct OnBoardingView : View {
             .tabViewStyle(.page(indexDisplayMode: .never))
         }
     }
+}
 
+extension OnBoardingView {
     private var backButton: some View {
         Button {
             currentpage -= 1
@@ -64,7 +66,6 @@ struct OnBoardingView : View {
         }
     }
 
-    @ViewBuilder
     private func onboardingPage(title: String, description: String, onboardingImage: UIImage) -> some View {
         VStack {
             VStack(alignment: .leading, spacing: 19) {
@@ -87,7 +88,6 @@ struct OnBoardingView : View {
                     .clipShape(RoundedRectangle(cornerRadius: 10))
             })
             .buttonStyle(PlainButtonStyle())
-
         }
     }
 
@@ -140,8 +140,9 @@ struct OnBoardingView : View {
                 print(err.localizedDescription)
             }
         })
-        .frame(width: 336,height: 54)
-        .cornerRadius(46)
+        .frame(height: 54)
+        .cornerRadius(27)
+        .padding(.horizontal, 26)
     }
 
     private var hyeprLinkText: some View {
