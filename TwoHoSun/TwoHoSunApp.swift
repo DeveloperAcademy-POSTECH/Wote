@@ -11,7 +11,8 @@ import SwiftUI
 struct TwoHoSunApp: App {
     var body: some Scene {
         WindowGroup {
-            LoginView()
+//            ContentView()
+            ProfileSettingsView()
         }
     }
 }
