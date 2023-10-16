@@ -10,14 +10,14 @@ import Foundation
 class KeychainManager {
     static let shared = KeychainManager()
     
-    func saveToken(key: String, token: String) -> Bool {
+    func saveToken(key: String, token: String) {
         let query: NSDictionary = [
             kSecClass: kSecClassInternetPassword,
             kSecAttrAccount: key,
             kSecValueData: token.data(using: .utf8, allowLossyConversion: false) as Any
         ]
         SecItemDelete(query)
-        return SecItemAdd(query as CFDictionary, nil) == errSecSuccess
+        print("save result of \(key): \(SecItemAdd(query as CFDictionary, nil) == errSecSuccess)")
     }
     
     func readToken(key: String) -> String? {
@@ -36,7 +36,7 @@ class KeychainManager {
         }
     }
     
-    func updateToken(key: String, token: String) -> Bool {
+    func updateToken(key: String, token: String) {
         let previousQuery: NSDictionary = [
             kSecClass: kSecClassInternetPassword,
             kSecAttrAccount: key
@@ -44,14 +44,14 @@ class KeychainManager {
         let updateQuery: NSDictionary = [
             kSecValueData: token.data(using: .utf8, allowLossyConversion: false) as Any
         ]
-        return SecItemUpdate(previousQuery, updateQuery) == errSecSuccess
+        print("update result of \(key): \(SecItemUpdate(previousQuery, updateQuery) == errSecSuccess)")
     }
     
-    func deleteToken(key: String) -> Bool {
+    func deleteToken(key: String) {
         let query: NSDictionary = [
             kSecClass: kSecClassInternetPassword,
             kSecAttrAccount: key
         ]
-        return SecItemDelete(query) == errSecSuccess
+        print("delete result of \(key): \(SecItemDelete(query) == errSecSuccess)")
     }
 }

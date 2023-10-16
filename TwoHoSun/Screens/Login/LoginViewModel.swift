@@ -24,7 +24,6 @@ class LoginViewModel {
             .responseDecodable(of: LoginModel.self) { response in
                 switch response.result {
                 case .success(let data):
-                    print(data.data.accessToken)
                     KeychainManager.shared.saveToken(key: "accessToken", token: data.data.accessToken)
                     KeychainManager.shared.saveToken(key: "refreshToken", token: data.data.refreshToken)
                 case .failure(let err):

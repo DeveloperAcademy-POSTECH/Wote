@@ -27,13 +27,10 @@ extension LoginView {
             case .success(let authResults):
                 switch authResults.credential {
                 case let appleIDCredential as ASAuthorizationAppleIDCredential:
-                    let identity = String(data: appleIDCredential.identityToken!, encoding: .utf8)
-                    guard let identityToken = identity else { return }
-                    print(identityToken)
-                    KeychainManager.shared.saveToken(key: "identityToken", token: identityToken)
+                    let identifier = appleIDCredential.user
+                    KeychainManager.shared.saveToken(key: "identifier", token: identifier)
                     let authorization = String(data: appleIDCredential.authorizationCode!, encoding:  .utf8)
                     guard let authorizationCode = authorization else { return }
-                    print(authorizationCode)
                     viewModel.postAuthorCode(authorizationCode)
                 default:
                     break
