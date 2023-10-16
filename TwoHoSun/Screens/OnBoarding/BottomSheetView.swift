@@ -36,11 +36,12 @@ enum AgreeType: Int {
 struct BottomSheetView: View {
     @Environment(\.dismiss) var dismiss
     @State private var checked: [Bool]  = [false, false, false]
-    @State private var allchecked = false
     @State private var showAlert = false
-    
+    private var allChecked: Bool {
+        checked.allSatisfy { $0 }
+    }
+
     var body: some View {
-        
         VStack {
             ZStack {
                 Text("약관 동의")
@@ -76,6 +77,7 @@ struct BottomSheetView: View {
             Alert(title: Text("이용약관에 동의를 해주세요"), dismissButton: .default(Text("확인")))
         }
     }
+    
     var nextButtonView: some View {
         Button(action: {
             if checked[0] == false {
@@ -92,17 +94,16 @@ struct BottomSheetView: View {
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .buttonStyle(PlainButtonStyle())
     }
+    
     var allCheckBoxView: some View {
         HStack {
-            Image(systemName: allchecked ? "checkmark.square.fill" : "square")
+            Image(systemName: allChecked ? "checkmark.square.fill" : "square")
                 .resizable()
                 .frame(width: 28,height: 28)
-                .foregroundColor(allchecked ? Color(UIColor.black) : Color.gray)
+                .foregroundColor(allChecked ? Color(UIColor.black) : Color.gray)
                 .onTapGesture {
-                    self.allchecked.toggle()
-                    for index in 0..<checked.count {
-                        checked[index] = allchecked
-                    }
+                    print(allChecked)
+                    checked = Array(repeating: !allChecked, count: checked.count)
                 }
             Text("전체 동의")
                 .font(Font.system(size: 18, weight: .bold)) + Text(" (선택 포함)").font(Font.system(size: 14))
@@ -117,6 +118,7 @@ struct BottomSheetView: View {
     struct CheckBoxView: View {
         @Binding var checked: Bool
         var agreeType: AgreeType
+        
         var body: some View {
             VStack {
                 HStack {
@@ -143,6 +145,7 @@ struct BottomSheetView: View {
                         .font(Font.system(size: 10))
                         .padding(.leading, 37)
                         .padding(.trailing, 85)
+                    
                 }
             }
         }

@@ -13,6 +13,7 @@ struct OnBoardingView : View {
     @State private var currentpage = 0
     @State private var showSheet = false
     let viewModel = LoginViewModel()
+    
     var body: some View {
         VStack {
             ZStack {
@@ -34,6 +35,7 @@ struct OnBoardingView : View {
             .tabViewStyle(.page(indexDisplayMode: .never))
         }
     }
+
     private var backButton: some View {
         Button {
             currentpage -= 1
@@ -45,6 +47,7 @@ struct OnBoardingView : View {
                 .foregroundStyle(Color.gray)
         }
     }
+
     private var horizontalScroll: some View {
         HStack {
             Spacer()
