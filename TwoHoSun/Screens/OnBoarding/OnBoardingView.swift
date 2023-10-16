@@ -14,8 +14,14 @@ struct OnBoardingView : View {
     let viewModel = LoginViewModel()
     var body: some View {
         VStack {
-            horizontalScroll
-                .padding(EdgeInsets(top: 14, leading: 0, bottom: 47, trailing: 40))
+            ZStack {
+                if currentpage != 0 {
+                  backButton
+                    .padding(EdgeInsets(top: 8, leading: 24, bottom: 47, trailing: 350))
+                }
+                horizontalScroll
+                    .padding(EdgeInsets(top: 14, leading: 0, bottom: 47, trailing: 40))
+            }
             TabView(selection: $currentpage,
                     content: {
                 onboardingPage(title: "첫번째 온보딩\n여기에 들어가", description: "대충첫번재 온보딩이란뜻", onboardingImage: UIImage(systemName: "photo")!)
@@ -27,7 +33,17 @@ struct OnBoardingView : View {
             .tabViewStyle(.page(indexDisplayMode: .never))
         }
     }
-
+    var backButton: some View {
+        Button {
+            currentpage -= 1
+        } label: {
+            Image(systemName: "chevron.left")
+                .resizable()
+                .frame(width: 8, height: 16)
+                .padding(.leading, 16)
+                .foregroundStyle(Color.gray)
+        }
+    }
     var horizontalScroll: some View {
         HStack {
             Spacer()
