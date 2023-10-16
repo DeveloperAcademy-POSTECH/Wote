@@ -50,4 +50,3 @@ struct MiddleSchoolContent: Codable, Hashable {
                       schoolType: "중학교")
     }
 }
-

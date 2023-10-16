@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SchoolSearchView: View {
     @State private var searchWord = ""
+    let viewModel = SchoolSearchViewModel()
 
     var body: some View {
         VStack {
@@ -35,16 +36,19 @@ struct SchoolSearchView: View {
 
     private var searchButton: some View {
         Button {
+            Task {
+                try await viewModel.setSchoolData(searchWord: searchWord)
+            }
         } label: {
             Image(systemName: "magnifyingglass")
         }
     }
 
     private var schoolList: some View {
-        List(0..<10) { index in
+        List(viewModel.schools) { school in
             HStack {
-                Text("\(index)")
-                Text("\(index)")
+                Text(school.schoolName)
+                Text(school.schoolRegion)
             }
         }
     }

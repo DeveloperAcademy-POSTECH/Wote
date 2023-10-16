@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct SchoolModel {
+struct SchoolModel: Identifiable {
+    let id = UUID()
     let schoolName: String
     let schoolRegion: String
     let schoolType: String
