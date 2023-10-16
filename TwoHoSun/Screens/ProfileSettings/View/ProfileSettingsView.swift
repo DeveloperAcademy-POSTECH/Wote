@@ -150,7 +150,6 @@ extension ProfileSettingsView {
                 }
                 checkDuplicatedIdButton
             }
-            // TODO: - 닉네임 유효성 검사
             alertMessage(for: .nickname)
                 .padding(.top, 8)
         }
@@ -236,6 +235,7 @@ extension ProfileSettingsView {
         }
     }
 
+    // TODO: - 유효성 검사
     private func alertMessage(for input: InputType) -> some View {
         HStack(spacing: 8) {
             Image(systemName: "light.beacon.max")
