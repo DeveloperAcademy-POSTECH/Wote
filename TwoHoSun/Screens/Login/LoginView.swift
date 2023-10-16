@@ -16,6 +16,9 @@ struct LoginView: View {
             appleLoginButton
         }
     }
+}
+
+extension LoginView {
     var appleLoginButton: some View {
         SignInWithAppleButton( onRequest: { request in
             request.requestedScopes = [.fullName, .email]
@@ -24,10 +27,11 @@ struct LoginView: View {
             case .success(let authResults):
                 switch authResults.credential {
                 case let appleIDCredential as ASAuthorizationAppleIDCredential:
-                    let authorizationCode = String(data: appleIDCredential.authorizationCode!, encoding:  .utf8)
-                    guard let authcode = authorizationCode else { return }
-                    print(authcode)
-                    viewModel.postAuthorCode(authorizationCode: authcode)
+                    let identifier = appleIDCredential.user
+                    KeychainManager.shared.saveToken(key: "identifier", token: identifier)
+                    let authorization = String(data: appleIDCredential.authorizationCode!, encoding:  .utf8)
+                    guard let authorizationCode = authorization else { return }
+                    viewModel.postAuthorCode(authorizationCode)
                 default:
                     break
                 }
@@ -35,10 +39,12 @@ struct LoginView: View {
                 print(err.localizedDescription)
             }
         })
-        .frame(width: 336,height: 54)
-        .cornerRadius(46)
+        .frame(height: 54)
+        .cornerRadius(27)
+        .padding(.horizontal, 26)
     }
 }
+
 #Preview {
     LoginView()
 }

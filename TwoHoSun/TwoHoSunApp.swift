@@ -6,12 +6,36 @@
 //
 
 import SwiftUI
+import Observation
 
 @main
 struct TwoHoSunApp: App {
+    let appState = AppState()
+    
     var body: some Scene {
         WindowGroup {
-            LoginView()
+            if appState.hasValidToken {
+                HomeView()
+            } else {
+                LoginView()
+            }
+        }
+    }
+}
+
+@Observable
+class AppState {
+    var hasValidToken: Bool = false
+    
+    init() {
+        checkTokenValidity()
+    }
+    
+    private func checkTokenValidity() {
+        if let accessToken = KeychainManager.shared.readToken(key: "accessToken") {
+            hasValidToken = true
+        } else {
+            hasValidToken = false
         }
     }
 }
