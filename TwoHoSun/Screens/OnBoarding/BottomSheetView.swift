@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum AgreeType: Int{
+enum AgreeType: Int {
     case needs, personaldata, marketing
     static func fromRawValue(_ rawValue: Int) -> AgreeType? {
         return AgreeType(rawValue: rawValue)
@@ -34,33 +34,42 @@ enum AgreeType: Int{
     }
 }
 struct BottomSheetView: View {
+    @Environment(\.dismiss) var dismiss
     @State private var checked: [Bool]  = [false, false, false]
     @State private var allchecked = false
     @State private var showAlert = false
+    
     var body: some View {
-        ZStack {
-            Button(action: {}, label: {
-                Image(systemName: "xmark")
-                    .frame(maxWidth: .infinity,maxHeight: .infinity, alignment: .topLeading)
-            })
-            Text("약관 동의")
-                .font(Font.system(size: 18, weight: .bold))
-                .frame(maxWidth: .infinity,maxHeight: .infinity, alignment: .top)
-            VStack {
-                VStack(alignment: .leading, spacing: 18) {
-                    allCheckBoxView
-                        .padding(.bottom, 8)
-                        .padding(.top, 50)
-                    ForEach(0..<3) { index in
-                        if let agreeType = AgreeType.fromRawValue(index) {
-                            CheckBoxView(checked: $checked[index], agreeType: agreeType)
-                        }
+        
+        VStack {
+            ZStack {
+                Text("약관 동의")
+                    .font(Font.system(size: 18, weight: .bold))
+                HStack {
+                    Button(action: {
+                        dismiss()
+                    }, label: {
+                        Image(systemName: "xmark")
+                            .foregroundStyle(Color.gray)
+                    })
+                    Spacer()
+                }
+            }
+            
+            VStack(alignment: .leading, spacing: 18) {
+                allCheckBoxView
+                    .padding(.bottom, 8)
+                    .padding(.top, 50)
+                ForEach(0..<3) { index in
+                    if let agreeType = AgreeType.fromRawValue(index) {
+                        CheckBoxView(checked: $checked[index], agreeType: agreeType)
                     }
                 }
-                nextButtonView
-                    .padding(.top, 42)
             }
+            nextButtonView
+                .padding(.top, 42)
         }
+        
         .padding(.top, 23)
         .padding(.horizontal, 15)
         .alert(isPresented: $showAlert) {
@@ -102,9 +111,9 @@ struct BottomSheetView: View {
         .frame(width: 361, height: 58, alignment: .leading)
         .clipShape(RoundedRectangle(cornerRadius: 5))
         .border(.gray, width: 1)
-
+        
     }
-
+    
     struct CheckBoxView: View {
         @Binding var checked: Bool
         var agreeType: AgreeType
@@ -113,6 +122,7 @@ struct BottomSheetView: View {
                 HStack {
                     Image(systemName: checked ? "checkmark.square.fill" : "square")
                         .foregroundColor(checked ? Color(UIColor.black) : Color.gray)
+                        .contentShape(Rectangle())
                         .onTapGesture {
                             self.checked.toggle()
                         }
