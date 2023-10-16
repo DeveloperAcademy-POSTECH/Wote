@@ -32,7 +32,7 @@ class AppState {
     }
     
     private func checkTokenValidity() {
-        if let accessToken = KeychainManager.shared.readToken(key: "accessToken") {
+        if KeychainManager.shared.readToken(key: "accessToken") != nil {
             hasValidToken = true
         } else {
             hasValidToken = false
