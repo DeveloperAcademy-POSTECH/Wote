@@ -12,8 +12,9 @@ struct ProfileSettingsView: View {
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var selectedImageData: Data?
     @State private var nickname: String = ""
-    @State private var schoolName: String = ""
-    @State private var grade: String = ""
+    @State private var selectedGrade: String?
+    @State private var selectedSchool: String?
+    let grades = ["1학년", "2학년", "3학년"]
 
     var body: some View {
         ZStack {
@@ -107,9 +108,18 @@ extension ProfileSettingsView {
             Text("닉네임")
                 .font(.system(size: 16))
             HStack(spacing: 10) {
-                roundedTextField(text: $nickname,
-                                 iconName: nil,
-                                 prompt: "한/영 10자 이내(특수문자 불가)")
+                HStack {
+                    TextField("",
+                              text: $nickname,
+                              prompt: Text("한/영 10자 이내(특수문자 불가)")
+                                    .font(.system(size: 12)))
+                        .frame(height: 44)
+                        .padding(EdgeInsets(top: 0, leading: 17, bottom: 0, trailing: 0))
+                }
+                .overlay {
+                    RoundedRectangle(cornerRadius: 10)
+                        .strokeBorder(.black, lineWidth: 1)
+                }
                 checkDuplicatedIdButton
             }
         }
@@ -132,9 +142,8 @@ extension ProfileSettingsView {
         VStack(alignment: .leading, spacing: 8) {
             Text("학교")
                 .font(.system(size: 16))
-            roundedTextField(text: $schoolName,
-                             iconName: "magnifyingglass",
-                             prompt: "학교를 검색해주세요.")
+            roundedIconTextField(iconName: "magnifyingglass",
+                                 text: selectedSchool ?? "학교를 선택해주세요.")
         }
     }
 
@@ -142,10 +151,24 @@ extension ProfileSettingsView {
         VStack(alignment: .leading, spacing: 8) {
             Text("학년")
                 .font(.system(size: 16))
-            roundedTextField(text: $grade,
-                             iconName: "chevron.down",
-                             prompt: "학년을 선택해주세요.")
+            gradeMenu
         }
+    }
+
+    private var gradeMenu: some View {
+        Menu {
+            ForEach(grades, id: \.self) { grade in
+                Button {
+                    selectedGrade = grade
+                } label: {
+                    Text(grade)
+                }
+            }
+        } label: {
+            roundedIconTextField(iconName: "chevron.down",
+                                 text: selectedGrade ?? "학년을 선택해주세요.")
+        }
+        .accentColor(.black)
     }
 
     private var nextButton: some View {
@@ -161,20 +184,18 @@ extension ProfileSettingsView {
         }
     }
 
-    private func roundedTextField(text: Binding<String>, iconName: String?, prompt: String) -> some View {
-        HStack {
-            TextField("",
-                      text: text,
-                      prompt: Text(prompt)
-                            .font(.system(size: 12)))
+    private func roundedIconTextField(iconName: String, text: String) -> some View {
+        HStack(spacing: 0) {
+            Text(text)
+                .font(.system(size: 12))
                 .frame(height: 44)
-                .padding(EdgeInsets(top: 0, leading: 17, bottom: 0, trailing: 0))
-            if let iconName = iconName {
-                Image(systemName: iconName)
-                    .font(.system(size: 16))
-                    .padding(.trailing, 18)
-            }
+                .padding(.leading, 17)
+            Spacer()
+            Image(systemName: iconName)
+                .font(.system(size: 16))
+                .padding(.trailing, 18)
         }
+        .frame(maxWidth: .infinity)
         .overlay {
             RoundedRectangle(cornerRadius: 10)
                 .strokeBorder(.black, lineWidth: 1)
