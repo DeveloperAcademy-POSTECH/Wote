@@ -124,14 +124,6 @@ extension ProfileSettingsView {
         }
     }
 
-    private var inputView: some View {
-        VStack(spacing: 8) {
-            nicknameInputView
-            schoolInputView
-            gradeInputView
-        }
-    }
-
     private var nicknameInputView: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("닉네임")
