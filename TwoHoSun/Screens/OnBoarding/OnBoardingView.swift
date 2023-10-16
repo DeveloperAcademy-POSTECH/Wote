@@ -10,7 +10,8 @@ import SwiftUI
 import AuthenticationServices
 
 struct OnBoardingView : View {
-    @State private var currentpage = 2
+    @State private var currentpage = 0
+    @State private var showSheet = false
     let viewModel = LoginViewModel()
     var body: some View {
         VStack {
@@ -33,7 +34,7 @@ struct OnBoardingView : View {
             .tabViewStyle(.page(indexDisplayMode: .never))
         }
     }
-    var backButton: some View {
+    private var backButton: some View {
         Button {
             currentpage -= 1
         } label: {
@@ -44,7 +45,7 @@ struct OnBoardingView : View {
                 .foregroundStyle(Color.gray)
         }
     }
-    var horizontalScroll: some View {
+    private var horizontalScroll: some View {
         HStack {
             Spacer()
             ForEach(0..<3) { idx in
@@ -61,7 +62,7 @@ struct OnBoardingView : View {
     }
 
     @ViewBuilder
-    func onboardingPage(title: String, description: String, onboardingImage: UIImage) -> some View {
+    private func onboardingPage(title: String, description: String, onboardingImage: UIImage) -> some View {
         VStack {
             VStack(alignment: .leading, spacing: 19) {
                 Text(title)
@@ -87,7 +88,7 @@ struct OnBoardingView : View {
         }
     }
 
-    var loginboadingPage: some View {
+    private var loginboadingPage: some View {
         VStack {
             // MARK: 현재는 임의의 로고 추후에 로고 이미지박스로 변경 예정
             Image(systemName: "keyboard")
@@ -109,10 +110,13 @@ struct OnBoardingView : View {
             hyeprLinkText
                 .font(.system(size: 10))
                 .padding(.vertical,8)
+        }.sheet(isPresented: $showSheet) {
+            BottomSheetView()
+                .presentationDetents([.medium])
         }
     }
 
-    var appleLoginButton: some View {
+    private var appleLoginButton: some View {
         SignInWithAppleButton( onRequest: { request in
             request.requestedScopes = [.fullName, .email]
         }, onCompletion: {result in
@@ -122,8 +126,8 @@ struct OnBoardingView : View {
                 case let appleIDCredential as ASAuthorizationAppleIDCredential:
                     let authorizationCode = String(data: appleIDCredential.authorizationCode!, encoding:  .utf8)
                     guard let authcode = authorizationCode else { return }
-                    print(authcode)
                     viewModel.postAuthorCode(authorizationCode: authcode)
+                    showSheet = true
                 default:
                     break
                 }
@@ -135,12 +139,14 @@ struct OnBoardingView : View {
         .cornerRadius(46)
     }
 
-    var hyeprLinkText: some View {
+    private var hyeprLinkText: some View {
         HStack {
             Text("[이용 약관](https://codeisfuture.tistory.com/59)")+Text(" 및 ") + Text("[개인정보 보호정책](https://codeisfuture.tistory.com/)") + Text(" 확인하기")
         }
     }
 }
+
+
 
 #Preview {
     OnBoardingView()
