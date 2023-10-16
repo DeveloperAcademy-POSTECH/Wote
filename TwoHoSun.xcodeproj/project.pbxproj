@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C75627912ADD0284003D0914 /* OnBoardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75627902ADD0284003D0914 /* OnBoardingView.swift */; };
 		C7E30E292ADC409F001AE89B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E30E282ADC409F001AE89B /* LoginView.swift */; };
 		C7E30E2B2ADC40E4001AE89B /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E30E2A2ADC40E4001AE89B /* LoginViewModel.swift */; };
 		C7E30E2D2ADC41B8001AE89B /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E30E2C2ADC41B8001AE89B /* LoginModel.swift */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C75627902ADD0284003D0914 /* OnBoardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingView.swift; sourceTree = "<group>"; };
 		C7E30E282ADC409F001AE89B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		C7E30E2A2ADC40E4001AE89B /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		C7E30E2C2ADC41B8001AE89B /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LoginModel.swift; path = TwoHoSun/Screens/Login/LoginModel.swift; sourceTree = SOURCE_ROOT; };
@@ -45,6 +47,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C756278F2ADD026F003D0914 /* OnBoarding */ = {
+			isa = PBXGroup;
+			children = (
+				C75627902ADD0284003D0914 /* OnBoardingView.swift */,
+			);
+			path = OnBoarding;
+			sourceTree = "<group>";
+		};
 		C7E30E272ADC4099001AE89B /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -113,6 +123,7 @@
 		FD1DEBA82ADC210B00588CE6 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				C756278F2ADD026F003D0914 /* OnBoarding */,
 				C7E30E272ADC4099001AE89B /* Login */,
 				FD1DEBA92ADC212500588CE6 /* Component */,
 				FD1DEBAA2ADC213C00588CE6 /* ContentView */,
@@ -252,6 +263,7 @@
 				C7E30E2D2ADC41B8001AE89B /* LoginModel.swift in Sources */,
 				C7E30E2B2ADC40E4001AE89B /* LoginViewModel.swift in Sources */,
 				C7E30E292ADC409F001AE89B /* LoginView.swift in Sources */,
+				C75627912ADD0284003D0914 /* OnBoardingView.swift in Sources */,
 				FD132BF02ADBE8FA00F31AAF /* ContentView.swift in Sources */,
 				FD8D9F812ADC5FAD0072F4BA /* KeychainManager.swift in Sources */,
 				FD132BEE2ADBE8FA00F31AAF /* TwoHoSunApp.swift in Sources */,

@@ -8,6 +8,7 @@
 import Foundation
 
 class KeychainManager {
+    let shared = KeychainManager()
     private func saveToken(key: String, token: String) -> Bool {
         let query: NSDictionary = [
             kSecClass: kSecClassInternetPassword,
