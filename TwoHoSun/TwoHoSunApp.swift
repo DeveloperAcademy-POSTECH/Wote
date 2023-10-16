@@ -17,8 +17,7 @@ struct TwoHoSunApp: App {
             if appState.hasValidToken {
                 HomeView()
             } else {
-//                OnBoardingView()
-                ProfileSettingsView()
+                OnBoardingView()
             }
         }
     }

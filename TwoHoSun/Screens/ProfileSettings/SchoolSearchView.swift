@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SchoolSearchView: View {
     @State private var searchWord = ""
-    let viewModel = SchoolSearchViewModel()
+    private let viewModel = SchoolSearchViewModel()
 
     var body: some View {
         VStack {
