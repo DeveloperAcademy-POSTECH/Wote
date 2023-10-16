@@ -11,9 +11,6 @@ import Observation
 
 @Observable
 class LoginViewModel {
-    var accessToken = ""
-    var refreshToken = ""
-    
     func postAuthorCode(_ authorizationCode: String) {
         let headers: HTTPHeaders = [
             "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"

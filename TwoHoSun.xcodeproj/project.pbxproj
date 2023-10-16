@@ -15,6 +15,7 @@
 		FD132BF02ADBE8FA00F31AAF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD132BEF2ADBE8FA00F31AAF /* ContentView.swift */; };
 		FD132BF22ADBE8FB00F31AAF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD132BF12ADBE8FB00F31AAF /* Assets.xcassets */; };
 		FD132BF52ADBE8FB00F31AAF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD132BF42ADBE8FB00F31AAF /* Preview Assets.xcassets */; };
+		FD3205612ADD1F8100B0D5F6 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3205602ADD1F8100B0D5F6 /* HomeView.swift */; };
 		FD8D9F812ADC5FAD0072F4BA /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */; };
 		FDDB990C2ADC1BEC00B1163F /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = FDDB990B2ADC1BEC00B1163F /* .swiftlint.yml */; };
 /* End PBXBuildFile section */
@@ -29,6 +30,7 @@
 		FD132BF12ADBE8FB00F31AAF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FD132BF42ADBE8FB00F31AAF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		FD32055D2ADD16AC00B0D5F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		FD3205602ADD1F8100B0D5F6 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		FDDB99042ADBF37100B1163F /* TwoHoSun.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TwoHoSun.entitlements; sourceTree = "<group>"; };
 		FDDB990B2ADC1BEC00B1163F /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
@@ -51,7 +53,6 @@
 			children = (
 				C7E30E282ADC409F001AE89B /* LoginView.swift */,
 				C7E30E2A2ADC40E4001AE89B /* LoginViewModel.swift */,
-				FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -78,7 +79,7 @@
 				FD32055D2ADD16AC00B0D5F6 /* Info.plist */,
 				FDDB99042ADBF37100B1163F /* TwoHoSun.entitlements */,
 				FDDB990B2ADC1BEC00B1163F /* .swiftlint.yml */,
-				FD132BED2ADBE8FA00F31AAF /* TwoHoSunApp.swift */,
+				FD32055E2ADD1BC400B0D5F6 /* App */,
 				FD1DEBA82ADC210B00588CE6 /* Screens */,
 				FD1DEBA72ADC20EE00588CE6 /* Model */,
 				FD1DEBAC2ADC219D00588CE6 /* Network */,
@@ -116,6 +117,7 @@
 		FD1DEBA82ADC210B00588CE6 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				FD32055F2ADD1F6B00B0D5F6 /* Home */,
 				C7E30E272ADC4099001AE89B /* Login */,
 				FD1DEBA92ADC212500588CE6 /* Component */,
 				FD1DEBAA2ADC213C00588CE6 /* ContentView */,
@@ -141,6 +143,7 @@
 		FD1DEBAB2ADC218800588CE6 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -150,6 +153,23 @@
 			children = (
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		FD32055E2ADD1BC400B0D5F6 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				FD132BED2ADBE8FA00F31AAF /* TwoHoSunApp.swift */,
+			);
+			name = App;
+			path = "메ㅔ";
+			sourceTree = "<group>";
+		};
+		FD32055F2ADD1F6B00B0D5F6 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				FD3205602ADD1F8100B0D5F6 /* HomeView.swift */,
+			);
+			path = Home;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -252,6 +272,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C7E30E2D2ADC41B8001AE89B /* LoginModel.swift in Sources */,
+				FD3205612ADD1F8100B0D5F6 /* HomeView.swift in Sources */,
 				C7E30E2B2ADC40E4001AE89B /* LoginViewModel.swift in Sources */,
 				C7E30E292ADC409F001AE89B /* LoginView.swift in Sources */,
 				FD132BF02ADBE8FA00F31AAF /* ContentView.swift in Sources */,
