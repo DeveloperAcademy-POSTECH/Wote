@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AB4522532ADDD99500B69F24 /* SchoolSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */; };
 		AB4D82692ADD7F4D00F35CCB /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4D82682ADD7F4D00F35CCB /* ProfileSettingsView.swift */; };
 		C7E30E2B2ADC40E4001AE89B /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E30E2A2ADC40E4001AE89B /* LoginViewModel.swift */; };
 		C7F1FD842ADDA2F000C5A2A1 /* OnBoardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F1FD832ADDA2F000C5A2A1 /* OnBoardingView.swift */; };
@@ -25,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolSearchView.swift; sourceTree = "<group>"; };
 		AB4D82682ADD7F4D00F35CCB /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
 		C7E30E2A2ADC40E4001AE89B /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		C7F1FD832ADDA2F000C5A2A1 /* OnBoardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingView.swift; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 			isa = PBXGroup;
 			children = (
 				AB4D82682ADD7F4D00F35CCB /* ProfileSettingsView.swift */,
+				AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -299,6 +302,7 @@
 				C7F1FD862ADDA37E00C5A2A1 /* BottomSheetView.swift in Sources */,
 				FD3205682ADD5C0D00B0D5F6 /* TwoHoSunApp.swift in Sources */,
 				C7F1FD842ADDA2F000C5A2A1 /* OnBoardingView.swift in Sources */,
+				AB4522532ADDD99500B69F24 /* SchoolSearchView.swift in Sources */,
 				C7E30E2B2ADC40E4001AE89B /* LoginViewModel.swift in Sources */,
 				FD9280392ADD8A0E007285BA /* LoginModel.swift in Sources */,
 				FD132BF02ADBE8FA00F31AAF /* ContentView.swift in Sources */,
