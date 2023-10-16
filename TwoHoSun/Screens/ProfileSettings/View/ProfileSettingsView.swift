@@ -54,8 +54,12 @@ struct ProfileSettingsView: View {
                     Spacer()
                     profileImage
                     Spacer()
-                    inputView
-                        .padding(.horizontal, 26)
+                    VStack(spacing: 8) {
+                        nicknameInputView
+                        schoolInputView
+                        gradeInputView
+                    }
+                    .padding(.horizontal, 26)
                     Spacer()
                     nextButton
                         .padding(.bottom, 38)
@@ -72,9 +76,7 @@ extension ProfileSettingsView {
         HStack {
             Text("Vote 프로필")
                 .font(.system(size: 32, weight: .bold)) +
-            Text("을\n")
-                .font(.system(size: 32, weight: .medium)) +
-            Text("설정해 주세요.")
+            Text("을\n설정해 주세요.")
                 .font(.system(size: 32, weight: .medium))
             Spacer()
         }
@@ -162,7 +164,7 @@ extension ProfileSettingsView {
             Text("중복확인")
                 .font(.system(size: 14))
                 .foregroundStyle(.white)
-                .frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/, height: 44)
+                .frame(width: 100, height: 44)
                 .background(Color.black)
                 .cornerRadius(10)
         }
