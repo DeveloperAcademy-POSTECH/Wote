@@ -84,7 +84,7 @@ struct BottomSheetView: View {
             if checked[0] == false {
                 showAlert = true
             } else {
-                // 프로필등록으로 이동.
+                // TODO: 프로필등록으로 이동.
             }
         }, label: {
             Text("동의하고 계속하기")
@@ -103,7 +103,6 @@ struct BottomSheetView: View {
                 .frame(width: 28,height: 28)
                 .foregroundColor(allChecked ? Color(UIColor.black) : Color.gray)
                 .onTapGesture {
-                    print(allChecked)
                     checked = Array(repeating: !allChecked, count: checked.count)
                 }
             Text("전체 동의")

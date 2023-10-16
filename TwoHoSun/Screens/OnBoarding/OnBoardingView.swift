@@ -93,7 +93,7 @@ struct OnBoardingView : View {
 
     private var loginboadingPage: some View {
         VStack {
-            // MARK: 현재는 임의의 로고 추후에 로고 이미지박스로 변경 예정
+            // TODO: 현재는 임의의 로고 추후에 로고 이미지박스로 변경 예정
             Image(systemName: "keyboard")
                 .resizable()
                 .frame(width: 234, height: 72)
