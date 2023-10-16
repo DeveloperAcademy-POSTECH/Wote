@@ -33,6 +33,7 @@ enum AgreeType: Int {
         }
     }
 }
+
 struct BottomSheetView: View {
     @Environment(\.dismiss) var dismiss
     @State private var checked: [Bool]  = [false, false, false]
@@ -110,9 +111,10 @@ struct BottomSheetView: View {
         }
         .padding(.leading, 13)
         .frame(width: 361, height: 58, alignment: .leading)
-        .clipShape(RoundedRectangle(cornerRadius: 5))
-        .border(.gray, width: 1)
-        
+        .overlay(
+            RoundedRectangle(cornerRadius: 5)
+                .stroke(Color.gray, lineWidth: 1)
+        )
     }
     
     struct CheckBoxView: View {
