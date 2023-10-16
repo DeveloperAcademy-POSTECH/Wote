@@ -8,12 +8,39 @@
 import PhotosUI
 import SwiftUI
 
+enum InputType {
+    case nickname, school, grade
+
+    var iconName: String {
+        switch self {
+        case .nickname:
+            return ""
+        case .school:
+            return "magnifyingglass"
+        case .grade:
+            return "chevron.down"
+        }
+    }
+
+    var alertMessage: String {
+        switch self {
+        case .nickname:
+            return "닉네임을 입력해주세요."
+        case .school:
+            return "학교를 입력해주세요."
+        case .grade:
+            return "학년을 입력해주세요."
+        }
+    }
+}
+
 struct ProfileSettingsView: View {
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var selectedImageData: Data?
     @State private var nickname: String = ""
-    @State private var selectedGrade: String?
     @State private var selectedSchool: String?
+    @State private var selectedGrade: String?
+
     let grades = ["1학년", "2학년", "3학년"]
 
     var body: some View {
@@ -96,7 +123,7 @@ extension ProfileSettingsView {
     }
 
     private var inputView: some View {
-        VStack(spacing: 27) {
+        VStack(spacing: 8) {
             nicknameInputView
             schoolInputView
             gradeInputView
@@ -104,9 +131,10 @@ extension ProfileSettingsView {
     }
 
     private var nicknameInputView: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 0) {
             Text("닉네임")
                 .font(.system(size: 16))
+                .padding(.bottom, 8)
             HStack(spacing: 10) {
                 HStack {
                     TextField("",
@@ -122,6 +150,9 @@ extension ProfileSettingsView {
                 }
                 checkDuplicatedIdButton
             }
+            // TODO: - 닉네임 유효성 검사
+            alertMessage(for: .nickname)
+                .padding(.top, 8)
         }
     }
 
@@ -142,8 +173,8 @@ extension ProfileSettingsView {
         VStack(alignment: .leading, spacing: 8) {
             Text("학교")
                 .font(.system(size: 16))
-            roundedIconTextField(iconName: "magnifyingglass",
-                                 text: selectedSchool ?? "학교를 선택해주세요.")
+            roundedIconTextField(text: selectedSchool ?? "학교를 선택해주세요.",
+                                 for: .school)
         }
     }
 
@@ -165,19 +196,15 @@ extension ProfileSettingsView {
                 }
             }
         } label: {
-            roundedIconTextField(iconName: "chevron.down",
-                                 text: selectedGrade ?? "학년을 선택해주세요.")
+            roundedIconTextField(text: selectedGrade ?? "학년을 선택해주세요.",
+                                 for: .grade)
         }
         .accentColor(.black)
     }
 
     private var nextButton: some View {
         Button {
-            guard selectedSchool != nil, selectedGrade != nil else {
-                print("button deactivated")
-                return
-            }
-            print("Go to the next step")
+            print("next button did tap")
         } label: {
             Text("완료")
                 .font(.system(size: 20))
@@ -188,15 +215,15 @@ extension ProfileSettingsView {
         }
     }
 
-    private func roundedIconTextField(iconName: String, text: String) -> some View {
-        VStack {
+    private func roundedIconTextField(text: String, for input: InputType) -> some View {
+        VStack(spacing: 10) {
             HStack(spacing: 0) {
                 Text(text)
                     .font(.system(size: 12))
                     .frame(height: 44)
                     .padding(.leading, 17)
                 Spacer()
-                Image(systemName: iconName)
+                Image(systemName: input.iconName)
                     .font(.system(size: 16))
                     .padding(.trailing, 18)
             }
@@ -205,7 +232,18 @@ extension ProfileSettingsView {
                 RoundedRectangle(cornerRadius: 10)
                     .strokeBorder(.black, lineWidth: 1)
             }
+            alertMessage(for: input)
         }
+    }
+
+    private func alertMessage(for input: InputType) -> some View {
+        HStack(spacing: 8) {
+            Image(systemName: "light.beacon.max")
+            Text(input.alertMessage)
+            Spacer()
+        }
+        .font(.system(size: 12))
+        .foregroundStyle(.red)
     }
 }
 
