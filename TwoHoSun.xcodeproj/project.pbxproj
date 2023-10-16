@@ -7,28 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C7E30E292ADC409F001AE89B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E30E282ADC409F001AE89B /* LoginView.swift */; };
-		C7E30E2B2ADC40E4001AE89B /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E30E2A2ADC40E4001AE89B /* LoginViewModel.swift */; };
-		C7E30E2D2ADC41B8001AE89B /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E30E2C2ADC41B8001AE89B /* LoginModel.swift */; };
+		AB0793D22ADC3F0900D4DF3B /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0793D12ADC3F0900D4DF3B /* ProfileSettingsView.swift */; };
 		FD003B4F2ADC2939002912CB /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FD003B4E2ADC2939002912CB /* Alamofire */; };
 		FD132BEE2ADBE8FA00F31AAF /* TwoHoSunApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD132BED2ADBE8FA00F31AAF /* TwoHoSunApp.swift */; };
 		FD132BF02ADBE8FA00F31AAF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD132BEF2ADBE8FA00F31AAF /* ContentView.swift */; };
 		FD132BF22ADBE8FB00F31AAF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD132BF12ADBE8FB00F31AAF /* Assets.xcassets */; };
 		FD132BF52ADBE8FB00F31AAF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD132BF42ADBE8FB00F31AAF /* Preview Assets.xcassets */; };
-		FD8D9F812ADC5FAD0072F4BA /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */; };
 		FDDB990C2ADC1BEC00B1163F /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = FDDB990B2ADC1BEC00B1163F /* .swiftlint.yml */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		C7E30E282ADC409F001AE89B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
-		C7E30E2A2ADC40E4001AE89B /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
-		C7E30E2C2ADC41B8001AE89B /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LoginModel.swift; path = TwoHoSun/Screens/Login/LoginModel.swift; sourceTree = SOURCE_ROOT; };
+		AB0793D12ADC3F0900D4DF3B /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
 		FD132BEA2ADBE8FA00F31AAF /* TwoHoSun.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwoHoSun.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD132BED2ADBE8FA00F31AAF /* TwoHoSunApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoHoSunApp.swift; sourceTree = "<group>"; };
 		FD132BEF2ADBE8FA00F31AAF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		FD132BF12ADBE8FB00F31AAF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FD132BF42ADBE8FB00F31AAF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		FDDB99042ADBF37100B1163F /* TwoHoSun.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TwoHoSun.entitlements; sourceTree = "<group>"; };
 		FDDB990B2ADC1BEC00B1163F /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -45,13 +39,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C7E30E272ADC4099001AE89B /* Login */ = {
+		AB0793CF2ADC3EE200D4DF3B /* ProfileSettings */ = {
 			isa = PBXGroup;
 			children = (
-				C7E30E282ADC409F001AE89B /* LoginView.swift */,
-				C7E30E2A2ADC40E4001AE89B /* LoginViewModel.swift */,
+				AB0793D02ADC3EFA00D4DF3B /* View */,
 			);
-			path = Login;
+			path = ProfileSettings;
+			sourceTree = "<group>";
+		};
+		AB0793D02ADC3EFA00D4DF3B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				AB0793D12ADC3F0900D4DF3B /* ProfileSettingsView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		FD132BE12ADBE8FA00F31AAF = {
@@ -105,7 +106,6 @@
 		FD1DEBA72ADC20EE00588CE6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				C7E30E2C2ADC41B8001AE89B /* LoginModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -113,10 +113,9 @@
 		FD1DEBA82ADC210B00588CE6 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				C7E30E272ADC4099001AE89B /* Login */,
 				FD1DEBA92ADC212500588CE6 /* Component */,
 				FD1DEBAA2ADC213C00588CE6 /* ContentView */,
-				FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */,
+				AB0793CF2ADC3EE200D4DF3B /* ProfileSettings */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -249,11 +248,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7E30E2D2ADC41B8001AE89B /* LoginModel.swift in Sources */,
-				C7E30E2B2ADC40E4001AE89B /* LoginViewModel.swift in Sources */,
-				C7E30E292ADC409F001AE89B /* LoginView.swift in Sources */,
+				AB0793D22ADC3F0900D4DF3B /* ProfileSettingsView.swift in Sources */,
 				FD132BF02ADBE8FA00F31AAF /* ContentView.swift in Sources */,
-				FD8D9F812ADC5FAD0072F4BA /* KeychainManager.swift in Sources */,
 				FD132BEE2ADBE8FA00F31AAF /* TwoHoSunApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -386,13 +382,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = TwoHoSun/TwoHoSun.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"TwoHoSun/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = N3H5YNSQ64;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "유저 앨범 접근";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -405,7 +401,6 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.twohosun.TwoHoSun;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -418,13 +413,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = TwoHoSun/TwoHoSun.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"TwoHoSun/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = N3H5YNSQ64;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "유저 앨범 접근";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -437,7 +432,6 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.twohosun.TwoHoSun;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
