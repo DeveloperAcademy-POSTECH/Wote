@@ -8,31 +8,47 @@
 import SwiftUI
 
 import AuthenticationServices
+import Combine
+
+enum Route {
+    case mainView
+    case profileView
+}
 
 struct OnBoardingView : View {
     @State private var currentpage = 0
-    @State private var showSheet = false
-    let viewModel = LoginViewModel()
+    @State private var goProfileView = false
+    @ObservedObject var viewModel = LoginViewModel()
 
     var body: some View {
-        VStack {
-            ZStack {
-                if currentpage != 0 {
-                    backButton
-                        .padding(EdgeInsets(top: 8, leading: 24, bottom: 47, trailing: 350))
+        NavigationStack(path: $viewModel.navigationPath) {
+            VStack {
+                ZStack {
+                    if currentpage != 0 {
+                        backButton
+                            .padding(EdgeInsets(top: 8, leading: 24, bottom: 47, trailing: 350))
+                    }
+                    horizontalScroll
+                        .padding(EdgeInsets(top: 14, leading: 0, bottom: 47, trailing: 40))
                 }
-                horizontalScroll
-                    .padding(EdgeInsets(top: 14, leading: 0, bottom: 47, trailing: 40))
+                TabView(selection: $currentpage,
+                        content: {
+                    onboardingPage(title: "첫번째 온보딩\n여기에 들어가", description: "대충첫번재 온보딩이란뜻", onboardingImage: UIImage(systemName: "photo")!)
+                        .tag(0)
+                    onboardingPage(title: "두번째 온보딩\n여기에 들어가", description: "대충두번재 온보딩이란뜻어쩌고저쩌고", onboardingImage: UIImage(systemName: "photo")!)
+                        .tag(1)
+                    loginboadingPage.tag(2)
+                })
+                .tabViewStyle(.page(indexDisplayMode: .never))
             }
-            TabView(selection: $currentpage,
-                    content: {
-                onboardingPage(title: "첫번째 온보딩\n여기에 들어가", description: "대충첫번재 온보딩이란뜻", onboardingImage: UIImage(systemName: "photo")!)
-                    .tag(0)
-                onboardingPage(title: "두번째 온보딩\n여기에 들어가", description: "대충두번재 온보딩이란뜻어쩌고저쩌고", onboardingImage: UIImage(systemName: "photo")!)
-                    .tag(1)
-                loginboadingPage.tag(2)
-            })
-            .tabViewStyle(.page(indexDisplayMode: .never))
+            .navigationDestination(for: Route.self) { route in
+                switch route {
+                case .mainView:
+                    HomeView(navigationPath: $viewModel.navigationPath)
+                case .profileView:
+                    ProfileSettingsView(navigationPath: $viewModel.navigationPath)
+                }
+            }
         }
     }
 }
@@ -113,8 +129,8 @@ extension OnBoardingView {
             hyeprLinkText
                 .font(.system(size: 10))
                 .padding(.vertical,8)
-        }.sheet(isPresented: $showSheet) {
-            BottomSheetView()
+        }.sheet(isPresented: $viewModel.showSheet) {
+            BottomSheetView(navigationPath: $viewModel.navigationPath)
                 .presentationDetents([.medium])
         }
     }
@@ -123,22 +139,21 @@ extension OnBoardingView {
         SignInWithAppleButton( onRequest: { request in
             request.requestedScopes = [.fullName, .email]
         }, onCompletion: {result in
-            switch result {
-            case .success(let authResults):
-                switch authResults.credential {
-                case let appleIDCredential as ASAuthorizationAppleIDCredential:
-                    let identifier = appleIDCredential.user
-                    KeychainManager.shared.saveToken(key: "identifier", token: identifier)
-                    let authorization = String(data: appleIDCredential.authorizationCode!, encoding:  .utf8)
-                    guard let authorizationCode = authorization else { return }
-                    viewModel.postAuthorCode(authorizationCode)
-                    showSheet = true
-                default:
-                    break
+                switch result {
+                case .success(let authResults):
+                    switch authResults.credential {
+                    case let appleIDCredential as ASAuthorizationAppleIDCredential:
+                        let identifier = appleIDCredential.user
+                        KeychainManager.shared.saveToken(key: "identifier", token: identifier)
+                        let authorization = String(data: appleIDCredential.authorizationCode!, encoding:  .utf8)
+                        guard let authorizationCode = authorization else { return }
+                        viewModel.postAuthorCode(authorizationCode)
+                    default:
+                        break
+                    }
+                case .failure(let err):
+                    print(err.localizedDescription)
                 }
-            case .failure(let err):
-                print(err.localizedDescription)
-            }
         })
         .frame(height: 54)
         .cornerRadius(27)

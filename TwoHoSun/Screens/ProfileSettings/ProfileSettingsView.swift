@@ -41,6 +41,7 @@ struct ProfileSettingsView: View {
     @State private var selectedSchool: String?
     @State private var selectedGrade: String?
     @State private var isSchoolSearchSheetPresented = false
+    @Binding var navigationPath: [Route]
     @State var selectedSchoolInfo: SchoolInfoModel?
 
     let grades = ["1학년", "2학년", "3학년"]
