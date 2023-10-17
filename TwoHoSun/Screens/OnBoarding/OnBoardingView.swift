@@ -139,7 +139,6 @@ extension OnBoardingView {
         SignInWithAppleButton( onRequest: { request in
             request.requestedScopes = [.fullName, .email]
         }, onCompletion: {result in
-//            Task {
                 switch result {
                 case .success(let authResults):
                     switch authResults.credential {
@@ -149,16 +148,12 @@ extension OnBoardingView {
                         let authorization = String(data: appleIDCredential.authorizationCode!, encoding:  .utf8)
                         guard let authorizationCode = authorization else { return }
                         viewModel.postAuthorCode(authorizationCode)
-//                        if viewModel.gomainView {
-//                            navigationPath.append(.mainView)
-//                        }
                     default:
                         break
                     }
                 case .failure(let err):
                     print(err.localizedDescription)
                 }
-//            }
         })
         .frame(height: 54)
         .cornerRadius(27)
