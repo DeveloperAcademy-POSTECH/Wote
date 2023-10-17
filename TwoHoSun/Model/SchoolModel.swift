@@ -7,11 +7,16 @@
 
 import Foundation
 
-struct SchoolModel: Identifiable {
-    let id = UUID()
+struct SchoolModel {
     let schoolName: String
     let schoolRegion: String
     let schoolType: String
+}
+
+struct SchoolInfoModel: Identifiable {
+    let id = UUID()
+    let school: SchoolModel
+    let schoolAddress: String
 }
 
 enum SchoolType {

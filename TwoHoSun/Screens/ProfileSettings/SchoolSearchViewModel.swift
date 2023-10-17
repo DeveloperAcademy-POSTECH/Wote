@@ -11,26 +11,31 @@ import Alamofire
 
 @Observable
 final class SchoolSearchViewModel {
-    var schools = [SchoolModel]()
+    var schools = [SchoolInfoModel]()
+    var isFetching = false
     private let baseURL = "http://www.career.go.kr/cnet/openapi/getOpenApi"
-    private var apiKey: String
 
-    init() {
-        guard let apiKey = Bundle.main.object(forInfoDictionaryKey: "API_KEY") as? String else {
-            fatalError("API_KEY not found in Info.plist")
+    var apiKey: String {
+        guard let file = Bundle.main.path(forResource: "Secret", ofType: "plist") else { return "" }
+        guard let resource = NSDictionary(contentsOfFile: file) else { return "" }
+        guard let key = resource["SCHOOL_API_KEY"] as? String else {
+            fatalError("SCHOOL_API_KEY error")
         }
-        self.apiKey = apiKey
+        return key
     }
 
     func setSchoolData(searchWord: String) async throws {
         schools.removeAll()
+        isFetching = true
 
         let highSchoolValues: HighSchoolResponse = try await fetchSchoolData(schoolType: .highSchool, searchWord: searchWord)
         let middleSchoolValues: MiddleSchoolResponse = try await fetchSchoolData(schoolType: .middleSchool, searchWord: searchWord)
-        let highSchoolSchools = highSchoolValues.dataSearch.content.map { $0.convertToSchoolModel() }
-        let middleSchoolSchools = middleSchoolValues.dataSearch.content.map { $0.convertToSchoolModel() }
+        let highSchoolSchools = highSchoolValues.dataSearch.content.map { $0.convertToSchoolInfoModel() }
+        let middleSchoolSchools = middleSchoolValues.dataSearch.content.map { $0.convertToSchoolInfoModel() }
 
         schools.append(contentsOf: highSchoolSchools + middleSchoolSchools)
+
+        isFetching = false
     }
 
     private func fetchSchoolData<T: Decodable>(schoolType: SchoolType, searchWord: String) async throws -> T {
