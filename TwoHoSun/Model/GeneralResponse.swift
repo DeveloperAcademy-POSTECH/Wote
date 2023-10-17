@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 struct GeneralResponse<T: Decodable>: Decodable {
     var status: Int
     var message: String
@@ -24,3 +25,5 @@ struct GeneralResponse<T: Decodable>: Decodable {
         data = (try? values.decode(T.self, forKey: .data)) ?? nil
     }
 }
+
+struct NoData: Decodable {}

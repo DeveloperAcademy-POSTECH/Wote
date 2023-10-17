@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SchoolModel {
+struct SchoolModel: Codable {
     let schoolName: String
     let schoolRegion: String
     let schoolType: String
