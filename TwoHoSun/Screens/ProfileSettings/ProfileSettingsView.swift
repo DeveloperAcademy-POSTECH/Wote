@@ -224,9 +224,10 @@ extension ProfileSettingsView {
                 .font(.system(size: 14))
                 .foregroundStyle(.white)
                 .frame(width: 100, height: 44)
-                .background(Color.black)
+                .background(viewModel.checkDuplicateButtonEnable() ? .black : .gray)
                 .cornerRadius(10)
         }
+        .disabled(viewModel.checkDuplicateButtonEnable() ? false : true)
     }
 
     private var schoolInputView: some View {

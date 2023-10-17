@@ -49,6 +49,14 @@ final class ProfileSettingViewModel {
         }
     }
 
+    func checkDuplicateButtonEnable() -> Bool {
+        if isNicknameLengthValid(nickname) && !isNicknameIncludeForbiddenWord(nickname) {
+            return true
+        } else {
+            return false
+        }
+    }
+
     func postNickname() {
         let requestURL = URLConst.baseURL + "/api/profiles/isValidNickname"
         let headers: HTTPHeaders = [
