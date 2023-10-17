@@ -8,12 +8,11 @@
 import SwiftUI
 
 import AuthenticationServices
-
+import Combine
 struct OnBoardingView : View {
     @State private var currentpage = 0
     @State private var showSheet = false
-    let viewModel = LoginViewModel()
-
+    @ObservedObject var viewModel = LoginViewModel()
     var body: some View {
         VStack {
             ZStack {
@@ -113,7 +112,7 @@ extension OnBoardingView {
             hyeprLinkText
                 .font(.system(size: 10))
                 .padding(.vertical,8)
-        }.sheet(isPresented: $showSheet) {
+        }.sheet(isPresented: $viewModel.gotoRegister) {
             BottomSheetView()
                 .presentationDetents([.medium])
         }
@@ -131,8 +130,8 @@ extension OnBoardingView {
                     KeychainManager.shared.saveToken(key: "identifier", token: identifier)
                     let authorization = String(data: appleIDCredential.authorizationCode!, encoding:  .utf8)
                     guard let authorizationCode = authorization else { return }
-                    viewModel.postAuthorCode(authorizationCode)
-                    showSheet = true
+                  viewModel.postAuthorCode(authorizationCode)
+
                 default:
                     break
                 }

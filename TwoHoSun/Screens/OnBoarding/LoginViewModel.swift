@@ -7,10 +7,11 @@
 import SwiftUI
 
 import Alamofire
-import Observation
+import Combine
 
-@Observable
-class LoginViewModel {
+class LoginViewModel: ObservableObject {
+    @Published var gotoRegister: Bool = false
+    private var cancellables: Set<AnyCancellable> = []
     func postAuthorCode(_ authorizationCode: String) {
         let headers: HTTPHeaders = [
             "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
@@ -21,14 +22,22 @@ class LoginViewModel {
         ]
         let url = "https://test.hyunwoo.tech/login/oauth2/code/apple"
         AF.request(url, method: .post, parameters: parameters, encoding: URLEncoding.httpBody, headers: headers)
-            .responseDecodable(of: LoginModel.self) { response in
-                switch response.result {
-                case .success(let data):
-                    KeychainManager.shared.saveToken(key: "accessToken", token: data.data.accessToken)
-                    KeychainManager.shared.saveToken(key: "refreshToken", token: data.data.refreshToken)
-                case .failure(let err):
-                    print(err)
+            .publishDecodable(type: GeneralResponse<Tokens>.self)
+            .value()
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    print(error)
                 }
-            }
+            }, receiveValue: { data in
+                if let data = data.data {
+                   KeychainManager.shared.saveToken(key: "accessToken", token: data.accessToken)
+                   KeychainManager.shared.saveToken(key: "refreshToken", token: data.refreshToken)
+               }
+                self.gotoRegister = data.message == "UNREGISTERED_USER"
+            })
+            .store(in: &cancellables)
     }
 }
