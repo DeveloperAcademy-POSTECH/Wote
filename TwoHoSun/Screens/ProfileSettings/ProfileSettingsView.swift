@@ -173,7 +173,7 @@ extension ProfileSettingsView {
         VStack(alignment: .leading, spacing: 8) {
             Text("학교")
                 .font(.system(size: 16))
-            roundedIconTextField(text: selectedSchoolInfo?.school.schoolName ?? "학교를 검색해주세요." , for: .school)
+            roundedIconTextField(text: selectedSchoolInfo?.school.schoolName ?? "학교를 검색해주세요.", for: .school)
         }
         .onTapGesture {
             isSchoolSearchSheetPresented = true
