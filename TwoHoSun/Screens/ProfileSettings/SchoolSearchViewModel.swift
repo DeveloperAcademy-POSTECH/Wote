@@ -11,7 +11,8 @@ import Alamofire
 
 @Observable
 final class SchoolSearchViewModel {
-    var schools = [SchoolModel]()
+    var schools = [SchoolInfoModel]()
+    var isFetching = false
     private let baseURL = "http://www.career.go.kr/cnet/openapi/getOpenApi"
 
     var apiKey: String {
@@ -25,13 +26,16 @@ final class SchoolSearchViewModel {
 
     func setSchoolData(searchWord: String) async throws {
         schools.removeAll()
+        isFetching = true
 
         let highSchoolValues: HighSchoolResponse = try await fetchSchoolData(schoolType: .highSchool, searchWord: searchWord)
         let middleSchoolValues: MiddleSchoolResponse = try await fetchSchoolData(schoolType: .middleSchool, searchWord: searchWord)
-        let highSchoolSchools = highSchoolValues.dataSearch.content.map { $0.convertToSchoolModel() }
-        let middleSchoolSchools = middleSchoolValues.dataSearch.content.map { $0.convertToSchoolModel() }
+        let highSchoolSchools = highSchoolValues.dataSearch.content.map { $0.convertToSchoolInfoModel() }
+        let middleSchoolSchools = middleSchoolValues.dataSearch.content.map { $0.convertToSchoolInfoModel() }
 
         schools.append(contentsOf: highSchoolSchools + middleSchoolSchools)
+
+        isFetching = false
     }
 
     private func fetchSchoolData<T: Decodable>(schoolType: SchoolType, searchWord: String) async throws -> T {
