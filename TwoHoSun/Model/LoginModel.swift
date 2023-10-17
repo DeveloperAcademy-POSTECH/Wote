@@ -7,12 +7,9 @@
 
 import Foundation
 
-struct LoginModel: Codable {
-    var status: String
-    var data: Tokens
-}
-
 struct Tokens: Codable {
     var accessToken: String
+    var accessExpirationTime: Int64
     var refreshToken: String
+    var refreshExpirationTime: Int64
 }

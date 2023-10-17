@@ -8,11 +8,8 @@
 import SwiftUI
 
 struct HomeView: View {
+    @Binding var navigationPath: [Route]
     var body: some View {
         Text("Home View")
     }
-}
-
-#Preview {
-    HomeView()
 }

@@ -46,7 +46,10 @@ extension SchoolSearchView {
     }
 
     private var schoolSearchField: some View {
-        TextField("학교 입력", text: $searchWord)
+        TextField("",
+                  text: $searchWord,
+                  prompt: Text("학교명 검색"))
+            .font(.system(size: 14, weight: .medium))
             .frame(height: 44)
             .padding(EdgeInsets(top: 0, leading: 17, bottom: 0, trailing: 0))
             .overlay {
