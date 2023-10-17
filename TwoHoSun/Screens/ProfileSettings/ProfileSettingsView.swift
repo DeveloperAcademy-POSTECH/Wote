@@ -42,6 +42,7 @@ struct ProfileSettingsView: View {
     @State private var selectedGrade: String?
     @State private var isSchoolSearchSheetPresented = false
     @Binding var navigationPath: [Route]
+    @State var selectedSchoolInfo: SchoolInfoModel?
 
     let grades = ["1학년", "2학년", "3학년"]
 
@@ -68,8 +69,10 @@ struct ProfileSettingsView: View {
                 }
             }
             .ignoresSafeArea(.keyboard)
-            .sheet(isPresented: $isSchoolSearchSheetPresented) {
-                SchoolSearchView()
+            .fullScreenCover(isPresented: $isSchoolSearchSheetPresented) {
+                NavigationView {
+                    SchoolSearchView(selectedSchoolInfo: $selectedSchoolInfo)
+                }
             }
         }
     }
@@ -171,8 +174,7 @@ extension ProfileSettingsView {
         VStack(alignment: .leading, spacing: 8) {
             Text("학교")
                 .font(.system(size: 16))
-            roundedIconTextField(text: selectedSchool ?? "학교를 선택해주세요.",
-                                 for: .school)
+            roundedIconTextField(text: selectedSchoolInfo?.school.schoolName ?? "학교를 검색해주세요.", for: .school)
         }
         .onTapGesture {
             isSchoolSearchSheetPresented = true
@@ -206,6 +208,8 @@ extension ProfileSettingsView {
     private var nextButton: some View {
         Button {
             print("next button did tap")
+            // TODO: - 프로필 설정 api 연결
+            // selectedSchoolInfoModel에서 school 정보 post하기
         } label: {
             Text("완료")
                 .font(.system(size: 20))
@@ -247,4 +251,12 @@ extension ProfileSettingsView {
         .font(.system(size: 12))
         .foregroundStyle(.red)
     }
+}
+
+#Preview {
+    ProfileSettingsView(selectedSchoolInfo:
+                            SchoolInfoModel(school: SchoolModel(schoolName: "예문여고",
+                                                                schoolRegion: "부산",
+                                                                schoolType: SchoolType.highSchool.schoolType),
+                                            schoolAddress: "부산시 수영구"))
 }
