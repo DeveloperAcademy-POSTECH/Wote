@@ -13,11 +13,12 @@ struct SchoolSearchView: View {
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
-        VStack(spacing: 0) {
-            schoolSearchField
-            Rectangle()
-                .frame(height: 1)
-            schoolList
+        ZStack(alignment: .top) {
+            VStack(spacing: 0) {
+                schoolSearchField
+                schoolList
+                Spacer()
+            }
         }
         .navigationTitle("학교 검색")
         .navigationBarTitleDisplayMode(.inline)
@@ -50,13 +51,18 @@ struct SchoolSearchView: View {
             }
             .padding(.horizontal, 26)
             .padding(.vertical, 20)
+            .onSubmit {
+                Task {
+                    try await viewModel.setSchoolData(searchWord: searchWord)
+                }
+            }
     }
 
     private func schoolListCell(_ school: SchoolModel) -> some View {
         VStack {
             HStack {
                 VStack(alignment: .leading) {
-                    Text("세원고등학교")
+                    Text(school.schoolName)
                         .font(.system(size: 16, weight: .medium))
                     HStack(spacing: 5) {
                         infoLabel("도로명")
@@ -64,7 +70,7 @@ struct SchoolSearchView: View {
                     }
                     HStack(spacing: 13) {
                         infoLabel("지역")
-                        infoDescription("경기도")
+                        infoDescription(school.schoolRegion)
                     }
                 }
                 Spacer()
@@ -90,15 +96,37 @@ struct SchoolSearchView: View {
             .font(.system(size: 13, weight: .medium))
     }
 
-    private var schoolList: some View {
-        List(0..<3) { _ in
-            schoolListCell(SchoolModel(schoolName: "..",
-                                       schoolRegion: "..",
-                                       schoolType: ".."))
-            .listRowInsets(EdgeInsets())
-            .listRowSeparator(.hidden)
+    private var searchDescriptionView: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 0) {
+                Text("이렇게 검색해보세요")
+                    .font(.system(size: 16, weight: .semibold))
+                    .padding(.bottom, 20)
+                Text("학교명")
+                    .font(.system(size: 16, weight: .medium))
+                    .padding(.bottom, 5)
+                Text("예) 세원고, 세원고등학교")
+                    .font(.system(size: 14, weight: .light))
+            }
+            Spacer()
         }
-        .listStyle(.plain)
+        .padding(.leading, 43)
+    }
+
+    @ViewBuilder
+    private var schoolList: some View {
+        if viewModel.schools.isEmpty {
+            searchDescriptionView
+        } else {
+            Rectangle()
+                .frame(height: 1)
+            List(viewModel.schools) { school in
+                schoolListCell(school)
+                .listRowInsets(EdgeInsets())
+                .listRowSeparator(.hidden)
+            }
+            .listStyle(.plain)
+        }
     }
 }
 
