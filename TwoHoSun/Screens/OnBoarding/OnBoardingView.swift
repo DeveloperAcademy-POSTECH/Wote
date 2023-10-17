@@ -14,6 +14,7 @@ enum Route {
     case mainView
     case profileView
 }
+
 struct OnBoardingView : View {
     @State private var currentpage = 0
     @State private var goProfileView = false

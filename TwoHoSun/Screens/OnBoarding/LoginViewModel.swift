@@ -10,10 +10,10 @@ import Alamofire
 import Combine
 
 class LoginViewModel: ObservableObject {
-    
     @Published var showSheet = false
     @Published var navigationPath: [Route] = []
     private var cancellables: Set<AnyCancellable> = []
+
     func postAuthorCode(_ authorizationCode: String) {
         let headers: HTTPHeaders = [
             "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
@@ -35,7 +35,6 @@ class LoginViewModel: ObservableObject {
                     print(error)
                 }
             }, receiveValue: { data in
-                print(data)
                 if let data = data.data {
                     KeychainManager.shared.saveToken(key: "accessToken", token: data.accessToken)
                     KeychainManager.shared.saveToken(key: "refreshToken", token: data.refreshToken)

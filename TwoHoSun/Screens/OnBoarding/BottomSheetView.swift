@@ -38,7 +38,6 @@ struct BottomSheetView: View {
     @Environment(\.dismiss) var dismiss
     @State private var checked: [Bool]  = [false, false, false]
     @State private var showAlert = false
-//    @Binding var goProfileView: Bool
     @Binding var navigationPath: [Route]
     private var allChecked: Bool {
         checked.allSatisfy { $0 }
@@ -87,15 +86,16 @@ struct BottomSheetView: View {
         var body: some View {
             VStack {
                 HStack {
-                    Image(systemName: checked ? "checkmark.square.fill" : "square")
-                        .foregroundColor(checked ? Color(UIColor.black) : Color.gray)
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            self.checked.toggle()
-                        }
-                    Text(agreeType.text)
-                        .lineLimit(1)
-                        .font(Font.system(size: 14))
+                    HStack {
+                        Image(systemName: checked ? "checkmark.square.fill" : "square")
+                            .foregroundColor(checked ? Color(UIColor.black) : Color.gray)
+                            .contentShape(Rectangle())
+                        Text(agreeType.text)
+                            .lineLimit(1)
+                            .font(Font.system(size: 14))
+                    }.onTapGesture {
+                        self.checked.toggle()
+                    }
                     Spacer()
                     NavigationLink(destination: agreeType.nextPage, label: {
                         Image(systemName: "chevron.right")
@@ -141,11 +141,12 @@ extension BottomSheetView {
                 .resizable()
                 .frame(width: 28, height: 28)
                 .foregroundColor(allChecked ? Color(UIColor.black) : Color.gray)
-                .onTapGesture {
-                    checked = Array(repeating: !allChecked, count: checked.count)
-                }
+
             Text("전체 동의")
                 .font(Font.system(size: 18, weight: .bold)) + Text(" (선택 포함)").font(Font.system(size: 14))
+        }
+        .onTapGesture {
+            checked = Array(repeating: !allChecked, count: checked.count)
         }
         .padding(.leading, 13)
         .frame(width: 361, height: 58, alignment: .leading)
@@ -154,4 +155,7 @@ extension BottomSheetView {
                 .stroke(Color.gray, lineWidth: 1)
         )
     }
+}
+#Preview {
+    BottomSheetView(navigationPath: .constant([.mainView]))
 }
