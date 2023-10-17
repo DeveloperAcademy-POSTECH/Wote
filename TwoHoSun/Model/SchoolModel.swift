@@ -15,8 +15,7 @@ struct SchoolModel {
 
 struct SchoolInfoModel: Identifiable {
     let id = UUID()
-    let schoolName: String
-    let schoolRegion: String
+    let school: SchoolModel
     let schoolAddress: String
 }
 

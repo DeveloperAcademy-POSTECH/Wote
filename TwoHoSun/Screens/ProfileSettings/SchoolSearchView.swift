@@ -65,7 +65,7 @@ extension SchoolSearchView {
         VStack {
             HStack {
                 VStack(alignment: .leading) {
-                    Text(schoolInfo.schoolName)
+                    Text(schoolInfo.school.schoolName)
                         .font(.system(size: 16, weight: .medium))
                     HStack(spacing: 5) {
                         infoLabel("도로명")
@@ -73,7 +73,7 @@ extension SchoolSearchView {
                     }
                     HStack(spacing: 13) {
                         infoLabel("지역")
-                        infoDescription(schoolInfo.schoolRegion)
+                        infoDescription(schoolInfo.school.schoolRegion)
                     }
                 }
                 Spacer()
@@ -124,6 +124,9 @@ extension SchoolSearchView {
             schoolListCell(school)
             .listRowInsets(EdgeInsets())
             .listRowSeparator(.hidden)
+            .onTapGesture {
+                dismiss()
+            }
         }
         .listStyle(.plain)
     }
