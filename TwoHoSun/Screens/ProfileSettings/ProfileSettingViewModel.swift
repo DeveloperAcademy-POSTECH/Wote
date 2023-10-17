@@ -5,10 +5,11 @@
 //  Created by 관식 on 10/17/23.
 //
 
-import Alamofire
 import Combine
 import Observation
 import SwiftUI
+
+import Alamofire
 
 @Observable
 class ProfileSettingViewModel {
@@ -25,6 +26,8 @@ class ProfileSettingViewModel {
         
         AF.request(requestURL, method: .post, parameters: body, encoding: JSONEncoding.default, headers: headers)
             .publishDecodable(type: NicknameResponse.self)
+            .value()
+            .map(\.data)
             .receive(on: DispatchQueue.main)
             .sink { completion in
                 switch completion {
@@ -33,15 +36,10 @@ class ProfileSettingViewModel {
                 case .failure(let error):
                     print("Error: \(error)")
                 }
-            } receiveValue: { response in
-                switch response.result {
-                case .success(let nicknameResponse):
-                    self.isDuplicated = nicknameResponse.data.isExist
-                    print("Nickname is duplicated: \(nicknameResponse.data.isExist)")
-                case .failure(let error):
-                    print("Decoding Error: \(error)")
-                }
+            } receiveValue: { data in
+                self.isDuplicated = data.isExist
+                print("Nickname is duplicated: \(data.isExist)")
             }
-            .store(in: &cancellable)
     }
+        .store(in: &cancellable)
 }
