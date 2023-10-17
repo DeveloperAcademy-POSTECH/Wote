@@ -13,3 +13,7 @@ struct Tokens: Codable {
     var refreshToken: String
     var refreshExpirationTime: Int64
 }
+
+//enum loginResponse {
+//    case register, loginSuccess, loginError
+//}

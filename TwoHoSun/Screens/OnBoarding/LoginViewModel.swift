@@ -10,7 +10,8 @@ import Alamofire
 import Combine
 
 class LoginViewModel: ObservableObject {
-    @Published var gotoRegister: Bool = false
+    @Published var gomainView = false
+    @Published var showSheet = false
     private var cancellables: Set<AnyCancellable> = []
     func postAuthorCode(_ authorizationCode: String) {
         let headers: HTTPHeaders = [
@@ -36,7 +37,12 @@ class LoginViewModel: ObservableObject {
                    KeychainManager.shared.saveToken(key: "accessToken", token: data.accessToken)
                    KeychainManager.shared.saveToken(key: "refreshToken", token: data.refreshToken)
                }
-                self.gotoRegister = data.message == "UNREGISTERED_USER"
+//                self.gotoRegister = data.message == "UNREGISTERED_USER"
+                if data.message == "UNREGISTERED_USER" {
+                    self.showSheet = true
+                } else {
+                    self.gomainView = true
+                }
             })
             .store(in: &cancellables)
     }
