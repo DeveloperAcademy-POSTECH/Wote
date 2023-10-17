@@ -22,6 +22,17 @@ enum InputType {
         }
     }
 
+    var placeholder: String {
+        switch self {
+        case .nickname:
+            return "한/영 10자 이내(특수문자 불가)"
+        case .school:
+            return "학교를 검색해주세요."
+        case .grade:
+            return "학년을 선택해주세요."
+        }
+    }
+
     var alertMessage: String {
         switch self {
         case .nickname:
@@ -29,7 +40,7 @@ enum InputType {
         case .school:
             return "학교를 입력해주세요."
         case .grade:
-            return "학년을 입력해주세요."
+            return "학년을 선택해주세요."
         }
     }
 }
@@ -38,12 +49,24 @@ struct ProfileSettingsView: View {
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var selectedImageData: Data?
     @State private var nickname: String = ""
-    @State private var selectedSchool: String?
     @State private var selectedGrade: String?
     @State private var isSchoolSearchSheetPresented = false
     @State var selectedSchoolInfo: SchoolInfoModel?
+    @State private var isFormValid = true
 
     let grades = ["1학년", "2학년", "3학년"]
+
+    private var isNicknameValid: Bool {
+        return selectedSchoolInfo != nil
+    }
+
+    private var isSchoolValid: Bool {
+        return selectedSchoolInfo != nil
+    }
+
+    private var isGradeValid: Bool {
+        return selectedGrade != nil
+    }
 
     var body: some View {
         ZStack {
@@ -151,7 +174,7 @@ extension ProfileSettingsView {
                 }
                 checkDuplicatedIdButton
             }
-            alertMessage(for: .nickname)
+            invalidAlertMessage(for: .nickname, isValid: false)
                 .padding(.top, 8)
         }
     }
@@ -173,7 +196,9 @@ extension ProfileSettingsView {
         VStack(alignment: .leading, spacing: 8) {
             Text("학교")
                 .font(.system(size: 16))
-            roundedIconTextField(text: selectedSchoolInfo?.school.schoolName ?? "학교를 검색해주세요.", for: .school)
+            roundedIconTextField(text: selectedSchoolInfo?.school.schoolName,
+                                 for: .school)
+            invalidAlertMessage(for: .school, isValid: isSchoolValid)
         }
         .onTapGesture {
             isSchoolSearchSheetPresented = true
@@ -185,6 +210,7 @@ extension ProfileSettingsView {
             Text("학년")
                 .font(.system(size: 16))
             gradeMenu
+            invalidAlertMessage(for: .grade, isValid: isGradeValid)
         }
     }
 
@@ -198,7 +224,7 @@ extension ProfileSettingsView {
                 }
             }
         } label: {
-            roundedIconTextField(text: selectedGrade ?? "학년을 선택해주세요.",
+            roundedIconTextField(text: selectedGrade,
                                  for: .grade)
         }
         .accentColor(.black)
@@ -206,9 +232,14 @@ extension ProfileSettingsView {
 
     private var nextButton: some View {
         Button {
-            print("next button did tap")
-            // TODO: - 프로필 설정 api 연결
-            // selectedSchoolInfoModel에서 school 정보 post하기
+            guard isGradeValid, isSchoolValid else {
+                isFormValid = false
+                return
+            }
+
+            // TODO: - 프로필 설정 api 연결 / selectedSchoolInfoModel에서 school 정보 post하기
+            print("profile setting api")
+
         } label: {
             Text("완료")
                 .font(.system(size: 20))
@@ -219,11 +250,12 @@ extension ProfileSettingsView {
         }
     }
 
-    private func roundedIconTextField(text: String, for input: InputType) -> some View {
+    private func roundedIconTextField(text: String?, for input: InputType) -> some View {
         VStack(spacing: 10) {
             HStack(spacing: 0) {
-                Text(text)
+                Text(text ?? input.placeholder)
                     .font(.system(size: 12))
+                    .foregroundColor(text != nil ? .black : .gray)
                     .frame(height: 44)
                     .padding(.leading, 17)
                 Spacer()
@@ -236,19 +268,17 @@ extension ProfileSettingsView {
                 RoundedRectangle(cornerRadius: 10)
                     .strokeBorder(.black, lineWidth: 1)
             }
-            alertMessage(for: input)
         }
     }
 
-    // TODO: - 유효성 검사
-    private func alertMessage(for input: InputType) -> some View {
+    private func invalidAlertMessage(for input: InputType, isValid: Bool) -> some View {
         HStack(spacing: 8) {
             Image(systemName: "light.beacon.max")
             Text(input.alertMessage)
             Spacer()
         }
         .font(.system(size: 12))
-        .foregroundStyle(.red)
+        .foregroundStyle(!isFormValid && !isValid ? .red : .clear)
     }
 }
 
