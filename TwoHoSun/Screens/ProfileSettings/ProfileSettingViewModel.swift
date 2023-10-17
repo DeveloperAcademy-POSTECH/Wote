@@ -40,6 +40,7 @@ class ProfileSettingViewModel {
                 self.isDuplicated = data.isExist
                 print("Nickname is duplicated: \(data.isExist)")
             }
+            .store(in: &cancellable)
     }
-        .store(in: &cancellable)
 }
+

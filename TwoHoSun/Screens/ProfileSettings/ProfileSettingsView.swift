@@ -255,10 +255,10 @@ extension ProfileSettingsView {
     }
 }
 
-#Preview {
-    ProfileSettingsView(selectedSchoolInfo:
-                            SchoolInfoModel(school: SchoolModel(schoolName: "예문여고",
-                                                                schoolRegion: "부산",
-                                                                schoolType: SchoolType.highSchool.schoolType),
-                                            schoolAddress: "부산시 수영구"))
-}
+//#Preview {
+//    ProfileSettingsView(selectedSchoolInfo:
+//                            SchoolInfoModel(school: SchoolModel(schoolName: "예문여고",
+//                                                                schoolRegion: "부산",
+//                                                                schoolType: SchoolType.highSchool.schoolType),
+//                                            schoolAddress: "부산시 수영구"))
+//}
