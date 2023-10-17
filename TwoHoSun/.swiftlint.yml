@@ -39,7 +39,7 @@ file_length:
 type_name:
   min_length: 3 # 경고에만 적용됨
   max_length: # 경고와 에러 둘 다 적용
-    warning: 20
+    warning: 30
     error: 40
   excluded: iPhone # 제외할 문자열 값 사용
 identifier_name:

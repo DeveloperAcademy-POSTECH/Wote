@@ -19,12 +19,13 @@
 		C7F1FD842ADDA2F000C5A2A1 /* OnBoardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F1FD832ADDA2F000C5A2A1 /* OnBoardingView.swift */; };
 		C7F1FD862ADDA37E00C5A2A1 /* BottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F1FD852ADDA37E00C5A2A1 /* BottomSheetView.swift */; };
 		C7F1FD882ADDA39500C5A2A1 /* DesciptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F1FD872ADDA39500C5A2A1 /* DesciptionView.swift */; };
-		FD132BF02ADBE8FA00F31AAF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD132BEF2ADBE8FA00F31AAF /* ContentView.swift */; };
 		FD132BF22ADBE8FB00F31AAF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD132BF12ADBE8FB00F31AAF /* Assets.xcassets */; };
 		FD132BF52ADBE8FB00F31AAF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD132BF42ADBE8FB00F31AAF /* Preview Assets.xcassets */; };
 		FD3205612ADD1F8100B0D5F6 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3205602ADD1F8100B0D5F6 /* HomeView.swift */; };
 		FD3205682ADD5C0D00B0D5F6 /* TwoHoSunApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3205672ADD5C0D00B0D5F6 /* TwoHoSunApp.swift */; };
 		FD3646F52ADD8E2D0064DF94 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FD3646F42ADD8E2D0064DF94 /* Alamofire */; };
+		FD4E75B42ADE9616000C2277 /* NicknameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4E75B32ADE9616000C2277 /* NicknameModel.swift */; };
+		FD4E75B62ADE9C20000C2277 /* ProfileSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4E75B52ADE9C20000C2277 /* ProfileSettingViewModel.swift */; };
 		FD8D9F812ADC5FAD0072F4BA /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */; };
 		FD9280392ADD8A0E007285BA /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9280382ADD8A0E007285BA /* LoginModel.swift */; };
 		FD92803D2ADD8AF0007285BA /* File in Resources */ = {isa = PBXBuildFile; fileRef = FD92803C2ADD8AF0007285BA /* File */; };
@@ -45,12 +46,13 @@
 		C7F1FD852ADDA37E00C5A2A1 /* BottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetView.swift; sourceTree = "<group>"; };
 		C7F1FD872ADDA39500C5A2A1 /* DesciptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesciptionView.swift; sourceTree = "<group>"; };
 		FD132BEA2ADBE8FA00F31AAF /* TwoHoSun.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwoHoSun.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		FD132BEF2ADBE8FA00F31AAF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		FD132BF12ADBE8FB00F31AAF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FD132BF42ADBE8FB00F31AAF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		FD32055D2ADD16AC00B0D5F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FD3205602ADD1F8100B0D5F6 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		FD3205672ADD5C0D00B0D5F6 /* TwoHoSunApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoHoSunApp.swift; sourceTree = "<group>"; };
+		FD4E75B32ADE9616000C2277 /* NicknameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameModel.swift; sourceTree = "<group>"; };
+		FD4E75B52ADE9C20000C2277 /* ProfileSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingViewModel.swift; sourceTree = "<group>"; };
 		FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		FD9280382ADD8A0E007285BA /* LoginModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		FD92803A2ADD8A4C007285BA /* File */ = {isa = PBXFileReference; lastKnownFileType = text; path = File; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				AB4D82682ADD7F4D00F35CCB /* ProfileSettingsView.swift */,
+				FD4E75B52ADE9C20000C2277 /* ProfileSettingViewModel.swift */,
 				AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */,
 				AB4522592ADDDC9E00B69F24 /* SchoolSearchViewModel.swift */,
 			);
@@ -147,6 +150,7 @@
 			isa = PBXGroup;
 			children = (
 				FD9280382ADD8A0E007285BA /* LoginModel.swift */,
+				FD4E75B32ADE9616000C2277 /* NicknameModel.swift */,
 				C7E459CC2ADE8A1300ECD008 /* GeneralResponse.swift */,
 				AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */,
 				AB4522572ADDDBE000B69F24 /* SchoolModel.swift */,
@@ -160,7 +164,6 @@
 				C7F1FD822ADDA2D900C5A2A1 /* OnBoarding */,
 				FD32055F2ADD1F6B00B0D5F6 /* Home */,
 				FD1DEBA92ADC212500588CE6 /* Component */,
-				FD1DEBAA2ADC213C00588CE6 /* ContentView */,
 				AB4D82662ADD7F3700F35CCB /* ProfileSettings */,
 			);
 			path = Screens;
@@ -172,14 +175,6 @@
 				FD92803A2ADD8A4C007285BA /* File */,
 			);
 			path = Component;
-			sourceTree = "<group>";
-		};
-		FD1DEBAA2ADC213C00588CE6 /* ContentView */ = {
-			isa = PBXGroup;
-			children = (
-				FD132BEF2ADBE8FA00F31AAF /* ContentView.swift */,
-			);
-			path = ContentView;
 			sourceTree = "<group>";
 		};
 		FD1DEBAB2ADC218800588CE6 /* Utility */ = {
@@ -310,8 +305,10 @@
 				AB4522582ADDDBE000B69F24 /* SchoolModel.swift in Sources */,
 				C7F1FD882ADDA39500C5A2A1 /* DesciptionView.swift in Sources */,
 				AB4D82692ADD7F4D00F35CCB /* ProfileSettingsView.swift in Sources */,
+				FD4E75B62ADE9C20000C2277 /* ProfileSettingViewModel.swift in Sources */,
 				AB45225C2ADE665100B69F24 /* URLConst.swift in Sources */,
 				FD3205612ADD1F8100B0D5F6 /* HomeView.swift in Sources */,
+				FD4E75B42ADE9616000C2277 /* NicknameModel.swift in Sources */,
 				C7F1FD862ADDA37E00C5A2A1 /* BottomSheetView.swift in Sources */,
 				AB4522562ADDDBC400B69F24 /* SchoolResponseModel.swift in Sources */,
 				AB45225A2ADDDC9E00B69F24 /* SchoolSearchViewModel.swift in Sources */,

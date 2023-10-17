@@ -35,6 +35,8 @@ enum InputType {
 }
 
 struct ProfileSettingsView: View {
+    let viewModel = ProfileSettingViewModel()
+    
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var selectedImageData: Data?
     @State private var nickname: String = ""
@@ -159,7 +161,7 @@ extension ProfileSettingsView {
 
     private var checkDuplicatedIdButton: some View {
         Button {
-            print("check is Id duplicted")
+            viewModel.postNickname(nickname: nickname)
         } label: {
             Text("중복확인")
                 .font(.system(size: 14))
@@ -253,10 +255,10 @@ extension ProfileSettingsView {
     }
 }
 
-#Preview {
-    ProfileSettingsView(selectedSchoolInfo:
-                            SchoolInfoModel(school: SchoolModel(schoolName: "예문여고",
-                                                                schoolRegion: "부산",
-                                                                schoolType: SchoolType.highSchool.schoolType),
-                                            schoolAddress: "부산시 수영구"))
-}
+//#Preview {
+//    ProfileSettingsView(selectedSchoolInfo:
+//                            SchoolInfoModel(school: SchoolModel(schoolName: "예문여고",
+//                                                                schoolRegion: "부산",
+//                                                                schoolType: SchoolType.highSchool.schoolType),
+//                                            schoolAddress: "부산시 수영구"))
+//}
