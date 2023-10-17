@@ -38,6 +38,8 @@ struct BottomSheetView: View {
     @Environment(\.dismiss) var dismiss
     @State private var checked: [Bool]  = [false, false, false]
     @State private var showAlert = false
+//    @Binding var goProfileView: Bool
+    @Binding var navigationPath: [Route]
     private var allChecked: Bool {
         checked.allSatisfy { $0 }
     }
@@ -121,7 +123,8 @@ extension BottomSheetView {
             if checked[0] == false {
                 showAlert = true
             } else {
-                // TODO: 프로필등록으로 이동.
+                navigationPath.append(.profileView)
+                dismiss()
             }
         }, label: {
             Text("동의하고 계속하기")
@@ -154,6 +157,6 @@ extension BottomSheetView {
     }
 }
 
-#Preview {
-    BottomSheetView()
-}
+//#Preview {
+//    BottomSheetView()
+//}

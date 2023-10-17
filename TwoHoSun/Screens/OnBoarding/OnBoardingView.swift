@@ -9,11 +9,19 @@ import SwiftUI
 
 import AuthenticationServices
 import Combine
+
+enum Route {
+    case mainView
+    case profileView
+}
 struct OnBoardingView : View {
     @State private var currentpage = 0
+    @State private var goProfileView = false
     @ObservedObject var viewModel = LoginViewModel()
+    @State private var navigationPath: [Route] = []
+
     var body: some View {
-        NavigationView {
+        NavigationStack(path: $navigationPath) {
             VStack {
                 ZStack {
                     if currentpage != 0 {
@@ -33,7 +41,14 @@ struct OnBoardingView : View {
                 })
                 .tabViewStyle(.page(indexDisplayMode: .never))
             }
-            .navigationDestination(isPresented: $viewModel.gomainView) {  HomeView()}
+            .navigationDestination(for: Route.self) { route in
+                switch route {
+                case .mainView:
+                    HomeView(navigationPath: $navigationPath)
+                case .profileView:
+                    ProfileSettingsView(navigationPath: $navigationPath)
+                }
+            }
         }
     }
 }
@@ -115,7 +130,7 @@ extension OnBoardingView {
                 .font(.system(size: 10))
                 .padding(.vertical,8)
         }.sheet(isPresented: $viewModel.showSheet) {
-            BottomSheetView()
+            BottomSheetView(navigationPath: $navigationPath)
                 .presentationDetents([.medium])
         }
     }
@@ -133,6 +148,9 @@ extension OnBoardingView {
                     let authorization = String(data: appleIDCredential.authorizationCode!, encoding:  .utf8)
                     guard let authorizationCode = authorization else { return }
                     viewModel.postAuthorCode(authorizationCode)
+                    if viewModel.gomainView == true {
+                        navigationPath.append(.mainView)
+                    }
                 default:
                     break
                 }
