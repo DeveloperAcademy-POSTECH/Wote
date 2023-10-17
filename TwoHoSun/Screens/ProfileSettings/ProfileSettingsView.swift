@@ -8,6 +8,36 @@
 import PhotosUI
 import SwiftUI
 
+enum NicknameValidationType {
+    case empty, length, forbiddenWord, duplicated, valid
+
+    var alertMessage: String {
+        switch self {
+        case .empty:
+            return ""
+        case .length:
+            return "닉네임은 1~10자로 설정해주세요."
+        case .forbiddenWord:
+            return "해당 닉네임으로는 아이디를 생성할 수 없어요."
+        case .duplicated:
+            return "중복된 닉네임입니다."
+        case .valid:
+            return "사용 가능한 닉네임입니다."
+        }
+    }
+
+    var alertMessageColor: Color {
+        switch self {
+        case .empty:
+            return .white
+        case .valid:
+            return .blue
+        default:
+            return .red
+        }
+    }
+}
+
 enum InputType {
     case nickname, school, grade
 
@@ -48,13 +78,14 @@ enum InputType {
 struct ProfileSettingsView: View {
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var selectedImageData: Data?
-    @State private var nickname: String = ""
     @State private var selectedGrade: String?
     @State private var isSchoolSearchSheetPresented = false
     @State var selectedSchoolInfo: SchoolInfoModel?
     @State private var isFormValid = true
 
-    let grades = ["1학년", "2학년", "3학년"]
+    @StateObject var viewModel = ProfileSettingsViewModel()
+
+    private let grades = ["1학년", "2학년", "3학년"]
 
     private var isNicknameValid: Bool {
         return selectedSchoolInfo != nil
@@ -162,26 +193,29 @@ extension ProfileSettingsView {
             HStack(spacing: 10) {
                 HStack {
                     TextField("",
-                              text: $nickname,
+                              text: $viewModel.nickname,
                               prompt: Text("한/영 10자 이내(특수문자 불가)")
-                                    .font(.system(size: 12)))
-                        .frame(height: 44)
-                        .padding(EdgeInsets(top: 0, leading: 17, bottom: 0, trailing: 0))
+                        .font(.system(size: 12)))
+                    .frame(height: 44)
+                    .padding(EdgeInsets(top: 0, leading: 17, bottom: 0, trailing: 0))
                 }
                 .overlay {
                     RoundedRectangle(cornerRadius: 10)
                         .strokeBorder(.black, lineWidth: 1)
                 }
+                .onChange(of: viewModel.nickname) { _, newValue in
+                    viewModel.checkNicknameValidation(newValue)
+                }
                 checkDuplicatedIdButton
             }
-            invalidAlertMessage(for: .nickname, isValid: false)
-                .padding(.top, 8)
+            nicknameValidationAlertMessage(for: viewModel.nicknameInvalidType)
+                .padding(.top, 10)
         }
     }
 
     private var checkDuplicatedIdButton: some View {
         Button {
-            print("check is Id duplicted")
+            print("check Id duplicted")
         } label: {
             Text("중복확인")
                 .font(.system(size: 14))
@@ -198,7 +232,7 @@ extension ProfileSettingsView {
                 .font(.system(size: 16))
             roundedIconTextField(text: selectedSchoolInfo?.school.schoolName,
                                  for: .school)
-            invalidAlertMessage(for: .school, isValid: isSchoolValid)
+            validationAlertMessage(for: .school, isValid: isSchoolValid)
         }
         .onTapGesture {
             isSchoolSearchSheetPresented = true
@@ -210,7 +244,7 @@ extension ProfileSettingsView {
             Text("학년")
                 .font(.system(size: 16))
             gradeMenu
-            invalidAlertMessage(for: .grade, isValid: isGradeValid)
+            validationAlertMessage(for: .grade, isValid: isGradeValid)
         }
     }
 
@@ -271,7 +305,17 @@ extension ProfileSettingsView {
         }
     }
 
-    private func invalidAlertMessage(for input: InputType, isValid: Bool) -> some View {
+    private func nicknameValidationAlertMessage(for input: NicknameValidationType) -> some View {
+        HStack(spacing: 8) {
+            Image(systemName: "light.beacon.max")
+            Text(input.alertMessage)
+            Spacer()
+        }
+        .font(.system(size: 12))
+        .foregroundStyle(viewModel.nicknameInvalidType.alertMessageColor)
+    }
+
+    private func validationAlertMessage(for input: InputType, isValid: Bool) -> some View {
         HStack(spacing: 8) {
             Image(systemName: "light.beacon.max")
             Text(input.alertMessage)
