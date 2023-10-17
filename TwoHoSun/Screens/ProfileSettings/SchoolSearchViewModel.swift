@@ -27,7 +27,6 @@ final class SchoolSearchViewModel {
 
         let highSchoolValues: HighSchoolResponse = try await fetchSchoolData(schoolType: .highSchool, searchWord: searchWord)
         let middleSchoolValues: MiddleSchoolResponse = try await fetchSchoolData(schoolType: .middleSchool, searchWord: searchWord)
-
         let highSchoolSchools = highSchoolValues.dataSearch.content.map { $0.convertToSchoolModel() }
         let middleSchoolSchools = middleSchoolValues.dataSearch.content.map { $0.convertToSchoolModel() }
 
