@@ -25,7 +25,7 @@ class ProfileSettingViewModel {
         let body: [String: String] = ["userNickname": nickname]
         
         AF.request(requestURL, method: .post, parameters: body, encoding: JSONEncoding.default, headers: headers)
-            .publishDecodable(type: NicknameResponse.self)
+            .publishDecodable(type: GeneralResponse<NicknameValidation>.self)
             .value()
             .map(\.data)
             .receive(on: DispatchQueue.main)
