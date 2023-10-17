@@ -23,10 +23,10 @@ struct HighSchoolContent: Codable, Hashable {
     let estType: String
     let seq: String
 
-    func convertToSchoolModel() -> SchoolModel {
-        return SchoolModel(schoolName: schoolName,
-                      schoolRegion: region,
-                      schoolType: "고등학교")
+    func convertToSchoolInfoModel() -> SchoolInfoModel {
+        return SchoolInfoModel(schoolName: schoolName,
+                               schoolRegion: region,
+                               schoolAddress: adres)
     }
 }
 
@@ -44,9 +44,9 @@ struct MiddleSchoolContent: Codable, Hashable {
     let estType: String
     let seq: String
 
-    func convertToSchoolModel() -> SchoolModel {
-        return SchoolModel(schoolName: schoolName,
-                      schoolRegion: region,
-                      schoolType: "중학교")
+    func convertToSchoolInfoModel() -> SchoolInfoModel {
+        return SchoolInfoModel(schoolName: schoolName,
+                               schoolRegion: region,
+                               schoolAddress: adres)
     }
 }

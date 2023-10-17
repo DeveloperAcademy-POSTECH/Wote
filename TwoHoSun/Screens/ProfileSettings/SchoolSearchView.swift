@@ -16,7 +16,7 @@ struct SchoolSearchView: View {
         ZStack(alignment: .top) {
             VStack(spacing: 0) {
                 schoolSearchField
-                schoolList
+                schoolSearchResult
                 Spacer()
             }
         }
@@ -30,6 +30,9 @@ struct SchoolSearchView: View {
         .toolbarBackground(.white, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
     }
+}
+
+extension SchoolSearchView {
 
     private var backButton: some View {
         Button {
@@ -58,19 +61,19 @@ struct SchoolSearchView: View {
             }
     }
 
-    private func schoolListCell(_ school: SchoolModel) -> some View {
+    private func schoolListCell(_ schoolInfo: SchoolInfoModel) -> some View {
         VStack {
             HStack {
                 VStack(alignment: .leading) {
-                    Text(school.schoolName)
+                    Text(schoolInfo.schoolName)
                         .font(.system(size: 16, weight: .medium))
                     HStack(spacing: 5) {
                         infoLabel("도로명")
-                        infoDescription("경기도 고양시 일산동구 숲속마을로")
+                        infoDescription(schoolInfo.schoolAddress)
                     }
                     HStack(spacing: 13) {
                         infoLabel("지역")
-                        infoDescription(school.schoolRegion)
+                        infoDescription(schoolInfo.schoolRegion)
                     }
                 }
                 Spacer()
@@ -114,18 +117,26 @@ struct SchoolSearchView: View {
     }
 
     @ViewBuilder
-    private var schoolList: some View {
-        if viewModel.schools.isEmpty {
+    private var searchedSchoolList: some View {
+        Rectangle()
+            .frame(height: 1)
+        List(viewModel.schools) { school in
+            schoolListCell(school)
+            .listRowInsets(EdgeInsets())
+            .listRowSeparator(.hidden)
+        }
+        .listStyle(.plain)
+    }
+
+    @ViewBuilder
+    private var schoolSearchResult: some View {
+        if viewModel.schools.isEmpty && !viewModel.isFetching {
             searchDescriptionView
+        } else if viewModel.isFetching {
+            ProgressView()
+                .padding(.top, 100)
         } else {
-            Rectangle()
-                .frame(height: 1)
-            List(viewModel.schools) { school in
-                schoolListCell(school)
-                .listRowInsets(EdgeInsets())
-                .listRowSeparator(.hidden)
-            }
-            .listStyle(.plain)
+            searchedSchoolList
         }
     }
 }
