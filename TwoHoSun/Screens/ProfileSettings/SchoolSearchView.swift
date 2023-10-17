@@ -10,6 +10,7 @@ import SwiftUI
 struct SchoolSearchView: View {
     @State private var searchWord = ""
     private let viewModel = SchoolSearchViewModel()
+    @Binding var selectedSchoolInfo: SchoolInfoModel?
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
@@ -125,6 +126,7 @@ extension SchoolSearchView {
             .listRowInsets(EdgeInsets())
             .listRowSeparator(.hidden)
             .onTapGesture {
+                selectedSchoolInfo = school
                 dismiss()
             }
         }
@@ -146,6 +148,10 @@ extension SchoolSearchView {
 
 #Preview {
     NavigationView {
-        SchoolSearchView()
+        SchoolSearchView(selectedSchoolInfo:
+                .constant(SchoolInfoModel(school: SchoolModel(schoolName: "예문여고",
+                                                              schoolRegion: "부산",
+                                                              schoolType: SchoolType.highSchool.schoolType),
+                                          schoolAddress: "부산시 수영구")))
     }
 }
