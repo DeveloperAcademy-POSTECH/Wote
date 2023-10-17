@@ -83,7 +83,7 @@ struct ProfileSettingsView: View {
     @State var selectedSchoolInfo: SchoolInfoModel?
     @State private var isFormValid = true
 
-    @StateObject var viewModel = ProfileSettingsViewModel()
+    @Bindable var viewModel: SettingsViewModel
 
     private let grades = ["1학년", "2학년", "3학년"]
 
@@ -331,5 +331,6 @@ extension ProfileSettingsView {
                             SchoolInfoModel(school: SchoolModel(schoolName: "예문여고",
                                                                 schoolRegion: "부산",
                                                                 schoolType: SchoolType.highSchool.schoolType),
-                                            schoolAddress: "부산시 수영구"))
+                                            schoolAddress: "부산시 수영구"), 
+                        viewModel: SettingsViewModel())
 }

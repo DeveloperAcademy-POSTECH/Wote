@@ -7,10 +7,10 @@
 
 import Foundation
 
-final class ProfileSettingsViewModel: ObservableObject {
-
-    @Published var nickname = ""
-    @Published var nicknameInvalidType = NicknameValidationType.empty
+@Observable
+final class SettingsViewModel {
+    var nickname = ""
+    var nicknameInvalidType = NicknameValidationType.empty
 
     let forbiddenWord = ["ㅅㅂ", "똥"]
 

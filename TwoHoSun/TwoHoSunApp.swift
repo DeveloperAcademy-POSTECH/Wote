@@ -19,7 +19,7 @@ struct TwoHoSunApp: App {
 //            } else {
 //                OnBoardingView()
 //            }
-            ProfileSettingsView()
+            ProfileSettingsView(viewModel: SettingsViewModel())
         }
     }
 }
