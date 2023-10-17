@@ -12,11 +12,44 @@ import SwiftUI
 import Alamofire
 
 @Observable
-class ProfileSettingViewModel {
+final class ProfileSettingViewModel {
     var isDuplicated: Bool = false
+    var nickname = ""
+    var nicknameInvalidType = NicknameValidationType.none
+    private let forbiddenWord = ["금지어1", "금지어2"]
     private var cancellable: Set<AnyCancellable> = []
-    
-    func postNickname(nickname: String) {
+
+    func isNicknameLengthValid(_ text: String) -> Bool {
+        let pattern = #"^.{1,10}$"#
+        if let range = text.range(of: pattern, options: .regularExpression) {
+            return text.distance(from: range.lowerBound, to: range.upperBound) == text.count
+        }
+        return false
+    }
+
+    func isNicknameIncludeForbiddenWord(_ text: String) -> Bool {
+        for word in forbiddenWord where text.contains(word) {
+            return true
+        }
+        return false
+    }
+
+    func checkNicknameValidation(_ text: String) {
+        if text.isEmpty {
+            nicknameInvalidType = .empty
+        } else if !isNicknameLengthValid(text) {
+            nicknameInvalidType = .length
+        } else if isNicknameIncludeForbiddenWord(text) {
+            nicknameInvalidType = .forbiddenWord
+        } else if isDuplicated {
+            nicknameInvalidType = .duplicated
+        } else {
+            nicknameInvalidType = .none
+            isDuplicated = false
+        }
+    }
+
+    func postNickname() {
         let requestURL = URLConst.baseURL + "/api/profiles/isValidNickname"
         let headers: HTTPHeaders = [
             "Content-Type": "application/json",
@@ -37,10 +70,10 @@ class ProfileSettingViewModel {
                     print("Error: \(error)")
                 }
             } receiveValue: { data in
-                self.isDuplicated = data.isExist
-                print("Nickname is duplicated: \(data.isExist)")
+                guard let isExist = data?.isExist else { return }
+                self.isDuplicated = isExist
+                self.nicknameInvalidType = self.isDuplicated ? .duplicated : .valid
             }
             .store(in: &cancellable)
     }
 }
-

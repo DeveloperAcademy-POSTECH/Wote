@@ -9,12 +9,14 @@ import PhotosUI
 import SwiftUI
 
 enum NicknameValidationType {
-    case empty, length, forbiddenWord, duplicated, valid
+    case none, empty, length, forbiddenWord, duplicated, valid
 
     var alertMessage: String {
         switch self {
-        case .empty:
+        case .none:
             return ""
+        case .empty:
+            return "닉네임을 입력해주세요."
         case .length:
             return "닉네임은 1~10자로 설정해주세요."
         case .forbiddenWord:
@@ -28,8 +30,8 @@ enum NicknameValidationType {
 
     var alertMessageColor: Color {
         switch self {
-        case .empty:
-            return .white
+        case .none:
+            return .clear
         case .valid:
             return .blue
         default:
@@ -76,8 +78,6 @@ enum InputType {
 }
 
 struct ProfileSettingsView: View {
-    let viewModel = ProfileSettingViewModel()
-    
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var selectedImageData: Data?
     @State private var selectedGrade: String?
@@ -86,7 +86,7 @@ struct ProfileSettingsView: View {
     @State var selectedSchoolInfo: SchoolInfoModel?
     @State private var isFormValid = true
 
-    @Bindable var viewModel: SettingsViewModel
+    @Bindable var viewModel: ProfileSettingViewModel
 
     private let grades = ["1학년", "2학년", "3학년"]
 
@@ -218,7 +218,7 @@ extension ProfileSettingsView {
 
     private var checkDuplicatedIdButton: some View {
         Button {
-            viewModel.postNickname(nickname: nickname)
+            viewModel.postNickname()
         } label: {
             Text("중복확인")
                 .font(.system(size: 14))
@@ -269,7 +269,9 @@ extension ProfileSettingsView {
 
     private var nextButton: some View {
         Button {
-            guard isGradeValid, isSchoolValid else {
+            guard isGradeValid,
+                    isSchoolValid,
+                    viewModel.nicknameInvalidType == .valid else {
                 isFormValid = false
                 return
             }

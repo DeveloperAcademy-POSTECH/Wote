@@ -46,7 +46,7 @@ struct OnBoardingView : View {
                 case .mainView:
                     HomeView(navigationPath: $viewModel.navigationPath)
                 case .profileView:
-                    ProfileSettingsView(navigationPath: $viewModel.navigationPath)
+                    ProfileSettingsView(navigationPath: $viewModel.navigationPath, viewModel: ProfileSettingViewModel())
                 }
             }
         }
