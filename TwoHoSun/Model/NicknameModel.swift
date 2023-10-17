@@ -7,6 +7,12 @@
 
 import Foundation
 
-struct NicknameModel: Codable {
-    var nickname: String
+struct NicknameResponse: Codable {
+    var status: Int
+    var message: String
+    var data: NicknameValidation
+}
+
+struct NicknameValidation: Codable {
+    var isExist: Bool
 }
