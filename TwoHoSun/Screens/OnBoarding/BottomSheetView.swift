@@ -73,7 +73,6 @@ struct BottomSheetView: View {
             nextButtonView
                 .padding(.top, 42)
         }
-
         .padding(.top, 23)
         .padding(.horizontal, 15)
         .alert(isPresented: $showAlert) {

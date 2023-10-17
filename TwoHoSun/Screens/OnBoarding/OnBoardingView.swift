@@ -18,10 +18,9 @@ struct OnBoardingView : View {
     @State private var currentpage = 0
     @State private var goProfileView = false
     @ObservedObject var viewModel = LoginViewModel()
-    @State private var navigationPath: [Route] = []
 
     var body: some View {
-        NavigationStack(path: $navigationPath) {
+        NavigationStack(path: $viewModel.navigationPath) {
             VStack {
                 ZStack {
                     if currentpage != 0 {
@@ -44,9 +43,9 @@ struct OnBoardingView : View {
             .navigationDestination(for: Route.self) { route in
                 switch route {
                 case .mainView:
-                    HomeView(navigationPath: $navigationPath)
+                    HomeView(navigationPath: $viewModel.navigationPath)
                 case .profileView:
-                    ProfileSettingsView(navigationPath: $navigationPath)
+                    ProfileSettingsView(navigationPath: $viewModel.navigationPath)
                 }
             }
         }
@@ -130,7 +129,7 @@ extension OnBoardingView {
                 .font(.system(size: 10))
                 .padding(.vertical,8)
         }.sheet(isPresented: $viewModel.showSheet) {
-            BottomSheetView(navigationPath: $navigationPath)
+            BottomSheetView(navigationPath: $viewModel.navigationPath)
                 .presentationDetents([.medium])
         }
     }
@@ -139,24 +138,26 @@ extension OnBoardingView {
         SignInWithAppleButton( onRequest: { request in
             request.requestedScopes = [.fullName, .email]
         }, onCompletion: {result in
-            switch result {
-            case .success(let authResults):
-                switch authResults.credential {
-                case let appleIDCredential as ASAuthorizationAppleIDCredential:
-                    let identifier = appleIDCredential.user
-                    KeychainManager.shared.saveToken(key: "identifier", token: identifier)
-                    let authorization = String(data: appleIDCredential.authorizationCode!, encoding:  .utf8)
-                    guard let authorizationCode = authorization else { return }
-                    viewModel.postAuthorCode(authorizationCode)
-                    if viewModel.gomainView == true {
-                        navigationPath.append(.mainView)
+//            Task {
+                switch result {
+                case .success(let authResults):
+                    switch authResults.credential {
+                    case let appleIDCredential as ASAuthorizationAppleIDCredential:
+                        let identifier = appleIDCredential.user
+                        KeychainManager.shared.saveToken(key: "identifier", token: identifier)
+                        let authorization = String(data: appleIDCredential.authorizationCode!, encoding:  .utf8)
+                        guard let authorizationCode = authorization else { return }
+                        viewModel.postAuthorCode(authorizationCode)
+//                        if viewModel.gomainView {
+//                            navigationPath.append(.mainView)
+//                        }
+                    default:
+                        break
                     }
-                default:
-                    break
+                case .failure(let err):
+                    print(err.localizedDescription)
                 }
-            case .failure(let err):
-                print(err.localizedDescription)
-            }
+//            }
         })
         .frame(height: 54)
         .cornerRadius(27)

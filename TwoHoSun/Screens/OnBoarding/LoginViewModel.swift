@@ -10,8 +10,9 @@ import Alamofire
 import Combine
 
 class LoginViewModel: ObservableObject {
-    @Published var gomainView = false
+    
     @Published var showSheet = false
+    @Published var navigationPath: [Route] = []
     private var cancellables: Set<AnyCancellable> = []
     func postAuthorCode(_ authorizationCode: String) {
         let headers: HTTPHeaders = [
@@ -25,6 +26,7 @@ class LoginViewModel: ObservableObject {
         AF.request(url, method: .post, parameters: parameters, encoding: URLEncoding.httpBody, headers: headers)
             .publishDecodable(type: GeneralResponse<Tokens>.self)
             .value()
+            .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
@@ -33,15 +35,15 @@ class LoginViewModel: ObservableObject {
                     print(error)
                 }
             }, receiveValue: { data in
+                print(data)
                 if let data = data.data {
-                   KeychainManager.shared.saveToken(key: "accessToken", token: data.accessToken)
-                   KeychainManager.shared.saveToken(key: "refreshToken", token: data.refreshToken)
-               }
-//                self.gotoRegister = data.message == "UNREGISTERED_USER"
+                    KeychainManager.shared.saveToken(key: "accessToken", token: data.accessToken)
+                    KeychainManager.shared.saveToken(key: "refreshToken", token: data.refreshToken)
+                }
                 if data.message == "UNREGISTERED_USER" {
                     self.showSheet = true
                 } else {
-                    self.gomainView = true
+                    self.navigationPath.append(.mainView)
                 }
             })
             .store(in: &cancellables)
