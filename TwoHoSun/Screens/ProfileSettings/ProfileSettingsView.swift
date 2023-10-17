@@ -67,8 +67,10 @@ struct ProfileSettingsView: View {
                 }
             }
             .ignoresSafeArea(.keyboard)
-            .sheet(isPresented: $isSchoolSearchSheetPresented) {
-                SchoolSearchView()
+            .fullScreenCover(isPresented: $isSchoolSearchSheetPresented) {
+                NavigationView {
+                    SchoolSearchView()
+                }
             }
         }
     }
