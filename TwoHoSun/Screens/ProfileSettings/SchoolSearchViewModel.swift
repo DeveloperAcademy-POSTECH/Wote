@@ -13,13 +13,14 @@ import Alamofire
 final class SchoolSearchViewModel {
     var schools = [SchoolModel]()
     private let baseURL = "http://www.career.go.kr/cnet/openapi/getOpenApi"
-    private var apiKey: String
 
-    init() {
-        guard let apiKey = Bundle.main.object(forInfoDictionaryKey: "API_KEY") as? String else {
-            fatalError("API_KEY not found in Info.plist")
+    var apiKey: String {
+        guard let file = Bundle.main.path(forResource: "Secret", ofType: "plist") else { return "" }
+        guard let resource = NSDictionary(contentsOfFile: file) else { return "" }
+        guard let key = resource["SCHOOL_API_KEY"] as? String else {
+            fatalError("SCHOOL_API_KEY error")
         }
-        self.apiKey = apiKey
+        return key
     }
 
     func setSchoolData(searchWord: String) async throws {
