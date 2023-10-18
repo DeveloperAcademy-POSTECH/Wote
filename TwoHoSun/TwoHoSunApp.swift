@@ -11,7 +11,7 @@ import Observation
 @main
 struct TwoHoSunApp: App {
     let appState = AppState()
-    
+
     var body: some Scene {
         WindowGroup {
 //            if appState.hasValidToken {

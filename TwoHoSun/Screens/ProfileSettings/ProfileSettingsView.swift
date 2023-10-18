@@ -8,7 +8,48 @@
 import PhotosUI
 import SwiftUI
 
-enum InputType {
+enum NicknameValidationType {
+    case none, empty, length, forbiddenWord, duplicated, valid
+
+    var alertMessage: String {
+        switch self {
+        case .none:
+            return ""
+        case .empty:
+            return "닉네임을 입력해주세요."
+        case .length:
+            return "닉네임은 1~10자로 설정해주세요."
+        case .forbiddenWord:
+            return "해당 닉네임으로는 아이디를 생성할 수 없어요."
+        case .duplicated:
+            return "중복된 닉네임입니다."
+        case .valid:
+            return "사용 가능한 닉네임입니다."
+        }
+    }
+
+    var alertMessageColor: Color {
+        switch self {
+        case .none:
+            return .clear
+        case .valid:
+            return .blue
+        default:
+            return .red
+        }
+    }
+
+    var textfieldBorderColor: Color {
+        switch self {
+        case .none, .valid:
+            return .black
+        default:
+            return .red
+        }
+    }
+}
+
+enum ProfileInputType {
     case nickname, school, grade
 
     var iconName: String {
@@ -22,6 +63,17 @@ enum InputType {
         }
     }
 
+    var placeholder: String {
+        switch self {
+        case .nickname:
+            return "한/영 10자 이내(특수문자 불가)"
+        case .school:
+            return "학교를 검색해주세요."
+        case .grade:
+            return "학년을 선택해주세요."
+        }
+    }
+
     var alertMessage: String {
         switch self {
         case .nickname:
@@ -29,24 +81,17 @@ enum InputType {
         case .school:
             return "학교를 입력해주세요."
         case .grade:
-            return "학년을 입력해주세요."
+            return "학년을 선택해주세요."
         }
     }
 }
 
 struct ProfileSettingsView: View {
-    let viewModel = ProfileSettingViewModel()
-    
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var selectedImageData: Data?
-    @State private var nickname: String = ""
-    @State private var selectedSchool: String?
-    @State private var selectedGrade: String?
     @State private var isSchoolSearchSheetPresented = false
     @Binding var navigationPath: [Route]
-    @State var selectedSchoolInfo: SchoolInfoModel?
-
-    let grades = ["1학년", "2학년", "3학년"]
+    @Bindable var viewModel: ProfileSettingViewModel
 
     var body: some View {
         ZStack {
@@ -73,14 +118,17 @@ struct ProfileSettingsView: View {
             .ignoresSafeArea(.keyboard)
             .fullScreenCover(isPresented: $isSchoolSearchSheetPresented) {
                 NavigationView {
-                    SchoolSearchView(selectedSchoolInfo: $selectedSchoolInfo)
+                    SchoolSearchView(selectedSchoolInfo: $viewModel.selectedSchoolInfo)
                 }
             }
+            .navigationBarBackButtonHidden()
         }
     }
 }
 
 extension ProfileSettingsView {
+
+    // MARK: - UI Components
 
     private var titleLabel: some View {
         HStack {
@@ -142,41 +190,49 @@ extension ProfileSettingsView {
             HStack(spacing: 10) {
                 HStack {
                     TextField("",
-                              text: $nickname,
-                              prompt: Text("한/영 10자 이내(특수문자 불가)")
-                                    .font(.system(size: 12)))
-                        .frame(height: 44)
-                        .padding(EdgeInsets(top: 0, leading: 17, bottom: 0, trailing: 0))
+                              text: $viewModel.nickname,
+                              prompt: Text(ProfileInputType.nickname.placeholder)
+                        .font(.system(size: 12)))
+                    .frame(height: 44)
+                    .padding(EdgeInsets(top: 0, leading: 17, bottom: 0, trailing: 0))
                 }
                 .overlay {
                     RoundedRectangle(cornerRadius: 10)
-                        .strokeBorder(.black, lineWidth: 1)
+                        .strokeBorder(viewModel.nicknameValidationType.textfieldBorderColor, lineWidth: 1)
+                }
+                .onChange(of: viewModel.nickname) { _, newValue in
+                    viewModel.checkNicknameValidation(newValue)
                 }
                 checkDuplicatedIdButton
             }
-            alertMessage(for: .nickname)
-                .padding(.top, 8)
+            nicknameValidationAlertMessage(for: viewModel.nicknameValidationType)
+                .padding(.top, 10)
         }
     }
 
     private var checkDuplicatedIdButton: some View {
         Button {
-            viewModel.postNickname(nickname: nickname)
+            viewModel.postNickname()
+            if viewModel.nicknameValidationType == .valid { dismissKeyboard() }
         } label: {
             Text("중복확인")
                 .font(.system(size: 14))
                 .foregroundStyle(.white)
                 .frame(width: 100, height: 44)
-                .background(Color.black)
+                .background(viewModel.isDuplicateButtonEnabled() ? .black : .gray)
                 .cornerRadius(10)
         }
+        .disabled(viewModel.isDuplicateButtonEnabled() ? false : true)
     }
 
     private var schoolInputView: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("학교")
                 .font(.system(size: 16))
-            roundedIconTextField(text: selectedSchoolInfo?.school.schoolName ?? "학교를 검색해주세요.", for: .school)
+            roundedIconTextField(for: .school, 
+                                 text: viewModel.selectedSchoolInfo?.school.schoolName,
+                                 isFilled: viewModel.isSchoolFilled)
+            validationAlertMessage(for: .school, isValid: viewModel.isSchoolFilled)
         }
         .onTapGesture {
             isSchoolSearchSheetPresented = true
@@ -188,45 +244,50 @@ extension ProfileSettingsView {
             Text("학년")
                 .font(.system(size: 16))
             gradeMenu
+            validationAlertMessage(for: .grade, isValid: viewModel.isGradeFilled)
         }
     }
 
     private var gradeMenu: some View {
         Menu {
-            ForEach(grades, id: \.self) { grade in
+            ForEach(1..<4) { grade in
                 Button {
-                    selectedGrade = grade
+                    viewModel.selectedGrade = "\(grade)학년"
                 } label: {
-                    Text(grade)
+                    Text("\(grade)학년")
                 }
             }
         } label: {
-            roundedIconTextField(text: selectedGrade ?? "학년을 선택해주세요.",
-                                 for: .grade)
+            roundedIconTextField(for: .grade, 
+                                 text: viewModel.selectedGrade,
+                                 isFilled: viewModel.isGradeFilled)
         }
         .accentColor(.black)
     }
 
     private var nextButton: some View {
         Button {
-            print("next button did tap")
-            // TODO: - 프로필 설정 api 연결
-            // selectedSchoolInfoModel에서 school 정보 post하기
+            guard viewModel.isAllInputValid else {
+                viewModel.setInvalidCondition()
+                return
+            }
+            viewModel.setProfile()
         } label: {
             Text("완료")
                 .font(.system(size: 20))
                 .foregroundStyle(.white)
                 .frame(width: 361, height: 52)
-                .background(Color.gray)
+                .background(viewModel.isAllInputValid ? .blue : .gray)
                 .cornerRadius(10)
         }
     }
 
-    private func roundedIconTextField(text: String, for input: InputType) -> some View {
+    private func roundedIconTextField(for input: ProfileInputType, text: String?, isFilled: Bool) -> some View {
         VStack(spacing: 10) {
             HStack(spacing: 0) {
-                Text(text)
+                Text(text ?? input.placeholder)
                     .font(.system(size: 12))
+                    .foregroundColor(text != nil ? .black : .gray)
                     .frame(height: 44)
                     .padding(.leading, 17)
                 Spacer()
@@ -237,28 +298,34 @@ extension ProfileSettingsView {
             .frame(maxWidth: .infinity)
             .overlay {
                 RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(.black, lineWidth: 1)
+                    .strokeBorder(!isFilled && !viewModel.isFormValid ? .red : .black, lineWidth: 1)
             }
-            alertMessage(for: input)
         }
     }
 
-    // TODO: - 유효성 검사
-    private func alertMessage(for input: InputType) -> some View {
+    private func nicknameValidationAlertMessage(for input: NicknameValidationType) -> some View {
         HStack(spacing: 8) {
             Image(systemName: "light.beacon.max")
             Text(input.alertMessage)
             Spacer()
         }
         .font(.system(size: 12))
-        .foregroundStyle(.red)
+        .foregroundStyle(viewModel.nicknameValidationType.alertMessageColor)
+    }
+
+    private func validationAlertMessage(for input: ProfileInputType, isValid: Bool) -> some View {
+        HStack(spacing: 8) {
+            Image(systemName: "light.beacon.max")
+            Text(input.alertMessage)
+            Spacer()
+        }
+        .font(.system(size: 12))
+        .foregroundStyle(!viewModel.isFormValid && !isValid ? .red : .clear)
+    }
+
+    // MARK: - Custom Methods
+    
+    private func dismissKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
-
-//#Preview {
-//    ProfileSettingsView(selectedSchoolInfo:
-//                            SchoolInfoModel(school: SchoolModel(schoolName: "예문여고",
-//                                                                schoolRegion: "부산",
-//                                                                schoolType: SchoolType.highSchool.schoolType),
-//                                            schoolAddress: "부산시 수영구"))
-//}
