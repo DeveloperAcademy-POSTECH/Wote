@@ -23,32 +23,34 @@ struct MainView: View {
             }
         }
     }
-    @Binding var navigationPath: [Route]
+   
     @State private var filterState: FilterType = .all
     var body: some View {
-        ScrollView {
-            LazyVStack {
-                filterBar
-                HStack {
-                    Text("ii")
+        NavigationStack {
+            ScrollView {
+                LazyVStack {
+                    filterBar
+                    HStack {
+                        Text("ii")
+                    }
                 }
             }
-        }
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Image("splash")
-                    .resizable()
-                    .frame(width: 120,height: 36)
-            }
-            ToolbarItem(placement: .topBarTrailing) {
-                HStack {
-                    noticeButton
-                    searchButton
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Image("splash")
+                        .resizable()
+                        .frame(width: 120,height: 36)
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    HStack {
+                        noticeButton
+                        searchButton
+                    }
                 }
             }
-        }
 
+        }
     }
 }
 
@@ -70,6 +72,7 @@ extension MainView {
             }
             Spacer()
         }
+        .padding(.top, 30)
         .padding(.leading, 26)
     }
 
@@ -87,13 +90,12 @@ extension MainView {
                     RoundedRectangle(cornerRadius: 24)
                         .fill( isSelected ? Color.gray : Color.clear)
                         .stroke(Color.gray, lineWidth: 1.0)
-
                 )
         }
     }
 }
 #Preview {
     NavigationView {
-        MainView(navigationPath: .constant([.mainView]))
+        MainView()
     }
 }
