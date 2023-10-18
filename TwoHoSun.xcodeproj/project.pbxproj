@@ -26,9 +26,9 @@
 		FD3646F52ADD8E2D0064DF94 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FD3646F42ADD8E2D0064DF94 /* Alamofire */; };
 		FD4E75B42ADE9616000C2277 /* NicknameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4E75B32ADE9616000C2277 /* NicknameModel.swift */; };
 		FD4E75B62ADE9C20000C2277 /* ProfileSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4E75B52ADE9C20000C2277 /* ProfileSettingViewModel.swift */; };
+		FD6673372AE071550015007D /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6673362AE071550015007D /* APIManager.swift */; };
 		FD8D9F812ADC5FAD0072F4BA /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */; };
 		FD9280392ADD8A0E007285BA /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9280382ADD8A0E007285BA /* LoginModel.swift */; };
-		FD92803D2ADD8AF0007285BA /* File in Resources */ = {isa = PBXBuildFile; fileRef = FD92803C2ADD8AF0007285BA /* File */; };
 		FDDB990C2ADC1BEC00B1163F /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = FDDB990B2ADC1BEC00B1163F /* .swiftlint.yml */; };
 		FDE9FC9B2ADF28CF00EBC1F8 /* ProfileSettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDE9FC9A2ADF28CF00EBC1F8 /* ProfileSettingModel.swift */; };
 /* End PBXBuildFile section */
@@ -54,10 +54,10 @@
 		FD3205672ADD5C0D00B0D5F6 /* TwoHoSunApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoHoSunApp.swift; sourceTree = "<group>"; };
 		FD4E75B32ADE9616000C2277 /* NicknameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameModel.swift; sourceTree = "<group>"; };
 		FD4E75B52ADE9C20000C2277 /* ProfileSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingViewModel.swift; sourceTree = "<group>"; };
+		FD6673362AE071550015007D /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		FD9280382ADD8A0E007285BA /* LoginModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		FD92803A2ADD8A4C007285BA /* File */ = {isa = PBXFileReference; lastKnownFileType = text; path = File; sourceTree = "<group>"; };
-		FD92803C2ADD8AF0007285BA /* File */ = {isa = PBXFileReference; lastKnownFileType = text; path = File; sourceTree = "<group>"; };
 		FDDB99042ADBF37100B1163F /* TwoHoSun.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TwoHoSun.entitlements; sourceTree = "<group>"; };
 		FDDB990B2ADC1BEC00B1163F /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		FDE9FC9A2ADF28CF00EBC1F8 /* ProfileSettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingModel.swift; sourceTree = "<group>"; };
@@ -191,7 +191,7 @@
 		FD1DEBAC2ADC219D00588CE6 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				FD92803C2ADD8AF0007285BA /* File */,
+				FD6673362AE071550015007D /* APIManager.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -273,7 +273,6 @@
 				FD132BF52ADBE8FB00F31AAF /* Preview Assets.xcassets in Resources */,
 				AB4522612ADE871900B69F24 /* Secret.plist in Resources */,
 				FD132BF22ADBE8FB00F31AAF /* Assets.xcassets in Resources */,
-				FD92803D2ADD8AF0007285BA /* File in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,6 +305,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AB4522582ADDDBE000B69F24 /* SchoolModel.swift in Sources */,
+				FD6673372AE071550015007D /* APIManager.swift in Sources */,
 				C7F1FD882ADDA39500C5A2A1 /* DesciptionView.swift in Sources */,
 				AB4D82692ADD7F4D00F35CCB /* ProfileSettingsView.swift in Sources */,
 				FD4E75B62ADE9C20000C2277 /* ProfileSettingViewModel.swift in Sources */,
