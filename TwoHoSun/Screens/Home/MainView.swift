@@ -31,9 +31,6 @@ struct MainView: View {
                 ScrollView {
                     LazyVStack {
                         filterBar
-                        HStack {
-                            Text("ii")
-                        }
                     }
                 }
                 floatingButton
@@ -84,16 +81,26 @@ extension MainView {
     }
 
     private var floatingButton: some View {
-        Button {
+        Menu {
+            NavigationLink {
+                Text("전국 투표 올리기")
+            } label: {
+                Text("전국 투표 올리기")
+            }
+            NavigationLink {
+                Text("our 학교")
+            } label: {
+                Text("우리학교 투표 올리기")
+            }
 
         } label: {
-            Image(systemName: "plus")
-                .font(.system(size: 20))
-                .padding(16)
-                .background(Color.white)
-                .foregroundColor(.gray)
-                .clipShape(Circle())
-                .shadow(radius: 7, x: 2, y: 2)
+                Image(systemName: "plus")
+                    .font(.system(size: 20))
+                    .padding(16)
+                    .background(Color.white)
+                    .foregroundColor(.gray)
+                    .clipShape(Circle())
+                    .shadow(radius: 7, x: 2, y: 2)
         }
         .padding(.trailing, 26)
         .padding(.bottom, 12)

@@ -43,4 +43,3 @@ class ProfileSettingViewModel {
             .store(in: &cancellable)
     }
 }
-
