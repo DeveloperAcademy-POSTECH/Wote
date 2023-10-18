@@ -33,6 +33,7 @@
 		FD9280392ADD8A0E007285BA /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9280382ADD8A0E007285BA /* LoginModel.swift */; };
 		FD92803D2ADD8AF0007285BA /* File in Resources */ = {isa = PBXBuildFile; fileRef = FD92803C2ADD8AF0007285BA /* File */; };
 		FDDB990C2ADC1BEC00B1163F /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = FDDB990B2ADC1BEC00B1163F /* .swiftlint.yml */; };
+		FDE9FC9B2ADF28CF00EBC1F8 /* ProfileSettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDE9FC9A2ADF28CF00EBC1F8 /* ProfileSettingModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,6 +66,7 @@
 		FD92803C2ADD8AF0007285BA /* File */ = {isa = PBXFileReference; lastKnownFileType = text; path = File; sourceTree = "<group>"; };
 		FDDB99042ADBF37100B1163F /* TwoHoSun.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TwoHoSun.entitlements; sourceTree = "<group>"; };
 		FDDB990B2ADC1BEC00B1163F /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+		FDE9FC9A2ADF28CF00EBC1F8 /* ProfileSettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +168,7 @@
 			children = (
 				FD9280382ADD8A0E007285BA /* LoginModel.swift */,
 				FD4E75B32ADE9616000C2277 /* NicknameModel.swift */,
+				FDE9FC9A2ADF28CF00EBC1F8 /* ProfileSettingModel.swift */,
 				C7E459CC2ADE8A1300ECD008 /* GeneralResponse.swift */,
 				AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */,
 				AB4522572ADDDBE000B69F24 /* SchoolModel.swift */,
@@ -335,6 +338,7 @@
 				AB4522532ADDD99500B69F24 /* SchoolSearchView.swift in Sources */,
 				C7E459D32AE01FDE00ECD008 /* MainViewModel.swift in Sources */,
 				C7E30E2B2ADC40E4001AE89B /* LoginViewModel.swift in Sources */,
+				FDE9FC9B2ADF28CF00EBC1F8 /* ProfileSettingModel.swift in Sources */,
 				FD9280392ADD8A0E007285BA /* LoginModel.swift in Sources */,
 				C7E459CD2ADE8A1300ECD008 /* GeneralResponse.swift in Sources */,
 				C7E459D12ADFF89000ECD008 /* MainTabView.swift in Sources */,

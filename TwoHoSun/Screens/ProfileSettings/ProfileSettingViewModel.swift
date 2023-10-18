@@ -20,7 +20,7 @@ class ProfileSettingViewModel {
         let requestURL = URLConst.baseURL + "/api/profiles/isValidNickname"
         let headers: HTTPHeaders = [
             "Content-Type": "application/json",
-            "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken"))"
+            "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
         ]
         let body: [String: String] = ["userNickname": nickname]
         
@@ -39,6 +39,41 @@ class ProfileSettingViewModel {
             } receiveValue: { data in
                 self.isDuplicated = data!.isExist
                 print("Nickname is duplicated: \(data!.isExist)")
+            }
+            .store(in: &cancellable)
+    }
+    
+    func postProfileSetting(userProfileImage: String, userNickname: String, school: SchoolModel, grade: Int) {
+        let requestURL = URLConst.baseURL + "/api/profiles"
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json",
+            "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
+        ]
+        let body: [String: Any] = [
+            "userProfileImage": userProfileImage,
+            "userNickname": userNickname,
+            "school": [
+                "schoolName": school.schoolName,
+                "schoolRegion": school.schoolRegion,
+                "schoolType": school.schoolType
+            ],
+            "grade": grade
+        ]
+        
+        AF.request(requestURL, method: .post, parameters: body, encoding: JSONEncoding.default, headers: headers)
+            .publishDecodable(type: GeneralResponse<NoData>.self)
+            .value()
+            .map(\.message)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    print("Error: \(error)")
+                }
+            } receiveValue: { message in
+                print("The result of posting profile: \(message)")
             }
             .store(in: &cancellable)
     }
