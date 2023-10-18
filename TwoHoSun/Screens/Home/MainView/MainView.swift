@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+enum MainPathType {
+    case toAll
+    case ourSchool
+}
 struct MainView: View {
     enum FilterType : CaseIterable {
         case all, popular, currentvote, finishvote
@@ -25,12 +29,25 @@ struct MainView: View {
     }
 
     @State private var filterState: FilterType = .all
+    let viewModel = MainViewModel()
+    @State private var touchPlus: Bool = false
+    @State private var path : [MainPathType] = []
+
     var body: some View {
         NavigationStack {
-            ZStack (alignment: .bottomTrailing) {
-                ScrollView {
-                    LazyVStack {
+            ZStack(alignment: .bottomTrailing) {
+                if viewModel.isEmptyList {
+                    VStack {
                         filterBar
+                        Spacer()
+                        emptyView
+                        Spacer()
+                    }
+                } else {
+                    ScrollView {
+                        LazyVStack {
+                            filterBar
+                        }
                     }
                 }
                 floatingButton
@@ -49,7 +66,6 @@ struct MainView: View {
                     }
                 }
             }
-
         }
     }
 }
@@ -62,6 +78,7 @@ extension MainView {
             Image(systemName: "bell.fill")
         })
     }
+
     private var searchButton: some View {
         Button(action: {
             // TODO: 통합검색으로 이동하도록
@@ -69,6 +86,7 @@ extension MainView {
             Image(systemName: "magnifyingglass")
         })
     }
+
     private var filterBar: some View {
         HStack(spacing: 8) {
             ForEach(FilterType.allCases, id: \.self) { filter in
@@ -80,30 +98,76 @@ extension MainView {
         .padding(.leading, 26)
     }
 
+    @ViewBuilder
     private var floatingButton: some View {
-        Menu {
-            NavigationLink {
-                Text("전국 투표 올리기")
-            } label: {
-                Text("전국 투표 올리기")
+        ZStack(alignment: .bottomTrailing) {
+            if touchPlus {
+                VStack( alignment: .leading, spacing: 14) {
+                    Button {
+                        path.append(.toAll)
+                    } label: {
+                        Text("전국 투표 올리기")
+                            .font(.system(size: 14))
+                            .padding(.leading,14)
+                    }
+                    .buttonStyle(.plain)
+                    Rectangle()
+                        .fill(Color.gray)
+                        .opacity(0.5)
+                        .frame(height: 1)
+                    Button {
+                        path.append(.ourSchool )
+                    } label: {
+                        Text("우리 학교 올리기")
+                            .font(.system(size: 14))
+                            .padding(.leading,14)
+                    }
+                    .buttonStyle(.plain)
+                }
+                .animation(.easeInOut(duration: 1), value: touchPlus)
+                .listStyle(PlainListStyle())
+                .frame(width: 145, height: 88)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.gray, lineWidth: 1.0)
+                )
+                .padding(.trailing, 16)
+                .offset(y: -76)
             }
-            NavigationLink {
-                Text("our 학교")
-            } label: {
-                Text("우리학교 투표 올리기")
-            }
-
-        } label: {
+            Button {
+                touchPlus.toggle()
+            }  label: {
                 Image(systemName: "plus")
                     .font(.system(size: 20))
                     .padding(16)
-                    .background(Color.white)
-                    .foregroundColor(.gray)
+                    .background(touchPlus ? Color.gray : Color.white)
+                    .foregroundColor(touchPlus ? Color.white : Color.gray)
                     .clipShape(Circle())
                     .shadow(radius: 7, x: 2, y: 2)
+                    .rotationEffect(Angle.degrees(touchPlus ? 45 : 0))
+                    .animation(.linear(duration: 0.3), value: touchPlus)
+            }
+            .frame(width: 30,height: 30)
+            .padding(.trailing, 26)
+            .padding(.bottom, 26)
         }
-        .padding(.trailing, 26)
-        .padding(.bottom, 12)
+    }
+
+    private var emptyView: some View {
+        VStack {
+            Image(systemName: "photo")
+            Text("아직 소비고민이 없어요")
+            Button {
+                touchPlus.toggle()
+            } label: {
+                Text("투표하러 가기")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(Color.white)
+                    .frame(width: 148, height: 52)
+                    .background(Color.gray)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+            }
+        }
     }
 
     func filterButton(_ title: String) -> some View {

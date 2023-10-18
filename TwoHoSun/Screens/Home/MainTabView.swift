@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct MainTabView : View {
-    //    @Binding var navigationPath: [Route]
     @State private var selection = 0
     var body: some View {
             TabView(selection: $selection) {
