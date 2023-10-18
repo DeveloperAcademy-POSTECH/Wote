@@ -37,12 +37,7 @@ struct MainView: View {
         NavigationStack {
             ZStack(alignment: .bottomTrailing) {
                 if viewModel.isEmptyList {
-                    VStack {
-                        filterBar
-                        Spacer()
-                        emptyView
-                        Spacer()
-                    }
+                    emptyView
                 } else {
                     ScrollView {
                         LazyVStack {
@@ -136,7 +131,7 @@ extension MainView {
             }
             Button {
                 touchPlus.toggle()
-            }  label: {
+            } label: {
                 Image(systemName: "plus")
                     .font(.system(size: 20))
                     .padding(16)
@@ -155,6 +150,8 @@ extension MainView {
 
     private var emptyView: some View {
         VStack {
+            filterBar
+            Spacer()
             Image(systemName: "photo")
             Text("아직 소비고민이 없어요")
             Button {
@@ -167,6 +164,7 @@ extension MainView {
                     .background(Color.gray)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
             }
+            Spacer()
         }
     }
 
