@@ -37,8 +37,8 @@ class ProfileSettingViewModel {
                     print("Error: \(error)")
                 }
             } receiveValue: { data in
-                self.isDuplicated = data.isExist
-                print("Nickname is duplicated: \(data.isExist)")
+                self.isDuplicated = data!.isExist
+                print("Nickname is duplicated: \(data!.isExist)")
             }
             .store(in: &cancellable)
     }

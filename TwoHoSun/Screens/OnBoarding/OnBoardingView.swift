@@ -44,7 +44,7 @@ struct OnBoardingView : View {
             .navigationDestination(for: Route.self) { route in
                 switch route {
                 case .mainView:
-                    HomeView(navigationPath: $viewModel.navigationPath)
+                    MainView(navigationPath: $viewModel.navigationPath)
                 case .profileView:
                     ProfileSettingsView(navigationPath: $viewModel.navigationPath)
                 }
