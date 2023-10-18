@@ -90,7 +90,6 @@ struct ProfileSettingsView: View {
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var selectedImageData: Data?
     @State private var isSchoolSearchSheetPresented = false
-    @State private var backgroundColor = Color.gray
     @Binding var navigationPath: [Route]
     @Bindable var viewModel: ProfileSettingViewModel
 
