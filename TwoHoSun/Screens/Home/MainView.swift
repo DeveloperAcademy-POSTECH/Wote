@@ -23,17 +23,20 @@ struct MainView: View {
             }
         }
     }
-   
+
     @State private var filterState: FilterType = .all
     var body: some View {
         NavigationStack {
-            ScrollView {
-                LazyVStack {
-                    filterBar
-                    HStack {
-                        Text("ii")
+            ZStack (alignment: .bottomTrailing) {
+                ScrollView {
+                    LazyVStack {
+                        filterBar
+                        HStack {
+                            Text("ii")
+                        }
                     }
                 }
+                floatingButton
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -56,12 +59,16 @@ struct MainView: View {
 
 extension MainView {
     private var noticeButton: some View {
-        Button(action: {}, label: {
+        Button(action: {
+            // TODO: 알림페이지로 넘어가도록
+        }, label: {
             Image(systemName: "bell.fill")
         })
     }
     private var searchButton: some View {
-        Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+        Button(action: {
+            // TODO: 통합검색으로 이동하도록
+        }, label: {
             Image(systemName: "magnifyingglass")
         })
     }
@@ -74,6 +81,22 @@ extension MainView {
         }
         .padding(.top, 30)
         .padding(.leading, 26)
+    }
+
+    private var floatingButton: some View {
+        Button {
+
+        } label: {
+            Image(systemName: "plus")
+                .font(.system(size: 20))
+                .padding(16)
+                .background(Color.white)
+                .foregroundColor(.gray)
+                .clipShape(Circle())
+                .shadow(radius: 7, x: 2, y: 2)
+        }
+        .padding(.trailing, 26)
+        .padding(.bottom, 12)
     }
 
     func filterButton(_ title: String) -> some View {
