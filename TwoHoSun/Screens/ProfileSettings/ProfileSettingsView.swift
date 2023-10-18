@@ -38,6 +38,15 @@ enum NicknameValidationType {
             return .red
         }
     }
+
+    var textfieldBorderColor: Color {
+        switch self {
+        case .none, .valid:
+            return .black
+        default:
+            return .red
+        }
+    }
 }
 
 enum ProfileInputType {
@@ -120,6 +129,8 @@ struct ProfileSettingsView: View {
 
 extension ProfileSettingsView {
 
+    // MARK: - UI Components
+
     private var titleLabel: some View {
         HStack {
             Text("Vote 프로필")
@@ -188,14 +199,14 @@ extension ProfileSettingsView {
                 }
                 .overlay {
                     RoundedRectangle(cornerRadius: 10)
-                        .strokeBorder(.black, lineWidth: 1)
+                        .strokeBorder(viewModel.nicknameValidationType.textfieldBorderColor, lineWidth: 1)
                 }
                 .onChange(of: viewModel.nickname) { _, newValue in
                     viewModel.checkNicknameValidation(newValue)
                 }
                 checkDuplicatedIdButton
             }
-            nicknameValidationAlertMessage(for: viewModel.nicknameInvalidType)
+            nicknameValidationAlertMessage(for: viewModel.nicknameValidationType)
                 .padding(.top, 10)
         }
     }
@@ -203,6 +214,7 @@ extension ProfileSettingsView {
     private var checkDuplicatedIdButton: some View {
         Button {
             viewModel.postNickname()
+            if viewModel.nicknameValidationType == .valid { dismissKeyboard() }
         } label: {
             Text("중복확인")
                 .font(.system(size: 14))
@@ -218,9 +230,10 @@ extension ProfileSettingsView {
         VStack(alignment: .leading, spacing: 8) {
             Text("학교")
                 .font(.system(size: 16))
-            roundedIconTextField(text: viewModel.selectedSchoolInfo?.school.schoolName,
-                                 for: .school)
-            validationAlertMessage(for: .school, isValid: viewModel.isSchoolValid)
+            roundedIconTextField(for: .school, 
+                                 text: viewModel.selectedSchoolInfo?.school.schoolName,
+                                 isFilled: viewModel.isSchoolFilled)
+            validationAlertMessage(for: .school, isValid: viewModel.isSchoolFilled)
         }
         .onTapGesture {
             isSchoolSearchSheetPresented = true
@@ -232,7 +245,7 @@ extension ProfileSettingsView {
             Text("학년")
                 .font(.system(size: 16))
             gradeMenu
-            validationAlertMessage(for: .grade, isValid: viewModel.isGradeValid)
+            validationAlertMessage(for: .grade, isValid: viewModel.isGradeFilled)
         }
     }
 
@@ -246,26 +259,31 @@ extension ProfileSettingsView {
                 }
             }
         } label: {
-            roundedIconTextField(text: viewModel.selectedGrade,
-                                 for: .grade)
+            roundedIconTextField(for: .grade, 
+                                 text: viewModel.selectedGrade,
+                                 isFilled: viewModel.isGradeFilled)
         }
         .accentColor(.black)
     }
 
     private var nextButton: some View {
         Button {
-            viewModel.checkAllInputValid()
+            guard viewModel.isAllInputValid else {
+                viewModel.setInvalidCondition()
+                return
+            }
+            viewModel.setProfile()
         } label: {
             Text("완료")
                 .font(.system(size: 20))
                 .foregroundStyle(.white)
                 .frame(width: 361, height: 52)
-                .background(backgroundColor)
+                .background(viewModel.isAllInputValid ? .blue : .gray)
                 .cornerRadius(10)
         }
     }
 
-    private func roundedIconTextField(text: String?, for input: ProfileInputType) -> some View {
+    private func roundedIconTextField(for input: ProfileInputType, text: String?, isFilled: Bool) -> some View {
         VStack(spacing: 10) {
             HStack(spacing: 0) {
                 Text(text ?? input.placeholder)
@@ -281,7 +299,7 @@ extension ProfileSettingsView {
             .frame(maxWidth: .infinity)
             .overlay {
                 RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(.black, lineWidth: 1)
+                    .strokeBorder(!isFilled && !viewModel.isFormValid ? .red : .black, lineWidth: 1)
             }
         }
     }
@@ -293,7 +311,7 @@ extension ProfileSettingsView {
             Spacer()
         }
         .font(.system(size: 12))
-        .foregroundStyle(viewModel.nicknameInvalidType.alertMessageColor)
+        .foregroundStyle(viewModel.nicknameValidationType.alertMessageColor)
     }
 
     private func validationAlertMessage(for input: ProfileInputType, isValid: Bool) -> some View {
@@ -304,5 +322,11 @@ extension ProfileSettingsView {
         }
         .font(.system(size: 12))
         .foregroundStyle(!viewModel.isFormValid && !isValid ? .red : .clear)
+    }
+
+    // MARK: - Custom Methods
+    
+    private func dismissKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }

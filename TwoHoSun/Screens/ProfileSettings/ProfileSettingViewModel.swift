@@ -14,24 +14,29 @@ import Alamofire
 @Observable
 final class ProfileSettingViewModel {
     var nickname = ""
-    var nicknameInvalidType = NicknameValidationType.none
     var selectedSchoolInfo: SchoolInfoModel?
-    var selectedGrade: String?
+    var selectedGrade: String?    
+    var nicknameValidationType = NicknameValidationType.none
     var isNicknameDuplicated = false
     var isFormValid = true
     let grades = ["1학년", "2학년", "3학년"]
     private let forbiddenWord = ["금지어1", "금지어2"]
     private var cancellable: Set<AnyCancellable> = []
 
-    var isSchoolValid: Bool {
+    var isSchoolFilled: Bool {
         return selectedSchoolInfo != nil
     }
 
-    var isGradeValid: Bool {
+    var isGradeFilled: Bool {
         return selectedGrade != nil
     }
 
-    func isNicknameLengthValid(_ text: String) -> Bool {
+    var isAllInputValid: Bool {
+        return nicknameValidationType == .valid
+                && isGradeFilled && isSchoolFilled
+    }
+
+    private func isNicknameLengthValid(_ text: String) -> Bool {
         let pattern = #"^.{1,10}$"#
         if let range = text.range(of: pattern, options: .regularExpression) {
             return text.distance(from: range.lowerBound, to: range.upperBound) == text.count
@@ -39,7 +44,7 @@ final class ProfileSettingViewModel {
         return false
     }
 
-    func isNicknameIncludeForbiddenWord(_ text: String) -> Bool {
+    private func isNicknameIncludeForbiddenWord(_ text: String) -> Bool {
         for word in forbiddenWord where text.contains(word) {
             return true
         }
@@ -50,31 +55,31 @@ final class ProfileSettingViewModel {
         isNicknameDuplicated = false
 
         if !isNicknameLengthValid(text) {
-            nicknameInvalidType = .length
+            nicknameValidationType = .length
         } else if isNicknameIncludeForbiddenWord(text) {
-            nicknameInvalidType = .forbiddenWord
+            nicknameValidationType = .forbiddenWord
         } else {
-            nicknameInvalidType = .none
+            nicknameValidationType = .none
         }
     }
 
     func isDuplicateButtonEnabled() -> Bool {
-        guard isNicknameLengthValid(nickname), !isNicknameIncludeForbiddenWord(nickname) else {
-            return false
-        }
-        return true
+        return isNicknameLengthValid(nickname) && !isNicknameIncludeForbiddenWord(nickname)
     }
 
-    func checkAllInputValid() {
-        guard isGradeValid,
-              isSchoolValid,
-              nicknameInvalidType == .valid else {
-            if nickname.isEmpty { nicknameInvalidType = .empty }
-            isFormValid = false
-            return
-        }
+    func setInvalidCondition() {
+        if nickname.isEmpty { nicknameValidationType = .empty }
+        isFormValid = false
+    }
 
-        print("profile setting api ")
+    func setProfile() {
+        guard let school = selectedSchoolInfo?.school,
+              let grade = selectedGrade?.first else { return }
+
+        postProfileSetting(ProfileSetting(userProfileImage: "",
+                           userNickname: nickname,
+                           school: school,
+                            grade: Int(String(grade))!))
     }
 
     func postNickname() {
@@ -100,28 +105,28 @@ final class ProfileSettingViewModel {
             } receiveValue: { data in
                 guard let isExist = data?.isExist else { return }
                 self.isNicknameDuplicated = isExist
-                self.nicknameInvalidType = self.isNicknameDuplicated ? .duplicated : .valid
+                self.nicknameValidationType = self.isNicknameDuplicated ? .duplicated : .valid
             }
             .store(in: &cancellable)
     }
-    
-    func postProfileSetting(userProfileImage: String, userNickname: String, school: SchoolModel, grade: Int) {
+
+    private func postProfileSetting(_ model: ProfileSetting) {
         let requestURL = URLConst.baseURL + "/api/profiles"
         let headers: HTTPHeaders = [
             "Content-Type": "application/json",
             "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
         ]
         let body: [String: Any] = [
-            "userProfileImage": userProfileImage,
-            "userNickname": userNickname,
+            "userProfileImage": model.userProfileImage,
+            "userNickname": model.userNickname,
             "school": [
-                "schoolName": school.schoolName,
-                "schoolRegion": school.schoolRegion,
-                "schoolType": school.schoolType
+                "schoolName": model.school.schoolName,
+                "schoolRegion": model.school.schoolRegion,
+                "schoolType": model.school.schoolType
             ],
-            "grade": grade
+            "grade": model.grade
         ]
-        
+
         AF.request(requestURL, method: .post, parameters: body, encoding: JSONEncoding.default, headers: headers)
             .publishDecodable(type: GeneralResponse<NoData>.self)
             .value()
