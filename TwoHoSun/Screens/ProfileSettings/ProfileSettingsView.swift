@@ -250,11 +250,11 @@ extension ProfileSettingsView {
 
     private var gradeMenu: some View {
         Menu {
-            ForEach(viewModel.grades, id: \.self) { grade in
+            ForEach(1..<4) { grade in
                 Button {
-                    viewModel.selectedGrade = grade
+                    viewModel.selectedGrade = "\(grade)학년"
                 } label: {
-                    Text(grade)
+                    Text("\(grade)학년")
                 }
             }
         } label: {

@@ -19,7 +19,6 @@ final class ProfileSettingViewModel {
     var nicknameValidationType = NicknameValidationType.none
     var isNicknameDuplicated = false
     var isFormValid = true
-    let grades = ["1학년", "2학년", "3학년"]
     private let forbiddenWord = ["금지어1", "금지어2"]
     private var cancellable: Set<AnyCancellable> = []
 
