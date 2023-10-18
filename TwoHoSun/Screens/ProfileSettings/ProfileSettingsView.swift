@@ -40,7 +40,7 @@ enum NicknameValidationType {
     }
 }
 
-enum InputType {
+enum ProfileInputType {
     case nickname, school, grade
 
     var iconName: String {
@@ -80,27 +80,10 @@ enum InputType {
 struct ProfileSettingsView: View {
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var selectedImageData: Data?
-    @State private var selectedGrade: String?
     @State private var isSchoolSearchSheetPresented = false
+    @State private var backgroundColor = Color.gray
     @Binding var navigationPath: [Route]
-    @State var selectedSchoolInfo: SchoolInfoModel?
-    @State private var isFormValid = true
-
     @Bindable var viewModel: ProfileSettingViewModel
-
-    private let grades = ["1학년", "2학년", "3학년"]
-
-    private var isNicknameValid: Bool {
-        return selectedSchoolInfo != nil
-    }
-
-    private var isSchoolValid: Bool {
-        return selectedSchoolInfo != nil
-    }
-
-    private var isGradeValid: Bool {
-        return selectedGrade != nil
-    }
 
     var body: some View {
         ZStack {
@@ -127,9 +110,10 @@ struct ProfileSettingsView: View {
             .ignoresSafeArea(.keyboard)
             .fullScreenCover(isPresented: $isSchoolSearchSheetPresented) {
                 NavigationView {
-                    SchoolSearchView(selectedSchoolInfo: $selectedSchoolInfo)
+                    SchoolSearchView(selectedSchoolInfo: $viewModel.selectedSchoolInfo)
                 }
             }
+            .navigationBarBackButtonHidden()
         }
     }
 }
@@ -197,7 +181,7 @@ extension ProfileSettingsView {
                 HStack {
                     TextField("",
                               text: $viewModel.nickname,
-                              prompt: Text("한/영 10자 이내(특수문자 불가)")
+                              prompt: Text(ProfileInputType.nickname.placeholder)
                         .font(.system(size: 12)))
                     .frame(height: 44)
                     .padding(EdgeInsets(top: 0, leading: 17, bottom: 0, trailing: 0))
@@ -224,19 +208,19 @@ extension ProfileSettingsView {
                 .font(.system(size: 14))
                 .foregroundStyle(.white)
                 .frame(width: 100, height: 44)
-                .background(viewModel.checkDuplicateButtonEnable() ? .black : .gray)
+                .background(viewModel.isDuplicateButtonEnabled() ? .black : .gray)
                 .cornerRadius(10)
         }
-        .disabled(viewModel.checkDuplicateButtonEnable() ? false : true)
+        .disabled(viewModel.isDuplicateButtonEnabled() ? false : true)
     }
 
     private var schoolInputView: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("학교")
                 .font(.system(size: 16))
-            roundedIconTextField(text: selectedSchoolInfo?.school.schoolName,
+            roundedIconTextField(text: viewModel.selectedSchoolInfo?.school.schoolName,
                                  for: .school)
-            validationAlertMessage(for: .school, isValid: isSchoolValid)
+            validationAlertMessage(for: .school, isValid: viewModel.isSchoolValid)
         }
         .onTapGesture {
             isSchoolSearchSheetPresented = true
@@ -248,21 +232,21 @@ extension ProfileSettingsView {
             Text("학년")
                 .font(.system(size: 16))
             gradeMenu
-            validationAlertMessage(for: .grade, isValid: isGradeValid)
+            validationAlertMessage(for: .grade, isValid: viewModel.isGradeValid)
         }
     }
 
     private var gradeMenu: some View {
         Menu {
-            ForEach(grades, id: \.self) { grade in
+            ForEach(viewModel.grades, id: \.self) { grade in
                 Button {
-                    selectedGrade = grade
+                    viewModel.selectedGrade = grade
                 } label: {
                     Text(grade)
                 }
             }
         } label: {
-            roundedIconTextField(text: selectedGrade,
+            roundedIconTextField(text: viewModel.selectedGrade,
                                  for: .grade)
         }
         .accentColor(.black)
@@ -270,27 +254,18 @@ extension ProfileSettingsView {
 
     private var nextButton: some View {
         Button {
-            guard isGradeValid,
-                    isSchoolValid,
-                    viewModel.nicknameInvalidType == .valid else {
-                isFormValid = false
-                return
-            }
-
-            // TODO: - 프로필 설정 api 연결 / selectedSchoolInfoModel에서 school 정보 post하기
-            print("profile setting api")
-
+            viewModel.checkAllInputValid()
         } label: {
             Text("완료")
                 .font(.system(size: 20))
                 .foregroundStyle(.white)
                 .frame(width: 361, height: 52)
-                .background(Color.gray)
+                .background(backgroundColor)
                 .cornerRadius(10)
         }
     }
 
-    private func roundedIconTextField(text: String?, for input: InputType) -> some View {
+    private func roundedIconTextField(text: String?, for input: ProfileInputType) -> some View {
         VStack(spacing: 10) {
             HStack(spacing: 0) {
                 Text(text ?? input.placeholder)
@@ -321,21 +296,13 @@ extension ProfileSettingsView {
         .foregroundStyle(viewModel.nicknameInvalidType.alertMessageColor)
     }
 
-    private func validationAlertMessage(for input: InputType, isValid: Bool) -> some View {
+    private func validationAlertMessage(for input: ProfileInputType, isValid: Bool) -> some View {
         HStack(spacing: 8) {
             Image(systemName: "light.beacon.max")
             Text(input.alertMessage)
             Spacer()
         }
         .font(.system(size: 12))
-        .foregroundStyle(!isFormValid && !isValid ? .red : .clear)
+        .foregroundStyle(!viewModel.isFormValid && !isValid ? .red : .clear)
     }
 }
-
-//#Preview {
-//    ProfileSettingsView(selectedSchoolInfo:
-//                            SchoolInfoModel(school: SchoolModel(schoolName: "예문여고",
-//                                                                schoolRegion: "부산",
-//                                                                schoolType: SchoolType.highSchool.schoolType),
-//                                            schoolAddress: "부산시 수영구"))
-//}
