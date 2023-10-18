@@ -89,7 +89,11 @@ final class ProfileSettingViewModel {
         ]
         let body: [String: String] = ["userNickname": nickname]
 
-        AF.request(requestURL, method: .post, parameters: body, encoding: JSONEncoding.default, headers: headers)
+        AF.request(requestURL, 
+                   method: .post,
+                   parameters: body,
+                   encoding: JSONEncoding.default,
+                   headers: headers)
             .publishDecodable(type: GeneralResponse<NicknameValidation>.self)
             .value()
             .map(\.data)
@@ -126,7 +130,11 @@ final class ProfileSettingViewModel {
             "grade": model.grade
         ]
 
-        AF.request(requestURL, method: .post, parameters: body, encoding: JSONEncoding.default, headers: headers)
+        AF.request(requestURL, 
+                   method: .post,
+                   parameters: body,
+                   encoding: JSONEncoding.default,
+                   headers: headers)
             .publishDecodable(type: GeneralResponse<NoData>.self)
             .value()
             .map(\.message)
