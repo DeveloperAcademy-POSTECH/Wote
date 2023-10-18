@@ -8,14 +8,30 @@
 import SwiftUI
 
 struct MainView: View {
-    @Binding var navigationPath: [Route]
-    var body: some View {
-        VStack {
-            HStack {
-                Text("HI")
+    enum FilterType : CaseIterable {
+        case all, popular, currentvote, finishvote
+        var title: String {
+            switch self {
+            case .all:
+                return "전체"
+            case .popular:
+                return "인기"
+            case .currentvote:
+                return "투표진행중"
+            case .finishvote:
+                return "종료된투표"
             }
-            HStack {
-                Text("ii")
+        }
+    }
+    @Binding var navigationPath: [Route]
+    @State private var filterState: FilterType = .all
+    var body: some View {
+        ScrollView {
+            LazyVStack {
+                filterBar
+                HStack {
+                    Text("ii")
+                }
             }
         }
         .navigationBarTitleDisplayMode(.inline)
@@ -26,7 +42,7 @@ struct MainView: View {
                     .frame(width: 120,height: 36)
             }
             ToolbarItem(placement: .topBarTrailing) {
-                HStack(spacing: 16) {
+                HStack {
                     noticeButton
                     searchButton
                 }
@@ -47,11 +63,37 @@ extension MainView {
             Image(systemName: "magnifyingglass")
         })
     }
+    private var filterBar: some View {
+        HStack(spacing: 8) {
+            ForEach(FilterType.allCases, id: \.self) { filter in
+                filterButton(filter.title)
+            }
+            Spacer()
+        }
+        .padding(.leading, 26)
+    }
+
+    func filterButton(_ title: String) -> some View {
+        let isSelected = filterState.title == title
+        return Button {
+            filterState = FilterType.allCases.first { $0.title == title } ?? .all
+        } label: {
+            Text(title)
+                .font(.system(size: 14))
+                .padding(.horizontal, 10)
+                .padding(.vertical, 5)
+                .foregroundColor(isSelected ? Color.white : Color.primary)
+                .background(
+                    RoundedRectangle(cornerRadius: 24)
+                        .fill( isSelected ? Color.gray : Color.clear)
+                        .stroke(Color.gray, lineWidth: 1.0)
+
+                )
+        }
+    }
 }
 #Preview {
     NavigationView {
         MainView(navigationPath: .constant([.mainView]))
     }
 }
-
-
