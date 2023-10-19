@@ -9,6 +9,7 @@ import Foundation
 
 class KeychainManager {
     static let shared = KeychainManager()
+    private init() {}
     
     func saveToken(key: String, token: String) {
         let query: NSDictionary = [
