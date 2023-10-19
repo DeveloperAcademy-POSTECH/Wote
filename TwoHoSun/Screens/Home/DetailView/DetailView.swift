@@ -7,19 +7,28 @@
 
 import SwiftUI
 // TODO: 후에 모델작업은 수정 예정 여기서 사용하기 위해 임의로 제작
-struct Comment {
+struct Comment : Hashable {
     let nickname: String
     let writetime: Int
     let profileImage: String
     let commentData: String
 }
 struct DetailView : View {
-    var userData : [Comment] = [Comment(nickname: "우왁굳", writetime: 1, profileImage: "profile", commentData: "이야 이걸 안사? ")]
+    var userData : [Comment] = [
+        Comment(nickname: "우왁굳", writetime: 1, profileImage: "profile", commentData: "이야 이걸 안사? "),
+        Comment(nickname: "주용킴", writetime: 2, profileImage: "profile", commentData: "지금 세일이야?"),
+        Comment(nickname: "고맙다링", writetime: 3, profileImage: "profile", commentData: "돈좀")
+
+    ]
     @State private var commentText: String = ""
     @State private var writerName: String = "김아무개"
     @State private var alertOn: Bool = false
     var body: some View {
         headerView
+        Image("splash")
+        seperatorView
+            .padding(.top, 380)
+        commentView
     }
 
 }
@@ -79,19 +88,28 @@ struct AlertCustomToggle: ToggleStyle {
 }
 
 extension DetailView {
-//    var commentView : some View {
-//        ScrollView {
-//            LazyVStack(alignment: .leading, spacing: 24) {
-//                ForEach(userData) { comment in
-//                    CommentCell(comment: comment)
-//                }
-//            }
-//        }
-//        .padding(.top)
-//
-////        CustomInputView(inputText: $commentText, action: uploadComment)
-//
-//    }
+    var seperatorView: some View {
+        Rectangle()
+            .fill(.gray)
+            .frame(width: UIScreen.main.bounds.width, height: 10)
+    }
+    var commentView : some View {
+        ScrollView {
+            LazyVStack(alignment: .leading, spacing: 24) {
+                Text("댓글 20개")
+                    .font(.system(size: 14))
+                    .foregroundStyle(.gray)
+                    .padding(.bottom, 16)
+                    .padding(.top, 20)
+                ForEach(userData, id: \.self) { comment in
+                    CommentCell(comment: comment)
+                }
+            }
+        }
+        .padding(.horizontal, 26)
+//        CustomInputView(inputText: $commentText, action: uploadComment)
+
+    }
 
 //    var customInputView: some View {
 //        TextField("소비고민을 함께 나누어 보세요.", text: $commentText)
