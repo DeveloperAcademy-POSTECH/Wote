@@ -115,41 +115,40 @@ extension DetailView {
     }
 
     var commentInputView: some View {
-        ZStack {
-            Color.pink
-            TextField("소비고민을 함께 나누어 보세요.", text: $commentText, axis: .vertical)
-                .focused($isFocus)
+        withAnimation(.easeInOut) {
+            TextField("소비고민을 함께 나누어 보세요", text: $commentText, axis: .vertical)
+                .lineLimit(5)
                 .textFieldStyle(CommentTextFieldStyle(isSendMessage: $isSendMessage))
-                .frame(height:40)
-                .padding(EdgeInsets(top: 17, leading: 26, bottom: 25, trailing: 22))
+                .padding(.vertical, 10)
+                .padding(.horizontal, 12)
+                .frame(width: 342)
+                .frame(minHeight: 40)
+                .background(.gray)
+                .cornerRadius(5)
         }
-        .frame(width: UIScreen.main.bounds.width, height: 82)
+        .padding(EdgeInsets(top: 17, leading: 26, bottom: 25, trailing: 22))
+        .frame(maxWidth: .infinity)
         .frame(minHeight: 82)
+        .background(.ultraThinMaterial)
+        .animation(.easeInOut(duration: 0.2), value: commentText)
     }
-
     struct CommentTextFieldStyle: TextFieldStyle {
         @Binding var isSendMessage: Bool
         func _body(configuration: TextField<Self._Label>) -> some View {
-            ZStack {
-                RoundedRectangle(cornerRadius: 5)
-                    .fill(.gray)
-                //                    .frame(minHeight: 40)
-                HStack {
-                    configuration
-                        .font(.system(size: 16))
-                    Spacer()
-                    Button(action: { isSendMessage.toggle()}, label: {
-                        Image(systemName: "paperplane")
-                            .foregroundStyle(.black)
-                            .font(.system(size: 20))
-                    })
-                }
-                .padding(EdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 12) )
+            HStack {
+                configuration
+                    .font(.system(size: 16))
+                Spacer()
+                Button(action: { isSendMessage.toggle()}, label: {
+                    Image(systemName: "paperplane")
+                        .foregroundStyle(.black)
+                        .font(.system(size: 20))
+                })
             }
         }
     }
-
 }
+
 #Preview {
     DetailView()
 }
