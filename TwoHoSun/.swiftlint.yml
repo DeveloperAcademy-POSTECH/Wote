@@ -43,6 +43,8 @@ type_name:
     error: 40
   excluded: iPhone # 제외할 문자열 값 사용
 identifier_name:
+  allowed_symbols:
+    - _
   min_length: # min_length에서
     error: 3 # 에러만 적용
   excluded: # 제외할 문자열 목록 사용
