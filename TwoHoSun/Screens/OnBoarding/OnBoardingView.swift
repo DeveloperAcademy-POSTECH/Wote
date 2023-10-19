@@ -19,7 +19,7 @@ struct OnBoardingView : View {
     @State private var currentpage = 0
     @State private var goProfileView = false
     @ObservedObject var viewModel = LoginViewModel()
-
+    
     var body: some View {
         NavigationStack(path: $viewModel.navigationPath) {
             VStack {

@@ -96,7 +96,6 @@ final class ProfileSettingViewModel {
                    headers: headers)
             .publishDecodable(type: GeneralResponse<NicknameValidation>.self)
             .value()
-            .map(\.data)
             .receive(on: DispatchQueue.main)
             .sink { completion in
                 switch completion {
@@ -105,10 +104,15 @@ final class ProfileSettingViewModel {
                 case .failure(let error):
                     print("Error: \(error)")
                 }
-            } receiveValue: { data in
-                guard let isExist = data?.isExist else { return }
-                self.isNicknameDuplicated = isExist
-                self.nicknameValidationType = self.isNicknameDuplicated ? .duplicated : .valid
+            } receiveValue: { response in
+                if response.status == 401 {
+                    APIManager.shared.refreshAllTokens()
+                    self.postNickname()
+                } else {
+                    guard let data = response.data else { return }
+                    self.isNicknameDuplicated = data.isExist
+                    self.nicknameValidationType = self.isNicknameDuplicated ? .duplicated : .valid
+                }
             }
             .store(in: &cancellable)
     }
