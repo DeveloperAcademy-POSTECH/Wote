@@ -93,7 +93,6 @@ extension MainView {
         .padding(.leading, 26)
     }
 
-    @ViewBuilder
     private var floatingButton: some View {
         ZStack(alignment: .bottomTrailing) {
             if touchPlus {
