@@ -42,7 +42,7 @@ class LoginViewModel: ObservableObject {
                 if data.message == "UNREGISTERED_USER" {
                     self.showSheet = true
                 } else {
-                    self.navigationPath.append(.mainView)
+                    self.navigationPath.append(.mainTabView)
                 }
             })
             .store(in: &cancellables)

@@ -11,7 +11,7 @@ import AuthenticationServices
 import Combine
 
 enum Route {
-    case mainView
+    case mainTabView
     case profileView
 }
 
@@ -43,8 +43,8 @@ struct OnBoardingView : View {
             }
             .navigationDestination(for: Route.self) { route in
                 switch route {
-                case .mainView:
-                    HomeView(navigationPath: $viewModel.navigationPath)
+                case .mainTabView:
+                    MainTabView()
                 case .profileView:
                     ProfileSettingsView(navigationPath: $viewModel.navigationPath, viewModel: ProfileSettingViewModel())
                 }
