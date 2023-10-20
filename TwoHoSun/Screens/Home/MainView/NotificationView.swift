@@ -58,6 +58,7 @@ extension NotificationView {
         }
         .listStyle(.plain)
         .listSectionSpacing(0)
+        .scrollIndicators(.hidden)
     }
 
     private func listHeader(_ headerName: String) -> some View {
@@ -78,7 +79,7 @@ extension NotificationView {
                 .frame(width: 46, height: 46)
                 .foregroundStyle(.gray)
             VStack(alignment: .leading, spacing: 6) {
-                Text("OO님이 회원님의 게시글에 답글을 남겼어요.")
+                Text("밍니님이 회원님의 게시글에 답글을\n남겼어요.")
                     .font(.system(size: 16, weight: .medium))
                 Text("2분 전")
                     .font(.system(size: 14))
@@ -96,7 +97,7 @@ extension NotificationView {
                 .foregroundStyle(.gray)
                 .padding(.trailing, 14)
             VStack(alignment: .leading) {
-                Text("OO님이 회원님의 게시글에 답글을\n남겼어요.")
+                Text("바부님이 회원님의 게시글에 답글을\n남겼어요.")
                     .font(.system(size: 16, weight: .medium))
                 Spacer()
                 Text("2분 전")
