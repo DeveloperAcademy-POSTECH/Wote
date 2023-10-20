@@ -13,9 +13,7 @@ struct LinkView: View {
     var externalURL: String
 
     var body: some View {
-        ZStack {
-            LinkWebView(externalURL: externalURL)
-        }
+        LinkWebView(externalURL: externalURL)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 dismissButton
