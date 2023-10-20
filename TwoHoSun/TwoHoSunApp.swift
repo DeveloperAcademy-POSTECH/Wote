@@ -17,9 +17,10 @@ struct TwoHoSunApp: App {
 //            if appState.hasValidToken {
 //                MainTabView()
 //            } else {
-              DetailView()
+//              DetailView()
 //            }
 //
+            VoteCellView()
         }
     }
 }
