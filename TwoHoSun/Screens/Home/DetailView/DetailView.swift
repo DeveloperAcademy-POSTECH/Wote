@@ -35,7 +35,7 @@ struct DetailView : View {
     var body: some View {
         VStack {
             if !isFocus {
-                headerView
+                detailHeaderView
                 Image("splash")
             }
             seperatorView
@@ -49,7 +49,7 @@ struct DetailView : View {
     }
 }
 extension DetailView {
-    private var headerView: some View {
+    private var detailHeaderView: some View {
         HStack {
             Image(systemName: "person")
                 .frame(width: 30, height: 30)
