@@ -12,32 +12,42 @@ struct Comment : Hashable {
     let writetime: Int
     let profileImage: String
     let commentData: String
+    var isReply: Bool
+    let hasResponse: Bool
 }
 struct DetailView : View {
     var userData : [Comment] = [
-        Comment(nickname: "우왁굳", writetime: 1, profileImage: "profile", commentData: "이야 이걸 안사? "),
-        Comment(nickname: "주용킴", writetime: 2, profileImage: "profile", commentData: "지금 세일이야?"),
-        Comment(nickname: "고맙다링", writetime: 3, profileImage: "profile", commentData: "돈좀")
-
+        Comment(nickname: "우왁굳", writetime: 1, profileImage: "profile", commentData: "이야 이걸 안사? ", isReply: false, hasResponse: true),
+        Comment(nickname: "주용킴", writetime: 2, profileImage: "profile", commentData: "지금 세일이야?", isReply: true, hasResponse: false),
+        Comment(nickname: "고맙다링", writetime: 3, profileImage: "profile", commentData: "돈좀", isReply: false, hasResponse: true),
+        Comment(nickname: "헤이기가", writetime: 2, profileImage: "profile", commentData: "이안사? ", isReply: false, hasResponse: true),
+        Comment(nickname: "스크롤이안돼", writetime: 2, profileImage: "profile", commentData: "지금 세일이야?", isReply: true, hasResponse: false),
+        Comment(nickname: "전생에원빈", writetime: 3, profileImage: "profile", commentData: "돈좀", isReply: false, hasResponse: true)
     ]
     @State private var commentText: String = ""
     @State private var writerName: String = "김아무개"
     @State private var alertOn: Bool = false
     @FocusState var isFocus: Bool
     @State private var isSendMessage: Bool = false
+    @State var doComment: Bool = false
+    @State private var scrollSpot: Int = 0
+
     var body: some View {
         VStack {
-            headerView
-            Image("splash")
+            if !isFocus {
+                headerView
+                Image("splash")
+            }
             seperatorView
-                .padding(.top, 380)
             commentView
             commentInputView
-        }.ignoresSafeArea(.all, edges: .bottom)
+                .ignoresSafeArea(.all, edges: .bottom)
+        }
+        .onTapGesture {
+            self.endTextEditing()
+        }
     }
-
 }
-
 extension DetailView {
     private var headerView: some View {
         HStack {
@@ -95,19 +105,28 @@ struct AlertCustomToggle: ToggleStyle {
 extension DetailView {
     var seperatorView: some View {
         Rectangle()
-            .fill(.gray)
+            .fill(.ultraThickMaterial)
             .frame(width: UIScreen.main.bounds.width, height: 10)
     }
     var commentView : some View {
-        ScrollView {
-            LazyVStack(alignment: .leading, spacing: 24) {
-                Text("댓글 20개")
-                    .font(.system(size: 14))
-                    .foregroundStyle(.gray)
-                    .padding(.bottom, 16)
-                    .padding(.top, 20)
-                ForEach(userData, id: \.self) { comment in
-                    CommentCell(comment: comment)
+        ScrollViewReader { proxy in
+            ScrollView {
+                LazyVStack(alignment: .leading, spacing: 24) {
+                    Text("댓글 20개")
+                        .font(.system(size: 14))
+                        .foregroundStyle(.gray)
+                        .padding(.bottom, 16)
+                        .padding(.top, 20)
+                    ForEach(userData, id: \.self) { comment in
+                        CommentCell(doComment: $doComment, comment: comment) {
+                            scrollSpot = comment.hashValue
+                            isFocus = true
+                        }
+                        .id(comment.hashValue)
+                    }
+                    .onChange(of: scrollSpot) { _ in
+                        proxy.scrollTo(scrollSpot, anchor: .top)
+                    }
                 }
             }
         }
@@ -118,19 +137,20 @@ extension DetailView {
         withAnimation(.easeInOut) {
             TextField("소비고민을 함께 나누어 보세요", text: $commentText, axis: .vertical)
                 .lineLimit(5)
+                .focused($isFocus)
                 .textFieldStyle(CommentTextFieldStyle(isSendMessage: $isSendMessage))
                 .padding(.vertical, 10)
                 .padding(.horizontal, 12)
                 .frame(width: 342)
                 .frame(minHeight: 40)
-                .background(.gray)
+                .background(.white)
                 .cornerRadius(5)
         }
         .padding(EdgeInsets(top: 17, leading: 26, bottom: 25, trailing: 22))
         .frame(maxWidth: .infinity)
         .frame(minHeight: 82)
         .background(.ultraThinMaterial)
-        .animation(.easeInOut(duration: 0.2), value: commentText)
+        .animation(.easeInOut(duration: 0.3), value: commentText)
     }
     struct CommentTextFieldStyle: TextFieldStyle {
         @Binding var isSendMessage: Bool

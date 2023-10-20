@@ -16,6 +16,7 @@
 		AB4D82692ADD7F4D00F35CCB /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4D82682ADD7F4D00F35CCB /* ProfileSettingsView.swift */; };
 		C7DE44BB2AE0BBD9001639CB /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DE44BA2AE0BBD9001639CB /* DetailView.swift */; };
 		C7DE44BD2AE0DCE7001639CB /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DE44BC2AE0DCE7001639CB /* CommentCell.swift */; };
+		C7DE44C22AE26109001639CB /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DE44C12AE26109001639CB /* View+.swift */; };
 		C7E30E2B2ADC40E4001AE89B /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E30E2A2ADC40E4001AE89B /* LoginViewModel.swift */; };
 		C7E459CD2ADE8A1300ECD008 /* GeneralResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E459CC2ADE8A1300ECD008 /* GeneralResponse.swift */; };
 		C7E459D12ADFF89000ECD008 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E459D02ADFF89000ECD008 /* MainTabView.swift */; };
@@ -48,6 +49,7 @@
 		AB4D82682ADD7F4D00F35CCB /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
 		C7DE44BA2AE0BBD9001639CB /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		C7DE44BC2AE0DCE7001639CB /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
+		C7DE44C12AE26109001639CB /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
 		C7E30E2A2ADC40E4001AE89B /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		C7E459CC2ADE8A1300ECD008 /* GeneralResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralResponse.swift; sourceTree = "<group>"; };
 		C7E459D02ADFF89000ECD008 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
@@ -105,6 +107,14 @@
 			path = DetailView;
 			sourceTree = "<group>";
 		};
+		C7DE44C02AE260F8001639CB /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C7DE44C12AE26109001639CB /* View+.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		C7E459D42AE01FE300ECD008 /* MainView */ = {
 			isa = PBXGroup;
 			children = (
@@ -148,6 +158,7 @@
 				FDDB99042ADBF37100B1163F /* TwoHoSun.entitlements */,
 				FDDB990B2ADC1BEC00B1163F /* .swiftlint.yml */,
 				FD3205672ADD5C0D00B0D5F6 /* TwoHoSunApp.swift */,
+				C7DE44C02AE260F8001639CB /* Extensions */,
 				FD1DEBA82ADC210B00588CE6 /* Screens */,
 				FD1DEBA72ADC20EE00588CE6 /* Model */,
 				FD1DEBAC2ADC219D00588CE6 /* Network */,
@@ -356,6 +367,7 @@
 				C7E30E2B2ADC40E4001AE89B /* LoginViewModel.swift in Sources */,
 				FDE9FC9B2ADF28CF00EBC1F8 /* ProfileSettingModel.swift in Sources */,
 				FD9280392ADD8A0E007285BA /* LoginModel.swift in Sources */,
+				C7DE44C22AE26109001639CB /* View+.swift in Sources */,
 				C7E459CD2ADE8A1300ECD008 /* GeneralResponse.swift in Sources */,
 				C7E459D12ADFF89000ECD008 /* MainTabView.swift in Sources */,
 				FD8D9F812ADC5FAD0072F4BA /* KeychainManager.swift in Sources */,

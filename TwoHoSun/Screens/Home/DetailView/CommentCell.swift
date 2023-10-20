@@ -7,11 +7,16 @@
 
 import SwiftUI
 struct CommentCell: View {
-    
+    @Binding var doComment: Bool
     let comment: Comment
     @State var isOpenComment: Bool = false
+    var onReplyButtonTapped: () -> Void
     var body: some View {
         HStack(alignment: .top) {
+            if comment.isReply {
+                Spacer()
+                    .frame(width: 26)
+            }
             Image(systemName: "person")
                 .resizable()
                 .scaledToFit()
@@ -40,29 +45,32 @@ struct CommentCell: View {
                     Text("답글달기")
                         .font(.system(size: 12))
                         .foregroundStyle(.gray)
+                        .onTapGesture {
+                            onReplyButtonTapped()
+                        }
                 })
-                Button(action: {
-                    isOpenComment.toggle()
-                }, label: {
-                    HStack {
-                        Rectangle()
-                            .fill(.gray)
-                            .frame(width: 29, height: 1)
-                        Text("답글 \(comment.commentData.count)개 더보기")
-                            .font(.system(size: 12))
-                            .foregroundStyle(.gray)
-                    }
-                })
-                .padding(.top, 18)
+                if(comment.hasResponse && comment.isReply == false) {
+                    Button(action: {
+                        isOpenComment.toggle()
+                    }, label: {
+                        HStack {
+                            Rectangle()
+                                .fill(.gray)
+                                .frame(width: 29, height: 1)
+                            Text("답글 \(comment.commentData.count)개 더보기")
+                                .font(.system(size: 12))
+                                .foregroundStyle(.gray)
+                        }
+                    })
+                    .padding(.top, 18)
+                }
             }
+
         }
     }
 }
 
-extension CommentCell {
 
-}
-
-#Preview {
-    CommentCell(comment: Comment(nickname: "우왁굳", writetime: 1, profileImage: "profile", commentData: "이야 이걸 안사? ") )
-}
+//#Preview {
+//    CommentCell(comment: Comment(nickname: "우왁굳", writetime: 1, profileImage: "profile", commentData: "이야 이걸 안사? ", isReply: false, hasResponse: true) )
+//}
