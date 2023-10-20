@@ -205,8 +205,8 @@ extension VoteContentView {
     private var completedVoteView: some View {
         ZStack {
             HStack(spacing: 0) {
-                voteView(for: .agree, buyCountRatio)
-                voteView(for: .disagree, notBuyCountRatio)
+                voteResultView(for: .agree, buyCountRatio)
+                voteResultView(for: .disagree, notBuyCountRatio)
             }
             .frame(width: 338, height: 60)
             vsLabel
@@ -215,7 +215,7 @@ extension VoteContentView {
         }
     }
 
-    private func voteView(for voteType: VoteType, _ voteRatio: Double) -> some View {
+    private func voteResultView(for voteType: VoteType, _ voteRatio: Double) -> some View {
         ZStack {
             Rectangle()
                 .foregroundStyle(voteType.color)
