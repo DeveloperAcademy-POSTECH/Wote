@@ -15,6 +15,7 @@ struct Comment : Hashable {
     var isReply: Bool
     let hasResponse: Bool
 }
+
 struct DetailView : View {
     var userData : [Comment] = [
         Comment(nickname: "우왁굳", writetime: 1, profileImage: "profile", commentData: "이야 이걸 안사? ", isReply: false, hasResponse: true),
@@ -29,7 +30,6 @@ struct DetailView : View {
     @State private var alertOn: Bool = false
     @FocusState var isFocus: Bool
     @State private var isSendMessage: Bool = false
-    @State var doComment: Bool = false
     @State private var scrollSpot: Int = 0
 
     var body: some View {
@@ -118,7 +118,7 @@ extension DetailView {
                         .padding(.bottom, 16)
                         .padding(.top, 20)
                     ForEach(userData, id: \.self) { comment in
-                        CommentCell(doComment: $doComment, comment: comment) {
+                        CommentCell(comment: comment) {
                             scrollSpot = comment.hashValue
                             isFocus = true
                         }

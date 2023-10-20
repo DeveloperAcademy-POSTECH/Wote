@@ -7,10 +7,10 @@
 
 import SwiftUI
 struct CommentCell: View {
-    @Binding var doComment: Bool
     let comment: Comment
-    @State var isOpenComment: Bool = false
     var onReplyButtonTapped: () -> Void
+    @State var isOpenComment: Bool = false
+    
     var body: some View {
         HStack(alignment: .top) {
             if comment.isReply {
