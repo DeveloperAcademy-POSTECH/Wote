@@ -20,7 +20,6 @@ struct TwoHoSunApp: App {
 //              DetailView()
 //            }
 //
-//            VoteCellView()
         }
     }
 }

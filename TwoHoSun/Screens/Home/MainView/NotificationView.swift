@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct NotificationView: View {
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
 
     var body: some View {
-        ZStack{
+        ZStack {
             Color.white
         }
         .ignoresSafeArea()
@@ -30,7 +31,7 @@ extension NotificationView {
 
     private var backButton: some View {
         Button {
-
+            self.presentationMode.wrappedValue.dismiss()
         } label: {
             Image(systemName: "chevron.backward")
                 .font(.system(size: 20))
