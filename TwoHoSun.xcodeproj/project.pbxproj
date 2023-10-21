@@ -22,6 +22,8 @@
 		ABB71D762AE2758B00BE0671 /* VoteCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D752AE2758B00BE0671 /* VoteCellView.swift */; };
 		ABB71D7A2AE2A64300BE0671 /* LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D792AE2A64300BE0671 /* LinkView.swift */; };
 		ABB71D7C2AE2B3F100BE0671 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D7B2AE2B3F100BE0671 /* NotificationView.swift */; };
+		ABBFB6302AE3EA2F006CE8CA /* VoteContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBFB62F2AE3EA2F006CE8CA /* VoteContentViewModel.swift */; };
+		ABBFB6322AE3EABD006CE8CA /* VoteCreateRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBFB6312AE3EABD006CE8CA /* VoteCreateRequestModel.swift */; };
 		C7DE44BB2AE0BBD9001639CB /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DE44BA2AE0BBD9001639CB /* DetailView.swift */; };
 		C7DE44BD2AE0DCE7001639CB /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DE44BC2AE0DCE7001639CB /* CommentCell.swift */; };
 		C7DE44C22AE26109001639CB /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DE44C12AE26109001639CB /* View+.swift */; };
@@ -62,6 +64,8 @@
 		ABB71D752AE2758B00BE0671 /* VoteCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteCellView.swift; sourceTree = "<group>"; };
 		ABB71D792AE2A64300BE0671 /* LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkView.swift; sourceTree = "<group>"; };
 		ABB71D7B2AE2B3F100BE0671 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
+		ABBFB62F2AE3EA2F006CE8CA /* VoteContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteContentViewModel.swift; sourceTree = "<group>"; };
+		ABBFB6312AE3EABD006CE8CA /* VoteCreateRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteCreateRequestModel.swift; sourceTree = "<group>"; };
 		C7DE44BA2AE0BBD9001639CB /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		C7DE44BC2AE0DCE7001639CB /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		C7DE44C12AE26109001639CB /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
@@ -121,6 +125,7 @@
 				ABB71D732AE2758200BE0671 /* ImageDetailView.swift */,
 				ABB71D752AE2758B00BE0671 /* VoteCellView.swift */,
 				ABB71D792AE2A64300BE0671 /* LinkView.swift */,
+				ABBFB62F2AE3EA2F006CE8CA /* VoteContentViewModel.swift */,
 			);
 			path = Vote;
 			sourceTree = "<group>";
@@ -130,6 +135,7 @@
 			children = (
 				AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */,
 				ABB71D6D2AE2754300BE0671 /* PostResponseModel.swift */,
+				ABBFB6312AE3EABD006CE8CA /* VoteCreateRequestModel.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -403,6 +409,7 @@
 				FD4E75B42ADE9616000C2277 /* NicknameModel.swift in Sources */,
 				C7F1FD862ADDA37E00C5A2A1 /* BottomSheetView.swift in Sources */,
 				AB4522562ADDDBC400B69F24 /* SchoolResponseModel.swift in Sources */,
+				ABBFB6322AE3EABD006CE8CA /* VoteCreateRequestModel.swift in Sources */,
 				AB45225A2ADDDC9E00B69F24 /* SchoolSearchViewModel.swift in Sources */,
 				FD3205682ADD5C0D00B0D5F6 /* TwoHoSunApp.swift in Sources */,
 				C7F1FD842ADDA2F000C5A2A1 /* OnBoardingView.swift in Sources */,
@@ -412,6 +419,7 @@
 				AB4522532ADDD99500B69F24 /* SchoolSearchView.swift in Sources */,
 				C7E459D32AE01FDE00ECD008 /* MainViewModel.swift in Sources */,
 				ABB71D702AE2755000BE0671 /* PostModel.swift in Sources */,
+				ABBFB6302AE3EA2F006CE8CA /* VoteContentViewModel.swift in Sources */,
 				C7E30E2B2ADC40E4001AE89B /* LoginViewModel.swift in Sources */,
 				FDE9FC9B2ADF28CF00EBC1F8 /* ProfileSettingModel.swift in Sources */,
 				FD9280392ADD8A0E007285BA /* LoginModel.swift in Sources */,
