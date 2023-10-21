@@ -40,6 +40,15 @@ struct MainView: View {
                 ScrollView {
                     LazyVStack {
                         filterBar
+                        ForEach(viewModel.datalist) { data in
+                            VoteCellView(postData: data)
+                                .onAppear {
+                                    guard let index = viewModel.datalist.firstIndex(where: {$0.id == data.id}) else {return}
+                                    if index % 15 == 0 {
+                                        viewModel.getPosts()
+                                    }
+                                }
+                        }
                     }
                 }
 

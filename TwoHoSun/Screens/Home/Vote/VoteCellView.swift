@@ -8,36 +8,36 @@
 import SwiftUI
 
 struct VoteCellView: View {
-    @State private var postModel: PostModel
+    var postData: PostModel
 
-    init() {
-        postModel = PostModel(date: "",
-                              postType: .allSchool,
-                              postStatus: .active,
-                              author: AuthorModel(userNickname: "김아무개",
-                                                  userProfileImage: ""),
-                              title: "GS25 통살치킨 살까요 말까요",
-                              contents: "너무너무 배고파혀 빨리정래줘 꾸예우에웨에ㅐㅜ엑으우어우양아ㅔㅇㅇ엥",
-                              image: "https://picsum.photos/200/300",
-                              externalURL: "https://www.youtube.com/watch?v=A_S2RECiiTg",
-                              likeCount: 3,
-                              viewCount: 77,
-                              commentCount: 20,
-                              voteCount: VoteCountModel(agreeCount: 73, disagreeCount: 74))
-    }
+//    init() {
+//        postModel = PostModel(date: postModel.date,
+//                              postType: .allSchool,
+//                              postStatus: .active,
+//                              author: AuthorModel(userNickname: "김아무개",
+//                                                  userProfileImage: ""),
+//                              title: "GS25 통살치킨 살까요 말까요",
+//                              contents: "너무너무 배고파혀 빨리정래줘 꾸예우에웨에ㅐㅜ엑으우어우양아ㅔㅇㅇ엥",
+//                              image: "https://picsum.photos/200/300",
+//                              externalURL: "https://www.youtube.com/watch?v=A_S2RECiiTg",
+//                              likeCount: 3,
+//                              viewCount: 77,
+//                              commentCount: 20,
+//                              voteCount: VoteCountModel(agreeCount: 73, disagreeCount: 74))
+//    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             voteHeaderView
-            VoteContentView(title: postModel.title,
-                            contents: postModel.contents,
-                            imageURL: postModel.image,
-                            externalURL: postModel.externalURL,
-                            likeCount: postModel.likeCount,
-                            viewCount: postModel.viewCount,
-                            commentCount: postModel.commentCount,
-                            agreeCount: postModel.voteCount.agreeCount,
-                            disagreeCount: postModel.voteCount.disagreeCount)
+            VoteContentView(title: postData.title,
+                            contents: postData.contents,
+                            imageURL: postData.image,
+                            externalURL: postData.externalURL,
+                            likeCount: postData.likeCount,
+                            viewCount: postData.viewCount,
+                            commentCount: postData.commentCount,
+                            agreeCount: postData.voteCount.agreeCount,
+                            disagreeCount: postData.voteCount.disagreeCount)
         }
     }
 }
@@ -64,7 +64,7 @@ extension VoteCellView {
             Circle()
                 .frame(width: 30, height: 30)
                 .foregroundStyle(Color.gray)
-            Text(postModel.author.userNickname)
+            Text(postData.author.userNickname)
                 .font(.system(size: 16, weight: .medium))
         }
     }
@@ -85,6 +85,6 @@ extension VoteCellView {
             .foregroundStyle(.gray)
     }
 }
-#Preview {
-    VoteCellView()
-}
+//#Preview {
+//    VoteCellView()
+//}
