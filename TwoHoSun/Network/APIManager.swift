@@ -26,7 +26,7 @@ class APIManager {
         case postProfileSetting(profile: ProfileSetting)
         case refreshToken
         case getPosts(Int, Int)
-        case postVoteCreate(postId: Int, param: VoteType)
+        case postVoteCreate(postId: Int, param: String)
 
         var headers: HTTPHeaders {
             switch self {
@@ -129,7 +129,7 @@ class APIManager {
             case .getPosts:
                 return URLEncoding.queryString
             case .postVoteCreate:
-                return JSONEncoding.default
+                return URLEncoding.default
             }
         }
         
@@ -146,7 +146,7 @@ class APIManager {
             case .getPosts:
                 return "/api/posts"
             case .postVoteCreate(let postId, _):
-                return "/api/post/\(postId)/votes"
+                return "/api/posts/\(postId)/votes"
             }
         }
     }

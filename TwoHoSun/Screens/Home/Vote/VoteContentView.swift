@@ -217,7 +217,7 @@ extension VoteContentView {
             HStack(spacing: 0) {
                 Button {
                     print("buy button tap")
-                    viewModel.postVoteCreate(.agree)
+                    viewModel.postVoteCreate(VoteType.agree.rawValue)
                 } label: {
                     Text("산다")
                         .font(.system(size: 20, weight: .medium))
@@ -227,7 +227,7 @@ extension VoteContentView {
                 }
                 Button {
                     print("not buy button tap")
-                    viewModel.postVoteCreate(.disagree)
+                    viewModel.postVoteCreate(VoteType.disagree.rawValue)
                 } label: {
                     Text("안산다")
                         .font(.system(size: 20, weight: .medium))

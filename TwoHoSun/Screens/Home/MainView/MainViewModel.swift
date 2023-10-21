@@ -20,9 +20,10 @@ final class MainViewModel {
         return datalist.isEmpty
     }
 
-    init() {
-        getPosts(30, first: true)
-    }
+//    init() {
+//        print("init이 됨 왜?")
+//        getPosts(30, first: true)
+//    }
 
     func getPosts(_ size: Int = 10, first: Bool = false) {
         APIManager.shared.requestAPI(type: .getPosts(nextIndex, size)) {  (response: GeneralResponse<[PostResponse]>) in

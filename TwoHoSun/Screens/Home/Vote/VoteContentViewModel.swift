@@ -16,7 +16,9 @@ final class VoteContentViewModel {
         self.postId = postId
     }
 
-    func postVoteCreate(_ voteType: VoteType) {
+    func postVoteCreate(_ voteType: String) {
+        print(postId)
+        print(voteType)
         APIManager.shared.requestAPI(type: .postVoteCreate(postId: postId, param: voteType)) { (response: GeneralResponse<NoData>) in
             if response.status == 401 {
                 APIManager.shared.refreshAllTokens()

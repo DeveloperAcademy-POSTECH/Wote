@@ -29,7 +29,7 @@ struct MainView: View {
     }
 
     @State private var filterState: FilterType = .all
-    @State var viewModel = MainViewModel()
+    let viewModel = MainViewModel()
     @State private var touchPlus: Bool = false
     @State private var path : [MainPathType] = []
 
@@ -67,8 +67,11 @@ struct MainView: View {
                     }
                 }
             }
+        }.onAppear {
+            viewModel.getPosts(30,first: true)
         }
     }
+
 }
 
 extension MainView {
