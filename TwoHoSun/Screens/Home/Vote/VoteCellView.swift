@@ -13,15 +13,7 @@ struct VoteCellView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             voteHeaderView
-            VoteContentView(title: postData.title,
-                            contents: postData.contents,
-                            imageURL: postData.image,
-                            externalURL: postData.externalURL,
-                            likeCount: postData.likeCount,
-                            viewCount: postData.viewCount,
-                            commentCount: postData.commentCount,
-                            agreeCount: postData.voteCount.agreeCount,
-                            disagreeCount: postData.voteCount.disagreeCount)
+            VoteContentView(postData: postData)
         }
     }
 }

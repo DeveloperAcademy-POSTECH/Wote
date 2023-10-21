@@ -9,8 +9,12 @@ import Foundation
 
 @Observable
 final class VoteContentViewModel {
-    var postId = 3 // TODO: - 모델과 연결
+    var postId: Int // TODO: - 모델과 연결
     var isVoteCompleted = false
+
+    init(postId: Int) {
+        self.postId = postId
+    }
 
     func postVoteCreate(_ voteType: VoteType) {
         APIManager.shared.requestAPI(type: .postVoteCreate(postId: postId, param: voteType)) { (response: GeneralResponse<NoData>) in
