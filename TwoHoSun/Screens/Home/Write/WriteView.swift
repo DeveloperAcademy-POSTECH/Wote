@@ -19,6 +19,10 @@ struct WriteView: View {
                     .padding(.top, 32)
                 addImageView
                     .padding(.top, 30)
+                voteDeadlineView
+                    .padding(.top, 32)
+                contentView
+                    .padding(.top, 32)
             }
             .padding(.horizontal, 26)
         }
@@ -155,6 +159,30 @@ extension WriteView {
                 .font(.system(size: 12, weight: .medium))
         )
     }
+
+    private var voteDeadlineView: some View {
+        VStack(alignment: .leading, spacing: 15) {
+            Text("투표 종료일을 선택해 주세요.")
+                .font(.system(size: 16, weight: .semibold))
+            Rectangle()
+                .frame(height: 3)
+        }
+    }
+
+    private var contentView: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            headerLabel("내용을 작성해 주세요. ", "(선택)")
+        }
+    }
+
+    private func headerLabel(_ title: String, _ description: String) -> some View {
+        Text(title)
+            .font(.system(size: 16, weight: .semibold)) +
+        Text(description)
+            .font(.system(size: 12, weight: .medium))
+            .foregroundStyle(.gray)
+    }
+
     private func roundedTextField(_ prompt: Text) -> some View {
         HStack(spacing: 0) {
             prompt
