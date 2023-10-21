@@ -16,8 +16,12 @@ struct VoteContentView: View {
     private let viewModel: VoteContentViewModel
     
     var buyCountRatio: Double {
-        let ratio = Double(postData.voteCount.agreeCount) / Double(postData.viewCount) * 100
-        return Double(Int(ratio * 10)) / 10.0
+        if postData.voteCount.agreeCount == 0 || postData.viewCount == 0 {
+               return 0.0
+        } else {
+            let ratio = Double(postData.voteCount.agreeCount) / Double(postData.viewCount) * 100
+            return Double(Int(ratio * 10)) / 10.0
+        }
     }
 
     var notBuyCountRatio: Double {
