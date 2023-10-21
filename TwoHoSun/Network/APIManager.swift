@@ -27,7 +27,7 @@ class APIManager {
         case refreshToken
         case postVoteCreate(postId: Int, param: VoteType)
 
-        var contentType: String {
+        var headers: HTTPHeaders {
             switch self {
             case .postAuthorCode:
                 return [
@@ -44,6 +44,10 @@ class APIManager {
                     "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
                 ]
             case .refreshToken:
+                return [
+                    "Content-Type": "application/json"
+                ]
+            case .postVoteCreate:
                 return [
                     "Content-Type": "application/json"
                 ]
@@ -108,6 +112,8 @@ class APIManager {
             case .postProfileSetting:
                 return JSONEncoding.default
             case .refreshToken:
+                return JSONEncoding.default
+            case .postVoteCreate:
                 return JSONEncoding.default
             }
         }
