@@ -177,11 +177,27 @@ extension WriteView {
     private var imageView: some View {
         if let selectedImageData,
            let uiImage = UIImage(data: selectedImageData) {
-            Image(uiImage: uiImage)
-                .resizable()
-                .frame(width: 165, height: 165)
-                .clipShape(Rectangle())
-                .padding(.bottom, 10)
+            ZStack(alignment: .topTrailing) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .frame(width: 165, height: 165)
+                    .clipShape(Rectangle())
+                    .padding(.bottom, 10)
+                removeImageButton
+                    .padding(.top, 8)
+                    .padding(.trailing, 8)
+            }
+        }
+    }
+
+    private var removeImageButton: some View {
+        Button {
+            selectedPhoto = nil
+            selectedImageData = nil
+        } label: {
+            Image(systemName: "xmark.circle.fill")
+                .font(.system(size: 20))
+                .foregroundStyle(.black)
         }
     }
 
@@ -327,21 +343,6 @@ extension WriteView {
         Text(description)
             .font(.system(size: 12, weight: .medium))
             .foregroundStyle(.gray)
-    }
-
-    private func roundedTextField(_ prompt: Text, cornerRadius: CGFloat) -> some View {
-        HStack(spacing: 0) {
-            prompt
-                .foregroundStyle(.gray)
-                .frame(height: 46)
-                .padding(.leading, 16)
-            Spacer()
-        }
-        .frame(maxWidth: .infinity)
-        .overlay {
-            RoundedRectangle(cornerRadius: cornerRadius)
-                .strokeBorder(.gray, lineWidth: 1)
-        }
     }
 }
 
