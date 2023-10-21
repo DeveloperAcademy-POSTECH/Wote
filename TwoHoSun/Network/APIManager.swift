@@ -26,16 +26,26 @@ class APIManager {
         case postProfileSetting(profile: ProfileSetting)
         case refreshToken
         
-        var contentType: String {
+        var headers: HTTPHeaders {
             switch self {
             case .postAuthorCode:
-                return "application/x-www-form-urlencoded; charset=UTF-8"
+                return [
+                    "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+                ]
             case .postNickname:
-                return "application/json"
+                return [
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
+                ]
             case .postProfileSetting:
-                return "application/json"
+                return [
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
+                ]
             case .refreshToken:
-                return "application/json"
+                return [
+                    "Content-Type": "application/json"
+                ]
             }
         }
         
@@ -97,9 +107,7 @@ class APIManager {
     }
 
     func requestAPI<T: Decodable>(type: APIRequest, completion: @escaping (GeneralResponse<T>) -> Void) {
-        let headers: HTTPHeaders = [
-            "Content-Type": type.contentType
-        ]
+        let headers: HTTPHeaders = type.headers
         let parameters = type.parameters
         let url = URLConst.baseURL + type.path
         
