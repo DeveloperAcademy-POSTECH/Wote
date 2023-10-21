@@ -20,6 +20,7 @@ struct TwoHoSunApp: App {
               OnBoardingView()
 //            }
 //
+            VoteCellView()
         }
     }
 }
