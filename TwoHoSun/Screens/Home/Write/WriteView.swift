@@ -7,6 +7,12 @@
 
 import SwiftUI
 
+enum TitleCategoryType: String, CaseIterable {
+    case buyOrNotBuy = "살까 말까?"
+    case doOrNotDo = "할까 말까?"
+    case eatOrNotEat = "먹을까 말까?"
+}
+
 struct WriteView: View {
     @Environment(\.dismiss) var dismiss
     @State private var content = ""
@@ -15,6 +21,7 @@ struct WriteView: View {
     @State private var contentTextCount = 0
     @State private var voteDeadlineValue = 0.0
     @State private var isRegisterButtonDidTap = false
+    @State private var selectedTitleCategory = TitleCategoryType.buyOrNotBuy
     @Bindable var viewModel: WriteViewModel
 
     var body: some View {
@@ -74,7 +81,7 @@ extension WriteView {
                     RoundedRectangle(cornerRadius: 10)
                         .strokeBorder(.gray, lineWidth: 1)
                 }
-                titleCategory
+                categoryMenu
             }
             .padding(.bottom, 4)
             if !viewModel.isTitleValid && isRegisterButtonDidTap {
@@ -89,26 +96,37 @@ extension WriteView {
         }
     }
 
-    private var titleCategory: some View {
-        HStack(spacing: 9) {
-            Text("살까 말까")
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundStyle(.gray)
-                .frame(height: 44)
-                .padding(.leading, 16)
-            Button {
-
-            } label: {
-                Image(systemName: "chevron.down")
-                    .font(.system(size: 16))
+    private var categoryMenu: some View {
+        Menu {
+            ForEach(TitleCategoryType.allCases, id: \.self) { titleCategory in
+                Button {
+                    selectedTitleCategory = titleCategory
+                } label: {
+                    Text(titleCategory.rawValue)
+                }
+            }
+        } label: {
+            HStack(spacing: 9) {
+                Text(selectedTitleCategory.rawValue)
+                    .font(.system(size: 14, weight: .semibold))
                     .foregroundStyle(.gray)
-                    .padding(.trailing, 12 )
+                    .frame(height: 44)
+                    .padding(.leading, 16)
+                Button {
+
+                } label: {
+                    Image(systemName: "chevron.down")
+                        .font(.system(size: 16))
+                        .foregroundStyle(.gray)
+                        .padding(.trailing, 12 )
+                }
+            }
+            .overlay {
+                RoundedRectangle(cornerRadius: 10)
+                    .strokeBorder(.gray, lineWidth: 1)
             }
         }
-        .overlay {
-            RoundedRectangle(cornerRadius: 10)
-                .strokeBorder(.gray, lineWidth: 1)
-        }
+
     }
 
     private var tagView: some View {
