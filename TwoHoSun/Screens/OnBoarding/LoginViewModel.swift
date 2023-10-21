@@ -19,7 +19,7 @@ class LoginViewModel: ObservableObject {
     }
     
     func postAuthorCode() {
-        APIManager.shared.requestAPI(type: .postAuthorCode(authorization)) { (response: GeneralResponse<Tokens>) in
+        APIManager.shared.requestAPI(type: .postAuthorCode(authorization: authorization)) { (response: GeneralResponse<Tokens>) in
             if response.status == 401 {
                 APIManager.shared.refreshAllTokens()
                 self.postAuthorCode()

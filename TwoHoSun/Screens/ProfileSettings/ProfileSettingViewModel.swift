@@ -83,7 +83,7 @@ final class ProfileSettingViewModel {
     }
 
     func postNickname() {
-        APIManager.shared.requestAPI(type: .postNickname(nickname)) { (response: GeneralResponse<NicknameValidation>) in
+        APIManager.shared.requestAPI(type: .postNickname(nickname: nickname)) { (response: GeneralResponse<NicknameValidation>) in
             if response.status == 401 {
                 APIManager.shared.refreshAllTokens()
                 self.postNickname()
@@ -97,7 +97,7 @@ final class ProfileSettingViewModel {
     
     func postProfileSetting() {
         guard let model = model else { return }
-        APIManager.shared.requestAPI(type: .postProfileSetting(model)) { (response: GeneralResponse<NoData>) in
+        APIManager.shared.requestAPI(type: .postProfileSetting(profile: model)) { (response: GeneralResponse<NoData>) in
             if response.status == 401 {
                 APIManager.shared.refreshAllTokens()
                 self.postProfileSetting()
