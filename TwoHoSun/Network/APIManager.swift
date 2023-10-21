@@ -130,7 +130,7 @@ class APIManager {
             case .getPosts:
                 return URLEncoding.queryString
             case .postVoteCreate:
-                return URLEncoding.default
+                return JSONEncoding.default
             }
         }
         
