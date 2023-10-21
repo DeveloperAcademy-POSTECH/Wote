@@ -10,12 +10,14 @@ import SwiftUI
 struct SearchView: View {
     @Environment(\.dismiss) private var dismiss: DismissAction
     @State private var searchText: String = ""
-    private var searchWords: [String] = ["label"]
+    @State private var searchWords: [String] = ["label", "label", "label", "label", "label"]
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Divider()
-            if !searchWords.isEmpty {
+            if isFocus {
+                Text("focus")
+            } else if !searchWords.isEmpty {
                 recentSearch
             }
             Spacer()
@@ -27,9 +29,7 @@ struct SearchView: View {
                 backButton
             }
             ToolbarItem(placement: .principal) {
-                TextField("원하는 소비항목을 검색해보세요.", text: $searchText)
-                    .font(.system(size: 14))
-                    .frame(height: 30)
+                searchField
             }
         }
         .navigationBarBackButtonHidden()
@@ -47,15 +47,30 @@ extension SearchView {
         }
     }
     
+    private var searchField: some View {
+        TextField("원하는 소비항목을 검색해보세요.", text: $searchText)
+            .font(.system(size: 14))
+            .frame(height: 30)
+            .onSubmit {
+                if searchWords.count > 4 {
+                    searchWords.removeLast()
+                    searchWords.insert(searchText, at: 0)
+                } else {
+                    searchWords.insert(searchText, at: 0)
+                }
+                searchText = ""
+            }
+    }
+    
     private var recentSearch: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("최근 검색어")
                 .foregroundStyle(.gray)
                 .font(.system(size: 14))
             HStack(spacing: 8) {
-                ForEach(searchWords, id: \.self) { word in
+                ForEach(Array(zip(searchWords.indices, searchWords)), id: \.0) { index, word in
                     Button {
-                        
+                        searchWords.remove(at: index)
                     } label: {
                         HStack(spacing: 5) {
                             Text(word)
@@ -64,8 +79,9 @@ extension SearchView {
                                 .font(.system(size: 12))
                         }
                         .foregroundStyle(.gray)
+                        .fixedSize()
+                        .frame(height: 28)
                         .padding(.horizontal, 10)
-                        .padding(.vertical, 7)
                         .background(
                             Capsule()
                                 .stroke(Color.gray, lineWidth: 1)
