@@ -36,15 +36,13 @@ struct MainView: View {
     var body: some View {
         NavigationStack {
             ZStack(alignment: .bottomTrailing) {
-                if viewModel.isEmptyList {
-                    emptyView
-                } else {
-                    ScrollView {
-                        LazyVStack {
-                            filterBar
-                        }
+                emptyView
+                ScrollView {
+                    LazyVStack {
+                        filterBar
                     }
                 }
+
                 floatingButton
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -147,26 +145,28 @@ extension MainView {
         }
     }
 
+    @ViewBuilder
     private var emptyView: some View {
-        VStack {
-            filterBar
-            Spacer()
-            Image(systemName: "photo")
-            Text("아직 소비고민이 없어요")
-            Button {
-                touchPlus.toggle()
-            } label: {
-                Text("투표하러 가기")
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundStyle(Color.white)
-                    .frame(width: 148, height: 52)
-                    .background(Color.gray)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
+        if viewModel.isEmptyList {
+            VStack {
+                filterBar
+                Spacer()
+                Image(systemName: "photo")
+                Text("아직 소비고민이 없어요")
+                Button {
+                    touchPlus.toggle()
+                } label: {
+                    Text("투표하러 가기")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(Color.white)
+                        .frame(width: 148, height: 52)
+                        .background(Color.gray)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
+                Spacer()
             }
-            Spacer()
         }
     }
-
     func filterButton(_ title: String) -> some View {
         let isSelected = filterState.title == title
         return Button {
