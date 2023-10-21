@@ -24,6 +24,7 @@ class APIManager {
         case postAuthorCode(String)
         case postNickname(String)
         case postProfileSetting(ProfileSetting)
+        case refreshToken
         
         var contentType: String {
             switch self {
@@ -32,6 +33,8 @@ class APIManager {
             case .postNickname:
                 return "application/json"
             case .postProfileSetting:
+                return "application/json"
+            case .refreshToken:
                 return "application/json"
             }
         }
@@ -44,6 +47,8 @@ class APIManager {
                 return .post
             case .postProfileSetting:
                 return .post
+            case .refreshToken:
+                return .post
             }
         }
         
@@ -55,7 +60,9 @@ class APIManager {
                     "code": auth
                 ]
             case .postNickname(let nickname):
-                return ["userNickname": nickname]
+                return [
+                    "userNickname": nickname
+                ]
             case .postProfileSetting(let model):
                 return [
                     "userProfileImage": model.userProfileImage,
@@ -66,6 +73,11 @@ class APIManager {
                         "schoolType": model.school.schoolType
                     ],
                     "grade": model.grade
+                ]
+            case .refreshToken:
+                return [
+                    "refreshToken": KeychainManager.shared.readToken(key: "refreshToken")!,
+                    "identifier": KeychainManager.shared.readToken(key: "identifier")!
                 ]
             }
         }
@@ -78,6 +90,8 @@ class APIManager {
                 return "/api/profiles/isValidNickname"
             case .postProfileSetting:
                 return "/api/profiles"
+            case .refreshToken:
+                return "/api/auth/refresh"
             }
         }
     }
@@ -111,32 +125,10 @@ class APIManager {
     }
     
     func refreshAllTokens() {
-        let requestURL = URLConst.baseURL + "/api/auth/refresh"
-        let headers: HTTPHeaders = [
-            "Content-Type": "application/json"
-        ]
-        let body: [String: String] = [
-            "refreshToken": KeychainManager.shared.readToken(key: "refreshToken")!,
-            "identifier": KeychainManager.shared.readToken(key: "identifier")!
-        ]
-        
-        AF.request(requestURL, method: .post, parameters: body, encoding: JSONEncoding.default, headers: headers)
-            .publishDecodable(type: GeneralResponse<Tokens>.self)
-            .value()
-            .map(\.data)
-            .receive(on: DispatchQueue.main)
-            .sink { completion in
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let error):
-                    print("Error: \(error)")
-                }
-            } receiveValue: { data in
-                guard let tokens = data else { return }
-                KeychainManager.shared.updateToken(key: "accessToken", token: tokens.accessToken)
-                KeychainManager.shared.updateToken(key: "refreshToken", token: tokens.refreshToken)
-            }
-            .store(in: &cancellable)
+        self.requestAPI(type: .refreshToken) { (response: GeneralResponse<Tokens>) in
+            guard let data = response.data else { return }
+            KeychainManager.shared.updateToken(key: "accessToken", token: data.accessToken)
+            KeychainManager.shared.updateToken(key: "refreshToken", token: data.refreshToken)
+        }
     }
 }
