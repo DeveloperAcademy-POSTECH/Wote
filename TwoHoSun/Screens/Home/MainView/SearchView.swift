@@ -10,13 +10,13 @@ import SwiftUI
 struct SearchView: View {
     @Environment(\.dismiss) private var dismiss: DismissAction
     @State private var searchText: String = ""
-    @State private var searchWords: [String] = ["label", "label", "label", "label", "label"]
+    @State private var searchWords: [String] = []
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 0) {
             Divider()
-            if isFocus {
-                Text("focus")
+            if !searchText.isEmpty {
+                searchRecommendation
             } else if !searchWords.isEmpty {
                 recentSearch
             }
@@ -92,6 +92,28 @@ extension SearchView {
             }
         }
         .padding(.horizontal, 14)
+        .padding(.top, 16)
+    }
+    
+    private var searchRecommendation: some View {
+        List {
+            // TODO: - 서버 나오면 onChange로 데이터 받아오는 로직 추가
+            ForEach(0..<5) { _ in
+                HStack {
+                    Text("발렌시아가")
+                    Spacer()
+                    Image(systemName: "paperplane")
+                }
+                .frame(height: 48)
+                .font(.system(size: 16))
+                .foregroundStyle(.gray)
+                .padding(.leading, 38)
+                .padding(.trailing, 14)
+                .listRowSeparator(.hidden)
+                .listRowInsets(EdgeInsets())
+            }
+        }
+        .listStyle(.plain)
     }
 }
 
