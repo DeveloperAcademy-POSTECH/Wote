@@ -21,9 +21,9 @@ class APIManager {
     }
     
     enum APIRequest {
-        case postAuthorCode(String)
-        case postNickname(String)
-        case postProfileSetting(ProfileSetting)
+        case postAuthorCode(authorization: String)
+        case postNickname(nickname: String)
+        case postProfileSetting(profile: ProfileSetting)
         case refreshToken
         
         var contentType: String {
