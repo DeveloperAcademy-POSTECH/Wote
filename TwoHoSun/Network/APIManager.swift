@@ -21,24 +21,36 @@ class APIManager {
     }
     
     enum APIRequest {
-        case postAuthorCode(String)
-        case postNickname(String)
-        case postProfileSetting(ProfileSetting)
+        case postAuthorCode(authorization: String)
+        case postNickname(nickname: String)
+        case postProfileSetting(profile: ProfileSetting)
         case refreshToken
         case getPosts(Int, Int)
-
-        var contentType: String {
+        var headers: HTTPHeaders {
             switch self {
             case .postAuthorCode:
-                return "application/x-www-form-urlencoded; charset=UTF-8"
+                return [
+                    "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+                ]
             case .postNickname:
-                return "application/json"
+                return [
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
+                ]
             case .postProfileSetting:
-                return "application/json"
+                return [
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
+                ]
             case .refreshToken:
-                return "application/json"
+                return [
+                    "Content-Type": "application/json"
+                ]
             case .getPosts:
-                return "application/json"
+                return [
+                    "Content-Type" : "application/json",
+                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
+                    ]
             }
         }
         
@@ -92,6 +104,21 @@ class APIManager {
             }
         }
         
+        var encoding: ParameterEncoding {
+            switch self {
+            case .postAuthorCode:
+                return URLEncoding.default
+            case .postNickname:
+                return JSONEncoding.default
+            case .postProfileSetting:
+                return JSONEncoding.default
+            case .refreshToken:
+                return JSONEncoding.default
+            case .getPosts:
+                return URLEncoding.queryString
+            }
+        }
+        
         var path: String {
             switch self {
             case .postAuthorCode:
@@ -109,10 +136,7 @@ class APIManager {
     }
 
     func requestAPI<T: Decodable>(type: APIRequest, completion: @escaping (GeneralResponse<T>) -> Void) {
-        let headers: HTTPHeaders = [
-            "Content-Type": type.contentType,
-            "Authorization": "eyJwcm92aWRlcklkIjoiMDAwNjA4LmFjNGRlN2M2YTU3MzRmMThiMGIzZDUzNmFmNjQ0YjI4LjE3MjAiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcm92aWRlcklkIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTY5Nzg4ODQ2MywiZXhwIjoxNjk4NDkzMjYzfQ.B-M9KOEvTm25RuZSnPWihkJ8M6N-RWosgIlDlxfZpdo"
-        ]
+        let headers: HTTPHeaders = type.headers
         let parameters = type.parameters
         let url = URLConst.baseURL + type.path
         
@@ -120,7 +144,7 @@ class APIManager {
             url,
             method: type.method,
             parameters: parameters,
-            encoding: URLEncoding.default,
+            encoding: type.encoding,
             headers: headers
         )
         .publishDecodable(type: GeneralResponse<T>.self)
