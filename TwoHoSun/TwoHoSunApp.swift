@@ -17,7 +17,7 @@ struct TwoHoSunApp: App {
 //            if appState.hasValidToken {
                 MainTabView()
 //            } else {
-//              DetailView()
+              OnBoardingView()
 //            }
 //
         }
