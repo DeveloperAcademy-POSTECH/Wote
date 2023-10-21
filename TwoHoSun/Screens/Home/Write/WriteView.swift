@@ -15,20 +15,23 @@ struct WriteView: View {
     @State private var voteDeadlineValue = 0.0
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
-                titleView
-                    .padding(.top, 24)
-                tagView
-                    .padding(.top, 32)
-                addImageView
-                    .padding(.top, 30)
-                voteDeadlineView
-                    .padding(.top, 32)
-                contentView
-                    .padding(.top, 32)
+        VStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 0) {
+                    titleView
+                        .padding(.top, 24)
+                    tagView
+                        .padding(.top, 32)
+                    addImageView
+                        .padding(.top, 30)
+                    voteDeadlineView
+                        .padding(.top, 32)
+                    contentView
+                        .padding(.top, 32)
+                }
+                .padding(.horizontal, 26)
             }
-            .padding(.horizontal, 26)
+            voteRegisterButton
         }
         .navigationTitle("소비고민 등록")
         .navigationBarTitleDisplayMode(.inline)
@@ -226,6 +229,19 @@ extension WriteView {
         Text("/ 100")
             .font(.system(size: 12, weight: .semibold))
             .foregroundStyle(.gray)
+    }
+
+    private var voteRegisterButton: some View {
+        Button {
+            print("complete button did tap!")
+        } label: {
+            Text("투표 등록하기")
+                .font(.system(size: 18, weight: .semibold))
+                .foregroundStyle(.white)
+                .frame(width: 361, height: 52)
+                .background(Color.gray)
+                .cornerRadius(10)
+        }
     }
 
     private func headerLabel(_ title: String, _ description: String) -> some View {
