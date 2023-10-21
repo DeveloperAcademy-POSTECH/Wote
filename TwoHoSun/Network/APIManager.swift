@@ -25,7 +25,8 @@ class APIManager {
         case postNickname(String)
         case postProfileSetting(ProfileSetting)
         case refreshToken
-        
+        case postVoteCreate(postId: Int, param: VoteType)
+
         var contentType: String {
             switch self {
             case .postAuthorCode:
@@ -35,6 +36,8 @@ class APIManager {
             case .postProfileSetting:
                 return "application/json"
             case .refreshToken:
+                return "application/json"
+            case .postVoteCreate:
                 return "application/json"
             }
         }
@@ -48,6 +51,8 @@ class APIManager {
             case .postProfileSetting:
                 return .post
             case .refreshToken:
+                return .post
+            case .postVoteCreate:
                 return .post
             }
         }
@@ -79,6 +84,10 @@ class APIManager {
                     "refreshToken": KeychainManager.shared.readToken(key: "refreshToken")!,
                     "identifier": KeychainManager.shared.readToken(key: "identifier")!
                 ]
+            case .postVoteCreate(_, let param):
+                return [
+                    "voteType": param
+                ]
             }
         }
         
@@ -92,6 +101,8 @@ class APIManager {
                 return "/api/profiles"
             case .refreshToken:
                 return "/api/auth/refresh"
+            case .postVoteCreate(let postId, _):
+                return "/api/post/\(postId)/votes"
             }
         }
     }

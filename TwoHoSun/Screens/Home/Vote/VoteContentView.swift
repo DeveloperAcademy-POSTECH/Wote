@@ -9,30 +9,7 @@ import SwiftUI
 
 import Kingfisher
 
-enum VoteType {
-    case agree, disagree
-
-    var title: String {
-        switch self {
-        case .agree:
-            return "산다"
-        case .disagree:
-            return "안산다"
-        }
-    }
-
-    var color: Color {
-        switch self {
-        case .agree:
-            return .orange
-        case .disagree:
-            return .pink
-        }
-    }
-}
-
 struct VoteContentView: View {
-    @State private var isVoteCompleted = false
     @State private var isImageDetailPresented = false
     @State private var isLinkWebViewPresented = false
     @State var title: String
@@ -44,6 +21,7 @@ struct VoteContentView: View {
     @State var commentCount: Int
     @State var agreeCount: Int
     @State var disagreeCount: Int
+    private let viewModel = VoteContentViewModel()
 
     var buyCountRatio: Double {
         let ratio = Double(agreeCount) / Double(viewCount) * 100
@@ -201,7 +179,7 @@ extension VoteContentView {
 
     @ViewBuilder
     private var voteView: some View {
-        if isVoteCompleted {
+        if viewModel.isVoteCompleted {
             completedVoteView
         } else {
             defaultVoteView
@@ -241,8 +219,8 @@ extension VoteContentView {
         ZStack {
             HStack(spacing: 0) {
                 Button {
-                    isVoteCompleted = true
                     print("buy button tap")
+                    viewModel.postVoteCreate(.agree)
                 } label: {
                     Text("산다")
                         .font(.system(size: 20, weight: .medium))
@@ -251,8 +229,8 @@ extension VoteContentView {
                         .background(Color.orange)
                 }
                 Button {
-                    isVoteCompleted = true
                     print("not buy button tap")
+                    viewModel.postVoteCreate(.disagree)
                 } label: {
                     Text("안산다")
                         .font(.system(size: 20, weight: .medium))
