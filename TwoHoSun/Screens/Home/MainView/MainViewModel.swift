@@ -13,7 +13,7 @@ import Alamofire
 
 @Observable
 final class MainViewModel {
-    var datalist:  [PostModel] = []
+    var datalist: [PostModel] = []
     var nextIndex = 0
     var lastPage = false
     var isEmptyList: Bool {
@@ -25,7 +25,6 @@ final class MainViewModel {
     }
 
     func getPosts(_ size: Int = 10, first: Bool = false) {
-
         APIManager.shared.requestAPI(type: .getPosts(nextIndex, size)) {  (response: GeneralResponse<[PostResponse]>) in
             switch response.status {
             case 200:
