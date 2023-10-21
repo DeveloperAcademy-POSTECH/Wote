@@ -10,9 +10,12 @@ import SwiftUI
 struct WriteView: View {
     @Environment(\.dismiss) var dismiss
     @State private var content = ""
+    @State private var title = ""
     @State private var placeholderText = "욕설,비방,광고 등 소비 고민과 관련없는 내용은 통보 없이 삭제될 수 있습니다."
     @State private var contentTextCount = 0
     @State private var voteDeadlineValue = 0.0
+    @State private var isRegisterButtonDidTap = false
+    @Bindable var viewModel: WriteViewModel
 
     var body: some View {
         VStack {
@@ -56,15 +59,32 @@ extension WriteView {
     }
 
     private var titleView: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 0) {
             headerLabel("제목을 입력해주세요. ", "(필수)")
+                .padding(.bottom, 12)
             HStack {
-                roundedTextField(
-                    Text("한/영 15자 이내(물품)")
-                    .font(.system(size: 14)),
-                                 cornerRadius: 10
-                )
+                TextField("",
+                          text: $viewModel.title,
+                          prompt:
+                            Text("한/영 15자 이내(물품)")
+                                .font(.system(size: 14)))
+                .frame(height: 44)
+                .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 0))
+                .overlay {
+                    RoundedRectangle(cornerRadius: 10)
+                        .strokeBorder(.gray, lineWidth: 1)
+                }
                 titleCategory
+            }
+            .padding(.bottom, 4)
+            if !viewModel.isTitleValid && isRegisterButtonDidTap {
+                HStack(spacing: 8) {
+                    Image(systemName: "light.beacon.max")
+                    Text("제목 입력은 필수입니다.")
+                    Spacer()
+                }
+                .font(.system(size: 12))
+                .foregroundStyle(.red)
             }
         }
     }
@@ -233,13 +253,14 @@ extension WriteView {
 
     private var voteRegisterButton: some View {
         Button {
+            isRegisterButtonDidTap = true
             print("complete button did tap!")
         } label: {
             Text("투표 등록하기")
                 .font(.system(size: 18, weight: .semibold))
                 .foregroundStyle(.white)
                 .frame(width: 361, height: 52)
-                .background(Color.gray)
+                .background(viewModel.isTitleValid ? Color.blue : Color.gray)
                 .cornerRadius(10)
         }
     }
@@ -270,6 +291,6 @@ extension WriteView {
 
 #Preview {
     NavigationStack {
-        WriteView()
+        WriteView(viewModel: WriteViewModel())
     }
 }
