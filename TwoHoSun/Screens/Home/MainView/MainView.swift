@@ -65,11 +65,13 @@ struct MainView: View {
 
 extension MainView {
     private var noticeButton: some View {
-        Button(action: {
-            // TODO: 알림페이지로 넘어가도록
-        }, label: {
+        NavigationLink {
+            NotificationView()
+        } label: {
             Image(systemName: "bell.fill")
-        })
+                .font(.system(size: 16))
+                .foregroundStyle(.gray)
+        }
     }
 
     private var searchButton: some View {

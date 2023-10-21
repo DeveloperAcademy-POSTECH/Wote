@@ -11,7 +11,9 @@ import Kingfisher
 
 struct ImageDetailView: View {
     @Environment(\.dismiss) var dismiss
-    @Binding var image: String
+    @State private var isLinkWebViewPresented = false
+    var imageURL: String
+    var externalURL: String
 
     var body: some View {
         ZStack {
@@ -35,6 +37,11 @@ struct ImageDetailView: View {
                     .foregroundStyle(.white)
             }
         }
+        .fullScreenCover(isPresented: $isLinkWebViewPresented) {
+            NavigationView {
+                LinkView(externalURL: externalURL)
+            }
+        }
     }
 }
 
@@ -51,7 +58,7 @@ extension ImageDetailView {
     }
 
     private var imageView: some View {
-        KFImage(URL(string: image)!)
+        KFImage(URL(string: imageURL)!)
             .placeholder {
                 ProgressView()
             }
@@ -65,7 +72,7 @@ extension ImageDetailView {
 
     private var detailLinkButton: some View {
         Button {
-            print("linkButton did tap")
+            isLinkWebViewPresented = true
         } label: {
             HStack(spacing: 4) {
                 Image(systemName: "link")
@@ -83,6 +90,7 @@ extension ImageDetailView {
 
 #Preview {
     NavigationView {
-        ImageDetailView(image: .constant("https://picsum.photos/200/300"))
+        ImageDetailView(imageURL: "https://picsum.photos/200/300",
+                        externalURL: "https://youtu.be/SfqR33YnEAE?si=5QLZhFhwGKZb2hZB")
     }
 }
