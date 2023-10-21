@@ -25,7 +25,8 @@ class APIManager {
         case postNickname(String)
         case postProfileSetting(ProfileSetting)
         case refreshToken
-        
+        case getPosts(Int, Int)
+
         var contentType: String {
             switch self {
             case .postAuthorCode:
@@ -35,6 +36,8 @@ class APIManager {
             case .postProfileSetting:
                 return "application/json"
             case .refreshToken:
+                return "application/json"
+            case .getPosts:
                 return "application/json"
             }
         }
@@ -49,6 +52,8 @@ class APIManager {
                 return .post
             case .refreshToken:
                 return .post
+            case .getPosts:
+                return .get
             }
         }
         
@@ -79,6 +84,11 @@ class APIManager {
                     "refreshToken": KeychainManager.shared.readToken(key: "refreshToken")!,
                     "identifier": KeychainManager.shared.readToken(key: "identifier")!
                 ]
+            case .getPosts(let page, let size):
+                return [
+                    "page" : page,
+                    "size" : size
+                ]
             }
         }
         
@@ -92,6 +102,8 @@ class APIManager {
                 return "/api/profiles"
             case .refreshToken:
                 return "/api/auth/refresh"
+            case .getPosts:
+                return "/api/posts"
             }
         }
     }

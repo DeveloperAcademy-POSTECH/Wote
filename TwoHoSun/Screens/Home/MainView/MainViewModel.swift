@@ -17,44 +17,25 @@ final class MainViewModel {
     var isEmptyList: Bool {
         return datalist.isEmpty
     }
-    private var subscriptions: Set<AnyCancellable> = []
-    
+
     init() {
-        getPosts()
+        getPosts(0, 30, first: true)
     }
 
-    func getPosts() {
-        let requestURL = URLConst.baseURL + "/api/posts"
-        let headers: HTTPHeaders = [
-            "Content-Type": "application/json",
-            "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
-        ]
-        let params: Parameters = [
-            "page" : "0",
-            "size" : "30"
-        ]
-
-        AF.request(requestURL, method: .get, parameters: params, encoding: URLEncoding.default, headers: headers)
-            .validate()
-            .publishDecodable(type: GeneralResponse<[PostResponse]>.self)
-            .value()
-            .map(\.data)
-            .sink { completion in
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let error):
-                    print("Errrorr 삐용삐용 후에 에러코드여러개면 후처리 예정.")
-//                    switch error.responseCode {
-//                        case
-//                    }
-                }
-            } receiveValue: { [weak self] data in
-                guard let self = self, let data = data else {return}
+    func getPosts(_ page: Int, _ size: Int, first: Bool = false) {
+        APIManager.shared.requestAPI(type: .getPosts(page, size)) {  (response: GeneralResponse<[PostResponse]>) in
+            switch response.status {
+            case 200:
+                guard let data = response.data else {return}
                 print(data)
-                self.datalist = data
-
+                self.datalist = first ? data : self.datalist + data
+            case 401:
+                APIManager.shared.refreshAllTokens()
+                self.getPosts(page, size)
+            default:
+                print("error서버문제 바구니에게 문의하세요")
             }
-            .store(in: &subscriptions)
+        }
+
     }
 }
