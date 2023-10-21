@@ -9,7 +9,7 @@ import Foundation
 
 @Observable
 final class VoteContentViewModel {
-    var postId = 3
+    var postId = 3 // TODO: - 모델과 연결
     var isVoteCompleted = false
 
     func postVoteCreate(_ voteType: VoteType) {
