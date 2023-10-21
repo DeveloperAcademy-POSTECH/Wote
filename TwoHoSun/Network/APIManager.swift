@@ -92,6 +92,19 @@ class APIManager {
             }
         }
         
+        var encoding: ParameterEncoding {
+            switch self {
+            case .postAuthorCode:
+                return URLEncoding.default
+            case .postNickname:
+                return JSONEncoding.default
+            case .postProfileSetting:
+                return JSONEncoding.default
+            case .refreshToken:
+                return JSONEncoding.default
+            }
+        }
+        
         var path: String {
             switch self {
             case .postAuthorCode:
@@ -115,7 +128,7 @@ class APIManager {
             url,
             method: type.method,
             parameters: parameters,
-            encoding: URLEncoding.default,
+            encoding: type.encoding,
             headers: headers
         )
         .publishDecodable(type: GeneralResponse<T>.self)
