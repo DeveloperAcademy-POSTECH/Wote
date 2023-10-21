@@ -12,7 +12,7 @@ import Alamofire
 
 class APIManager {
     static let shared = APIManager()
-    private init() { }
+    private init() {}
     
     private var cancellable: Set<AnyCancellable> = []
     
@@ -22,7 +22,7 @@ class APIManager {
     
     enum APIRequest {
         case postAuthorCode(String)
-        case postNickname
+        case postNickname(String)
         case postProfileSetting(ProfileSetting)
         
         var contentType: String {
@@ -54,11 +54,8 @@ class APIManager {
                     "state": "test",
                     "code": auth
                 ]
-            case .postNickname:
-                return [
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
-                ]
+            case .postNickname(let nickname):
+                return ["userNickname": nickname]
             case .postProfileSetting(let model):
                 return [
                     "userProfileImage": model.userProfileImage,

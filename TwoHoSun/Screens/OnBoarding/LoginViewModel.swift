@@ -12,13 +12,13 @@ import Combine
 class LoginViewModel: ObservableObject {
     @Published var showSheet = false
     @Published var navigationPath: [Route] = []
-    private var cancellables: Set<AnyCancellable> = []
+    @Published var authorization: String = ""
 
-    func postAuthorCode(_ authorization: String) {
+    func postAuthorCode() {
         APIManager.shared.requestAPI(type: .postAuthorCode(authorization)) { (response: GeneralResponse<Tokens>) in
             if response.status == 401 {
                 APIManager.shared.refreshAllTokens()
-                self.postAuthorCode(authorization)
+                self.postAuthorCode()
             } else {
                 if let data = response.data {
                     KeychainManager.shared.saveToken(key: "accessToken", token: data.accessToken)

@@ -82,39 +82,16 @@ final class ProfileSettingViewModel {
     }
 
     func postNickname() {
-        let requestURL = URLConst.baseURL + "/api/profiles/isValidNickname"
-        let headers: HTTPHeaders = [
-            "Content-Type": "application/json",
-            "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
-        ]
-        let body: [String: String] = ["userNickname": nickname]
-
-        AF.request(requestURL, 
-                   method: .post,
-                   parameters: body,
-                   encoding: JSONEncoding.default,
-                   headers: headers)
-            .publishDecodable(type: GeneralResponse<NicknameValidation>.self)
-            .value()
-            .receive(on: DispatchQueue.main)
-            .sink { completion in
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let error):
-                    print("Error: \(error)")
-                }
-            } receiveValue: { response in
-                if response.status == 401 {
-                    APIManager.shared.refreshAllTokens()
-                    self.postNickname()
-                } else {
-                    guard let data = response.data else { return }
-                    self.isNicknameDuplicated = data.isExist
-                    self.nicknameValidationType = self.isNicknameDuplicated ? .duplicated : .valid
-                }
+        APIManager.shared.requestAPI(type: .postNickname(nickname)) { (response: GeneralResponse<NicknameValidation>) in
+            if response.status == 401 {
+                APIManager.shared.refreshAllTokens()
+                self.postNickname()
+            } else {
+                guard let data = response.data else { return }
+                self.isNicknameDuplicated = data.isExist
+                self.nicknameValidationType = self.isNicknameDuplicated ? .duplicated : .valid
             }
-            .store(in: &cancellable)
+        }
     }
 
     private func postProfileSetting(_ model: ProfileSetting) {
