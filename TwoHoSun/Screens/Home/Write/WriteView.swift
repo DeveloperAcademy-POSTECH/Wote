@@ -9,6 +9,10 @@ import SwiftUI
 
 struct WriteView: View {
     @Environment(\.dismiss) var dismiss
+    @State private var content = ""
+    @State private var placeholderText = "욕설,비방,광고 등 소비 고민과 관련없는 내용은 통보 없이 삭제될 수 있습니다."
+    @State private var contentTextCount = 0
+    @State private var voteDeadlineValue = 0.0
 
     var body: some View {
         ScrollView {
@@ -50,14 +54,12 @@ extension WriteView {
 
     private var titleView: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("제목을 입력해주세요. ")
-                .font(.system(size: 16, weight: .semibold)) +
-            Text("(필수)")
-                .font(.system(size: 12, weight: .semibold))
+            headerLabel("제목을 입력해주세요. ", "(필수)")
             HStack {
                 roundedTextField(
                     Text("한/영 15자 이내(물품)")
-                        .font(.system(size: 14))
+                    .font(.system(size: 14)),
+                                 cornerRadius: 10
                 )
                 titleCategory
             }
@@ -88,11 +90,7 @@ extension WriteView {
 
     private var tagView: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("태그를 선택해 주세요. ")
-                .font(.system(size: 16, weight: .semibold)) +
-            Text("(최대 3개 태그 선택 가능)")
-                .font(.system(size: 12, weight: .medium))
-                .foregroundStyle(.gray)
+            headerLabel("태그를 선택해 주세요. ", "(최대 3개 태그 선택 가능)")
             HStack {
                 addTagButton
                 Spacer()
@@ -117,11 +115,7 @@ extension WriteView {
 
     private var addImageView: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("고민하는 상품 사진을 등록해 주세요. ")
-                .font(.system(size: 16, weight: .semibold)) +
-            Text("(최대 4개)")
-                .font(.system(size: 12, weight: .medium))
-                .foregroundStyle(.gray)
+            headerLabel("고민하는 상품 사진을 등록해 주세요. ", "(최대 4개)")
             addImageButton
                 .padding(.top, 12)
                 .padding(.bottom, 10)
@@ -156,7 +150,8 @@ extension WriteView {
             Text("링크 주소 입력하기 ")
                 .font(.system(size: 14, weight: .medium)) +
             Text("(선택)")
-                .font(.system(size: 12, weight: .medium))
+                .font(.system(size: 12, weight: .medium)), 
+            cornerRadius: 5
         )
     }
 
@@ -164,15 +159,73 @@ extension WriteView {
         VStack(alignment: .leading, spacing: 15) {
             Text("투표 종료일을 선택해 주세요.")
                 .font(.system(size: 16, weight: .semibold))
-            Rectangle()
-                .frame(height: 3)
+            voteSlider
+        }
+    }
+
+    private var voteSlider: some View {
+        VStack(spacing: 10) {
+            Slider(value: $voteDeadlineValue)
+                .onChange(of: voteDeadlineValue) { _, newValue in
+                    let stepSize: Double = 0.166
+                    let roundedValue = round(newValue / stepSize) * stepSize
+                    voteDeadlineValue = min(roundedValue, 1.0)
+                }
+                .tint(.gray)
+            HStack {
+                Text("1일")
+                Spacer()
+                Text("2일")
+                Spacer()
+                Text("3일")
+                Spacer()
+                Text("4일")
+                Spacer()
+                Text("5일")
+                Spacer()
+                Text("6일")
+                Spacer()
+                Text("7일")
+            }
+            .font(.system(size: 12, weight: .medium))
+            .foregroundStyle(.gray)
         }
     }
 
     private var contentView: some View {
         VStack(alignment: .leading, spacing: 12) {
             headerLabel("내용을 작성해 주세요. ", "(선택)")
+            textView
         }
+    }
+
+    private var textView: some View {
+        ZStack(alignment: .bottomTrailing) {
+            if content.isEmpty {
+                TextEditor(text: $placeholderText)
+                    .foregroundStyle(.gray)
+            }
+            TextEditor(text: $content)
+              .opacity(self.content.isEmpty ? 0.25 : 1)
+            contentTextCountView
+                .padding(.trailing, 15)
+                .padding(.bottom, 14)
+        }
+        .font(.system(size: 14, weight: .medium))
+        .frame(height: 109)
+        .overlay {
+            RoundedRectangle(cornerRadius: 5)
+                .strokeBorder(.gray, lineWidth: 1)
+        }
+    }
+
+    private var contentTextCountView: some View {
+        Text("\(content.count) ")
+            .font(.system(size: 12, weight: .semibold))
+            .foregroundStyle(.black) +
+        Text("/ 100")
+            .font(.system(size: 12, weight: .semibold))
+            .foregroundStyle(.gray)
     }
 
     private func headerLabel(_ title: String, _ description: String) -> some View {
@@ -183,7 +236,7 @@ extension WriteView {
             .foregroundStyle(.gray)
     }
 
-    private func roundedTextField(_ prompt: Text) -> some View {
+    private func roundedTextField(_ prompt: Text, cornerRadius: CGFloat) -> some View {
         HStack(spacing: 0) {
             prompt
                 .foregroundStyle(.gray)
@@ -193,7 +246,7 @@ extension WriteView {
         }
         .frame(maxWidth: .infinity)
         .overlay {
-            RoundedRectangle(cornerRadius: 5)
+            RoundedRectangle(cornerRadius: cornerRadius)
                 .strokeBorder(.gray, lineWidth: 1)
         }
     }
