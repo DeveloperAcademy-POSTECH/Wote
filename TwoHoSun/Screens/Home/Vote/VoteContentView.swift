@@ -33,7 +33,8 @@ enum VoteType {
 
 struct VoteContentView: View {
     @State private var isVoteCompleted = false
-    @State var isImageDetailPresented = false
+    @State private var isImageDetailPresented = false
+    @State private var isLinkWebViewPresented = false
     @State var title: String
     @State var contents: String
     @State var imageURL: String
@@ -101,7 +102,12 @@ struct VoteContentView: View {
         }
         .fullScreenCover(isPresented: $isImageDetailPresented) {
             NavigationView {
-                ImageDetailView(image: $imageURL)
+                ImageDetailView(imageURL: imageURL, externalURL: externalURL)
+            }
+        }
+        .fullScreenCover(isPresented: $isLinkWebViewPresented) {
+            NavigationView {
+                LinkView(externalURL: externalURL)
             }
         }
     }
@@ -178,7 +184,7 @@ extension VoteContentView {
 
     private var linkButton: some View {
         Button {
-            print("linkButton did tap")
+            isLinkWebViewPresented = true
         } label: {
             HStack(spacing: 2) {
                 Image(systemName: "link")
