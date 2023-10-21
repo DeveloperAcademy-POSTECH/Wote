@@ -5,6 +5,7 @@
 //  Created by 235 on 10/19/23.
 //
 
+import PhotosUI
 import SwiftUI
 
 enum TitleCategoryType: String, CaseIterable {
@@ -22,6 +23,8 @@ struct WriteView: View {
     @State private var voteDeadlineValue = 0.0
     @State private var isRegisterButtonDidTap = false
     @State private var selectedTitleCategory = TitleCategoryType.buyOrNotBuy
+    @State private var selectedPhoto: PhotosPickerItem?
+    @State private var selectedImageData: Data?
     @Bindable var viewModel: WriteViewModel
 
     var body: some View {
@@ -155,19 +158,34 @@ extension WriteView {
     }
 
     private var addImageView: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            headerLabel("고민하는 상품 사진을 등록해 주세요. ", "(최대 4개)")
-            addImageButton
-                .padding(.top, 12)
+        ZStack {
+            VStack(alignment: .leading, spacing: 0) {
+                headerLabel("고민하는 상품 사진을 등록해 주세요. ", "(최대 4개)")
+                    .padding(.bottom, 12)
+                imageView
+                addImageButton
+                    .padding(.bottom, 10)
+                addLinkButton
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var imageView: some View {
+        if let selectedImageData,
+           let uiImage = UIImage(data: selectedImageData) {
+            Image(uiImage: uiImage)
+                .resizable()
+                .frame(width: 165, height: 165)
+                .clipShape(Rectangle())
                 .padding(.bottom, 10)
-            addLinkButton
         }
     }
 
     private var addImageButton: some View {
-        Button {
-            print("add image button did tap!")
-        } label: {
+        PhotosPicker(selection: $selectedPhoto,
+                     matching: .images,
+                     photoLibrary: .shared()) {
             HStack(spacing: 7) {
                 Spacer()
                 Image(systemName: "plus")
@@ -182,6 +200,17 @@ extension WriteView {
             .overlay {
                 RoundedRectangle(cornerRadius: 5)
                     .strokeBorder(.gray, lineWidth: 1)
+            }
+            .onChange(of: selectedPhoto) { _, newValue in
+                PHPhotoLibrary.requestAuthorization { status in
+                    guard status == .authorized else { return }
+
+                    Task {
+                        if let data = try? await newValue?.loadTransferable(type: Data.self) {
+                            selectedImageData = data
+                        }
+                    }
+                }
             }
         }
     }
