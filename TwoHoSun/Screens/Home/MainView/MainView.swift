@@ -32,6 +32,7 @@ struct MainView: View {
     let viewModel = MainViewModel()
     @State private var touchPlus: Bool = false
     @State private var path : [MainPathType] = []
+    @State private var isWriteViewPresented = false
 
     var body: some View {
         NavigationStack {
@@ -59,6 +60,11 @@ struct MainView: View {
                         noticeButton
                         searchButton
                     }
+                }
+            }
+            .fullScreenCover(isPresented: $isWriteViewPresented) {
+                NavigationStack {
+                    WriteView()
                 }
             }
         }
@@ -101,6 +107,7 @@ extension MainView {
                 VStack( alignment: .leading, spacing: 14) {
                     Button {
                         path.append(.toAll)
+                        isWriteViewPresented = true
                     } label: {
                         Text("전국 투표 올리기")
                             .font(.system(size: 14))
@@ -112,7 +119,8 @@ extension MainView {
                         .opacity(0.5)
                         .frame(height: 1)
                     Button {
-                        path.append(.ourSchool )
+                        path.append(.ourSchool)
+                        isWriteViewPresented = true
                     } label: {
                         Text("우리 학교 올리기")
                             .font(.system(size: 14))

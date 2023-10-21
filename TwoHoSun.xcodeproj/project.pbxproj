@@ -140,6 +140,14 @@
 			path = DTO;
 			sourceTree = "<group>";
 		};
+		ABBFB6332AE43561006CE8CA /* Write */ = {
+			isa = PBXGroup;
+			children = (
+				C7E459D52AE03FEF00ECD008 /* WriteView.swift */,
+			);
+			path = Write;
+			sourceTree = "<group>";
+		};
 		C7DE44B92AE0BB4E001639CB /* DetailView */ = {
 			isa = PBXGroup;
 			children = (
@@ -285,8 +293,8 @@
 				ABB71D6B2AE2752C00BE0671 /* Vote */,
 				C7DE44B92AE0BB4E001639CB /* DetailView */,
 				C7E459D42AE01FE300ECD008 /* MainView */,
+				ABBFB6332AE43561006CE8CA /* Write */,
 				C7E459D02ADFF89000ECD008 /* MainTabView.swift */,
-				C7E459D52AE03FEF00ECD008 /* WriteView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
