@@ -9,7 +9,7 @@ import SwiftUI
 
 struct NotificationView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-
+    @State private var dismiss: Bool = false
     var body: some View {
         ZStack {
             Color.white
@@ -24,6 +24,8 @@ struct NotificationView: View {
             }
         }
         .toolbarBackground(.white, for: .navigationBar)
+        .toolbar(dismiss ? .visible : .hidden, for: .tabBar)
+
     }
 }
 
@@ -31,6 +33,7 @@ extension NotificationView {
 
     private var backButton: some View {
         Button {
+            dismiss.toggle()
             self.presentationMode.wrappedValue.dismiss()
         } label: {
             Image(systemName: "chevron.backward")
