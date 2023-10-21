@@ -14,23 +14,10 @@ struct VoteContentView: View {
     @State private var isLinkWebViewPresented = false
     let postData: PostModel
     private let viewModel: VoteContentViewModel
-    
-    var buyCountRatio: Double {
-        if postData.voteCount.agreeCount == 0 || postData.viewCount == 0 {
-               return 0.0
-        } else {
-            let ratio = Double(postData.voteCount.agreeCount) / Double(postData.viewCount) * 100
-            return Double(Int(ratio * 10)) / 10.0
-        }
-    }
-
-    var notBuyCountRatio: Double {
-        return 100 - buyCountRatio
-    }
 
     init(postData: PostModel) {
         self.postData = postData
-        self.viewModel =  VoteContentViewModel(postId: postData.postId)
+        self.viewModel =  VoteContentViewModel(postData: postData)
     }
 
     var body: some View {
@@ -190,13 +177,13 @@ extension VoteContentView {
     private var completedVoteView: some View {
         ZStack {
             HStack(spacing: 0) {
-                voteResultView(for: .agree, buyCountRatio)
-                voteResultView(for: .disagree, notBuyCountRatio)
+                voteResultView(for: .agree, viewModel.buyCountRatio)
+                voteResultView(for: .disagree, viewModel.notBuyCountRatio)
             }
             .frame(width: 338, height: 60)
             vsLabel
-                .offset(x: 169 - (338 * (100 - buyCountRatio) / 100))
-                .opacity(buyCountRatio > 95 || notBuyCountRatio > 95 ? 0.0 : 1.0)
+                .offset(x: 169 - (338 * (100 - viewModel.buyCountRatio) / 100))
+                .opacity(viewModel.buyCountRatio > 95 || viewModel.notBuyCountRatio > 95 ? 0.0 : 1.0)
         }
     }
 

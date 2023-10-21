@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct VoteCellView: View {
+struct MainCellView: View {
     var postData: PostModel
 
     var body: some View {
@@ -18,7 +18,7 @@ struct VoteCellView: View {
     }
 }
 
-extension VoteCellView {
+extension MainCellView {
 
     private var voteHeaderView: some View {
         VStack(spacing: 0) {

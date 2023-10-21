@@ -41,7 +41,7 @@ struct MainView: View {
                     LazyVStack {
                         filterBar
                         ForEach(viewModel.datalist) { data in
-                            VoteCellView(postData: data)
+                             MainCellView(postData: data)
                                 .onAppear {
                                     guard let index = viewModel.datalist.firstIndex(where: {$0.id == data.id}) else {return}
                                     if index % 10 == 0 && !viewModel.lastPage {
