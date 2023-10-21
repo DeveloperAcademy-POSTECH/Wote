@@ -25,13 +25,13 @@ final class MainViewModel {
     }
 
     func getPosts(_ size: Int = 10, first: Bool = false) {
+
         APIManager.shared.requestAPI(type: .getPosts(nextIndex, size)) {  (response: GeneralResponse<[PostResponse]>) in
             switch response.status {
             case 200:
                 guard let data = response.data else {return}
                 let postModels = data.map { PostModel(from: $0)}
                 self.datalist = first ? postModels : self.datalist + postModels
-                print(self.datalist)
                 self.lastPage = data.count < 10 ? true : false
                 self.nextIndex += 1
             case 401:
@@ -41,35 +41,5 @@ final class MainViewModel {
                 print("error서버문제 바구니에게 문의하세요")
             }
         }
-
-//        AF.request(url, method: .get, parameters: param, headers: headers)
-//            .responseDecodable(of: GeneralResponse<[PostResponse]>.self) { response in
-//                switch response.result {
-//                case .success(let data):
-//                    print(data)
-//                    print(data.data)
-//
-//
-//                case .failure(let err):
-//                    print(err)
-//                }
-//            }
-
-//            .publishDecodable(type: GeneralResponse<[PostResponse]>.self)
-//            .value()
-//            .sink { completion in
-//                switch completion {
-//                case .finished:
-//                    break
-//                case .failure(let error):
-//                    print(error)
-//                }
-//            } receiveValue: { data in
-//
-//                print(data)
-//                //                let postModels = data.map { PostModel(from: $0)}
-//            }
-
-
     }
 }

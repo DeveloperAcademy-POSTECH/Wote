@@ -29,7 +29,7 @@ struct MainView: View {
     }
 
     @State private var filterState: FilterType = .all
-    let viewModel = MainViewModel()
+    @State var viewModel = MainViewModel()
     @State private var touchPlus: Bool = false
     @State private var path : [MainPathType] = []
 
@@ -44,7 +44,7 @@ struct MainView: View {
                             VoteCellView(postData: data)
                                 .onAppear {
                                     guard let index = viewModel.datalist.firstIndex(where: {$0.id == data.id}) else {return}
-                                    if index % 15 == 0 && !viewModel.lastPage{
+                                    if index % 10 == 0 && !viewModel.lastPage {
                                         viewModel.getPosts()
                                     }
                                 }
