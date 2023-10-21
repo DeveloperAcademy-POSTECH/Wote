@@ -82,7 +82,7 @@ class APIManager {
             }
         }
         
-        var url: String {
+        var path: String {
             switch self {
             case .postAuthorCode:
                 return "/login/oauth2/code/apple"
@@ -101,7 +101,7 @@ class APIManager {
             "Content-Type": type.contentType
         ]
         let parameters = type.parameters
-        let url = URLConst.baseURL + type.url
+        let url = URLConst.baseURL + type.path
         
         AF.request(
             url,
