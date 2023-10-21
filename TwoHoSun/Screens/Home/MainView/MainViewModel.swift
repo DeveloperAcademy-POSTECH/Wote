@@ -16,9 +16,8 @@ final class MainViewModel {
     var datalist: [PostModel] = []
     var nextIndex = 0
     var lastPage = false
-    var isEmptyList: Bool {
-        return datalist.isEmpty
-    }
+    var loading = true
+    var isEmptyList: Bool = false
 
     func getPosts(_ size: Int = 10, first: Bool = false) {
         APIManager.shared.requestAPI(type: .getPosts(nextIndex, size)) {  (response: GeneralResponse<[PostResponse]>) in
@@ -29,6 +28,7 @@ final class MainViewModel {
                 self.datalist = first ? postModels : self.datalist + postModels
                 self.lastPage = data.count < 10 ? true : false
                 self.nextIndex += 1
+                self.loading = false
             case 401:
                 APIManager.shared.refreshAllTokens()
                 self.getPosts(size)

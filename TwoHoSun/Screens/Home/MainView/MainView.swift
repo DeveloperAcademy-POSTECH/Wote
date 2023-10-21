@@ -35,13 +35,16 @@ struct MainView: View {
 
     var body: some View {
         NavigationStack {
+            if viewModel.loading {
+                ProgressView("Loading")
+            } else {
             ZStack(alignment: .bottomTrailing) {
                 emptyView
                 ScrollView {
                     LazyVStack {
                         filterBar
                         ForEach(viewModel.datalist) { data in
-                             MainCellView(postData: data)
+                            MainCellView(postData: data)
                                 .onAppear {
                                     guard let index = viewModel.datalist.firstIndex(where: {$0.id == data.id}) else {return}
                                     if index % 10 == 0 && !viewModel.lastPage {
@@ -66,7 +69,7 @@ struct MainView: View {
                         searchButton
                     }
                 }
-            }
+            }}
         }.onAppear {
             viewModel.getPosts(30,first: true)
         }
@@ -160,7 +163,7 @@ extension MainView {
 
     @ViewBuilder
     private var emptyView: some View {
-        if viewModel.isEmptyList {
+        if viewModel.datalist.isEmpty {
             VStack {
                 filterBar
                 Spacer()
