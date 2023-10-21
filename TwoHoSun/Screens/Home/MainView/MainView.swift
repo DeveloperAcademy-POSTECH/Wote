@@ -44,14 +44,13 @@ struct MainView: View {
                             VoteCellView(postData: data)
                                 .onAppear {
                                     guard let index = viewModel.datalist.firstIndex(where: {$0.id == data.id}) else {return}
-                                    if index % 15 == 0 {
+                                    if index % 15 == 0 && !viewModel.lastPage{
                                         viewModel.getPosts()
                                     }
                                 }
                         }
                     }
                 }
-
                 floatingButton
             }
             .navigationBarTitleDisplayMode(.inline)

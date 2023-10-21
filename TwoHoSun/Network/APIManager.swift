@@ -110,7 +110,8 @@ class APIManager {
 
     func requestAPI<T: Decodable>(type: APIRequest, completion: @escaping (GeneralResponse<T>) -> Void) {
         let headers: HTTPHeaders = [
-            "Content-Type": type.contentType
+            "Content-Type": type.contentType,
+            "Authorization": "eyJwcm92aWRlcklkIjoiMDAwNjA4LmFjNGRlN2M2YTU3MzRmMThiMGIzZDUzNmFmNjQ0YjI4LjE3MjAiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcm92aWRlcklkIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTY5Nzg4ODQ2MywiZXhwIjoxNjk4NDkzMjYzfQ.B-M9KOEvTm25RuZSnPWihkJ8M6N-RWosgIlDlxfZpdo"
         ]
         let parameters = type.parameters
         let url = URLConst.baseURL + type.path

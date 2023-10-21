@@ -26,7 +26,8 @@ struct PostModel : Identifiable {
            self.date = postResponse.createDate
            self.postType = postResponse.postType
            self.postStatus = postResponse.postStatus
-           self.author = AuthorModel(userNickname: postResponse.author.userNickname, userProfileImage: postResponse.author.userProfileImage)
+           self.author = AuthorModel(userNickname: postResponse.author.userNickname ?? "",
+                                     userProfileImage: postResponse.author.userProfileImage ?? "")
            self.title = postResponse.title
            self.contents = postResponse.contents
            self.image = postResponse.image
