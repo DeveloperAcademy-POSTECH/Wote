@@ -41,9 +41,11 @@ struct WriteView: View {
                         .padding(.top, 32)
                     contentView
                         .padding(.top, 32)
+                        .padding(.bottom, 20)
                 }
                 .padding(.horizontal, 26)
             }
+            .scrollIndicators(.hidden)
             voteRegisterButton
         }
         .navigationTitle("소비고민 등록")
@@ -53,6 +55,7 @@ struct WriteView: View {
                 backButton
             }
         }
+        .toolbarBackground(.white, for: .navigationBar)
     }
 }
 
