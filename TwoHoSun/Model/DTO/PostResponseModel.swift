@@ -16,12 +16,6 @@ struct PostResponse: Codable {
     let title, contents, image, externalURL: String
     let likeCount, viewCount, commentCount: Int
     let voteCounts: VoteCounts
-
-//    enum CodingKeys: String, CodingKey {
-//        case postID = "post_id"
-//        case createDate, modifiedDate, postType, postStatus, author, title, contents, image, externalURL, likeCount, viewCount, commentCount, voteCounts
-//    }
-
 }
 
 struct Author: Codable {

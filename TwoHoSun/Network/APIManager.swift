@@ -55,7 +55,8 @@ class APIManager {
                     ]
             case .postVoteCreate:
                 return [
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
                 ]
             }
         }

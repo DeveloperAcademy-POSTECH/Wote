@@ -61,6 +61,3 @@ extension VoteCellView {
             .foregroundStyle(.gray)
     }
 }
-//#Preview {
-//    VoteCellView()
-//}
