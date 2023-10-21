@@ -22,6 +22,7 @@ struct PostModel : Identifiable {
     let viewCount: Int
     let commentCount: Int
     let voteCount: VoteCountModel
+    let voted: Bool
 
     init(from postResponse: PostResponse) {
         self.postId = postResponse.postId
@@ -38,6 +39,8 @@ struct PostModel : Identifiable {
         self.viewCount = postResponse.viewCount
         self.commentCount = postResponse.commentCount
         self.voteCount = VoteCountModel(agreeCount: postResponse.likeCount, disagreeCount: 0)
+        self.voted = postResponse.voted
+
     }
 }
 

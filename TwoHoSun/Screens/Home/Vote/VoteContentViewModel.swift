@@ -10,17 +10,18 @@ import Foundation
 @Observable
 final class VoteContentViewModel {
     let postData: PostModel
-    var isVoteCompleted = false
+    var isVoteCompleted: Bool
     var agreeCount = 0
     var disagreeCount = 0
     init(postData: PostModel) {
         self.postData = postData
+        isVoteCompleted =  postData.voted ? true : false
     }
 
     var totalCount: Int {
         return agreeCount + disagreeCount
     }
-    
+
     var buyCountRatio: Double {
         if totalCount == 0 {
                return 0.0
@@ -36,9 +37,6 @@ final class VoteContentViewModel {
 
     func postVoteCreate(_ voteType: String) {
         APIManager.shared.requestAPI(type: .postVoteCreate(postId: postData.postId, param: voteType)) { (response: GeneralResponse<VoteCounts>) in
-            print(self.postData.postId)
-            print(voteType)
-            print(response.status)
             if response.status == 401 {
                 APIManager.shared.refreshAllTokens()
                 self.postVoteCreate(voteType)
