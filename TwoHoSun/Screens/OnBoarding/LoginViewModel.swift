@@ -13,7 +13,11 @@ class LoginViewModel: ObservableObject {
     @Published var showSheet = false
     @Published var navigationPath: [Route] = []
     @Published var authorization: String = ""
-
+    
+    func setAuthorizationCode(_ code: String) {
+        self.authorization = code
+    }
+    
     func postAuthorCode() {
         APIManager.shared.requestAPI(type: .postAuthorCode(authorization)) { (response: GeneralResponse<Tokens>) in
             if response.status == 401 {
