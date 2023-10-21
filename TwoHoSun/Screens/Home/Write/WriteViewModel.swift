@@ -10,6 +10,7 @@ import Foundation
 @Observable
 final class WriteViewModel {
     var title = ""
+    var externalURL = ""
 
     var isTitleValid: Bool {
         guard !title.isEmpty else { return false }

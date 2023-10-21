@@ -169,13 +169,19 @@ extension WriteView {
     }
 
     private var addLinkButton: some View {
-        roundedTextField(
-            Text("링크 주소 입력하기 ")
-                .font(.system(size: 14, weight: .medium)) +
-            Text("(선택)")
-                .font(.system(size: 12, weight: .medium)), 
-            cornerRadius: 5
-        )
+        TextField("",
+                  text: $viewModel.externalURL,
+                  prompt:
+                    Text("링크 주소 입력하기")
+                        .font(.system(size: 14, weight: .medium)) +
+                    Text("(선택)")
+                        .font(.system(size: 12, weight: .medium)))
+        .frame(height: 44)
+        .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 0))
+        .overlay {
+            RoundedRectangle(cornerRadius: 5)
+                .strokeBorder(.gray, lineWidth: 1)
+        }
     }
 
     private var voteDeadlineView: some View {
