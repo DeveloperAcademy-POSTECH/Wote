@@ -44,6 +44,7 @@
 		FD8D9F812ADC5FAD0072F4BA /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */; };
 		FD9280392ADD8A0E007285BA /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9280382ADD8A0E007285BA /* LoginModel.swift */; };
 		FDDB990C2ADC1BEC00B1163F /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = FDDB990B2ADC1BEC00B1163F /* .swiftlint.yml */; };
+		FDDEC15B2AE3EABA004509EA /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEC15A2AE3EABA004509EA /* SearchView.swift */; };
 		FDE9FC9B2ADF28CF00EBC1F8 /* ProfileSettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDE9FC9A2ADF28CF00EBC1F8 /* ProfileSettingModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -87,6 +88,7 @@
 		FD92803A2ADD8A4C007285BA /* File */ = {isa = PBXFileReference; lastKnownFileType = text; path = File; sourceTree = "<group>"; };
 		FDDB99042ADBF37100B1163F /* TwoHoSun.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TwoHoSun.entitlements; sourceTree = "<group>"; };
 		FDDB990B2ADC1BEC00B1163F /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+		FDDEC15A2AE3EABA004509EA /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		FDE9FC9A2ADF28CF00EBC1F8 /* ProfileSettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -155,6 +157,7 @@
 			isa = PBXGroup;
 			children = (
 				FD3205602ADD1F8100B0D5F6 /* MainView.swift */,
+				FDDEC15A2AE3EABA004509EA /* SearchView.swift */,
 				C7E459D22AE01FDE00ECD008 /* MainViewModel.swift */,
 				ABB71D7B2AE2B3F100BE0671 /* NotificationView.swift */,
 			);
@@ -398,6 +401,7 @@
 				ABB71D7A2AE2A64300BE0671 /* LinkView.swift in Sources */,
 				FD4E75B62ADE9C20000C2277 /* ProfileSettingViewModel.swift in Sources */,
 				AB45225C2ADE665100B69F24 /* URLConst.swift in Sources */,
+				FDDEC15B2AE3EABA004509EA /* SearchView.swift in Sources */,
 				C7DE44BB2AE0BBD9001639CB /* DetailView.swift in Sources */,
 				FD3205612ADD1F8100B0D5F6 /* MainView.swift in Sources */,
 				FD4E75B42ADE9616000C2277 /* NicknameModel.swift in Sources */,
