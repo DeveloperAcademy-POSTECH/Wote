@@ -10,9 +10,12 @@ import SwiftUI
 struct ChartView: View {
     var body: some View {
         TabView {
+            genderChart
             gradeChart
+            regionChart
         }
         .tabViewStyle(.page)
+        .frame(height: 200)
     }
 }
 
@@ -25,6 +28,7 @@ extension ChartView {
             genderChartContent("남자")
             genderChartContent("여자")
         }
+        .padding(.horizontal, 26)
     }
     
     private func genderChartContent(_ gender: String) -> some View {
@@ -58,7 +62,6 @@ extension ChartView {
             .padding(.horizontal, 16)
             .padding(.vertical, 12)
         }
-        .padding(.horizontal, 26)
     }
     
     private var gradeChart: some View {
@@ -107,6 +110,52 @@ extension ChartView {
                     .fixedSize()
                 Spacer()
             }
+        }
+    }
+    
+    private var regionChart: some View {
+        VStack(spacing: 12) {
+            Text("지역별 통계")
+                .font(.system(size: 16, weight: .bold))
+            ZStack {
+                Rectangle()
+                    .foregroundStyle(Color(.secondarySystemBackground))
+                    .clipShape(.rect(cornerRadius: 10))
+                HStack(spacing: 12) {
+                    regionChartContent("서울")
+                    regionChartContent("경기")
+                    regionChartContent("충청")
+                    regionChartContent("강원")
+                    regionChartContent("경상")
+                    regionChartContent("전라")
+                    regionChartContent("제주")
+                }
+                .padding(12)
+            }
+        }
+        .padding(.horizontal, 26)
+    }
+    
+    private func regionChartContent(_ region: String) -> some View {
+        VStack {
+            Text("20.0%\n(2명)")
+                .foregroundStyle(.gray)
+                .font(.system(size: 10, weight: .medium))
+                .fixedSize()
+                .multilineTextAlignment(.center)
+            Rectangle()
+                .foregroundStyle(.cyan)
+                .frame(width: 15)
+            Text(region)
+                .font(.system(size: 14, weight: .medium))
+            Rectangle()
+                .foregroundStyle(.green)
+                .frame(width: 15)
+            Text("20.0%\n(2명)")
+                .foregroundStyle(.gray)
+                .font(.system(size: 10, weight: .medium))
+                .fixedSize()
+                .multilineTextAlignment(.center)
         }
     }
 }
