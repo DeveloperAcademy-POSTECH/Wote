@@ -19,7 +19,7 @@ final class ProfileSettingViewModel {
     var nicknameValidationType = NicknameValidationType.none
     var isNicknameDuplicated = false
     var isFormValid = true
-    var model: ProfileSetting? = nil
+    var model: ProfileSetting? 
     private let forbiddenWord = ["금지어1", "금지어2"]
     private var cancellable: Set<AnyCancellable> = []
 

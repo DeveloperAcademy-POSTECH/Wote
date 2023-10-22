@@ -33,46 +33,54 @@ struct MainView: View {
     let viewModel = MainViewModel()
     @State private var touchPlus: Bool = false
     @State private var path : [MainPathType] = []
+    @State private var isWriteViewPresented = false
 
     var body: some View {
         NavigationStack {
             if viewModel.loading {
                 ProgressView("Loading")
             } else {
-            ZStack(alignment: .bottomTrailing) {
-                emptyView
-                ScrollView {
-                    LazyVStack {
-                        filterBar
-                        ForEach(viewModel.datalist) { data in
-                            MainCellView(postData: data)
-                                .onAppear {
-                                    guard let index = viewModel.datalist.firstIndex(where: {$0.id == data.id}) else {return}
-                                    if index % 10 == 0 && !viewModel.lastPage {
-                                        viewModel.getPosts()
+                ZStack(alignment: .bottomTrailing) {
+                    emptyView
+                    ScrollView {
+                        LazyVStack {
+                            filterBar
+                            ForEach(viewModel.datalist) { data in
+                                MainCellView(postData: data)
+                                    .onAppear {
+                                        guard let index = viewModel.datalist.firstIndex(where: {$0.id == data.id}) else {return}
+                                        if index % 10 == 0 && !viewModel.lastPage {
+                                            viewModel.getPosts()
+                                        }
                                     }
-                                }
+                            }
+                        }
+                    }
+                    .scrollIndicators(.hidden)
+                    floatingButton
+                }
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        Image("splash")
+                            .resizable()
+                            .frame(width: 120,height: 36)
+                    }
+                    ToolbarItem(placement: .topBarTrailing) {
+                        HStack {
+                            noticeButton
+                            searchButton
                         }
                     }
                 }
-                .scrollIndicators(.hidden)
-                floatingButton
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Image("splash")
-                        .resizable()
-                        .frame(width: 120,height: 36)
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    HStack {
-                        noticeButton
-                        searchButton
+                .fullScreenCover(isPresented: $isWriteViewPresented) {
+                    NavigationStack {
+                        WriteView(viewModel: WriteViewModel())
                     }
                 }
-            }}
-        }.onAppear {
+            }
+        }
+        .onAppear {
             viewModel.getPosts(30,first: true)
         }
     }
@@ -115,6 +123,7 @@ extension MainView {
                 VStack( alignment: .leading, spacing: 14) {
                     Button {
                         path.append(.toAll)
+                        isWriteViewPresented = true
                     } label: {
                         Text("전국 투표 올리기")
                             .font(.system(size: 14))
@@ -126,7 +135,8 @@ extension MainView {
                         .opacity(0.5)
                         .frame(height: 1)
                     Button {
-                        path.append(.ourSchool )
+                        path.append(.ourSchool)
+                        isWriteViewPresented = true
                     } label: {
                         Text("우리 학교 올리기")
                             .font(.system(size: 14))
