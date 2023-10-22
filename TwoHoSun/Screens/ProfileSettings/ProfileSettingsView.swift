@@ -91,6 +91,7 @@ struct ProfileSettingsView: View {
     @State private var selectedImageData: Data?
     @State private var isSchoolSearchSheetPresented = false
     @State private var genderSelection = UserGender.boy
+    @State private var isProfileSheetShowed = false
     @Binding var navigationPath: [Route]
     @Bindable var viewModel: ProfileSettingViewModel
 
@@ -108,7 +109,6 @@ struct ProfileSettingsView: View {
                         VStack(spacing: 30) {
                             nicknameInputView
                             genderPicker
-//                                .padding(.bottom, 30)
                             schoolInputView
                             gradeInputView
                         }
@@ -121,7 +121,6 @@ struct ProfileSettingsView: View {
                     .padding(.bottom, 12)
             }
             .scrollIndicators(.hidden)
-            .ignoresSafeArea(.keyboard)
             .fullScreenCover(isPresented: $isSchoolSearchSheetPresented) {
                 NavigationView {
                     SchoolSearchView(selectedSchoolInfo: $viewModel.selectedSchoolInfo)
@@ -129,6 +128,7 @@ struct ProfileSettingsView: View {
             }
             .navigationBarBackButtonHidden()
         }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 }
 
@@ -148,9 +148,11 @@ extension ProfileSettingsView {
 
     private var profileImage: some View {
         ZStack(alignment: .bottomTrailing) {
-            Circle()
-                .frame(width: 130, height: 130)
-                .foregroundStyle(.gray)
+            photoPickerView {
+                Circle()
+                    .frame(width: 130, height: 130)
+                    .foregroundStyle(.gray)
+            }
             if let selectedImageData,
                let uiImage = UIImage(data: selectedImageData) {
                 Image(uiImage: uiImage)
@@ -160,33 +162,55 @@ extension ProfileSettingsView {
             }
             selectProfileButton
         }
-    }
-
-    private var selectProfileButton: some View {
-        PhotosPicker(selection: $selectedPhoto,
-                     matching: .images,
-                     photoLibrary: .shared()) {
-            ZStack {
-                Circle()
-                    .frame(width: 40, height: 40)
-                    .foregroundStyle(.blue)
-                Image(systemName: "camera")
-                    .font(.system(size: 20))
-                    .foregroundStyle(.black)
+        .onTapGesture {
+            if let selectedImageData = selectedImageData { // 있으면 action sheet
+                isProfileSheetShowed = true
             }
-            .onChange(of: selectedPhoto) { _, newValue in
-                PHPhotoLibrary.requestAuthorization { status in
-                    guard status == .authorized else { return }
-
-                    Task {
-                        if let data = try? await newValue?.loadTransferable(type: Data.self) {
-                            selectedImageData = data
-                        }
-                    }
-                }
+        }
+        .confirmationDialog("프로필 설정", isPresented: $isProfileSheetShowed) {
+            Button("프로필 삭제하기", role: .destructive) {
+                selectedPhoto = nil
+                selectedImageData = nil
+            }
+            Button("프로필 재설정") {
+                
             }
         }
     }
+
+    private var selectProfileButton: some View {
+        photoPickerView {
+            ZStack {
+                Circle()
+                    .frame(width: 40, height: 40)
+                    .foregroundStyle(.black)
+                Image(systemName: "camera")
+                    .font(.system(size: 20))
+                    .foregroundStyle(.white)
+            }
+        }
+
+    }
+
+    @ViewBuilder
+       func photoPickerView<Content: View>(@ViewBuilder content: () -> Content) -> some View {
+           PhotosPicker(selection: $selectedPhoto,
+                        matching: .images,
+                        photoLibrary: .shared()) {
+               content()
+                   .onChange(of: selectedPhoto) { _, newValue in
+                       PHPhotoLibrary.requestAuthorization { status in
+                           guard status == .authorized else { return }
+
+                           Task {
+                               if let data = try? await newValue?.loadTransferable(type: Data.self) {
+                                   selectedImageData = data
+                               }
+                           }
+                       }
+                   }
+           }
+       }
 
     private var nicknameInputView: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -315,7 +339,7 @@ extension ProfileSettingsView {
             viewModel.setProfile()
         } label: {
             Text("완료")
-                .font(.system(size: 20))
+                .font(.system(size: 20, weight: .semibold))
                 .foregroundStyle(.white)
                 .frame(width: 361, height: 52)
                 .background(viewModel.isAllInputValid ? .blue : .gray)
@@ -361,7 +385,6 @@ extension ProfileSettingsView {
             Spacer()
         }
         .font(.system(size: 12))
-//        .foregroundStyle(!viewModel.isFormValid && !isValid ? .red : .clear)
         .foregroundStyle(.red)
     }
 
