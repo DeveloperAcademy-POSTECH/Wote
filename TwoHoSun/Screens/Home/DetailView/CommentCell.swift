@@ -5,7 +5,7 @@
 //  Created by 235 on 10/19/23.
 //
 
-enum timeCalendar {
+enum TimeCalendar {
     case year
     case month
     case day
@@ -35,17 +35,14 @@ struct CommentCell: View {
     let comment: CommentsModel
     var onReplyButtonTapped: () -> Void
     @State var isOpenComment: Bool = false
+
     var hasChildComments: Bool {
         return !comment.childComments.isEmpty
     }
-//    var lastEdit: Int {
-//        if comment.modifiedDate {
-//            modifiedDate.toDate()!.differenceCurrentTime()
-//        } else {
-//            return comment.createDate.toDate().differenceCurrentTime()
-//        }
-//
-//    }
+
+    var lastEdit: (String , Int) {
+        return comment.modifiedDate.toDate()!.differenceCurrentTime()
+    }
 
     var body: some View {
         HStack(alignment: .top) {
@@ -62,7 +59,7 @@ struct CommentCell: View {
                 HStack {
                     Text(comment.author.userNickname!)
                         .font(.system(size: 14, weight: .medium))
-                    Text(" \(lastEdit)시간전")
+                    Text("\(lastEdit.1) \(lastEdit.0)")
                         .opacity(0.5)
                         .font(.system(size: 12))
 
@@ -101,7 +98,6 @@ struct CommentCell: View {
                     .padding(.top, 18)
                 }
             }
-
         }
     }
 }
