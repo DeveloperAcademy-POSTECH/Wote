@@ -16,34 +16,35 @@ enum TitleCategoryType: String, CaseIterable {
 
 struct WriteView: View {
     @Environment(\.dismiss) var dismiss
-    @State private var title = ""
     @State private var placeholderText = "욕설,비방,광고 등 소비 고민과 관련없는 내용은 통보 없이 삭제될 수 있습니다."
-    @State private var contentTextCount = 0
     @State private var voteDeadlineValue = 0.0
     @State private var isRegisterButtonDidTap = false
     @State private var selectedTitleCategory = TitleCategoryType.buyCategory
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var selectedImageData: Data?
+    @State private var isTagTextFieldShowed = false
     @Binding var isWriteViewPresented: Bool
     @Bindable var viewModel: WriteViewModel
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
-                titleView
-                    .padding(.top, 24)
-                tagView
-                    .padding(.top, 32)
-                addImageView
-                    .padding(.top, 30)
-                voteDeadlineView
-                    .padding(.top, 32)
-                contentView
-                    .padding(.top, 32)
-                    .padding(.bottom, 20)
+        VStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 0) {
+                    titleView
+                        .padding(.top, 24)
+                    tagView
+                        .padding(.top, 32)
+                    addImageView
+                    voteDeadlineView
+                        .padding(.top, 32)
+                    contentView
+                        .padding(.top, 32)
+                        .padding(.bottom, 20)
+                }
+                .padding(.horizontal, 26)
             }
-            .padding(.horizontal, 26)
             voteRegisterButton
+                .padding(.bottom, 12)
         }
         .scrollIndicators(.hidden)
         .navigationTitle("소비고민 등록")
@@ -136,8 +137,14 @@ extension WriteView {
     private var tagView: some View {
         VStack(alignment: .leading, spacing: 12) {
             headerLabel("태그를 선택해 주세요. ", "(최대 3개 태그 선택 가능)")
-            HStack {
+            WrappingHStack(horizontalSpacing: 8) {
                 addTagButton
+                if isTagTextFieldShowed { addTagTextField }
+                if !viewModel.tags.isEmpty {
+                    ForEach(viewModel.tags, id: \.self) { tag in
+                        tagButton(tag)
+                    }
+                }
                 Spacer()
             }
         }
@@ -145,7 +152,7 @@ extension WriteView {
 
     private var addTagButton: some View {
         Button {
-            print("add tag button did tap!")
+            isTagTextFieldShowed = true
         } label: {
             ZStack {
                 Circle()
@@ -155,6 +162,47 @@ extension WriteView {
                     .font(.system(size: 14))
                     .foregroundStyle(.black)
             }
+        }
+    }
+
+    private var addTagTextField: some View {
+        TextField("",
+                  text: $viewModel.tagText,
+                  prompt: Text("태그 입력")
+                            .font(.system(size: 14)))
+        .font(.system(size: 14))
+        .padding(EdgeInsets(top: 7, leading: 10, bottom: 7, trailing: 0))
+        .frame(width: 140, height: 28)
+        .overlay {
+            RoundedRectangle(cornerRadius: 15)
+                .strokeBorder(.gray, lineWidth: 1)
+        }
+        .onSubmit {
+            viewModel.tags.append(viewModel.tagText)
+            viewModel.tagText.removeAll()
+            isTagTextFieldShowed = false
+        }
+    }
+
+    private func tagButton(_ word: String) -> some View {
+        Button {
+            viewModel.removeTag(word)
+        } label: {
+            HStack(spacing: 5) {
+                Text(word)
+                    .font(.system(size: 14))
+                Image(systemName: "xmark")
+                    .font(.system(size: 12))
+            }
+            .foregroundStyle(.gray)
+            .fixedSize()
+            .frame(height: 28)
+            .padding(.horizontal, 10)
+            .background(
+                Capsule()
+                    .stroke(Color.gray, lineWidth: 1)
+                    .foregroundStyle(.white)
+            )
         }
     }
 
@@ -351,5 +399,59 @@ extension WriteView {
 #Preview {
     NavigationStack {
         WriteView(isWriteViewPresented: .constant(true), viewModel: WriteViewModel())
+    }
+}
+
+private struct WrappingHStack: Layout {
+    private var horizontalSpacing: CGFloat
+    private var verticalSpacing: CGFloat
+
+    public init(horizontalSpacing: CGFloat, verticalSpacing: CGFloat? = nil) {
+        self.horizontalSpacing = horizontalSpacing
+        self.verticalSpacing = verticalSpacing ?? horizontalSpacing
+    }
+
+    public func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache _: inout ()) -> CGSize {
+        guard !subviews.isEmpty else { return .zero }
+
+        let height = subviews.map { $0.sizeThatFits(proposal).height }.max() ?? 0
+
+        var rowWidths = [CGFloat]()
+        var currentRowWidth: CGFloat = 0
+        subviews.forEach { subview in
+            if currentRowWidth + horizontalSpacing + subview.sizeThatFits(proposal).width >= proposal.width ?? 0 {
+                rowWidths.append(currentRowWidth)
+                currentRowWidth = subview.sizeThatFits(proposal).width
+            } else {
+                currentRowWidth += horizontalSpacing + subview.sizeThatFits(proposal).width
+            }
+        }
+        rowWidths.append(currentRowWidth)
+
+        let rowCount = CGFloat(rowWidths.count)
+        return CGSize(width: max(rowWidths.max() ?? 0, proposal.width ?? 0), height: rowCount * height + (rowCount - 1) * verticalSpacing)
+    }
+
+    public func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        let height = subviews.map { $0.dimensions(in: proposal).height }.max() ?? 0
+        guard !subviews.isEmpty else { return }
+        var tmpX = bounds.minX
+        var tmpY = height / 2 + bounds.minY
+        subviews.forEach { subview in
+            tmpX += subview.dimensions(in: proposal).width / 2
+            if tmpX + subview.dimensions(in: proposal).width / 2 > bounds.maxX {
+                tmpX = bounds.minX + subview.dimensions(in: proposal).width / 2
+                tmpY += height + verticalSpacing
+            }
+            subview.place(
+                at: CGPoint(x: tmpX, y: tmpY),
+                anchor: .center,
+                proposal: ProposedViewSize(
+                    width: subview.dimensions(in: proposal).width,
+                    height: subview.dimensions(in: proposal).height
+                )
+            )
+            tmpX += subview.dimensions(in: proposal).width / 2 + horizontalSpacing
+        }
     }
 }
