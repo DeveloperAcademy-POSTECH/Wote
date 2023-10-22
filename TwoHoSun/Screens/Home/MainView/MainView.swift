@@ -75,13 +75,8 @@ struct MainView: View {
                 }
                 .fullScreenCover(isPresented: $isWriteViewPresented) {
                     NavigationStack {
-                        WriteView(viewModel: WriteViewModel())
+                        WriteView(isWriteViewPresented: $isWriteViewPresented, viewModel: WriteViewModel())
                     }
-                }
-            }
-            .fullScreenCover(isPresented: $isWriteViewPresented) {
-                NavigationStack {
-                    WriteView(isWriteViewPresented: $isWriteViewPresented, viewModel: WriteViewModel())
                 }
             }
         }
