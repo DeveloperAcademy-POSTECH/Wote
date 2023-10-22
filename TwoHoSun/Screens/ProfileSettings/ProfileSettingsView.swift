@@ -90,31 +90,37 @@ struct ProfileSettingsView: View {
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var selectedImageData: Data?
     @State private var isSchoolSearchSheetPresented = false
+    @State private var genderSelection = UserGender.boy
     @Binding var navigationPath: [Route]
     @Bindable var viewModel: ProfileSettingViewModel
 
     var body: some View {
         ZStack {
             Color.white
-            GeometryReader { _ in
-                VStack(spacing: 0) {
-                    Spacer()
-                    titleLabel
-                        .padding(.leading, 26)
-                    Spacer()
-                    profileImage
-                    Spacer()
-                    VStack(spacing: 8) {
-                        nicknameInputView
-                        schoolInputView
-                        gradeInputView
+            VStack(spacing: 0) {
+                ScrollView {
+                    VStack(spacing: 0) {
+                        titleLabel
+                            .padding(.leading, 26)
+                            .padding(.top, 70)
+                        profileImage
+                            .padding(.top, 48)
+                        VStack(spacing: 30) {
+                            nicknameInputView
+                            genderPicker
+//                                .padding(.bottom, 30)
+                            schoolInputView
+                            gradeInputView
+                        }
+                        .padding(.top, 46)
+                        .padding(.horizontal, 26)
+                        .padding(.bottom, 70)
                     }
-                    .padding(.horizontal, 26)
-                    Spacer()
-                    nextButton
-                        .padding(.bottom, 38)
                 }
+                nextButton
+                    .padding(.bottom, 12)
             }
+            .scrollIndicators(.hidden)
             .ignoresSafeArea(.keyboard)
             .fullScreenCover(isPresented: $isSchoolSearchSheetPresented) {
                 NavigationView {
@@ -185,7 +191,7 @@ extension ProfileSettingsView {
     private var nicknameInputView: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("닉네임")
-                .font(.system(size: 16))
+                .font(.system(size: 16, weight: .medium))
                 .padding(.bottom, 8)
             HStack(spacing: 10) {
                 HStack {
@@ -205,8 +211,11 @@ extension ProfileSettingsView {
                 }
                 checkDuplicatedIdButton
             }
-            nicknameValidationAlertMessage(for: viewModel.nicknameValidationType)
-                .padding(.top, 10)
+
+            if viewModel.nicknameValidationType != .none {
+                nicknameValidationAlertMessage(for: viewModel.nicknameValidationType)
+                    .padding(.top, 6)
+            }
         }
     }
 
@@ -225,14 +234,44 @@ extension ProfileSettingsView {
         .disabled(viewModel.isDuplicateButtonEnabled() ? false : true)
     }
 
+    private var genderPicker: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("성별")
+                .font(.system(size: 16, weight: .medium))
+            HStack(spacing: 0) {
+                ForEach(UserGender.allCases, id: \.self) { gender in
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundColor(genderSelection == gender ? .blue : .clear)
+                        Text(gender.rawValue + "자")
+                            .font(.system(size: 14))
+                            .foregroundColor(genderSelection == gender ? .white : .black)
+                    }
+                    .onTapGesture {
+                        withAnimation(.easeOut) {
+                            genderSelection = gender
+                        }
+                    }
+                }
+            }
+            .frame(height: 44)
+            .overlay {
+                RoundedRectangle(cornerRadius: 10)
+                    .strokeBorder(.black, lineWidth: 1)
+            }
+        }
+    }
+
     private var schoolInputView: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("학교")
-                .font(.system(size: 16))
-            roundedIconTextField(for: .school, 
+                .font(.system(size: 16, weight: .medium))
+            roundedIconTextField(for: .school,
                                  text: viewModel.selectedSchoolInfo?.school.schoolName,
                                  isFilled: viewModel.isSchoolFilled)
-            validationAlertMessage(for: .school, isValid: viewModel.isSchoolFilled)
+            if !viewModel.isFormValid && !viewModel.isSchoolFilled {
+                validationAlertMessage(for: .school, isValid: viewModel.isSchoolFilled)
+            }
         }
         .onTapGesture {
             isSchoolSearchSheetPresented = true
@@ -244,7 +283,9 @@ extension ProfileSettingsView {
             Text("학년")
                 .font(.system(size: 16))
             gradeMenu
-            validationAlertMessage(for: .grade, isValid: viewModel.isGradeFilled)
+            if !viewModel.isFormValid && !viewModel.isGradeFilled {
+                validationAlertMessage(for: .grade, isValid: viewModel.isGradeFilled)
+            }
         }
     }
 
@@ -320,7 +361,8 @@ extension ProfileSettingsView {
             Spacer()
         }
         .font(.system(size: 12))
-        .foregroundStyle(!viewModel.isFormValid && !isValid ? .red : .clear)
+//        .foregroundStyle(!viewModel.isFormValid && !isValid ? .red : .clear)
+        .foregroundStyle(.red)
     }
 
     // MARK: - Custom Methods

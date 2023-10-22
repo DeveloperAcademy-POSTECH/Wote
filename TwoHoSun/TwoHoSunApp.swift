@@ -11,6 +11,7 @@ import Observation
 @main
 struct TwoHoSunApp: App {
     let appState = AppState()
+    @ObservedObject var viewModel = LoginViewModel()
 
     var body: some Scene {
         WindowGroup {
@@ -21,11 +22,12 @@ struct TwoHoSunApp: App {
 //            }
 //
 //            MainTabView()
-            OnBoardingView()
 //            MainView()
 //            NavigationView {
 //                WriteView(isWriteViewPresented: .constant(true), viewModel: WriteViewModel())
 //            }
+            ProfileSettingsView(navigationPath: $viewModel.navigationPath,
+                                viewModel: ProfileSettingViewModel())
         }
     }
 }

@@ -15,7 +15,7 @@ struct ProfileSetting: Codable {
     var grade: Int
 }
 
-enum UserGender: String {
+enum UserGender: String, CaseIterable {
     case boy = "남"
     case girl = "여"
 }
