@@ -36,7 +36,7 @@ struct DetailView : View {
             commentInputView
                 .ignoresSafeArea(.all, edges: .bottom)
         }
-        .onChange(of: isSendMessage) { _, newVal in
+        .onChange(of: viewModel.isSendMessage) { _, newVal in
             if newVal {
                 viewModel.postComments(commentPost: CommentPostModel(content: commentText, parentId: scrollSpot, postId: postData.postId))
             }
@@ -124,24 +124,7 @@ extension DetailView {
                             scrollSpot = comment.commentId
                             isFocus = true
                         }
-//                        Text(comment.commentId)
-
-//                        if comment.childComment {
-//                            Button(action: {
-//                                isOpenComment = true
-//                            }, label: {
-//                                HStack {
-//                                    Rectangle()
-//                                        .fill(.gray)
-//                                        .frame(width: 29, height: 1)
-//                                    Text("답글 \(comment.childComments!.count)개 더보기")
-//                                        .font(.system(size: 12))
-//                                        .foregroundStyle(.gray)
-//                                }
-//                            })
-//                            .padding(.top, 18)
-//                        }
-                            .id(comment.commentId)
+                        .id(comment.commentId)
                     }
                     .onChange(of: scrollSpot) { _ in
                         proxy.scrollTo(scrollSpot, anchor: .top)
@@ -157,7 +140,7 @@ extension DetailView {
             TextField("소비고민을 함께 나누어 보세요", text: $commentText, axis: .vertical)
                 .lineLimit(5)
                 .focused($isFocus)
-                .textFieldStyle(CommentTextFieldStyle(isSendMessage: $isSendMessage))
+                .textFieldStyle(CommentTextFieldStyle(viewModel: viewModel))
                 .padding(.vertical, 10)
                 .padding(.horizontal, 12)
                 .frame(width: 342)
@@ -172,14 +155,14 @@ extension DetailView {
         .animation(.easeInOut(duration: 0.3), value: commentText)
     }
     struct CommentTextFieldStyle: TextFieldStyle {
-        @Binding var isSendMessage: Bool
+        @Bindable var viewModel: DetailViewModel
         func _body(configuration: TextField<Self._Label>) -> some View {
             HStack {
                 configuration
                     .font(.system(size: 16))
                 Spacer()
                 Button(action: {
-                    isSendMessage.toggle()
+                    viewModel.isSendMessage = true
                 }, label: {
                     Image(systemName: "paperplane")
                         .foregroundStyle(.black)

@@ -140,15 +140,12 @@ class APIManager {
                 ]
             case .getComments(let postId):
                 return [
-                                    "postId": postId
-                                ]
-            case .postComments(let postComment):
-                var parameters: [String: Any] = [
-                    "content": postComment.content,
-                    "postId": postComment.postId
+                    "postId": postId
                 ]
-                if let parentId = postComment.parentId {
-                    parameters["parentId"] = parentId
+            case .postComments(let postComment):
+                var parameters: [String: Any] = ["content": postComment.content]
+                if postComment.parentId > 0 {
+                    parameters["parentId"] = postComment.parentId
                 }
                 return parameters
             case .deleteComments:

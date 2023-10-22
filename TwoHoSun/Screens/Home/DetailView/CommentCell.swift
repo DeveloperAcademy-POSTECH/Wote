@@ -78,7 +78,6 @@ struct CommentCell: View {
                     Text("\(lastEdit.1) \(lastEdit.0)")
                         .opacity(0.5)
                         .font(.system(size: 12))
-
                     Spacer()
                     Button(action: {}, label: {
                         Image(systemName: "ellipsis")

@@ -23,8 +23,9 @@ class DetailViewModel {
             switch response.status {
             case 200:
                 guard let data = response.data else {return}
-                print(data)
                 self.commentsDatas = data
+                self.isSendMessage = false
+                print("data가져옴")
             default:
                 print("error")
             }
@@ -38,7 +39,8 @@ class DetailViewModel {
                 self.postComments(commentPost: commentPost)
             case 200:
                 print("post 잘됨.")
-                self.isSendMessage = false
+                self.getComments()
+
             default:
                 print("error")
             }
