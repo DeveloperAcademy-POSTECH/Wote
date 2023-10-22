@@ -52,6 +52,7 @@
 		FDF2D6C82AE59ACA0027EE8F /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDF2D6C72AE59ACA0027EE8F /* ChartView.swift */; };
 		FDF2D6CC2AE5D0AC0027EE8F /* MainCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDF2D6CB2AE5D0AC0027EE8F /* MainCellView.swift */; };
 		FDF2D6CE2AE5DAD90027EE8F /* VoteInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDF2D6CD2AE5DAD90027EE8F /* VoteInfoModel.swift */; };
+		FDF2D6D02AE5E62B0027EE8F /* ChartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDF2D6CF2AE5E62B0027EE8F /* ChartModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -102,6 +103,7 @@
 		FDF2D6C72AE59ACA0027EE8F /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		FDF2D6CB2AE5D0AC0027EE8F /* MainCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainCellView.swift; sourceTree = "<group>"; };
 		FDF2D6CD2AE5DAD90027EE8F /* VoteInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteInfoModel.swift; sourceTree = "<group>"; };
+		FDF2D6CF2AE5E62B0027EE8F /* ChartModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -263,6 +265,7 @@
 				C7E459CC2ADE8A1300ECD008 /* GeneralResponse.swift */,
 				AB4522572ADDDBE000B69F24 /* SchoolModel.swift */,
 				ABB71D6F2AE2755000BE0671 /* PostModel.swift */,
+				FDF2D6CF2AE5E62B0027EE8F /* ChartModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -431,6 +434,7 @@
 				C7DE44BB2AE0BBD9001639CB /* OthersDetailView.swift in Sources */,
 				ABBBC6782AE471B700B1E614 /* WriteViewModel.swift in Sources */,
 				FD3205612ADD1F8100B0D5F6 /* MainView.swift in Sources */,
+				FDF2D6D02AE5E62B0027EE8F /* ChartModel.swift in Sources */,
 				FD4E75B42ADE9616000C2277 /* NicknameModel.swift in Sources */,
 				FDF2D6CE2AE5DAD90027EE8F /* VoteInfoModel.swift in Sources */,
 				C7F1FD862ADDA37E00C5A2A1 /* BottomSheetView.swift in Sources */,
