@@ -69,8 +69,3 @@ struct CommentCell: View {
         }
     }
 }
-
-
-//#Preview {
-//    CommentCell(comment: Comment(nickname: "우왁굳", writetime: 1, profileImage: "profile", commentData: "이야 이걸 안사? ", isReply: false, hasResponse: true) )
-//}

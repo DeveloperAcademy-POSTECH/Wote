@@ -12,26 +12,12 @@ import Kingfisher
 struct VoteContentView: View {
     @State private var isImageDetailPresented = false
     @State private var isLinkWebViewPresented = false
-    @State var title: String
-    @State var contents: String
-    @State var imageURL: String
-    @State var externalURL: String
-    @State var likeCount: Int
-    @State var viewCount: Int
-    @State var commentCount: Int
-    @State var agreeCount: Int
-    @State var disagreeCount: Int
-    @State var isMine: Bool
-    
-    private let viewModel = VoteContentViewModel()
+    let postData: PostModel
+    private let viewModel: VoteContentViewModel
 
-    var buyCountRatio: Double {
-        let ratio = Double(agreeCount) / Double(viewCount) * 100
-        return Double(Int(ratio * 10)) / 10.0
-    }
-
-    var notBuyCountRatio: Double {
-        return 100 - buyCountRatio
+    init(postData: PostModel) {
+        self.postData = postData
+        self.viewModel =  VoteContentViewModel(postData: postData)
     }
 
     var body: some View {
@@ -63,12 +49,12 @@ struct VoteContentView: View {
         }
         .fullScreenCover(isPresented: $isImageDetailPresented) {
             NavigationView {
-                ImageDetailView(imageURL: imageURL, externalURL: externalURL)
+                ImageDetailView(imageURL: postData.image, externalURL: postData.externalURL)
             }
         }
         .fullScreenCover(isPresented: $isLinkWebViewPresented) {
             NavigationView {
-                LinkView(externalURL: externalURL)
+                LinkView(externalURL: postData.externalURL)
             }
         }
     }
@@ -84,7 +70,7 @@ extension VoteContentView {
 
     private var titleView: some View {
         HStack {
-            Text(title)
+            Text(postData.title)
                 .font(.system(size: 20, weight: .bold))
             Spacer()
             Image(systemName: "chevron.right")
@@ -100,14 +86,14 @@ extension VoteContentView {
                 .padding(.trailing, 12)
             Image(systemName: "person.fill")
                 .padding(.trailing, 3)
-            Text("\(viewCount)")
+            Text("\(postData.viewCount)")
         }
         .font(.system(size: 12))
         .foregroundStyle(.gray)
     }
 
     private var contentTextView: some View {
-        Text(contents)
+        Text(postData.contents)
             .font(.system(size: 16))
     }
 
@@ -121,9 +107,9 @@ extension VoteContentView {
 
     @ViewBuilder
     private var voteImageView: some View {
-        if !imageURL.isEmpty {
+        if !postData.image.isEmpty {
             ZStack(alignment: .bottomTrailing) {
-                KFImage(URL(string: imageURL)!)
+                KFImage(URL(string: postData.image)!)
                     .placeholder {
                         ProgressView()
                     }
@@ -162,7 +148,7 @@ extension VoteContentView {
 
     @ViewBuilder
     private var voteView: some View {
-        if viewModel.isVoteCompleted {
+        if viewModel.isVoted {
             completedVoteView
         } else {
             defaultVoteView
@@ -172,13 +158,13 @@ extension VoteContentView {
     private var completedVoteView: some View {
         ZStack {
             HStack(spacing: 0) {
-                voteResultView(for: .agree, buyCountRatio)
-                voteResultView(for: .disagree, notBuyCountRatio)
+                voteResultView(for: .agree, viewModel.buyCountRatio)
+                voteResultView(for: .disagree, viewModel.notBuyCountRatio)
             }
             .frame(width: 338, height: 60)
             vsLabel
-                .offset(x: 169 - (338 * (100 - buyCountRatio) / 100))
-                .opacity(buyCountRatio > 95 || notBuyCountRatio > 95 ? 0.0 : 1.0)
+                .offset(x: 169 - (338 * (100 - viewModel.buyCountRatio) / 100))
+                .opacity(viewModel.buyCountRatio > 95 || viewModel.notBuyCountRatio > 95 ? 0.0 : 1.0)
         }
     }
 
@@ -203,7 +189,7 @@ extension VoteContentView {
             HStack(spacing: 0) {
                 Button {
                     print("buy button tap")
-                    viewModel.postVoteCreate(.agree)
+                    viewModel.postVoteCreate(VoteType.agree.rawValue)
                 } label: {
                     Text("산다")
                         .font(.system(size: 20, weight: .medium))
@@ -213,7 +199,7 @@ extension VoteContentView {
                 }
                 Button {
                     print("not buy button tap")
-                    viewModel.postVoteCreate(.disagree)
+                    viewModel.postVoteCreate(VoteType.disagree.rawValue)
                 } label: {
                     Text("안산다")
                         .font(.system(size: 20, weight: .medium))
@@ -273,12 +259,12 @@ extension VoteContentView {
 
     @ViewBuilder
     private var likeCountingLabel: some View {
-        if likeCount != 0 {
+        if postData.likeCount != 0 {
             HStack {
                 Circle()
                     .frame(width: 20, height: 20)
                     .foregroundStyle(.gray)
-                Text("김아무개님 외 \(likeCount)명이 좋아합니다")
+                Text("김아무개님 외 \(postData.likeCount)명이 좋아합니다")
                     .font(.system(size: 14, weight: .medium))
             }
         }
@@ -286,11 +272,11 @@ extension VoteContentView {
 
     @ViewBuilder
     private var commentCountButton: some View {
-        if commentCount != 0 {
+        if postData.commentCount != 0 {
             Button {
                 print("comment button did tap")
             } label: {
-                Text("댓글 \(commentCount)개 모두 보기")
+                Text("댓글 \(postData.commentCount)개 모두 보기")
                     .font(.system(size: 14))
                     .foregroundStyle(.gray)
             }
@@ -338,16 +324,4 @@ extension VoteContentView {
             .frame(height: 10)
             .foregroundStyle(Color(.secondarySystemBackground))
     }
-}
-
-#Preview {
-    VoteContentView(title: "배고파... 치킨 살말...",
-                    contents: "너무너무 배고파혀 빨리정래줘 꾸예우에웨에ㅐㅜ엑으우어우양아ㅔㅇㅇ엥",
-                    imageURL: "https://picsum.photos/200/300",
-                    externalURL: "",
-                    likeCount: 4,
-                    viewCount: 6,
-                    commentCount: 20,
-                    agreeCount: 3,
-                    disagreeCount: 3, isMine: true)
 }

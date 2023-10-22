@@ -19,7 +19,7 @@
 		ABB71D702AE2755000BE0671 /* PostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D6F2AE2755000BE0671 /* PostModel.swift */; };
 		ABB71D722AE2756E00BE0671 /* VoteContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D712AE2756E00BE0671 /* VoteContentView.swift */; };
 		ABB71D742AE2758200BE0671 /* ImageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D732AE2758200BE0671 /* ImageDetailView.swift */; };
-		ABB71D762AE2758B00BE0671 /* VoteCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D752AE2758B00BE0671 /* VoteCellView.swift */; };
+		ABB71D762AE2758B00BE0671 /* MainCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D752AE2758B00BE0671 /* MainCellView.swift */; };
 		ABB71D7A2AE2A64300BE0671 /* LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D792AE2A64300BE0671 /* LinkView.swift */; };
 		ABB71D7C2AE2B3F100BE0671 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D7B2AE2B3F100BE0671 /* NotificationView.swift */; };
 		ABBBC6782AE471B700B1E614 /* WriteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBBC6772AE471B700B1E614 /* WriteViewModel.swift */; };
@@ -65,7 +65,7 @@
 		ABB71D6F2AE2755000BE0671 /* PostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostModel.swift; sourceTree = "<group>"; };
 		ABB71D712AE2756E00BE0671 /* VoteContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteContentView.swift; sourceTree = "<group>"; };
 		ABB71D732AE2758200BE0671 /* ImageDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailView.swift; sourceTree = "<group>"; };
-		ABB71D752AE2758B00BE0671 /* VoteCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteCellView.swift; sourceTree = "<group>"; };
+		ABB71D752AE2758B00BE0671 /* MainCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCellView.swift; sourceTree = "<group>"; };
 		ABB71D792AE2A64300BE0671 /* LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkView.swift; sourceTree = "<group>"; };
 		ABB71D7B2AE2B3F100BE0671 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		ABBBC6772AE471B700B1E614 /* WriteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteViewModel.swift; sourceTree = "<group>"; };
@@ -179,6 +179,7 @@
 		C7E459D42AE01FE300ECD008 /* MainView */ = {
 			isa = PBXGroup;
 			children = (
+				ABB71D752AE2758B00BE0671 /* MainCellView.swift */,
 				FD3205602ADD1F8100B0D5F6 /* MainView.swift */,
 				FDDEC15A2AE3EABA004509EA /* SearchView.swift */,
 				C7E459D22AE01FDE00ECD008 /* MainViewModel.swift */,
@@ -417,7 +418,7 @@
 				AB4522582ADDDBE000B69F24 /* SchoolModel.swift in Sources */,
 				FDF2D6C22AE51DFE0027EE8F /* MyDetailView.swift in Sources */,
 				FD6673372AE071550015007D /* APIManager.swift in Sources */,
-				ABB71D762AE2758B00BE0671 /* VoteCellView.swift in Sources */,
+				ABB71D762AE2758B00BE0671 /* MainCellView.swift in Sources */,
 				C7F1FD882ADDA39500C5A2A1 /* DesciptionView.swift in Sources */,
 				AB4D82692ADD7F4D00F35CCB /* ProfileSettingsView.swift in Sources */,
 				ABB71D722AE2756E00BE0671 /* VoteContentView.swift in Sources */,

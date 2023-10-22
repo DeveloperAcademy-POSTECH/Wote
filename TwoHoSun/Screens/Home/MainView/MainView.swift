@@ -11,6 +11,7 @@ enum MainPathType {
     case toAll
     case ourSchool
 }
+
 struct MainView: View {
     enum FilterType : CaseIterable {
         case all, popular, currentvote, finishvote
@@ -36,39 +37,54 @@ struct MainView: View {
 
     var body: some View {
         NavigationStack {
-            ZStack(alignment: .bottomTrailing) {
-                if viewModel.isEmptyList {
+            if viewModel.loading {
+                ProgressView("Loading")
+            } else {
+                ZStack(alignment: .bottomTrailing) {
                     emptyView
-                } else {
                     ScrollView {
                         LazyVStack {
                             filterBar
+                            ForEach(viewModel.datalist) { data in
+                                MainCellView(postData: data)
+                                    .onAppear {
+                                        guard let index = viewModel.datalist.firstIndex(where: {$0.id == data.id}) else {return}
+                                        if index % 10 == 0 && !viewModel.lastPage {
+                                            viewModel.getPosts()
+                                        }
+                                    }
+                            }
+                        }
+                    }
+                    .scrollIndicators(.hidden)
+                    floatingButton
+                }
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        Image("splash")
+                            .resizable()
+                            .frame(width: 120,height: 36)
+                    }
+                    ToolbarItem(placement: .topBarTrailing) {
+                        HStack {
+                            noticeButton
+                            searchButton
                         }
                     }
                 }
-                floatingButton
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Image("splash")
-                        .resizable()
-                        .frame(width: 120,height: 36)
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    HStack {
-                        noticeButton
-                        searchButton
+                .fullScreenCover(isPresented: $isWriteViewPresented) {
+                    NavigationStack {
+                        WriteView(viewModel: WriteViewModel())
                     }
                 }
             }
-            .fullScreenCover(isPresented: $isWriteViewPresented) {
-                NavigationStack {
-                    WriteView(viewModel: WriteViewModel())
-                }
-            }
+        }
+        .onAppear {
+            viewModel.getPosts(30,first: true)
         }
     }
+
 }
 
 extension MainView {
@@ -159,26 +175,28 @@ extension MainView {
         }
     }
 
+    @ViewBuilder
     private var emptyView: some View {
-        VStack {
-            filterBar
-            Spacer()
-            Image(systemName: "photo")
-            Text("아직 소비고민이 없어요")
-            Button {
-                touchPlus.toggle()
-            } label: {
-                Text("투표하러 가기")
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundStyle(Color.white)
-                    .frame(width: 148, height: 52)
-                    .background(Color.gray)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
+        if viewModel.datalist.isEmpty {
+            VStack {
+                filterBar
+                Spacer()
+                Image(systemName: "photo")
+                Text("아직 소비고민이 없어요")
+                Button {
+                    touchPlus.toggle()
+                } label: {
+                    Text("투표하러 가기")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(Color.white)
+                        .frame(width: 148, height: 52)
+                        .background(Color.gray)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
+                Spacer()
             }
-            Spacer()
         }
     }
-
     func filterButton(_ title: String) -> some View {
         let isSelected = filterState.title == title
         return Button {

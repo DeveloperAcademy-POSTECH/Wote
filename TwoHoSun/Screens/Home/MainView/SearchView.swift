@@ -34,9 +34,7 @@ struct SearchView: View {
             if hasResult {
                 ScrollView {
                     VStack {
-                        VoteCellView()
-                        VoteCellView()
-                        VoteCellView()
+                        Text("hi")
                     }
                 }
             }
