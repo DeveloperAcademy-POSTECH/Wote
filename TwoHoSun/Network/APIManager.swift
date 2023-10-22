@@ -10,7 +10,7 @@ import Foundation
 
 import Alamofire
 
-class APIManager {
+class APIManager {  
     static let shared = APIManager()
     private init() {}
     
@@ -26,6 +26,7 @@ class APIManager {
         case postProfileSetting(profile: ProfileSetting)
         case refreshToken
         case postVoteCreate(postId: Int, param: VoteType)
+        case postCreate(postCreate: PostCreateModel)
 
         var headers: HTTPHeaders {
             switch self {
@@ -51,6 +52,10 @@ class APIManager {
                 return [
                     "Content-Type": "application/json"
                 ]
+            case .postCreate:
+                return [
+                    "Content-Type": "application/json"
+                ]
             }
         }
         
@@ -65,6 +70,8 @@ class APIManager {
             case .refreshToken:
                 return .post
             case .postVoteCreate:
+                return .post
+            case .postCreate:
                 return .post
             }
         }
@@ -100,6 +107,15 @@ class APIManager {
                 return [
                     "voteType": param
                 ]
+            case .postCreate(let postCreate):
+                return [
+                    "postType": postCreate.postType,
+                    "title": postCreate.title,
+                    "contents": postCreate.contents,
+                    "image": postCreate.image,
+                    "externalURL": postCreate.externalURL,
+                    "postTagList": postCreate.postTagList
+                ]
             }
         }
         
@@ -114,6 +130,8 @@ class APIManager {
             case .refreshToken:
                 return JSONEncoding.default
             case .postVoteCreate:
+                return JSONEncoding.default
+            case .postCreate:
                 return JSONEncoding.default
             }
         }
@@ -130,6 +148,8 @@ class APIManager {
                 return "/api/auth/refresh"
             case .postVoteCreate(let postId, _):
                 return "/api/post/\(postId)/votes"
+            case .postCreate:
+                return "/api/posts"
             }
         }
     }

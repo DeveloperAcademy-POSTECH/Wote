@@ -23,6 +23,7 @@
 		ABB71D7A2AE2A64300BE0671 /* LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D792AE2A64300BE0671 /* LinkView.swift */; };
 		ABB71D7C2AE2B3F100BE0671 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D7B2AE2B3F100BE0671 /* NotificationView.swift */; };
 		ABBBC6782AE471B700B1E614 /* WriteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBBC6772AE471B700B1E614 /* WriteViewModel.swift */; };
+		ABBBC67C2AE49CC800B1E614 /* PostCreateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBBC67B2AE49CC800B1E614 /* PostCreateModel.swift */; };
 		ABBFB6302AE3EA2F006CE8CA /* VoteContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBFB62F2AE3EA2F006CE8CA /* VoteContentViewModel.swift */; };
 		ABBFB6322AE3EABD006CE8CA /* VoteCreateRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBFB6312AE3EABD006CE8CA /* VoteCreateRequestModel.swift */; };
 		C7DE44BB2AE0BBD9001639CB /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DE44BA2AE0BBD9001639CB /* DetailView.swift */; };
@@ -66,6 +67,7 @@
 		ABB71D792AE2A64300BE0671 /* LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkView.swift; sourceTree = "<group>"; };
 		ABB71D7B2AE2B3F100BE0671 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		ABBBC6772AE471B700B1E614 /* WriteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteViewModel.swift; sourceTree = "<group>"; };
+		ABBBC67B2AE49CC800B1E614 /* PostCreateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCreateModel.swift; sourceTree = "<group>"; };
 		ABBFB62F2AE3EA2F006CE8CA /* VoteContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteContentViewModel.swift; sourceTree = "<group>"; };
 		ABBFB6312AE3EABD006CE8CA /* VoteCreateRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteCreateRequestModel.swift; sourceTree = "<group>"; };
 		C7DE44BA2AE0BBD9001639CB /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
@@ -251,6 +253,7 @@
 				C7E459CC2ADE8A1300ECD008 /* GeneralResponse.swift */,
 				AB4522572ADDDBE000B69F24 /* SchoolModel.swift */,
 				ABB71D6F2AE2755000BE0671 /* PostModel.swift */,
+				ABBBC67B2AE49CC800B1E614 /* PostCreateModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -427,6 +430,7 @@
 				C7F1FD842ADDA2F000C5A2A1 /* OnBoardingView.swift in Sources */,
 				C7DE44BD2AE0DCE7001639CB /* CommentCell.swift in Sources */,
 				ABB71D7C2AE2B3F100BE0671 /* NotificationView.swift in Sources */,
+				ABBBC67C2AE49CC800B1E614 /* PostCreateModel.swift in Sources */,
 				C7E459D62AE03FEF00ECD008 /* WriteView.swift in Sources */,
 				AB4522532ADDD99500B69F24 /* SchoolSearchView.swift in Sources */,
 				C7E459D32AE01FDE00ECD008 /* MainViewModel.swift in Sources */,
