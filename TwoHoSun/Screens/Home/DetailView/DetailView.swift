@@ -68,7 +68,7 @@ extension DetailView {
 }
 struct AlertCustomToggle: ToggleStyle {
     func makeBody(configuration: Configuration) -> some View {
-        var isOn = configuration.isOn
+        let isOn = configuration.isOn
         return ZStack {
             RoundedRectangle(cornerRadius: 17)
                 .frame(width: 61, height: 21)

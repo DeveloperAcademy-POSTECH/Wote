@@ -156,6 +156,3 @@ extension BottomSheetView {
         )
     }
 }
-//#Preview {
-//    BottomSheetView(navigationPath: .constant([.mainView]))
-//}
