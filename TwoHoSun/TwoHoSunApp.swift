@@ -21,13 +21,7 @@ struct TwoHoSunApp: App {
             OnBoardingView()
 //            }
 //
-//            MainTabView()
-//            MainView()
-//            NavigationView {
-//                WriteView(isWriteViewPresented: .constant(true), viewModel: WriteViewModel())
-//            }
-//            ProfileSettingsView(navigationPath: $viewModel.navigationPath,
-//                                viewModel: ProfileSettingViewModel())
+            OnBoardingView()
         }
     }
 }
