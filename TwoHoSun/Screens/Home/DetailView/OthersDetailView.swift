@@ -16,7 +16,7 @@ struct Comment : Hashable {
     let hasResponse: Bool
 }
 
-struct DetailView : View {
+struct OthersDetailView : View {
     var userData : [Comment] = [
         Comment(nickname: "우왁굳", writetime: 1, profileImage: "profile", commentData: "이야 이걸 안사? ", isReply: false, hasResponse: true),
         Comment(nickname: "주용킴", writetime: 2, profileImage: "profile", commentData: "지금 세일이야?", isReply: true, hasResponse: false),
@@ -48,7 +48,7 @@ struct DetailView : View {
         }
     }
 }
-extension DetailView {
+extension OthersDetailView {
     private var detailHeaderView: some View {
         HStack {
             Image(systemName: "person")
@@ -68,7 +68,7 @@ extension DetailView {
 }
 struct AlertCustomToggle: ToggleStyle {
     func makeBody(configuration: Configuration) -> some View {
-        var isOn = configuration.isOn
+        let isOn = configuration.isOn
         return ZStack {
             RoundedRectangle(cornerRadius: 17)
                 .frame(width: 61, height: 21)
@@ -102,7 +102,7 @@ struct AlertCustomToggle: ToggleStyle {
     }
 }
 
-extension DetailView {
+extension OthersDetailView {
     var seperatorView: some View {
         Rectangle()
             .fill(.ultraThickMaterial)
@@ -170,5 +170,5 @@ extension DetailView {
 }
 
 #Preview {
-    DetailView()
+    OthersDetailView()
 }

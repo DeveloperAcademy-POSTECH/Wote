@@ -25,7 +25,7 @@
 		ABBBC6782AE471B700B1E614 /* WriteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBBC6772AE471B700B1E614 /* WriteViewModel.swift */; };
 		ABBFB6302AE3EA2F006CE8CA /* VoteContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBFB62F2AE3EA2F006CE8CA /* VoteContentViewModel.swift */; };
 		ABBFB6322AE3EABD006CE8CA /* VoteCreateRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBFB6312AE3EABD006CE8CA /* VoteCreateRequestModel.swift */; };
-		C7DE44BB2AE0BBD9001639CB /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DE44BA2AE0BBD9001639CB /* DetailView.swift */; };
+		C7DE44BB2AE0BBD9001639CB /* OthersDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DE44BA2AE0BBD9001639CB /* OthersDetailView.swift */; };
 		C7DE44BD2AE0DCE7001639CB /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DE44BC2AE0DCE7001639CB /* CommentCell.swift */; };
 		C7DE44C22AE26109001639CB /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DE44C12AE26109001639CB /* View+.swift */; };
 		C7E30E2B2ADC40E4001AE89B /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E30E2A2ADC40E4001AE89B /* LoginViewModel.swift */; };
@@ -49,6 +49,8 @@
 		FDDB990C2ADC1BEC00B1163F /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = FDDB990B2ADC1BEC00B1163F /* .swiftlint.yml */; };
 		FDDEC15B2AE3EABA004509EA /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEC15A2AE3EABA004509EA /* SearchView.swift */; };
 		FDE9FC9B2ADF28CF00EBC1F8 /* ProfileSettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDE9FC9A2ADF28CF00EBC1F8 /* ProfileSettingModel.swift */; };
+		FDF2D6C22AE51DFE0027EE8F /* MyDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDF2D6C12AE51DFE0027EE8F /* MyDetailView.swift */; };
+		FDF2D6C82AE59ACA0027EE8F /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDF2D6C72AE59ACA0027EE8F /* ChartView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,7 +71,7 @@
 		ABBBC6772AE471B700B1E614 /* WriteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteViewModel.swift; sourceTree = "<group>"; };
 		ABBFB62F2AE3EA2F006CE8CA /* VoteContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteContentViewModel.swift; sourceTree = "<group>"; };
 		ABBFB6312AE3EABD006CE8CA /* VoteCreateRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteCreateRequestModel.swift; sourceTree = "<group>"; };
-		C7DE44BA2AE0BBD9001639CB /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		C7DE44BA2AE0BBD9001639CB /* OthersDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OthersDetailView.swift; sourceTree = "<group>"; };
 		C7DE44BC2AE0DCE7001639CB /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		C7DE44C12AE26109001639CB /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
 		C7E30E2A2ADC40E4001AE89B /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
@@ -96,6 +98,8 @@
 		FDDB990B2ADC1BEC00B1163F /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		FDDEC15A2AE3EABA004509EA /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		FDE9FC9A2ADF28CF00EBC1F8 /* ProfileSettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingModel.swift; sourceTree = "<group>"; };
+		FDF2D6C12AE51DFE0027EE8F /* MyDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDetailView.swift; sourceTree = "<group>"; };
+		FDF2D6C72AE59ACA0027EE8F /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,7 +160,9 @@
 		C7DE44B92AE0BB4E001639CB /* DetailView */ = {
 			isa = PBXGroup;
 			children = (
-				C7DE44BA2AE0BBD9001639CB /* DetailView.swift */,
+				FDF2D6C12AE51DFE0027EE8F /* MyDetailView.swift */,
+				FDF2D6C72AE59ACA0027EE8F /* ChartView.swift */,
+				C7DE44BA2AE0BBD9001639CB /* OthersDetailView.swift */,
 				C7DE44BC2AE0DCE7001639CB /* CommentCell.swift */,
 			);
 			path = DetailView;
@@ -296,9 +302,9 @@
 		FD32055F2ADD1F6B00B0D5F6 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				C7E459D42AE01FE300ECD008 /* MainView */,
 				ABB71D6B2AE2752C00BE0671 /* Vote */,
 				C7DE44B92AE0BB4E001639CB /* DetailView */,
-				C7E459D42AE01FE300ECD008 /* MainView */,
 				ABBFB6332AE43561006CE8CA /* Write */,
 				C7E459D02ADFF89000ECD008 /* MainTabView.swift */,
 			);
@@ -409,6 +415,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AB4522582ADDDBE000B69F24 /* SchoolModel.swift in Sources */,
+				FDF2D6C22AE51DFE0027EE8F /* MyDetailView.swift in Sources */,
 				FD6673372AE071550015007D /* APIManager.swift in Sources */,
 				ABB71D762AE2758B00BE0671 /* VoteCellView.swift in Sources */,
 				C7F1FD882ADDA39500C5A2A1 /* DesciptionView.swift in Sources */,
@@ -419,7 +426,7 @@
 				FD4E75B62ADE9C20000C2277 /* ProfileSettingViewModel.swift in Sources */,
 				AB45225C2ADE665100B69F24 /* URLConst.swift in Sources */,
 				FDDEC15B2AE3EABA004509EA /* SearchView.swift in Sources */,
-				C7DE44BB2AE0BBD9001639CB /* DetailView.swift in Sources */,
+				C7DE44BB2AE0BBD9001639CB /* OthersDetailView.swift in Sources */,
 				ABBBC6782AE471B700B1E614 /* WriteViewModel.swift in Sources */,
 				FD3205612ADD1F8100B0D5F6 /* MainView.swift in Sources */,
 				FD4E75B42ADE9616000C2277 /* NicknameModel.swift in Sources */,
@@ -436,6 +443,7 @@
 				C7E459D32AE01FDE00ECD008 /* MainViewModel.swift in Sources */,
 				ABB71D702AE2755000BE0671 /* PostModel.swift in Sources */,
 				ABBFB6302AE3EA2F006CE8CA /* VoteContentViewModel.swift in Sources */,
+				FDF2D6C82AE59ACA0027EE8F /* ChartView.swift in Sources */,
 				C7E30E2B2ADC40E4001AE89B /* LoginViewModel.swift in Sources */,
 				FDE9FC9B2ADF28CF00EBC1F8 /* ProfileSettingModel.swift in Sources */,
 				FD9280392ADD8A0E007285BA /* LoginModel.swift in Sources */,
