@@ -14,7 +14,8 @@ struct DetailView : View {
     @FocusState var isFocus: Bool
     @State private var isSendMessage: Bool = false
     @State private var scrollSpot: Int = 0
-//    @State private var parentCommentId: Int = 0
+    @State private var isOpenComment: Bool = false
+    //    @State private var parentCommentId: Int = 0
 
     let postData: PostModel
     let viewModel: DetailViewModel
@@ -123,7 +124,24 @@ extension DetailView {
                             scrollSpot = comment.commentId
                             isFocus = true
                         }
-                        .id(comment.commentId)
+//                        Text(comment.commentId)
+
+//                        if comment.childComment {
+//                            Button(action: {
+//                                isOpenComment = true
+//                            }, label: {
+//                                HStack {
+//                                    Rectangle()
+//                                        .fill(.gray)
+//                                        .frame(width: 29, height: 1)
+//                                    Text("답글 \(comment.childComments!.count)개 더보기")
+//                                        .font(.system(size: 12))
+//                                        .foregroundStyle(.gray)
+//                                }
+//                            })
+//                            .padding(.top, 18)
+//                        }
+                            .id(comment.commentId)
                     }
                     .onChange(of: scrollSpot) { _ in
                         proxy.scrollTo(scrollSpot, anchor: .top)

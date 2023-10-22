@@ -45,11 +45,27 @@ struct CommentCell: View {
     }
 
     var body: some View {
-        HStack(alignment: .top) {
+        VStack(alignment: .leading, spacing: 12) {
+            makeCellView(comment: comment)
             if hasChildComments {
-                Spacer()
-                    .frame(width: 26)
+                HStack {
+                    Spacer()
+                        .frame(width: 32,height: 32)
+                    if isOpenComment {
+                        VStack {
+                            ForEach(comment.childComments!) { comment in
+                                makeCellView(comment: comment)
+                            }
+                        }
+                    } else {
+                        moreCommentButton
+                    }
+                }
             }
+        }
+    }
+    func makeCellView(comment: CommentsModel) -> some View {
+        HStack(alignment: .top) {
             Image(systemName: "person")
                 .resizable()
                 .scaledToFit()
@@ -82,22 +98,22 @@ struct CommentCell: View {
                             onReplyButtonTapped()
                         }
                 })
-                if(hasChildComments) {
-                    Button(action: {
-                        isOpenComment.toggle()
-                    }, label: {
-                        HStack {
-                            Rectangle()
-                                .fill(.gray)
-                                .frame(width: 29, height: 1)
-//                            Text("답글 \(comment.childComments.count)개 더보기")
-//                                .font(.system(size: 12))
-//                                .foregroundStyle(.gray)
-                        }
-                    })
-                    .padding(.top, 18)
-                }
             }
         }
+    }
+
+    var moreCommentButton: some View {
+            Button(action: {
+                isOpenComment.toggle()
+            }, label: {
+                HStack {
+                    Rectangle()
+                        .fill(.gray)
+                        .frame(width: 29, height: 1)
+                    Text("답글 \(comment.childComments!.count)개 더보기")
+                        .font(.system(size: 12))
+                        .foregroundStyle(.gray)
+                }
+            })
     }
 }

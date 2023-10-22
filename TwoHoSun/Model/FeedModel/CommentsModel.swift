@@ -15,6 +15,4 @@ struct CommentsModel: Codable, Identifiable {
     let content: String
     let author: Author
     let childComments: [CommentsModel]?
-
- 
 }
