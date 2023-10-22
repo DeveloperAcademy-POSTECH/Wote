@@ -129,9 +129,9 @@
 		ABB71D6B2AE2752C00BE0671 /* Vote */ = {
 			isa = PBXGroup;
 			children = (
+				ABB71D752AE2758B00BE0671 /* VoteCellView.swift */,
 				ABB71D712AE2756E00BE0671 /* VoteContentView.swift */,
 				ABB71D732AE2758200BE0671 /* ImageDetailView.swift */,
-				ABB71D752AE2758B00BE0671 /* VoteCellView.swift */,
 				ABB71D792AE2A64300BE0671 /* LinkView.swift */,
 				ABBFB62F2AE3EA2F006CE8CA /* VoteContentViewModel.swift */,
 			);

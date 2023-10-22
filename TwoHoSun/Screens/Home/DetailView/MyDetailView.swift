@@ -28,7 +28,7 @@ struct MyDetailView: View {
         ScrollView {
             VStack {
                 detailHeaderView
-                VoteContentView(title: model.title, contents: model.contents, imageURL: model.image, externalURL: model.externalURL, likeCount: model.likeCount, viewCount: model.viewCount, commentCount: model.commentCount, agreeCount: model.voteCount.agreeCount, disagreeCount: model.voteCount.disagreeCount)
+                VoteContentView(title: model.title, contents: model.contents, imageURL: model.image, externalURL: model.externalURL, likeCount: model.likeCount, viewCount: model.viewCount, commentCount: model.commentCount, agreeCount: model.voteCount.agreeCount, disagreeCount: model.voteCount.disagreeCount, isMine: true)
             }
         }
     }

@@ -21,6 +21,8 @@ struct VoteContentView: View {
     @State var commentCount: Int
     @State var agreeCount: Int
     @State var disagreeCount: Int
+    @State var isMine: Bool
+    
     private let viewModel = VoteContentViewModel()
 
     var buyCountRatio: Double {
@@ -51,32 +53,13 @@ struct VoteContentView: View {
                     .padding(.top, 10)
             }
             .padding(.horizontal, 26)
-
-            HStack(spacing: 0) {
-                likeButton
-                    .padding(.trailing, 10)
-                commentButton
-                Spacer()
-                shareButton
+            if isMine {
+                ChartView()
+                    .padding(.top, 20)
             }
-            .padding(.leading, 20)
-            .padding(.trailing, 26)
-            .padding(.top, 12)
-
-            VStack(alignment: .leading, spacing: 0) {
-                likeCountingLabel
-                    .padding(.top, 10)
-                commentCountButton
-                    .padding(.top, 8)
-                uploadTimeLabel
-                    .padding(.top, 8)
-                    .padding(.bottom, 20)
-            }
-            .padding(.leading, 26)
-
-            Rectangle()
-                .frame(height: 10)
-                .foregroundStyle(.gray)
+            buttonsBar
+            informationLabels
+            dividerBlock
         }
         .fullScreenCover(isPresented: $isImageDetailPresented) {
             NavigationView {
@@ -323,6 +306,38 @@ extension VoteContentView {
     private func getFirstDecimalNum(_ voteRatio: Double) -> Int {
         return Int((voteRatio * 10).truncatingRemainder(dividingBy: 10))
     }
+    
+    private var buttonsBar: some View {
+        HStack(spacing: 0) {
+            likeButton
+                .padding(.trailing, 10)
+            commentButton
+            Spacer()
+            shareButton
+        }
+        .padding(.leading, 20)
+        .padding(.trailing, 26)
+        .padding(.top, 12)
+    }
+    
+    private var informationLabels: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            likeCountingLabel
+                .padding(.top, 10)
+            commentCountButton
+                .padding(.top, 8)
+            uploadTimeLabel
+                .padding(.top, 8)
+                .padding(.bottom, 20)
+        }
+        .padding(.leading, 26)
+    }
+    
+    private var dividerBlock: some View {
+        Rectangle()
+            .frame(height: 10)
+            .foregroundStyle(Color(.secondarySystemBackground))
+    }
 }
 
 #Preview {
@@ -334,5 +349,5 @@ extension VoteContentView {
                     viewCount: 6,
                     commentCount: 20,
                     agreeCount: 3,
-                    disagreeCount: 3)
+                    disagreeCount: 3, isMine: true)
 }

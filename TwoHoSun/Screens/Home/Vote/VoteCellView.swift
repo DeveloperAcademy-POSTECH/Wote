@@ -9,7 +9,7 @@ import SwiftUI
 
 struct VoteCellView: View {
     @State private var postModel: PostModel
-
+    
     init() {
         postModel = PostModel(date: "",
                               postType: .allSchool,
@@ -25,7 +25,7 @@ struct VoteCellView: View {
                               commentCount: 20,
                               voteCount: VoteCountModel(agreeCount: 73, disagreeCount: 74))
     }
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             voteHeaderView
@@ -37,13 +37,14 @@ struct VoteCellView: View {
                             viewCount: postModel.viewCount,
                             commentCount: postModel.commentCount,
                             agreeCount: postModel.voteCount.agreeCount,
-                            disagreeCount: postModel.voteCount.disagreeCount)
+                            disagreeCount: postModel.voteCount.disagreeCount,
+                            isMine: true)
         }
     }
 }
 
 extension VoteCellView {
-
+    
     private var voteHeaderView: some View {
         VStack(spacing: 0) {
             HStack {
@@ -58,7 +59,7 @@ extension VoteCellView {
                 .padding(.horizontal, 11)
         }
     }
-
+    
     private var userInfoView: some View {
         HStack(spacing: 12) {
             Circle()
@@ -68,7 +69,7 @@ extension VoteCellView {
                 .font(.system(size: 16, weight: .medium))
         }
     }
-
+    
     private var moreButton: some View {
         Button {
             print("more button did tap")
@@ -78,7 +79,7 @@ extension VoteCellView {
                 .foregroundStyle(.gray)
         }
     }
-
+    
     private var divider: some View {
         Rectangle()
             .frame(height: 1)

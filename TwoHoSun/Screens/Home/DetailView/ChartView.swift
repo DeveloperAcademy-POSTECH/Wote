@@ -8,14 +8,22 @@
 import SwiftUI
 
 struct ChartView: View {
+    @State var currentPage: Int = 0
+    
     var body: some View {
-        TabView {
-            genderChart
-            gradeChart
-            regionChart
+        VStack(spacing: 10) {
+            TabView(selection: $currentPage) {
+                genderChart
+                    .tag(0)
+                gradeChart
+                    .tag(1)
+                regionChart
+                    .tag(2)
+            }
+            .tabViewStyle(.page(indexDisplayMode: .never))
+            .frame(height: 200)
+            horizontalScroll
         }
-        .tabViewStyle(.page)
-        .frame(height: 200)
     }
 }
 
@@ -156,6 +164,22 @@ extension ChartView {
                 .font(.system(size: 10, weight: .medium))
                 .fixedSize()
                 .multilineTextAlignment(.center)
+        }
+    }
+    
+    private var horizontalScroll: some View {
+        HStack {
+            ForEach(0..<3) { idx in
+                if idx == currentPage {
+                    Rectangle()
+                        .frame(width: 28,height: 9)
+                        .foregroundStyle(Color.gray)
+                        .clipShape(RoundedRectangle(cornerRadius: 21))
+                } else {
+                    Circle().frame(width: 8, height: 8)
+                        .foregroundStyle(Color(.secondarySystemFill))
+                }
+            }
         }
     }
 }
