@@ -20,7 +20,7 @@ final class MainViewModel {
     var isEmptyList: Bool = false
 
     func getPosts(_ size: Int = 10, first: Bool = false) {
-        APIManager.shared.requestAPI(type: .getPosts(nextIndex, size)) {  (response: GeneralResponse<[PostResponse]>) in
+        APIManager.shared.requestAPI(type: .getPosts(page: nextIndex, size: size)) {  (response: GeneralResponse<[PostResponse]>) in
             switch response.status {
             case 200:
                 guard let data = response.data else {return}

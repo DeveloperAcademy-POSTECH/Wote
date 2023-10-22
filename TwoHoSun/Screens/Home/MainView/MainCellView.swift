@@ -30,7 +30,7 @@ extension MainCellView {
             .padding(.horizontal, 26)
             .padding(.top, 16)
             .padding(.bottom, 14)
-            divider
+            Divider()
                 .padding(.horizontal, 11)
         }
     }
@@ -55,9 +55,4 @@ extension MainCellView {
         }
     }
 
-    private var divider: some View {
-        Rectangle()
-            .frame(height: 1)
-            .foregroundStyle(.gray)
-    }
 }
