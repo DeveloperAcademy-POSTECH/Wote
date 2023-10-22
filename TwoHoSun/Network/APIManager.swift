@@ -54,16 +54,28 @@ class APIManager {
                     "Content-Type" : "application/json",
                     "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
                     ]
+//                return [
+//                    "Content-Type" : "application/json",
+//                    "Authorization": "Bearer eyJwcm92aWRlcklkIjoiMDAwNjkwLmM0MmNjY2E4ZWM5MTQ3ZGFiZmM5MWQwN2FhZDM1NzAzLjIxNDYiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcm92aWRlcklkIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTY5Nzk4NjAzOSwiZXhwIjoxNjk4NTkwODM5fQ.-iu_RDbkR8chJmyz4soblszaFKR-aSXXOva-tWEUFqU"
+//                    ]
             case .postVoteCreate:
                 return [
                     "Content-Type": "application/json",
                     "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
                 ]
+//                return [
+//                    "Content-Type" : "application/json",
+//                    "Authorization": "Bearer eyJwcm92aWRlcklkIjoiMDAwNjkwLmM0MmNjY2E4ZWM5MTQ3ZGFiZmM5MWQwN2FhZDM1NzAzLjIxNDYiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcm92aWRlcklkIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTY5Nzk4NjAzOSwiZXhwIjoxNjk4NTkwODM5fQ.-iu_RDbkR8chJmyz4soblszaFKR-aSXXOva-tWEUFqU"
+//                    ]
             case .postCreate:
                 return [
                     "Content-Type": "application/json",
                     "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
                 ]
+//                return [
+//                    "Content-Type" : "application/json",
+//                    "Authorization": "Bearer eyJwcm92aWRlcklkIjoiMDAwNjkwLmM0MmNjY2E4ZWM5MTQ3ZGFiZmM5MWQwN2FhZDM1NzAzLjIxNDYiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcm92aWRlcklkIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTY5Nzk4NjAzOSwiZXhwIjoxNjk4NTkwODM5fQ.-iu_RDbkR8chJmyz4soblszaFKR-aSXXOva-tWEUFqU"
+//                    ]
             }
         }
         
@@ -129,7 +141,8 @@ class APIManager {
                     "contents": postCreate.contents,
                     "image": postCreate.image,
                     "externalURL": postCreate.externalURL,
-                    "postTagList": postCreate.postTagList
+                    "postTagList": postCreate.postTagList,
+                    "postCategoryType": postCreate.postCategoryType
                 ]
             }
         }
@@ -166,7 +179,7 @@ class APIManager {
             case .getPosts:
                 return "/api/posts"
             case .postVoteCreate(let postId, _):
-                return "/api/post/\(postId)/votes"
+                return "/api/posts/\(postId)/votes"
             case .postCreate:
                 return "/api/posts"
             }
@@ -177,7 +190,8 @@ class APIManager {
         let headers: HTTPHeaders = type.headers
         let parameters = type.parameters
         let url = URLConst.baseURL + type.path
-        
+
+
         AF.request(
             url,
             method: type.method,

@@ -17,9 +17,15 @@ struct TwoHoSunApp: App {
 //            if appState.hasValidToken {
 //             MainView()
 //            } else {
-            OnBoardingView()
+//            OnBoardingView()
 //            }
 //
+//            MainTabView()
+            OnBoardingView()
+//            MainView()
+//            NavigationView {
+//                WriteView(isWriteViewPresented: .constant(true), viewModel: WriteViewModel())
+//            }
         }
     }
 }

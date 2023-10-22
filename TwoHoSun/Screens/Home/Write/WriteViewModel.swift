@@ -14,30 +14,25 @@ final class WriteViewModel {
     var title = ""
     var externalURL = ""
     var content = ""
-    var tagText = ""
-    var tags = [String]()
+    var postCategoryType = PostCategoryType.purchaseConsideration
     var postCreateModel: PostCreateModel?
 
     var isTitleValid: Bool {
         guard !title.isEmpty else { return false }
         return true
     }
-
-    func removeTag(_ word: String) {
-        if !tags.isEmpty {
-            let index = tags.firstIndex(of: word)!
-            tags.remove(at: index)
-        }
-    }
     
     func createPost() {
         postCreateModel = PostCreateModel(postType: PostType.allSchool.rawValue,
-                                          title: title,
+                                          title: title + " " + postCategoryType.title,
                                           contents: content,
                                           image: "",
                                           externalURL: externalURL,
-                                          postTagList: tags)
+                                          postTagList: [],
+                                          postCategoryType: postCategoryType.rawValue)
         guard let postCreateModel = postCreateModel else { return }
+
+        print(postCreateModel)
 
         APIManager.shared.requestAPI(type: .postCreate(postCreate: postCreateModel)) { (response: GeneralResponse<NoData>) in
             switch response.status {
