@@ -76,7 +76,7 @@ final class ProfileSettingViewModel {
         guard let school = selectedSchoolInfo?.school,
               let grade = selectedGrade?.first else { return }
         model = ProfileSetting(userProfileImage: "",
-                               userNickname: nickname,
+                               userNickname: nickname, userGender: "남",
                                school: school,
                                grade: Int(String(grade))!)
         postProfileSetting()

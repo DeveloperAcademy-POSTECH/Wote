@@ -54,28 +54,16 @@ class APIManager {
                     "Content-Type" : "application/json",
                     "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
                     ]
-//                return [
-//                    "Content-Type" : "application/json",
-//                    "Authorization": "Bearer eyJwcm92aWRlcklkIjoiMDAwNjkwLmM0MmNjY2E4ZWM5MTQ3ZGFiZmM5MWQwN2FhZDM1NzAzLjIxNDYiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcm92aWRlcklkIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTY5Nzk4NjAzOSwiZXhwIjoxNjk4NTkwODM5fQ.-iu_RDbkR8chJmyz4soblszaFKR-aSXXOva-tWEUFqU"
-//                    ]
             case .postVoteCreate:
                 return [
                     "Content-Type": "application/json",
                     "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
                 ]
-//                return [
-//                    "Content-Type" : "application/json",
-//                    "Authorization": "Bearer eyJwcm92aWRlcklkIjoiMDAwNjkwLmM0MmNjY2E4ZWM5MTQ3ZGFiZmM5MWQwN2FhZDM1NzAzLjIxNDYiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcm92aWRlcklkIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTY5Nzk4NjAzOSwiZXhwIjoxNjk4NTkwODM5fQ.-iu_RDbkR8chJmyz4soblszaFKR-aSXXOva-tWEUFqU"
-//                    ]
             case .postCreate:
                 return [
                     "Content-Type": "application/json",
                     "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
                 ]
-//                return [
-//                    "Content-Type" : "application/json",
-//                    "Authorization": "Bearer eyJwcm92aWRlcklkIjoiMDAwNjkwLmM0MmNjY2E4ZWM5MTQ3ZGFiZmM5MWQwN2FhZDM1NzAzLjIxNDYiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcm92aWRlcklkIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTY5Nzk4NjAzOSwiZXhwIjoxNjk4NTkwODM5fQ.-iu_RDbkR8chJmyz4soblszaFKR-aSXXOva-tWEUFqU"
-//                    ]
             }
         }
         
@@ -118,6 +106,7 @@ class APIManager {
                         "schoolRegion": model.school.schoolRegion,
                         "schoolType": model.school.schoolType
                     ],
+                    "userGender": model.userGender,
                     "grade": model.grade
                 ]
             case .refreshToken:
