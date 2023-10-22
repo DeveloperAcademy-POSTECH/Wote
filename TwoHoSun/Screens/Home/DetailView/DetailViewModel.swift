@@ -23,6 +23,7 @@ class DetailViewModel {
             switch response.status {
             case 200:
                 guard let data = response.data else {return}
+                print(data)
                 self.commentsDatas = data
             default:
                 print("error")
@@ -43,8 +44,18 @@ class DetailViewModel {
             }
         }
     }
-
-    
-
-    
+    func deleteComments(postId: Int, commentId: Int) {
+        APIManager.shared.requestAPI(type: .deleteComments(postId: postId, commentId: commentId)) { (response: GeneralResponse<NoData>) in
+            switch response.status {
+            case 401:
+                APIManager.shared.refreshAllTokens()
+                self.deleteComments(postId: postId, commentId: commentId)
+            case 200:
+                print("delete 잘됨.")
+                self.isSendMessage = false
+            default:
+                print("error")
+            }
+        }
+    }
 }

@@ -8,6 +8,6 @@
 import Foundation
 struct CommentPostModel: Codable {
     let content: String
-    let parentId: Int
+    let parentId: Int?
     let postId: Int
 }

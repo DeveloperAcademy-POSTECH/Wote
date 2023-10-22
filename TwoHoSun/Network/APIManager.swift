@@ -13,13 +13,13 @@ import Alamofire
 class APIManager {
     static let shared = APIManager()
     private init() {}
-    
+
     private var cancellable: Set<AnyCancellable> = []
-    
+
     enum HttpMethod {
         case get, post, put, delete
     }
-    
+
     enum APIRequest {
         case postAuthorCode(authorization: String)
         case postNickname(nickname: String)
@@ -29,6 +29,7 @@ class APIManager {
         case postVoteCreate(postId: Int, param: String)
         case getComments(postId: Int)
         case postComments(commentPost: CommentPostModel)
+        case deleteComments(postId: Int, commentId: Int)
 
         var headers: HTTPHeaders {
             switch self {
@@ -54,7 +55,7 @@ class APIManager {
                 return [
                     "Content-Type" : "application/json",
                     "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
-                    ]
+                ]
             case .postVoteCreate:
                 return [
                     "Content-Type": "application/json",
@@ -70,9 +71,14 @@ class APIManager {
                     "Content-Type": "application/json",
                     "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
                 ]
+            case .deleteComments:
+                return [
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
+                ]
             }
         }
-        
+
         var method: HTTPMethod {
             switch self {
             case .postAuthorCode:
@@ -91,9 +97,11 @@ class APIManager {
                 return .get
             case .postComments:
                 return .post
+            case .deleteComments:
+                return .delete
             }
         }
-        
+
         var parameters: [String: Any] {
             switch self {
             case .postAuthorCode(let auth):
@@ -132,17 +140,22 @@ class APIManager {
                 ]
             case .getComments(let postId):
                 return [
-                    "postId": postId
-                ]
+                                    "postId": postId
+                                ]
             case .postComments(let postComment):
-                return [
+                var parameters: [String: Any] = [
                     "content": postComment.content,
-                    "parentId": postComment.parentId,
                     "postId": postComment.postId
                 ]
+                if let parentId = postComment.parentId {
+                    parameters["parentId"] = parentId
+                }
+                return parameters
+            case .deleteComments:
+                return [:]
             }
         }
-        
+
         var encoding: ParameterEncoding {
             switch self {
             case .postAuthorCode:
@@ -158,12 +171,14 @@ class APIManager {
             case .postVoteCreate:
                 return JSONEncoding.default
             case .getComments:
-                return JSONEncoding.default
+                return URLEncoding.default
             case .postComments:
                 return JSONEncoding.default
+            case .deleteComments:
+                return URLEncoding.queryString
             }
         }
-        
+
         var path: String {
             switch self {
             case .postAuthorCode:
@@ -182,6 +197,8 @@ class APIManager {
                 return "/api/posts/\(postId)/comments"
             case .postComments(let postComment):
                 return "/api/posts/\(postComment.postId)/comments"
+            case .deleteComments(let postId, let commentId):
+                return "/api/posts/\(postId)/comments/\(commentId)"
             }
         }
     }
@@ -190,28 +207,26 @@ class APIManager {
         let headers: HTTPHeaders = type.headers
         let parameters = type.parameters
         let url = URLConst.baseURL + type.path
-        
         AF.request(
             url,
             method: type.method,
             parameters: parameters,
             encoding: type.encoding,
             headers: headers
-        )
-        .publishDecodable(type: GeneralResponse<T>.self)
-        .value()
-        .receive(on: DispatchQueue.main)
-        .sink(receiveCompletion: { completion in
-            switch completion {
-            case .finished:
-                break
-            case .failure(let error):
-                print(error)
-            }
-        }, receiveValue: completion )
-        .store(in: &cancellable)
+        ).publishDecodable(type: GeneralResponse<T>.self)
+            .value()
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    print(error)
+                }
+            }, receiveValue: completion )
+            .store(in: &cancellable)
     }
-    
+
     func refreshAllTokens() {
         self.requestAPI(type: .refreshToken) { (response: GeneralResponse<Tokens>) in
             guard let data = response.data else { return }

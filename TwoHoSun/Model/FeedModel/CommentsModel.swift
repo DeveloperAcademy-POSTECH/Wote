@@ -12,16 +12,9 @@ struct CommentsModel: Codable, Identifiable {
     let commentId: Int
     let createDate: String
     let modifiedDate: String
-    let contents: String
+    let content: String
     let author: Author
-    let childComments: [CommentsModel?]
+    let childComments: [CommentsModel]?
 
-    enum CodingKeys: String, CodingKey {
-        case commentId = "comment_id"
-        case createDate
-        case modifiedDate
-        case contents
-        case author
-        case childComments
-    }
+ 
 }

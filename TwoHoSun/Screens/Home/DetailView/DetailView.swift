@@ -14,7 +14,7 @@ struct DetailView : View {
     @FocusState var isFocus: Bool
     @State private var isSendMessage: Bool = false
     @State private var scrollSpot: Int = 0
-    @State private var parentCommentId: Int = 0
+//    @State private var parentCommentId: Int = 0
 
     let postData: PostModel
     let viewModel: DetailViewModel
@@ -37,11 +37,14 @@ struct DetailView : View {
         }
         .onChange(of: isSendMessage) { _, newVal in
             if newVal {
-                viewModel.postComments(commentPost: CommentPostModel(content: commentText, parentId: parentCommentId, postId: postData.postId))
+                viewModel.postComments(commentPost: CommentPostModel(content: commentText, parentId: scrollSpot, postId: postData.postId))
             }
         }
         .onTapGesture {
             self.endTextEditing()
+        }
+        .onAppear {
+            viewModel.getComments()
         }
 
     }
@@ -116,11 +119,11 @@ extension DetailView {
                         .padding(.bottom, 16)
                         .padding(.top, 20)
                     ForEach(viewModel.commentsDatas) { comment in
-//                        CommentCell(comment: comment) {
-//                            scrollSpot = comment.hashValue
-//                            isFocus = true
-//                        }
-//                        .id(comment.hashValue)
+                        CommentCell(comment: comment) {
+                            scrollSpot = comment.commentId
+                            isFocus = true
+                        }
+                        .id(comment.commentId)
                     }
                     .onChange(of: scrollSpot) { _ in
                         proxy.scrollTo(scrollSpot, anchor: .top)
@@ -168,7 +171,3 @@ extension DetailView {
         }
     }
 }
-
-//#Preview {
-//    DetailView()
-//}

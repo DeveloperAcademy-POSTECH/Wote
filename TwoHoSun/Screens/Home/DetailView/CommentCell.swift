@@ -37,7 +37,7 @@ struct CommentCell: View {
     @State var isOpenComment: Bool = false
 
     var hasChildComments: Bool {
-        return !comment.childComments.isEmpty
+        return !comment.childComments!.isEmpty
     }
 
     var lastEdit: (String , Int) {
@@ -70,7 +70,7 @@ struct CommentCell: View {
                     })
                 }
                 .padding(.bottom, 6)
-                Text("\(comment.contents)")
+                Text("\(comment.content)")
                     .foregroundColor(.black)
                     .font(.system(size: 14))
                     .padding(.bottom, 4)
@@ -90,9 +90,9 @@ struct CommentCell: View {
                             Rectangle()
                                 .fill(.gray)
                                 .frame(width: 29, height: 1)
-                            Text("답글 \(comment.childComments.count)개 더보기")
-                                .font(.system(size: 12))
-                                .foregroundStyle(.gray)
+//                            Text("답글 \(comment.childComments.count)개 더보기")
+//                                .font(.system(size: 12))
+//                                .foregroundStyle(.gray)
                         }
                     })
                     .padding(.top, 18)
