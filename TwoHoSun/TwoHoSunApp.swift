@@ -15,10 +15,11 @@ struct TwoHoSunApp: App {
     var body: some Scene {
         WindowGroup {
 //            if appState.hasValidToken {
-             MainView()
+//             MainView()
 //            } else {
 //            }
 //
+            OnBoardingView()
         }
     }
 }
