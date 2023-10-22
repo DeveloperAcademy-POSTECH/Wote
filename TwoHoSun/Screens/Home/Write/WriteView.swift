@@ -9,9 +9,9 @@ import PhotosUI
 import SwiftUI
 
 enum TitleCategoryType: String, CaseIterable {
-    case buyOrNotBuy = "살까 말까?"
-    case doOrNotDo = "할까 말까?"
-    case eatOrNotEat = "먹을까 말까?"
+    case buyCategory = "살까 말까?"
+    case doCategory = "할까 말까?"
+    case eatCategory = "먹을까 말까?"
 }
 
 struct WriteView: View {
@@ -21,7 +21,7 @@ struct WriteView: View {
     @State private var contentTextCount = 0
     @State private var voteDeadlineValue = 0.0
     @State private var isRegisterButtonDidTap = false
-    @State private var selectedTitleCategory = TitleCategoryType.buyOrNotBuy
+    @State private var selectedTitleCategory = TitleCategoryType.buyCategory
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var selectedImageData: Data?
     @Binding var isWriteViewPresented: Bool
