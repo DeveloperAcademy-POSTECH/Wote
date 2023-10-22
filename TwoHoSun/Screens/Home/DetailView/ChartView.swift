@@ -10,9 +10,7 @@ import SwiftUI
 struct ChartView: View {
     var body: some View {
         TabView {
-            genderChart
-            genderChart
-            genderChart
+            gradeChart
         }
         .tabViewStyle(.page)
     }
@@ -64,20 +62,51 @@ extension ChartView {
     }
     
     private var gradeChart: some View {
-        VStack {
-            Text("성별 통계")
+        VStack(spacing: 12) {
+            Text("학년별 통계")
                 .font(.system(size: 16, weight: .bold))
-                .padding(.bottom, 4)
-            gradeChartContent()
+            ZStack {
+                Rectangle()
+                    .foregroundStyle(Color(.secondarySystemBackground))
+                    .clipShape(.rect(cornerRadius: 10))
+                VStack {
+                    gradeChartContent("중1")
+                    gradeChartContent("중2")
+                    gradeChartContent("중3")
+                    gradeChartContent("고1")
+                    gradeChartContent("고2")
+                    gradeChartContent("고3")
+                }
+                .padding(12)
+            }
         }
+        .padding(.horizontal, 26)
     }
     
-    private func gradeChartContent() -> some View {
+    private func gradeChartContent(_ grade: String) -> some View {
         HStack {
-            Text("20.0%(2명)")
-            Rectangle()
-                .foregroundStyle(.cyan)
-                .frame(height: 15)
+            HStack {
+                Spacer()
+                Text("20.0%(2명)")
+                    .foregroundStyle(.gray)
+                    .font(.system(size: 12, weight: .medium))
+                    .fixedSize()
+                Rectangle()
+                    .foregroundStyle(.cyan)
+                    .frame(height: 15)
+            }
+            Text(grade)
+                .font(.system(size: 14, weight: .medium))
+            HStack {
+                Rectangle()
+                    .foregroundStyle(.green)
+                    .frame(height: 15)
+                Text("20.0%(2명)")
+                    .foregroundStyle(.gray)
+                    .font(.system(size: 12, weight: .medium))
+                    .fixedSize()
+                Spacer()
+            }
         }
     }
 }
