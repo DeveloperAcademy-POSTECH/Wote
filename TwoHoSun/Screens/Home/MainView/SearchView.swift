@@ -89,11 +89,7 @@ extension SearchView {
                 .clipShape(.capsule)
                 .onChange(of: searchText) {
                     if searchText.isEmpty {
-                        if searchWords.isEmpty {
-                            hasRecentSearch = false
-                        } else {
-                            hasRecentSearch = true
-                        }
+                        hasRecentSearch = searchWords.isEmpty ? false : true
                         hasRecommendation = false
                     } else {
                         hasRecentSearch = false
@@ -104,10 +100,8 @@ extension SearchView {
                 .onSubmit {
                     if searchWords.count > 4 {
                         searchWords.removeLast()
-                        searchWords.insert(searchText, at: 0)
-                    } else {
-                        searchWords.insert(searchText, at: 0)
                     }
+                    searchWords.insert(searchText, at: 0)
                     hasRecentSearch = false
                     hasRecommendation = false
                     hasResult = true
@@ -166,10 +160,8 @@ extension SearchView {
                 Button {
                     if searchWords.count > 4 {
                         searchWords.removeLast()
-                        searchWords.insert(searchText, at: 0)
-                    } else {
-                        searchWords.insert(searchText, at: 0)
                     }
+                    searchWords.insert(searchText, at: 0)
                     hasRecentSearch = false
                     hasRecommendation = false
                     hasResult = true
