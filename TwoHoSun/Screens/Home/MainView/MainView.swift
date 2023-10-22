@@ -11,6 +11,7 @@ enum MainPathType {
     case toAll
     case ourSchool
 }
+
 struct MainView: View {
     enum FilterType : CaseIterable {
         case all, popular, currentvote, finishvote
@@ -54,6 +55,7 @@ struct MainView: View {
                         }
                     }
                 }
+                .scrollIndicators(.hidden)
                 floatingButton
             }
             .navigationBarTitleDisplayMode(.inline)
