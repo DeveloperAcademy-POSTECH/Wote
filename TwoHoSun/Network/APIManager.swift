@@ -25,7 +25,7 @@ class APIManager {
         case postNickname(nickname: String)
         case postProfileSetting(profile: ProfileSetting)
         case refreshToken
-        case getPosts(Int, Int)
+        case getPosts(page: Int, size: Int)
         case postVoteCreate(postId: Int, param: String)
 
         var headers: HTTPHeaders {

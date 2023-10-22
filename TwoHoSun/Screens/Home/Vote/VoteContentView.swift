@@ -167,7 +167,7 @@ extension VoteContentView {
 
     @ViewBuilder
     private var voteView: some View {
-        if viewModel.isVoteCompleted {
+        if viewModel.isVoted {
             completedVoteView
         } else {
             defaultVoteView

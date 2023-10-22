@@ -10,12 +10,12 @@ import Foundation
 @Observable
 final class VoteContentViewModel {
     let postData: PostModel
-    var isVoteCompleted: Bool
+    var isVoted: Bool
     var agreeCount = 0
     var disagreeCount = 0
     init(postData: PostModel) {
         self.postData = postData
-        isVoteCompleted =  postData.voted ? true : false
+        isVoted =  postData.voted ? true : false
     }
 
     var totalCount: Int {
@@ -23,12 +23,8 @@ final class VoteContentViewModel {
     }
 
     var buyCountRatio: Double {
-        if totalCount == 0 {
-               return 0.0
-        } else {
-            let ratio = Double(agreeCount) / Double(totalCount) * 100
-            return Double(Int(ratio * 10)) / 10.0
-        }
+        guard totalCount > 0 else { return 0.0 }
+        return round(Double(agreeCount) / Double(totalCount) * 1000) / 10
     }
 
     var notBuyCountRatio: Double {
@@ -42,7 +38,7 @@ final class VoteContentViewModel {
                 self.postVoteCreate(voteType)
             } else {
                 guard let data = response.data else {return}
-                self.isVoteCompleted = true
+                self.isVoted = true
                 self.agreeCount = data.agreeCount
                 self.disagreeCount = data.disagreeCount
                 print("Vote Completed!")
