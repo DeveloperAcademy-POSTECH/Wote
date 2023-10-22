@@ -83,11 +83,13 @@ extension MainView {
     }
 
     private var searchButton: some View {
-        Button(action: {
-            // TODO: 통합검색으로 이동하도록
-        }, label: {
+        NavigationLink {
+            SearchView()
+        } label: {
             Image(systemName: "magnifyingglass")
-        })
+                .font(.system(size: 16))
+                .foregroundStyle(.gray)
+        }
     }
 
     private var filterBar: some View {
