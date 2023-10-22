@@ -16,7 +16,6 @@ enum TitleCategoryType: String, CaseIterable {
 
 struct WriteView: View {
     @Environment(\.dismiss) var dismiss
-    @State private var content = ""
     @State private var title = ""
     @State private var placeholderText = "욕설,비방,광고 등 소비 고민과 관련없는 내용은 통보 없이 삭제될 수 있습니다."
     @State private var contentTextCount = 0
@@ -25,29 +24,28 @@ struct WriteView: View {
     @State private var selectedTitleCategory = TitleCategoryType.buyOrNotBuy
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var selectedImageData: Data?
+    @Binding var isWriteViewPresented: Bool
     @Bindable var viewModel: WriteViewModel
 
     var body: some View {
-        VStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 0) {
-                    titleView
-                        .padding(.top, 24)
-                    tagView
-                        .padding(.top, 32)
-                    addImageView
-                        .padding(.top, 30)
-                    voteDeadlineView
-                        .padding(.top, 32)
-                    contentView
-                        .padding(.top, 32)
-                        .padding(.bottom, 20)
-                }
-                .padding(.horizontal, 26)
+        ScrollView {
+            VStack(alignment: .leading, spacing: 0) {
+                titleView
+                    .padding(.top, 24)
+                tagView
+                    .padding(.top, 32)
+                addImageView
+                    .padding(.top, 30)
+                voteDeadlineView
+                    .padding(.top, 32)
+                contentView
+                    .padding(.top, 32)
+                    .padding(.bottom, 20)
             }
-            .scrollIndicators(.hidden)
+            .padding(.horizontal, 26)
             voteRegisterButton
         }
+        .scrollIndicators(.hidden)
         .navigationTitle("소비고민 등록")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -296,12 +294,12 @@ extension WriteView {
 
     private var textView: some View {
         ZStack(alignment: .bottomTrailing) {
-            if content.isEmpty {
+            if viewModel.content.isEmpty {
                 TextEditor(text: $placeholderText)
                     .foregroundStyle(.gray)
             }
-            TextEditor(text: $content)
-              .opacity(self.content.isEmpty ? 0.25 : 1)
+            TextEditor(text: $viewModel.content)
+                .opacity(self.viewModel.content.isEmpty ? 0.25 : 1)
             contentTextCountView
                 .padding(.trailing, 15)
                 .padding(.bottom, 14)
@@ -315,7 +313,7 @@ extension WriteView {
     }
 
     private var contentTextCountView: some View {
-        Text("\(content.count) ")
+        Text("\(viewModel.content.count) ")
             .font(.system(size: 12, weight: .semibold))
             .foregroundStyle(.black) +
         Text("/ 100")
@@ -326,6 +324,10 @@ extension WriteView {
     private var voteRegisterButton: some View {
         Button {
             isRegisterButtonDidTap = true
+            if viewModel.isTitleValid {
+                viewModel.createPost()
+                isWriteViewPresented = false
+            }
             print("complete button did tap!")
         } label: {
             Text("투표 등록하기")
@@ -348,6 +350,6 @@ extension WriteView {
 
 #Preview {
     NavigationStack {
-        WriteView(viewModel: WriteViewModel())
+        WriteView(isWriteViewPresented: .constant(true), viewModel: WriteViewModel())
     }
 }

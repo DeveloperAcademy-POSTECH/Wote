@@ -54,7 +54,8 @@ class APIManager {
                 ]
             case .postCreate:
                 return [
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
                 ]
             }
         }
