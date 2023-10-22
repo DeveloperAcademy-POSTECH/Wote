@@ -11,17 +11,45 @@ struct SearchView: View {
     @Environment(\.dismiss) private var dismiss: DismissAction
     @State private var searchText: String = ""
     @State private var searchWords: [String] = []
+    @State private var dismissTabBar: Bool = false
+    @State private var hasResult: Bool = false
+    @State private var hasRecommendation: Bool = false
+    @State private var hasRecentSearch: Bool = true
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Divider()
-            if !searchText.isEmpty {
-                searchRecommendation
-            } else if !searchWords.isEmpty {
-                recentSearch
+            if !hasRecommendation, !hasRecentSearch, !hasResult {
+                Spacer()
+                    .frame(maxWidth: .infinity)
             }
-            Spacer()
-                .frame(maxWidth: .infinity)
+            if hasRecommendation {
+                searchRecommendation
+            }
+            if hasRecentSearch {
+                recentSearch
+                Spacer()
+                    .frame(maxWidth: .infinity)
+            }
+            if hasResult {
+                ScrollView {
+                    VStack {
+                        VoteCellView()
+                        VoteCellView()
+                        VoteCellView()
+                    }
+                }
+            }
+        }
+        .onChange(of: searchWords) {
+            if searchWords.isEmpty {
+                hasRecentSearch = false
+            }
+        }
+        .onAppear {
+            if searchWords.isEmpty {
+                hasRecentSearch = false
+            }
         }
         .padding(.horizontal, 12)
         .toolbar {
@@ -33,33 +61,69 @@ struct SearchView: View {
             }
         }
         .navigationBarBackButtonHidden()
+        .toolbar(dismissTabBar || hasResult ? .visible : .hidden, for: .tabBar)
     }
 }
 
 extension SearchView {
     private var backButton: some View {
         Button {
+            dismissTabBar.toggle()
             dismiss()
         } label: {
             Image(systemName: "chevron.backward")
-                .font(.system(size: 20))
+                .font(.system(size: 18))
                 .foregroundStyle(.gray)
         }
     }
     
     private var searchField: some View {
-        TextField("원하는 소비항목을 검색해보세요.", text: $searchText)
-            .font(.system(size: 14))
-            .frame(height: 30)
-            .onSubmit {
-                if searchWords.count > 4 {
-                    searchWords.removeLast()
-                    searchWords.insert(searchText, at: 0)
-                } else {
-                    searchWords.insert(searchText, at: 0)
+        ZStack(alignment: .trailing) {
+            TextField("원하는 소비항목을 검색해보세요.", text: $searchText)
+                .font(.system(size: 14))
+                .frame(height: 30)
+                .padding(.leading, 12)
+                .background(
+                    hasResult ? Color(UIColor.secondarySystemBackground) : .white
+                )
+                .clipShape(.capsule)
+                .onChange(of: searchText) {
+                    if searchText.isEmpty {
+                        if searchWords.isEmpty {
+                            hasRecentSearch = false
+                        } else {
+                            hasRecentSearch = true
+                        }
+                        hasRecommendation = false
+                    } else {
+                        hasRecentSearch = false
+                        hasRecommendation = true
+                    }
+                    hasResult = false
                 }
-                searchText = ""
+                .onSubmit {
+                    if searchWords.count > 4 {
+                        searchWords.removeLast()
+                        searchWords.insert(searchText, at: 0)
+                    } else {
+                        searchWords.insert(searchText, at: 0)
+                    }
+                    hasRecentSearch = false
+                    hasRecommendation = false
+                    hasResult = true
+                }
+            if hasResult {
+                Button {
+                    hasResult = false
+                    searchText = ""
+                } label: {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 12))
+                        .foregroundStyle(.gray)
+                        .padding(.trailing, 4)
+                }
             }
+        }
     }
     
     private var recentSearch: some View {
@@ -99,16 +163,28 @@ extension SearchView {
         List {
             // TODO: - 서버 나오면 onChange로 데이터 받아오는 로직 추가
             ForEach(0..<5) { _ in
-                HStack {
-                    Text("발렌시아가")
-                    Spacer()
-                    Image(systemName: "paperplane")
+                Button {
+                    if searchWords.count > 4 {
+                        searchWords.removeLast()
+                        searchWords.insert(searchText, at: 0)
+                    } else {
+                        searchWords.insert(searchText, at: 0)
+                    }
+                    hasRecentSearch = false
+                    hasRecommendation = false
+                    hasResult = true
+                } label: {
+                    HStack {
+                        Text("발렌시아가")
+                        Spacer()
+                        Image(systemName: "paperplane")
+                    }
+                    .frame(height: 48)
+                    .font(.system(size: 16))
+                    .foregroundStyle(.gray)
+                    .padding(.leading, 48)
+                    .padding(.trailing, 14)
                 }
-                .frame(height: 48)
-                .font(.system(size: 16))
-                .foregroundStyle(.gray)
-                .padding(.leading, 38)
-                .padding(.trailing, 14)
                 .listRowSeparator(.hidden)
                 .listRowInsets(EdgeInsets())
             }
