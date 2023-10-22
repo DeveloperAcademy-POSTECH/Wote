@@ -90,7 +90,6 @@ struct ProfileSettingsView: View {
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var selectedImageData: Data?
     @State private var isSchoolSearchSheetPresented = false
-    @State private var genderSelection = UserGender.boy
     @State private var isProfileSheetShowed = false
     @Binding var navigationPath: [Route]
     @Bindable var viewModel: ProfileSettingViewModel
@@ -163,7 +162,7 @@ extension ProfileSettingsView {
             selectProfileButton
         }
         .onTapGesture {
-            if let selectedImageData = selectedImageData { // 있으면 action sheet
+            if let selectedImageData = selectedImageData { 
                 isProfileSheetShowed = true
             }
         }
@@ -266,14 +265,14 @@ extension ProfileSettingsView {
                 ForEach(UserGender.allCases, id: \.self) { gender in
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(genderSelection == gender ? .blue : .clear)
+                            .foregroundColor(viewModel.genderSelection == gender ? .blue : .clear)
                         Text(gender.rawValue + "자")
                             .font(.system(size: 14))
-                            .foregroundColor(genderSelection == gender ? .white : .black)
+                            .foregroundColor(viewModel.genderSelection == gender ? .white : .black)
                     }
                     .onTapGesture {
                         withAnimation(.easeOut) {
-                            genderSelection = gender
+                            viewModel.genderSelection = gender
                         }
                     }
                 }
@@ -331,12 +330,8 @@ extension ProfileSettingsView {
     }
 
     private var nextButton: some View {
-        Button {
-            guard viewModel.isAllInputValid else {
-                viewModel.setInvalidCondition()
-                return
-            }
-            viewModel.setProfile()
+        NavigationLink {
+            MainTabView()
         } label: {
             Text("완료")
                 .font(.system(size: 20, weight: .semibold))
@@ -345,6 +340,28 @@ extension ProfileSettingsView {
                 .background(viewModel.isAllInputValid ? .blue : .gray)
                 .cornerRadius(10)
         }
+        .simultaneousGesture(TapGesture().onEnded {
+            guard viewModel.isAllInputValid else {
+                viewModel.setInvalidCondition()
+                return
+            }
+            viewModel.setProfile()
+        })
+
+//        Button {
+//            guard viewModel.isAllInputValid else {
+//                viewModel.setInvalidCondition()
+//                return
+//            }
+//            viewModel.setProfile()
+//        } label: {
+//            Text("완료")
+//                .font(.system(size: 20, weight: .semibold))
+//                .foregroundStyle(.white)
+//                .frame(width: 361, height: 52)
+//                .background(viewModel.isAllInputValid ? .blue : .gray)
+//                .cornerRadius(10)
+//        }
     }
 
     private func roundedIconTextField(for input: ProfileInputType, text: String?, isFilled: Bool) -> some View {

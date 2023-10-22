@@ -18,7 +18,7 @@ struct TwoHoSunApp: App {
 //            if appState.hasValidToken {
 //             MainView()
 //            } else {
-//            OnBoardingView()
+            OnBoardingView()
 //            }
 //
 //            MainTabView()
@@ -26,8 +26,8 @@ struct TwoHoSunApp: App {
 //            NavigationView {
 //                WriteView(isWriteViewPresented: .constant(true), viewModel: WriteViewModel())
 //            }
-            ProfileSettingsView(navigationPath: $viewModel.navigationPath,
-                                viewModel: ProfileSettingViewModel())
+//            ProfileSettingsView(navigationPath: $viewModel.navigationPath,
+//                                viewModel: ProfileSettingViewModel())
         }
     }
 }

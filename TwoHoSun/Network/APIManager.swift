@@ -180,7 +180,6 @@ class APIManager {
         let parameters = type.parameters
         let url = URLConst.baseURL + type.path
 
-
         AF.request(
             url,
             method: type.method,

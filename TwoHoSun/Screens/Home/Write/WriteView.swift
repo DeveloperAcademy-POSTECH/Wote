@@ -12,7 +12,6 @@ struct WriteView: View {
     @Environment(\.dismiss) var dismiss
     @State private var placeholderText = "욕설,비방,광고 등 소비 고민과 관련없는 내용은 통보 없이 삭제될 수 있습니다."
     @State private var isRegisterButtonDidTap = false
-//    @State private var selectedTitleCategory = PostCategoryType.purchaseConsideration.title
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var selectedImageData: Data?
     @State private var isTagTextFieldShowed = false
