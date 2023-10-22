@@ -27,6 +27,7 @@ class APIManager {
         case refreshToken
         case getPosts(page: Int, size: Int)
         case postVoteCreate(postId: Int, param: String)
+        case getComments(postId: Int)
 
         var headers: HTTPHeaders {
             switch self {
@@ -58,6 +59,11 @@ class APIManager {
                     "Content-Type": "application/json",
                     "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
                 ]
+            case .getComments:
+                return [
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
+                ]
             }
         }
         
@@ -75,6 +81,8 @@ class APIManager {
                 return .get
             case .postVoteCreate:
                 return .post
+            case .getComments:
+                return .get
             }
         }
         
@@ -114,6 +122,10 @@ class APIManager {
                 return [
                     "voteType": param
                 ]
+            case .getComments(let postId):
+                return [
+                    "postId": postId
+                ]
             }
         }
         
@@ -130,6 +142,8 @@ class APIManager {
             case .getPosts:
                 return URLEncoding.queryString
             case .postVoteCreate:
+                return JSONEncoding.default
+            case .getComments:
                 return JSONEncoding.default
             }
         }
@@ -148,6 +162,8 @@ class APIManager {
                 return "/api/posts"
             case .postVoteCreate(let postId, _):
                 return "/api/posts/\(postId)/votes"
+            case .getComments(let postId):
+                return "/api/posts/\(postId)/comments"
             }
         }
     }

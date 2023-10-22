@@ -31,6 +31,14 @@ struct DetailView : View {
     @FocusState var isFocus: Bool
     @State private var isSendMessage: Bool = false
     @State private var scrollSpot: Int = 0
+    
+    let postData: PostModel
+    let viewModel: DetailViewModel
+
+    init(postData: PostModel) {
+        self.postData = postData
+        self.viewModel = DetailViewModel(postId: postData.postId)
+    }
 
     var body: some View {
         VStack {
