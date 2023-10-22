@@ -38,7 +38,7 @@ final class SchoolSearchViewModel {
         isFetching = false
     }
 
-    private func fetchSchoolData<T: Decodable>(schoolType: SchoolType, searchWord: String) async throws -> T {
+    private func fetchSchoolData<T: Decodable>(schoolType: SchoolDataType, searchWord: String) async throws -> T {
         guard let encodedSearchWord = searchWord.addingPercentEncoding(withAllowedCharacters: .afURLQueryAllowed) else {
             throw URLError(.badURL)
         }

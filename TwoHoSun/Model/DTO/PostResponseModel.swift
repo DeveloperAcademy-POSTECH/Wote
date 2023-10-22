@@ -16,7 +16,10 @@ struct PostResponse: Codable {
     let title, contents, image, externalURL: String
     let likeCount, viewCount, commentCount: Int
     let voteCounts: VoteCounts
+    let voteInfoList: [VoteInfo]
+    let postCategoryType: PostCategoryType
     let voted: Bool
+    let mine: Bool
 }
 
 struct Author: Codable {
@@ -38,4 +41,10 @@ enum PostStatus: String, Codable {
 enum PostType: String, Codable {
     case allSchool = "ALL_SCHOOL"
     case mySchool = "MY_SCHOOL"
+}
+
+enum PostCategoryType: String, Codable {
+    case purchase = "PURCHASE_CONSIDERATION"
+    case action = "ACTION_CONSIDERATION"
+    case food = "FOOD_CONSIDERATION"
 }
