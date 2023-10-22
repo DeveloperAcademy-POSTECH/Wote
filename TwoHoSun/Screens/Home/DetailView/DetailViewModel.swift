@@ -12,6 +12,7 @@ import Observation
 class DetailViewModel {
     var commentsDatas: [CommentsModel] = []
     var postId: Int
+    var isSendMessage: Bool = false
 
     init(postId: Int) {
         self.postId = postId
@@ -28,4 +29,22 @@ class DetailViewModel {
             }
         }
     }
+    func postComments(commentPost: CommentPostModel) {
+        APIManager.shared.requestAPI(type: .postComments(commentPost: commentPost)) { (response: GeneralResponse<NoData>) in
+            switch response.status {
+            case 401:
+                APIManager.shared.refreshAllTokens()
+                self.postComments(commentPost: commentPost)
+            case 200:
+                print("post 잘됨.")
+                self.isSendMessage = false
+            default:
+                print("error")
+            }
+        }
+    }
+
+    
+
+    
 }

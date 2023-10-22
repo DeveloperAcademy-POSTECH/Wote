@@ -28,6 +28,7 @@ class APIManager {
         case getPosts(page: Int, size: Int)
         case postVoteCreate(postId: Int, param: String)
         case getComments(postId: Int)
+        case postComments(commentPost: CommentPostModel)
 
         var headers: HTTPHeaders {
             switch self {
@@ -64,6 +65,11 @@ class APIManager {
                     "Content-Type": "application/json",
                     "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
                 ]
+            case .postComments:
+                return [
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
+                ]
             }
         }
         
@@ -83,6 +89,8 @@ class APIManager {
                 return .post
             case .getComments:
                 return .get
+            case .postComments:
+                return .post
             }
         }
         
@@ -126,6 +134,12 @@ class APIManager {
                 return [
                     "postId": postId
                 ]
+            case .postComments(let postComment):
+                return [
+                    "content": postComment.content,
+                    "parentId": postComment.parentId,
+                    "postId": postComment.postId
+                ]
             }
         }
         
@@ -144,6 +158,8 @@ class APIManager {
             case .postVoteCreate:
                 return JSONEncoding.default
             case .getComments:
+                return JSONEncoding.default
+            case .postComments:
                 return JSONEncoding.default
             }
         }
@@ -164,6 +180,8 @@ class APIManager {
                 return "/api/posts/\(postId)/votes"
             case .getComments(let postId):
                 return "/api/posts/\(postId)/comments"
+            case .postComments(let postComment):
+                return "/api/posts/\(postComment.postId)/comments"
             }
         }
     }

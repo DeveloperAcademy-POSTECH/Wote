@@ -7,15 +7,6 @@
 
 import SwiftUI
 // TODO: 후에 모델작업은 수정 예정 여기서 사용하기 위해 임의로 제작
-//struct Comment : Hashable {
-//    let nickname: String
-//    let writetime: Int
-//    let profileImage: String
-//    let commentData: String
-//    var isReply: Bool
-//    let hasResponse: Bool
-//}
-
 struct DetailView : View {
 
     @State private var commentText: String = ""
@@ -23,6 +14,7 @@ struct DetailView : View {
     @FocusState var isFocus: Bool
     @State private var isSendMessage: Bool = false
     @State private var scrollSpot: Int = 0
+    @State private var parentCommentId: Int = 0
 
     let postData: PostModel
     let viewModel: DetailViewModel
@@ -43,9 +35,15 @@ struct DetailView : View {
             commentInputView
                 .ignoresSafeArea(.all, edges: .bottom)
         }
+        .onChange(of: isSendMessage) { _, newVal in
+            if newVal {
+                viewModel.postComments(commentPost: CommentPostModel(content: commentText, parentId: parentCommentId, postId: postData.postId))
+            }
+        }
         .onTapGesture {
             self.endTextEditing()
         }
+
     }
 }
 extension DetailView {
@@ -159,7 +157,9 @@ extension DetailView {
                 configuration
                     .font(.system(size: 16))
                 Spacer()
-                Button(action: { isSendMessage.toggle()}, label: {
+                Button(action: {
+                    isSendMessage.toggle()
+                }, label: {
                     Image(systemName: "paperplane")
                         .foregroundStyle(.black)
                         .font(.system(size: 20))
