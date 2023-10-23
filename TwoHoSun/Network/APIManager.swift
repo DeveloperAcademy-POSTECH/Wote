@@ -54,35 +54,19 @@ class APIManager {
                     "Content-Type": "application/json"
                 ]
             case .getPosts:
-//                return [
-//                    "Content-Type" : "application/json",
-//                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
-//                    ]
-//                return [
-//                    "Content-Type" : "application/json",
-//                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
-//                ]
-                    return [
-                        "Content-Type": "application/json",
-                        "Authorization": "Bearer eyJwcm92aWRlcklkIjoiMDAwNjkwLmM0MmNjY2E4ZWM5MTQ3ZGFiZmM5MWQwN2FhZDM1NzAzLjIxNDYiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcm92aWRlcklkIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTY5ODA0MzY4OCwiZXhwIjoxNjk4NjQ4NDg4fQ.gA1FqiEdIUjaGEwtKNi1kQNwpR3ezY2abuaS7V7uWPY"
+                return [
+                    "Content-Type" : "application/json",
+                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
                     ]
             case .postVoteCreate:
-//                return [
-//                    "Content-Type": "application/json",
-//                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
-//                ]
                 return [
                     "Content-Type": "application/json",
-                    "Authorization": "Bearer eyJwcm92aWRlcklkIjoiMDAwNjkwLmM0MmNjY2E4ZWM5MTQ3ZGFiZmM5MWQwN2FhZDM1NzAzLjIxNDYiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcm92aWRlcklkIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTY5ODA0MzY4OCwiZXhwIjoxNjk4NjQ4NDg4fQ.gA1FqiEdIUjaGEwtKNi1kQNwpR3ezY2abuaS7V7uWPY"
+                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
                 ]
             case .postCreate:
-//                return [
-//                    "Content-Type": "application/json",
-//                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
-//                ]
                 return [
                     "Content-Type": "application/json",
-                    "Authorization": "Bearer eyJwcm92aWRlcklkIjoiMDAwNjkwLmM0MmNjY2E4ZWM5MTQ3ZGFiZmM5MWQwN2FhZDM1NzAzLjIxNDYiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcm92aWRlcklkIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTY5ODA0MzY4OCwiZXhwIjoxNjk4NjQ4NDg4fQ.gA1FqiEdIUjaGEwtKNi1kQNwpR3ezY2abuaS7V7uWPY"
+                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
                 ]
             case .getComments:
                 return [
@@ -100,14 +84,10 @@ class APIManager {
                     "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
                 ]
             case .getSearchResult:
-                //                return [
-                //                    "Content-Type": "application/json",
-                //                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
-                //                ]
-                                return [
-                                    "Content-Type": "application/json",
-                                    "Authorization": "Bearer eyJwcm92aWRlcklkIjoiMDAwNjkwLmM0MmNjY2E4ZWM5MTQ3ZGFiZmM5MWQwN2FhZDM1NzAzLjIxNDYiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcm92aWRlcklkIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTY5ODA0MzY4OCwiZXhwIjoxNjk4NjQ4NDg4fQ.gA1FqiEdIUjaGEwtKNi1kQNwpR3ezY2abuaS7V7uWPY"
-                                ]
+                return [
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
+                ]
             }
         }
 
