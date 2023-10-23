@@ -86,6 +86,7 @@ struct MainView: View {
             viewModel.getPosts(30,first: true)
         }
         .onDisappear {
+            touchPlus = false
             viewModel.nextIndex = 0
             viewModel.loading = true
         }
@@ -157,6 +158,7 @@ extension MainView {
                 .frame(width: 145, height: 88)
                 .background(
                     RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.white)
                         .stroke(Color.gray, lineWidth: 1.0)
                 )
                 .padding(.trailing, 16)
