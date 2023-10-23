@@ -114,7 +114,7 @@ extension DetailView {
     }
     var commentView : some View {
         ScrollViewReader { proxy in
-            ScrollView {
+//            ScrollView {
                 LazyVStack(alignment: .leading, spacing: 24) {
                     Text("댓글 \(viewModel.commentsDatas.count)개")
                         .font(.system(size: 14))
@@ -132,7 +132,7 @@ extension DetailView {
                         proxy.scrollTo(scrollSpot, anchor: .top)
                     }
                 }
-            }
+//            }
         }
         .padding(.horizontal, 26)
     }
