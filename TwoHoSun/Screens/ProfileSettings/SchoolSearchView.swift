@@ -164,15 +164,19 @@ extension SchoolSearchView {
 
     @ViewBuilder
     private var schoolSearchResultView: some View {
-        if viewModel.schools.isEmpty && !viewModel.isFetching && !isSearchInitiated {
-            searchDescriptionView
-        } else if viewModel.isFetching {
+        if viewModel.isFetching {
             ProgressView()
                 .padding(.top, 100)
-        } else if viewModel.schools.isEmpty && isSearchInitiated {
-            emptyResultView
-        } else if !viewModel.isFetching {
-            searchedSchoolList
+        } else {
+            if viewModel.schools.isEmpty {
+                if isSearchInitiated {
+                    emptyResultView
+                } else {
+                    searchDescriptionView
+                }
+            } else {
+                searchedSchoolList
+            }
         }
     }
 }
