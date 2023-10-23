@@ -9,15 +9,7 @@ import SwiftUI
 
 struct ChartView: View {
     @State var currentPage: Int = 0
-
-    let viewModel = ChartViewModel()
-    let model = ChartModel(
-        genderChart: GenderChart(male: AgreeCount(agree: 14, disagree: 26), female: AgreeCount(agree: 54, disagree: 6)),
-        gradeChart: GradeChart(middleFirst: AgreeCount(agree: 12, disagree: 4), middleSecond: AgreeCount(agree: 2, disagree: 6), middleThird: AgreeCount(agree: 11, disagree: 4), highFirst: AgreeCount(agree: 20, disagree: 2), highSecond: AgreeCount(agree: 9, disagree: 4), highThird: AgreeCount(agree: 16, disagree: 10)),
-        regionChart: RegionChart(seoul: AgreeCount(agree: 10, disagree: 4), gyeonggi: AgreeCount(agree: 1, disagree: 2), chungcheong: AgreeCount(agree: 2, disagree: 4), gangwon: AgreeCount(agree: 21, disagree: 9), gyeongsang: AgreeCount(agree: 5, disagree: 8), jeolla: AgreeCount(agree: 6, disagree: 4), jeju: AgreeCount(agree: 10, disagree: 14)))
-    var total: Int {
-        return model.genderChart.male.agree + model.genderChart.male.disagree + model.genderChart.female.agree + model.genderChart.female.disagree
-    }
+    let viewModel = ChartViewModel(postId: 301)
     
     var body: some View {
         VStack(spacing: 10) {
@@ -37,13 +29,17 @@ struct ChartView: View {
 }
 
 extension ChartView {
+    private var total: Int {
+        return viewModel.chartModel.genderChart.male.agree + viewModel.chartModel.genderChart.male.disagree + viewModel.chartModel.genderChart.female.agree + viewModel.chartModel.genderChart.female.disagree
+    }
+    
     private var genderChart: some View {
         VStack {
             Text("성별 통계")
                 .font(.system(size: 16, weight: .bold))
                 .padding(.bottom, 4)
-            genderChartContent(label: "남자", data: model.genderChart.male)
-            genderChartContent(label: "여자", data: model.genderChart.female)
+            genderChartContent(label: "남자", data: viewModel.chartModel.genderChart.male)
+            genderChartContent(label: "여자", data: viewModel.chartModel.genderChart.female)
         }
         .padding(.horizontal, 26)
     }
@@ -95,12 +91,12 @@ extension ChartView {
                     .foregroundStyle(Color(.secondarySystemBackground))
                     .clipShape(.rect(cornerRadius: 10))
                 VStack {
-                    gradeChartContent(label: "중1", data: model.gradeChart.middleFirst)
-                    gradeChartContent(label: "중2", data: model.gradeChart.middleSecond)
-                    gradeChartContent(label: "중3", data: model.gradeChart.middleThird)
-                    gradeChartContent(label: "고1", data: model.gradeChart.highFirst)
-                    gradeChartContent(label: "고2", data: model.gradeChart.highSecond)
-                    gradeChartContent(label: "고3", data: model.gradeChart.highThird)
+                    gradeChartContent(label: "중1", data: viewModel.chartModel.gradeChart.middleFirst)
+                    gradeChartContent(label: "중2", data: viewModel.chartModel.gradeChart.middleSecond)
+                    gradeChartContent(label: "중3", data: viewModel.chartModel.gradeChart.middleThird)
+                    gradeChartContent(label: "고1", data: viewModel.chartModel.gradeChart.highFirst)
+                    gradeChartContent(label: "고2", data: viewModel.chartModel.gradeChart.highSecond)
+                    gradeChartContent(label: "고3", data: viewModel.chartModel.gradeChart.highThird)
                 }
                 .padding(.horizontal, 8)
                 .padding(.vertical, 12)
@@ -145,13 +141,13 @@ extension ChartView {
                     .foregroundStyle(Color(.secondarySystemBackground))
                     .clipShape(.rect(cornerRadius: 10))
                 HStack(spacing: 14) {
-                    regionChartContent(label: "서울", data: model.regionChart.seoul)
-                    regionChartContent(label: "경기", data: model.regionChart.gyeonggi)
-                    regionChartContent(label: "충청", data: model.regionChart.chungcheong)
-                    regionChartContent(label: "강원", data: model.regionChart.gangwon)
-                    regionChartContent(label: "경상", data: model.regionChart.gyeongsang)
-                    regionChartContent(label: "전라", data: model.regionChart.jeolla)
-                    regionChartContent(label: "제주", data: model.regionChart.jeju)
+                    regionChartContent(label: "서울", data: viewModel.chartModel.regionChart.seoul)
+                    regionChartContent(label: "경기", data: viewModel.chartModel.regionChart.gyeonggi)
+                    regionChartContent(label: "충청", data: viewModel.chartModel.regionChart.chungcheong)
+                    regionChartContent(label: "강원", data: viewModel.chartModel.regionChart.gangwon)
+                    regionChartContent(label: "경상", data: viewModel.chartModel.regionChart.gyeongsang)
+                    regionChartContent(label: "전라", data: viewModel.chartModel.regionChart.jeolla)
+                    regionChartContent(label: "제주", data: viewModel.chartModel.regionChart.jeju)
                 }
                 .padding(12)
             }

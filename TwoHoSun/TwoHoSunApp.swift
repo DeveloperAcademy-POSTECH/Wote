@@ -26,12 +26,12 @@ struct TwoHoSunApp: App {
 //            } else {
 //            OnBoardingView()
 //            }
-            NavigationStack(path: $path) {
-
-                OnBoardingView(navigationPath: $path)
-            }
+//            NavigationStack(path: $path) {
 //
-//            MainTabView()
+//                OnBoardingView(navigationPath: $path)
+//            }
+//
+            MyDetailView()
         }
     }
 }

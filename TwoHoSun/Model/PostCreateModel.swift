@@ -17,7 +17,7 @@ struct PostCreateModel: Codable {
     let postCategoryType: String
 }
 
-enum PostCategoryType: String, CaseIterable {
+enum PostCategoryType: String, CaseIterable, Codable {
     case purchaseConsideration = "PURCHASE_CONSIDERATION"
     case actionConsideration = "ACTION_CONSIDERATION"
     case foodConsideration = "FOOD_CONSIDERATION"

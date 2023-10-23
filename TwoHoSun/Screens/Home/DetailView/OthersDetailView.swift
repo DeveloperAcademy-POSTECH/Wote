@@ -7,7 +7,7 @@
 
 import SwiftUI
 // TODO: 후에 모델작업은 수정 예정 여기서 사용하기 위해 임의로 제작
-struct DetailView : View {
+struct OthersDetailView : View {
 
     @State private var commentText: String = ""
     @State private var alertOn: Bool = false
@@ -174,5 +174,5 @@ extension OthersDetailView {
 }
 
 #Preview {
-    DetailView()
+    OthersDetailView(postData: <#PostModel#>)
 }

@@ -31,9 +31,3 @@ enum PostType: String, Codable {
     case allSchool = "ALL_SCHOOL"
     case mySchool = "MY_SCHOOL"
 }
-
-enum PostCategoryType: String, Codable {
-    case purchase = "PURCHASE_CONSIDERATION"
-    case action = "ACTION_CONSIDERATION"
-    case food = "FOOD_CONSIDERATION"
-}

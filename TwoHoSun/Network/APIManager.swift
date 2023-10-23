@@ -31,6 +31,7 @@ class APIManager {
         case getComments(postId: Int)
         case postComments(commentPost: CommentPostModel)
         case deleteComments(postId: Int, commentId: Int)
+        case getDetailPost(postId: Int)
 
         var headers: HTTPHeaders {
             switch self {
@@ -82,6 +83,11 @@ class APIManager {
                     "Content-Type": "application/json",
                     "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
                 ]
+            case .getDetailPost:
+                return [
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
+                ]
             }
         }
 
@@ -107,6 +113,8 @@ class APIManager {
                 return .post
             case .deleteComments:
                 return .delete
+            case .getDetailPost:
+                return .get
             }
         }
 
@@ -169,6 +177,8 @@ class APIManager {
                 return parameters
             case .deleteComments:
                 return [:]
+            case .getDetailPost:
+                return [:]
             }
         }
 
@@ -193,6 +203,8 @@ class APIManager {
             case .postComments:
                 return JSONEncoding.default
             case .deleteComments:
+                return URLEncoding.queryString
+            case .getDetailPost:
                 return URLEncoding.queryString
             }
         }
@@ -219,6 +231,8 @@ class APIManager {
                 return "/api/posts/\(postComment.postId)/comments"
             case .deleteComments(let postId, let commentId):
                 return "/api/posts/\(postId)/comments/\(commentId)"
+            case .getDetailPost(let postId):
+                return "/api/posts/\(postId)"
             }
         }
     }
@@ -244,7 +258,7 @@ class APIManager {
                 case .failure(let error):
                     print(error)
                 }
-            }, receiveValue: completion )
+            }, receiveValue: completion)
             .store(in: &cancellable)
     }
 
