@@ -65,8 +65,28 @@ extension SchoolSearchView {
             }
     }
 
+    private var emptyResultView: some View {
+        VStack(spacing: 0) {
+            Divider()
+                .background(Color.gray)
+                .padding(.horizontal, 11)
+            Rectangle()
+                .frame(width: 90, height: 90)
+                .foregroundStyle(.gray)
+                .padding(.top, 186)
+            Text("검색 결과가 없습니다.")
+                .font(.system(size: 20, weight: .medium))
+                .foregroundStyle(.gray)
+                .padding(.top, 20)
+        }
+    }
+
     private func schoolListCell(_ schoolInfo: SchoolInfoModel) -> some View {
-        VStack {
+        VStack(spacing: 0) {
+            Divider()
+                .background(Color.gray)
+                .frame(height: 1)
+                .padding(.horizontal, 11)
             HStack {
                 VStack(alignment: .leading) {
                     Text(schoolInfo.school.schoolName)
@@ -84,8 +104,6 @@ extension SchoolSearchView {
             }
             .padding(.vertical, 16)
             .padding(.horizontal, 26)
-            Rectangle()
-                .frame(height: 1)
         }
     }
 
@@ -122,8 +140,8 @@ extension SchoolSearchView {
 
     @ViewBuilder
     private var searchedSchoolList: some View {
-        Rectangle()
-            .frame(height: 1)
+//        Rectangle()
+//            .frame(height: 1)
         List(viewModel.schools) { school in
             schoolListCell(school)
             .listRowInsets(EdgeInsets())
