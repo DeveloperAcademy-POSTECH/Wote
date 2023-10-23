@@ -10,18 +10,14 @@ import SwiftUI
 import AuthenticationServices
 import Combine
 
-enum Route {
-    case mainTabView
-    case profileView
-}
-
 struct OnBoardingView : View {
     @State private var currentpage = 0
     @State private var goProfileView = false
     @ObservedObject var viewModel = LoginViewModel()
+    @Binding var navigationPath: [Route]
     
     var body: some View {
-        NavigationStack(path: $viewModel.navigationPath) {
+  
             VStack {
                 ZStack {
                     if currentpage != 0 {
@@ -41,15 +37,20 @@ struct OnBoardingView : View {
                 })
                 .tabViewStyle(.page(indexDisplayMode: .never))
             }
+            .onChange(of: viewModel.goMain, { oldValue, newValue in
+                if newValue {
+                    self.navigationPath.append(.mainTabView)
+                }
+            })
             .navigationDestination(for: Route.self) { route in
                 switch route {
                 case .mainTabView:
                     MainTabView()
                 case .profileView:
-                    ProfileSettingsView(navigationPath: $viewModel.navigationPath, viewModel: ProfileSettingViewModel())
+                    ProfileSettingsView(navigationPath: $navigationPath, viewModel: ProfileSettingViewModel())
                 }
             }
-        }
+
     }
 }
 
@@ -130,7 +131,7 @@ extension OnBoardingView {
                 .font(.system(size: 10))
                 .padding(.vertical,8)
         }.sheet(isPresented: $viewModel.showSheet) {
-            BottomSheetView(navigationPath: $viewModel.navigationPath)
+            BottomSheetView(navigationPath: $navigationPath)
                 .presentationDetents([.medium])
         }
     }
@@ -167,6 +168,6 @@ extension OnBoardingView {
         }
     }
 }
-#Preview {
-    OnBoardingView()
-}
+//#Preview {
+//    OnBoardingView()
+//}

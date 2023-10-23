@@ -10,7 +10,7 @@ import Foundation
 
 import Alamofire
 
-class APIManager {
+class APIManager {  
     static let shared = APIManager()
     private init() {}
 
@@ -27,6 +27,7 @@ class APIManager {
         case refreshToken
         case getPosts(page: Int, size: Int)
         case postVoteCreate(postId: Int, param: String)
+        case postCreate(postCreate: PostCreateModel)
         case getComments(postId: Int)
         case postComments(commentPost: CommentPostModel)
         case deleteComments(postId: Int, commentId: Int)
@@ -57,6 +58,11 @@ class APIManager {
                     "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
                 ]
             case .postVoteCreate:
+                return [
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
+                ]
+            case .postCreate:
                 return [
                     "Content-Type": "application/json",
                     "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
@@ -93,6 +99,8 @@ class APIManager {
                 return .get
             case .postVoteCreate:
                 return .post
+            case .postCreate:
+                return .post
             case .getComments:
                 return .get
             case .postComments:
@@ -122,6 +130,7 @@ class APIManager {
                         "schoolRegion": model.school.schoolRegion,
                         "schoolType": model.school.schoolType
                     ],
+                    "userGender": model.userGender,
                     "grade": model.grade
                 ]
             case .refreshToken:
@@ -137,6 +146,16 @@ class APIManager {
             case .postVoteCreate(_, let param):
                 return [
                     "voteType": param
+                ]
+            case .postCreate(let postCreate):
+                return [
+                    "postType": postCreate.postType,
+                    "title": postCreate.title,
+                    "contents": postCreate.contents,
+                    "image": postCreate.image,
+                    "externalURL": postCreate.externalURL,
+                    "postTagList": postCreate.postTagList,
+                    "postCategoryType": postCreate.postCategoryType
                 ]
             case .getComments(let postId):
                 return [
@@ -167,6 +186,8 @@ class APIManager {
                 return URLEncoding.queryString
             case .postVoteCreate:
                 return JSONEncoding.default
+            case .postCreate:
+                return JSONEncoding.default
             case .getComments:
                 return URLEncoding.default
             case .postComments:
@@ -190,6 +211,8 @@ class APIManager {
                 return "/api/posts"
             case .postVoteCreate(let postId, _):
                 return "/api/posts/\(postId)/votes"
+            case .postCreate:
+                return "/api/posts"
             case .getComments(let postId):
                 return "/api/posts/\(postId)/comments"
             case .postComments(let postComment):
@@ -204,6 +227,7 @@ class APIManager {
         let headers: HTTPHeaders = type.headers
         let parameters = type.parameters
         let url = URLConst.baseURL + type.path
+
         AF.request(
             url,
             method: type.method,
