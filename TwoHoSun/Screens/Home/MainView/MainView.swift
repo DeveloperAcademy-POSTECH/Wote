@@ -25,7 +25,7 @@ struct MainView: View {
                 return "투표진행중"
             case .finishvote:
                 return "종료된투표"
-            }
+            }   
         }
     }
 
@@ -34,9 +34,10 @@ struct MainView: View {
     @State private var touchPlus: Bool = false
     @State private var path : [MainPathType] = []
     @State private var isWriteViewPresented = false
-
+//    @Binding var navigationPath: [Route]
+    
     var body: some View {
-        NavigationStack {
+        ZStack {
             if viewModel.loading {
                 ProgressView("Loading")
             } else {
@@ -59,29 +60,30 @@ struct MainView: View {
                     .scrollIndicators(.hidden)
                     floatingButton
                 }
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        Image("splash")
-                            .resizable()
-                            .frame(width: 120,height: 36)
-                    }
-                    ToolbarItem(placement: .topBarTrailing) {
-                        HStack {
-                            noticeButton
-                            searchButton
-                        }
-                    }
+            }
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Image("splash")
+                    .resizable()
+                    .frame(width: 120,height: 36)
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                HStack {
+                    noticeButton
+                    searchButton
                 }
-                .fullScreenCover(isPresented: $isWriteViewPresented) {
-                    NavigationStack {
-                        WriteView(isWriteViewPresented: $isWriteViewPresented, viewModel: WriteViewModel())
-                    }
-                }
+            }
+        }
+        .fullScreenCover(isPresented: $isWriteViewPresented) {
+            NavigationStack {
+                WriteView(isWriteViewPresented: $isWriteViewPresented, viewModel: WriteViewModel())
             }
         }
         .onAppear {
             viewModel.getPosts(30,first: true)
+//            navigationPath.removeAll()
         }
     }
 
@@ -215,8 +217,8 @@ extension MainView {
         }
     }
 }
-#Preview {
-    NavigationView {
-        MainView()
-    }
-}
+//#Preview {
+//    NavigationView {
+//        MainView()
+//    }
+//}

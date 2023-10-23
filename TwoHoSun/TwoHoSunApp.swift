@@ -8,10 +8,16 @@
 import SwiftUI
 import Observation
 
+enum Route {
+    case mainTabView
+    case profileView
+}
+
 @main
 struct TwoHoSunApp: App {
     let appState = AppState()
     @ObservedObject var viewModel = LoginViewModel()
+    @State private var path: [Route] = []
 
     var body: some Scene {
         WindowGroup {
@@ -20,8 +26,11 @@ struct TwoHoSunApp: App {
 //            } else {
 //            OnBoardingView()
 //            }
+            NavigationStack(path: $path) {
+                OnBoardingView(navigationPath: $path)
+            }
 //
-            OnBoardingView()
+//            MainTabView()
         }
     }
 }
