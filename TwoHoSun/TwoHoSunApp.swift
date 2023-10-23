@@ -16,26 +16,16 @@ enum Route {
 @main
 struct TwoHoSunApp: App {
     let appState = AppState()
-    @ObservedObject var viewModel = LoginViewModel()
     @State private var path: [Route] = []
 
     var body: some Scene {
         WindowGroup {
-//            if appState.hasValidToken {
-//                MainTabView()
-//            } else {
-//            OnBoardingView()
-//            }
-//            NavigationStack(path: $path) {
-//
-//                OnBoardingView(navigationPath: $path)
-//            }
-//
-//            OnBoardingView()
-//            SchoolSearchView(selectedSchoolInfo: .constant(.none))
-//            MainTabView()
-            NavigationStack {
-                SearchView()
+            if appState.hasValidToken {
+                MainTabView()
+            } else {
+                NavigationStack(path: $path) {
+                    OnBoardingView(navigationPath: $path)
+                }
             }
         }
     }
@@ -44,11 +34,12 @@ struct TwoHoSunApp: App {
 @Observable
 class AppState {
     var hasValidToken: Bool = false
-    
+
     init() {
         checkTokenValidity()
+
     }
-    
+
     private func checkTokenValidity() {
         if KeychainManager.shared.readToken(key: "accessToken") != nil {
             hasValidToken = true

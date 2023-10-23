@@ -37,54 +37,60 @@ struct MainView: View {
     //    @Binding var navigationPath: [Route]
 
     var body: some View {
-        ZStack(alignment: .bottomTrailing) {
-            if viewModel.loading {
-                ProgressView("Loading")
-            } else {
-                if viewModel.datalist.isEmpty {
-                    emptyView
+        NavigationStack {
+            ZStack(alignment: .bottomTrailing) {
+                if viewModel.loading {
+                    ProgressView("Loading")
                 } else {
-                    ScrollView {
-                        LazyVStack {
-                            filterBar
-                            ForEach(viewModel.datalist) { data in
-                                MainCellView(postData: data)
-                                    .onAppear {
-                                        guard let index = viewModel.datalist.firstIndex(where: {$0.id == data.id}) else {return}
-                                        if index % 10 == 0 && !viewModel.lastPage {
-                                            viewModel.getPosts()
+                    if viewModel.datalist.isEmpty {
+                        emptyView
+                    } else {
+                        ScrollView {
+                            LazyVStack {
+                                filterBar
+                                ForEach(viewModel.datalist) { data in
+                                    MainCellView(postData: data)
+                                        .onAppear {
+                                            guard let index = viewModel.datalist.firstIndex(where: {$0.id == data.id}) else {return}
+                                            if index % 10 == 0 && !viewModel.lastPage {
+                                                viewModel.getPosts()
+                                            }
                                         }
-                                    }
+                                }
                             }
                         }
+                        .scrollIndicators(.hidden)
+                        floatingButton
                     }
-                    .scrollIndicators(.hidden)
-                    floatingButton
                 }
             }
-        }
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Image("splash")
-                    .resizable()
-                    .frame(width: 120,height: 36)
-            }
-            ToolbarItem(placement: .topBarTrailing) {
-                HStack {
-                    noticeButton
-                    searchButton
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Image("splash")
+                        .resizable()
+                        .frame(width: 120,height: 36)
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    HStack {
+                        noticeButton
+                        searchButton
+                    }
                 }
             }
-        }
-        .fullScreenCover(isPresented: $isWriteViewPresented) {
-            NavigationStack {
-                WriteView(isWriteViewPresented: $isWriteViewPresented, viewModel: WriteViewModel())
+            .fullScreenCover(isPresented: $isWriteViewPresented) {
+                NavigationStack {
+                    WriteView(isWriteViewPresented: $isWriteViewPresented, viewModel: WriteViewModel())
+                }
             }
-        }
-        .onAppear {
-            viewModel.getPosts(30,first: true)
-            //            navigationPath.removeAll()
+            .onAppear {
+                viewModel.getPosts(30,first: true)
+            }
+            .onDisappear {
+                touchPlus = false
+                viewModel.nextIndex = 0
+                viewModel.loading = true
+            }
         }
     }
 
@@ -154,6 +160,7 @@ extension MainView {
                 .frame(width: 145, height: 88)
                 .background(
                     RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.white)
                         .stroke(Color.gray, lineWidth: 1.0)
                 )
                 .padding(.trailing, 16)
