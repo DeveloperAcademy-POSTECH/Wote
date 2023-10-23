@@ -9,6 +9,12 @@ import SwiftUI
 
 struct ChartView: View {
     @State var currentPage: Int = 0
+
+    let viewModel = ChartViewModel()
+    let model = ChartModel(
+        genderChart: GenderChart(male: AgreeCount(agree: 21, disagree: 12), female: AgreeCount(agree: 4, disagree: 9)),
+        gradeChart: GradeChart(middleFirst: AgreeCount(agree: 3, disagree: 2), middleSecond: AgreeCount(agree: 23, disagree: 11), middleThird: AgreeCount(agree: 15, disagree: 2), highFirst: AgreeCount(agree: 4, disagree: 9), highSecond: AgreeCount(agree: 32, disagree: 12), highThird: AgreeCount(agree: 49, disagree: 9)),
+        regionChart: RegionChart(seoul: AgreeCount(agree: 32, disagree: 13), gyeonggi: AgreeCount(agree: 23, disagree: 12), chungcheong: AgreeCount(agree: 18, disagree: 7), gangwon: AgreeCount(agree: 4, disagree: 8), gyeongsang: AgreeCount(agree: 8, disagree: 8), jeolla: AgreeCount(agree: 27, disagree: 21), jeju: AgreeCount(agree: 2, disagree: 9)))
     
     var body: some View {
         VStack(spacing: 10) {
@@ -33,13 +39,13 @@ extension ChartView {
             Text("성별 통계")
                 .font(.system(size: 16, weight: .bold))
                 .padding(.bottom, 4)
-            genderChartContent("남자")
-            genderChartContent("여자")
+            genderChartContent(label: "남자", data: model.genderChart.male)
+            genderChartContent(label: "여자", data: model.genderChart.female)
         }
         .padding(.horizontal, 26)
     }
     
-    private func genderChartContent(_ gender: String) -> some View {
+    private func genderChartContent(label: String, data: AgreeCount) -> some View {
         ZStack {
             Rectangle()
                 .foregroundStyle(Color(.secondarySystemBackground))
@@ -49,19 +55,24 @@ extension ChartView {
                     .foregroundStyle(.white)
                     .frame(width: 32, height: 32)
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(gender)
+                    Text(label)
                         .font(.system(size: 14, weight: .bold))
-                    HStack(spacing: 0) {
-                        Rectangle()
-                            .foregroundStyle(.cyan)
-                        Rectangle()
-                            .foregroundStyle(.green)
+                    GeometryReader { geo in
+                        HStack(spacing: 0) {
+                            Rectangle()
+                                .foregroundStyle(.cyan)
+                                .frame(width: geo.size.width * Double(data.agree) / Double(data.agree + data.disagree))
+                            Rectangle()
+                                .foregroundStyle(.green)
+                        }
                     }
                     .frame(height: 15)
                     HStack {
-                        Text("20.0%(2명)")
+                        Text(String(format: "%.1f", Double(data.agree) / Double(data.agree + data.disagree) * 100) + "%(\(data.agree))명")
+                            .fixedSize()
                         Spacer()
-                        Text("80.0%(8명)")
+                        Text(String(format: "%.1f", Double(data.disagree) / Double(data.agree + data.disagree) * 100) + "%(\(data.disagree))명")
+                            .fixedSize()
                     }
                     .foregroundStyle(.gray)
                     .font(.system(size: 12, weight: .medium))
@@ -81,12 +92,12 @@ extension ChartView {
                     .foregroundStyle(Color(.secondarySystemBackground))
                     .clipShape(.rect(cornerRadius: 10))
                 VStack {
-                    gradeChartContent("중1")
-                    gradeChartContent("중2")
-                    gradeChartContent("중3")
-                    gradeChartContent("고1")
-                    gradeChartContent("고2")
-                    gradeChartContent("고3")
+                    gradeChartContent(label: "중1", data: model.gradeChart.middleFirst)
+                    gradeChartContent(label: "중2", data: model.gradeChart.middleSecond)
+                    gradeChartContent(label: "중3", data: model.gradeChart.middleThird)
+                    gradeChartContent(label: "고1", data: model.gradeChart.highFirst)
+                    gradeChartContent(label: "고2", data: model.gradeChart.highSecond)
+                    gradeChartContent(label: "고3", data: model.gradeChart.highThird)
                 }
                 .padding(12)
             }
@@ -94,7 +105,7 @@ extension ChartView {
         .padding(.horizontal, 26)
     }
     
-    private func gradeChartContent(_ grade: String) -> some View {
+    private func gradeChartContent(label: String, data: AgreeCount) -> some View {
         HStack {
             HStack {
                 Spacer()
@@ -106,7 +117,7 @@ extension ChartView {
                     .foregroundStyle(.cyan)
                     .frame(height: 15)
             }
-            Text(grade)
+            Text(label)
                 .font(.system(size: 14, weight: .medium))
             HStack {
                 Rectangle()
@@ -146,7 +157,7 @@ extension ChartView {
     
     private func regionChartContent(_ region: String) -> some View {
         VStack {
-            Text("20.0%\n(2명)")
+            Text("20.0%\n(\(model.genderChart.male.agree)명)")
                 .foregroundStyle(.gray)
                 .font(.system(size: 10, weight: .medium))
                 .fixedSize()
@@ -159,7 +170,7 @@ extension ChartView {
             Rectangle()
                 .foregroundStyle(.green)
                 .frame(width: 15)
-            Text("20.0%\n(2명)")
+            Text("20.0%\n(\(model.genderChart.male.disagree)명)")
                 .foregroundStyle(.gray)
                 .font(.system(size: 10, weight: .medium))
                 .fixedSize()

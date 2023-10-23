@@ -38,6 +38,13 @@ struct RegionChart {
 }
 
 struct AgreeCount {
-    let agree: Int
-    let disagree: Int
+    var agree: Int
+    var disagree: Int
+}
+
+struct VoteSummary {
+    var gender: [String: AgreeCount]
+    var grade: [String: AgreeCount]
+    var region: [String: AgreeCount]
+    var schoolAndGrade: [String: AgreeCount]
 }

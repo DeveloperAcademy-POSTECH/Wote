@@ -12,6 +12,7 @@ import Kingfisher
 struct VoteContentView: View {
     @State private var isImageDetailPresented = false
     @State private var isLinkWebViewPresented = false
+    @State private var isMine = true
     let postData: PostModel
     private let viewModel: VoteContentViewModel
 

@@ -45,6 +45,7 @@
 		FD6673372AE071550015007D /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6673362AE071550015007D /* APIManager.swift */; };
 		FD8D9F812ADC5FAD0072F4BA /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */; };
 		FD9280392ADD8A0E007285BA /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9280382ADD8A0E007285BA /* LoginModel.swift */; };
+		FDB4B14E2AE641E600720328 /* ChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB4B14D2AE641E600720328 /* ChartViewModel.swift */; };
 		FDDB990C2ADC1BEC00B1163F /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = FDDB990B2ADC1BEC00B1163F /* .swiftlint.yml */; };
 		FDDEC15B2AE3EABA004509EA /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEC15A2AE3EABA004509EA /* SearchView.swift */; };
 		FDE9FC9B2ADF28CF00EBC1F8 /* ProfileSettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDE9FC9A2ADF28CF00EBC1F8 /* ProfileSettingModel.swift */; };
@@ -95,6 +96,7 @@
 		FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		FD9280382ADD8A0E007285BA /* LoginModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		FD92803A2ADD8A4C007285BA /* File */ = {isa = PBXFileReference; lastKnownFileType = text; path = File; sourceTree = "<group>"; };
+		FDB4B14D2AE641E600720328 /* ChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewModel.swift; sourceTree = "<group>"; };
 		FDDB99042ADBF37100B1163F /* TwoHoSun.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TwoHoSun.entitlements; sourceTree = "<group>"; };
 		FDDB990B2ADC1BEC00B1163F /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		FDDEC15A2AE3EABA004509EA /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 			children = (
 				FDF2D6C12AE51DFE0027EE8F /* MyDetailView.swift */,
 				FDF2D6C72AE59ACA0027EE8F /* ChartView.swift */,
+				FDB4B14D2AE641E600720328 /* ChartViewModel.swift */,
 				C7DE44BA2AE0BBD9001639CB /* OthersDetailView.swift */,
 				C7DE44BC2AE0DCE7001639CB /* CommentCell.swift */,
 			);
@@ -433,6 +436,7 @@
 				FDDEC15B2AE3EABA004509EA /* SearchView.swift in Sources */,
 				C7DE44BB2AE0BBD9001639CB /* OthersDetailView.swift in Sources */,
 				ABBBC6782AE471B700B1E614 /* WriteViewModel.swift in Sources */,
+				FDB4B14E2AE641E600720328 /* ChartViewModel.swift in Sources */,
 				FD3205612ADD1F8100B0D5F6 /* MainView.swift in Sources */,
 				FDF2D6D02AE5E62B0027EE8F /* ChartModel.swift in Sources */,
 				FD4E75B42ADE9616000C2277 /* NicknameModel.swift in Sources */,
