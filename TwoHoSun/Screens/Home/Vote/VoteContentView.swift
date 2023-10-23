@@ -16,7 +16,7 @@ struct VoteContentView: View {
     let postData: PostModel
     var isMainCell: Bool
     private let viewModel: VoteContentViewModel
-    
+
     init(postData: PostModel, isMainCell: Bool = true) {
         self.postData = postData
         self.isMainCell = isMainCell
@@ -24,64 +24,69 @@ struct VoteContentView: View {
     }
 
     var body: some View {
-        NavigationLink("", destination: DetailView(postData: postData), isActive: $goNext)
         ZStack {
-            Color.clear
-                .frame(maxWidth: .infinity)
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    if postData.voted && isMainCell {
-                        goNext = true
+            if isMainCell {
+                Color.clear
+                    .frame(maxWidth: .infinity)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        if postData.voted {
+                            goNext = true
+                        }
                     }
+            }
+            VStack(alignment: .leading, spacing: 0) {
+                VStack(alignment: .leading, spacing: 0) {
+                    decorationBoxView
+                        .padding(.top, 22)
+                    titleView
+                        .padding(.top, 12)
+                    voteInfoView
+                        .padding(.top, 10)
+                    contentTextView
+                        .padding(.top, 20)
+                    tagView
+                        .padding(.top, 16)
+                    voteImageView
+                        .padding(.top, 12)
+                    voteView
+                        .padding(.top, 10)
                 }
-        VStack(alignment: .leading, spacing: 0) {
-            VStack(alignment: .leading, spacing: 0) {
-                //                VStack (spacing: 0) {
-                decorationBoxView
-                    .padding(.top, 22)
-                titleView
-                    .padding(.top, 12)
-                voteInfoView
-                    .padding(.top, 10)
-                contentTextView
-                    .padding(.top, 20)
-                tagView
-                    .padding(.top, 16)
-                //                }
-                voteImageView
-                    .padding(.top, 12)
-                voteView
-                    .padding(.top, 10)
-            }
-            .padding(.horizontal, 26)
+                .padding(.horizontal, 26)
 
-            HStack(spacing: 0) {
-                likeButton
-                    .padding(.trailing, 10)
-                commentButton
-                Spacer()
-                shareButton
-            }
-            .padding(.leading, 20)
-            .padding(.trailing, 26)
-            .padding(.top, 12)
+                HStack(spacing: 0) {
+                    likeButton
+                        .padding(.trailing, 10)
+                    commentButton
+                    Spacer()
+                    shareButton
+                }
+                .padding(.leading, 20)
+                .padding(.trailing, 26)
+                .padding(.top, 12)
 
-            VStack(alignment: .leading, spacing: 0) {
-                likeCountingLabel
-                    .padding(.top, 10)
-                commentCountButton
-                    .padding(.top, 8)
-                uploadTimeLabel
-                    .padding(.top, 8)
-                    .padding(.bottom, 20)
-            }
-            .padding(.leading, 26)
+                VStack(alignment: .leading, spacing: 0) {
+                    likeCountingLabel
+                        .padding(.top, 10)
+                    commentCountButton
+                        .padding(.top, 8)
+                    uploadTimeLabel
+                        .padding(.top, 8)
+                        .padding(.bottom, 20)
+                }
+                .padding(.leading, 26)
 
-            Rectangle()
-                .frame(height: 10)
-                .foregroundStyle(.gray)
+                Rectangle()
+                    .frame(height: 10)
+                    .foregroundStyle(.gray)
+            }
         }
-        }
+        .navigationDestination(
+             isPresented: $goNext) {
+                 DetailView(postData: postData)
+                  Text("")
+                      .hidden()
+             }
         .fullScreenCover(isPresented: $isImageDetailPresented) {
             NavigationView {
                 ImageDetailView(imageURL: postData.image, externalURL: postData.externalURL)

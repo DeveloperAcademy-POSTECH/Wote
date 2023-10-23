@@ -25,7 +25,6 @@ class DetailViewModel {
                 guard let data = response.data else {return}
                 self.commentsDatas = data
                 self.isSendMessage = false
-                print("data가져옴")
             default:
                 print("error")
             }
