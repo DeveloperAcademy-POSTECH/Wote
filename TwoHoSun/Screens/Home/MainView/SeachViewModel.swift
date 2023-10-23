@@ -35,6 +35,7 @@ final class SearchViewModel {
     func remove(at index: Int) {
         searchWords.remove(at: index)
         searchedDatas.removeAll()
+        UserDefaults.standard.set(searchWords, forKey: "RecentSearch")
     }
 
     func fetchSearchedData(page: Int = 0, size: Int = 20, keyword: String) {

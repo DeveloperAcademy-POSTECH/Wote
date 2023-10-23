@@ -84,6 +84,7 @@ extension SearchView {
                 Button {
                     hasResult = false
                     searchText.removeAll()
+                    viewModel.fetchRecentSearch()
                 } label: {
                     Image(systemName: "xmark")
                         .font(.system(size: 12))
