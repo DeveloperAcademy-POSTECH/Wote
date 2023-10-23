@@ -17,6 +17,7 @@ struct PostResponse: Codable {
     let likeCount, viewCount, commentCount: Int
     let voteCounts: VoteCounts
     let voted: Bool
+    let mine: Bool
 }
 
 struct Author: Codable {

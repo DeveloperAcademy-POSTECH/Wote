@@ -9,35 +9,36 @@ import SwiftUI
 
 struct SearchView: View {
     @Environment(\.dismiss) private var dismiss: DismissAction
-    @State private var searchText: String = ""
+    @State private var searchText = ""
     @State private var searchWords: [String] = []
     @State private var dismissTabBar: Bool = false
     @State private var hasResult: Bool = false
     @State private var hasRecommendation: Bool = false
     @State private var hasRecentSearch: Bool = true
-    
+    private let viewModel = SearchViewModel()
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
+        VStack(spacing: 0) {
             Divider()
-            if !hasRecommendation, !hasRecentSearch, !hasResult {
-                Spacer()
-                    .frame(maxWidth: .infinity)
-            }
-            if hasRecommendation {
-                searchRecommendation
-            }
-            if hasRecentSearch {
-                recentSearch
-                Spacer()
-                    .frame(maxWidth: .infinity)
-            }
+                .frame(height: 1)
+                .foregroundStyle(hasResult ? .clear : .black)
+
             if hasResult {
-                ScrollView {
-                    VStack {
-                        Text("hi")
+                if viewModel.searchedDatas.isEmpty {
+                    Spacer()
+                    emptyResultView
+                } else {
+                    ScrollView {
+                        ForEach(viewModel.searchedDatas) { data in
+                            MainCellView(postData: data)
+                        }
                     }
                 }
+            } else {
+                recentSearchView
             }
+
+            Spacer()
         }
         .onChange(of: searchWords) {
             if searchWords.isEmpty {
@@ -85,29 +86,15 @@ extension SearchView {
                     hasResult ? Color(UIColor.secondarySystemBackground) : .white
                 )
                 .clipShape(.capsule)
-                .onChange(of: searchText) {
-                    if searchText.isEmpty {
-                        hasRecentSearch = searchWords.isEmpty ? false : true
-                        hasRecommendation = false
-                    } else {
-                        hasRecentSearch = false
-                        hasRecommendation = true
-                    }
-                    hasResult = false
-                }
                 .onSubmit {
-                    if searchWords.count > 4 {
-                        searchWords.removeLast()
-                    }
-                    searchWords.insert(searchText, at: 0)
-                    hasRecentSearch = false
-                    hasRecommendation = false
                     hasResult = true
+                    searchWords.append(searchText)
+                    viewModel.fetchSearchedData(keyword: searchText)
                 }
             if hasResult {
                 Button {
                     hasResult = false
-                    searchText = ""
+                    searchText.removeAll()
                 } label: {
                     Image(systemName: "xmark")
                         .font(.system(size: 12))
@@ -118,11 +105,14 @@ extension SearchView {
         }
     }
     
-    private var recentSearch: some View {
+    private var recentSearchView: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("최근 검색어")
-                .foregroundStyle(.gray)
-                .font(.system(size: 14))
+            HStack {
+                Text("최근 검색어")
+                    .foregroundStyle(.gray)
+                    .font(.system(size: 14))
+                Spacer()
+            }
             HStack(spacing: 8) {
                 ForEach(Array(zip(searchWords.indices, searchWords)), id: \.0) { index, word in
                     Button {
@@ -150,39 +140,20 @@ extension SearchView {
         .padding(.horizontal, 14)
         .padding(.top, 16)
     }
-    
-    private var searchRecommendation: some View {
-        List {
-            // TODO: - 서버 나오면 onChange로 데이터 받아오는 로직 추가
-            ForEach(0..<5) { _ in
-                Button {
-                    if searchWords.count > 4 {
-                        searchWords.removeLast()
-                    }
-                    searchWords.insert(searchText, at: 0)
-                    hasRecentSearch = false
-                    hasRecommendation = false
-                    hasResult = true
-                } label: {
-                    HStack {
-                        Text("발렌시아가")
-                        Spacer()
-                        Image(systemName: "paperplane")
-                    }
-                    .frame(height: 48)
-                    .font(.system(size: 16))
-                    .foregroundStyle(.gray)
-                    .padding(.leading, 48)
-                    .padding(.trailing, 14)
-                }
-                .listRowSeparator(.hidden)
-                .listRowInsets(EdgeInsets())
-            }
+
+    private var emptyResultView: some View {
+        VStack(spacing: 20) {
+            Rectangle()
+                .frame(width: 90, height: 90)
+            Text("검색 결과가 없습니다.")
+                .font(.system(size: 20, weight: .medium))
         }
-        .listStyle(.plain)
+        .foregroundStyle(.gray)
     }
 }
 
 #Preview {
-    SearchView()
+    NavigationStack {
+        SearchView()
+    }
 }

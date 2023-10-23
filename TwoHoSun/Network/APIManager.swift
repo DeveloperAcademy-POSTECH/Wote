@@ -27,6 +27,7 @@ class APIManager {
         case refreshToken
         case getPosts(page: Int, size: Int)
         case postVoteCreate(postId: Int, param: String)
+        case getSearchResult(page: Int, size: Int, keyword: String)
 
         var headers: HTTPHeaders {
             switch self {
@@ -49,15 +50,32 @@ class APIManager {
                     "Content-Type": "application/json"
                 ]
             case .getPosts:
+//                return [
+//                    "Content-Type" : "application/json",
+//                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
+//                    ]
                 return [
                     "Content-Type" : "application/json",
-                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
+                    "Authorization": "Bearer eyJwcm92aWRlcklkIjoiMDAwNjkwLmM0MmNjY2E4ZWM5MTQ3ZGFiZmM5MWQwN2FhZDM1NzAzLjIxNDYiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcm92aWRlcklkIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTY5ODA0MzY4OCwiZXhwIjoxNjk4NjQ4NDg4fQ.gA1FqiEdIUjaGEwtKNi1kQNwpR3ezY2abuaS7V7uWPY)"
                     ]
             case .postVoteCreate:
+//                return [
+//                    "Content-Type": "application/json",
+//                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
+//                ]
                 return [
                     "Content-Type": "application/json",
-                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
+                    "Authorization": "Bearer eyJwcm92aWRlcklkIjoiMDAwNjkwLmM0MmNjY2E4ZWM5MTQ3ZGFiZmM5MWQwN2FhZDM1NzAzLjIxNDYiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcm92aWRlcklkIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTY5ODA0MzY4OCwiZXhwIjoxNjk4NjQ4NDg4fQ.gA1FqiEdIUjaGEwtKNi1kQNwpR3ezY2abuaS7V7uWPY"
                 ]
+            case .getSearchResult:
+                //                return [
+                //                    "Content-Type": "application/json",
+                //                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
+                //                ]
+                                return [
+                                    "Content-Type": "application/json",
+                                    "Authorization": "Bearer eyJwcm92aWRlcklkIjoiMDAwNjkwLmM0MmNjY2E4ZWM5MTQ3ZGFiZmM5MWQwN2FhZDM1NzAzLjIxNDYiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcm92aWRlcklkIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTY5ODA0MzY4OCwiZXhwIjoxNjk4NjQ4NDg4fQ.gA1FqiEdIUjaGEwtKNi1kQNwpR3ezY2abuaS7V7uWPY"
+                                ]
             }
         }
         
@@ -75,6 +93,8 @@ class APIManager {
                 return .get
             case .postVoteCreate:
                 return .post
+            case .getSearchResult:
+                return .get
             }
         }
         
@@ -114,6 +134,12 @@ class APIManager {
                 return [
                     "voteType": param
                 ]
+            case .getSearchResult(let page, let size, let keyword):
+                return [
+                    "page" : page,
+                    "size" : size,
+                    "keyword": keyword
+                ]
             }
         }
         
@@ -131,6 +157,8 @@ class APIManager {
                 return URLEncoding.queryString
             case .postVoteCreate:
                 return JSONEncoding.default
+            case .getSearchResult:
+                return URLEncoding.queryString
             }
         }
         
@@ -148,6 +176,8 @@ class APIManager {
                 return "/api/posts"
             case .postVoteCreate(let postId, _):
                 return "/api/posts/\(postId)/votes"
+            case .getSearchResult:
+                return "/api/posts/search"
             }
         }
     }

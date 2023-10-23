@@ -20,7 +20,8 @@ struct TwoHoSunApp: App {
 //            }
 //
 //            OnBoardingView()
-            SchoolSearchView(selectedSchoolInfo: .constant(.none))
+//            SchoolSearchView(selectedSchoolInfo: .constant(.none))
+            MainTabView()
         }
     }
 }
