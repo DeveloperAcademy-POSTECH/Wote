@@ -12,9 +12,12 @@ struct ChartView: View {
 
     let viewModel = ChartViewModel()
     let model = ChartModel(
-        genderChart: GenderChart(male: AgreeCount(agree: 21, disagree: 12), female: AgreeCount(agree: 4, disagree: 9)),
-        gradeChart: GradeChart(middleFirst: AgreeCount(agree: 3, disagree: 2), middleSecond: AgreeCount(agree: 23, disagree: 11), middleThird: AgreeCount(agree: 15, disagree: 2), highFirst: AgreeCount(agree: 4, disagree: 9), highSecond: AgreeCount(agree: 32, disagree: 12), highThird: AgreeCount(agree: 49, disagree: 9)),
-        regionChart: RegionChart(seoul: AgreeCount(agree: 32, disagree: 13), gyeonggi: AgreeCount(agree: 23, disagree: 12), chungcheong: AgreeCount(agree: 18, disagree: 7), gangwon: AgreeCount(agree: 4, disagree: 8), gyeongsang: AgreeCount(agree: 8, disagree: 8), jeolla: AgreeCount(agree: 27, disagree: 21), jeju: AgreeCount(agree: 2, disagree: 9)))
+        genderChart: GenderChart(male: AgreeCount(agree: 14, disagree: 26), female: AgreeCount(agree: 54, disagree: 6)),
+        gradeChart: GradeChart(middleFirst: AgreeCount(agree: 12, disagree: 4), middleSecond: AgreeCount(agree: 2, disagree: 6), middleThird: AgreeCount(agree: 11, disagree: 4), highFirst: AgreeCount(agree: 20, disagree: 2), highSecond: AgreeCount(agree: 9, disagree: 4), highThird: AgreeCount(agree: 16, disagree: 10)),
+        regionChart: RegionChart(seoul: AgreeCount(agree: 10, disagree: 4), gyeonggi: AgreeCount(agree: 1, disagree: 2), chungcheong: AgreeCount(agree: 2, disagree: 4), gangwon: AgreeCount(agree: 21, disagree: 9), gyeongsang: AgreeCount(agree: 5, disagree: 8), jeolla: AgreeCount(agree: 6, disagree: 4), jeju: AgreeCount(agree: 10, disagree: 14)))
+    var total: Int {
+        return model.genderChart.male.agree + model.genderChart.male.disagree + model.genderChart.female.agree + model.genderChart.female.disagree
+    }
     
     var body: some View {
         VStack(spacing: 10) {
@@ -68,10 +71,10 @@ extension ChartView {
                     }
                     .frame(height: 15)
                     HStack {
-                        Text(String(format: "%.1f", Double(data.agree) / Double(data.agree + data.disagree) * 100) + "%(\(data.agree))명")
+                        Text(String(format: "%.1f%%", Double(data.agree) / Double(total) * 100) + "(\(data.agree))명")
                             .fixedSize()
                         Spacer()
-                        Text(String(format: "%.1f", Double(data.disagree) / Double(data.agree + data.disagree) * 100) + "%(\(data.disagree))명")
+                        Text(String(format: "%.1f%%", Double(data.disagree) / Double(total) * 100) + "(\(data.disagree))명")
                             .fixedSize()
                     }
                     .foregroundStyle(.gray)
@@ -99,37 +102,38 @@ extension ChartView {
                     gradeChartContent(label: "고2", data: model.gradeChart.highSecond)
                     gradeChartContent(label: "고3", data: model.gradeChart.highThird)
                 }
-                .padding(12)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 12)
             }
         }
         .padding(.horizontal, 26)
     }
     
     private func gradeChartContent(label: String, data: AgreeCount) -> some View {
-        HStack {
             HStack {
-                Spacer()
-                Text("20.0%(2명)")
-                    .foregroundStyle(.gray)
-                    .font(.system(size: 12, weight: .medium))
-                    .fixedSize()
-                Rectangle()
-                    .foregroundStyle(.cyan)
-                    .frame(height: 15)
+                HStack {
+                    Spacer()
+                    Text(String(format: "%.1f%%", Double(data.agree) / Double(total) * 100))
+                        .foregroundStyle(.gray)
+                        .font(.system(size: 12, weight: .medium))
+                        .fixedSize()
+                    Rectangle()
+                        .foregroundStyle(.cyan)
+                        .frame(width: 90 * Double(data.agree) / Double(total), height: 15)
+                }
+                Text(label)
+                    .font(.system(size: 14, weight: .medium))
+                HStack {
+                    Rectangle()
+                        .foregroundStyle(.green)
+                        .frame(width: 90 * Double(data.disagree) / Double(total), height: 15)
+                    Text(String(format: "%.1f%%", Double(data.disagree) / Double(total) * 100))
+                        .foregroundStyle(.gray)
+                        .font(.system(size: 12, weight: .medium))
+                        .fixedSize()
+                    Spacer()
+                }
             }
-            Text(label)
-                .font(.system(size: 14, weight: .medium))
-            HStack {
-                Rectangle()
-                    .foregroundStyle(.green)
-                    .frame(height: 15)
-                Text("20.0%(2명)")
-                    .foregroundStyle(.gray)
-                    .font(.system(size: 12, weight: .medium))
-                    .fixedSize()
-                Spacer()
-            }
-        }
     }
     
     private var regionChart: some View {
@@ -140,14 +144,14 @@ extension ChartView {
                 Rectangle()
                     .foregroundStyle(Color(.secondarySystemBackground))
                     .clipShape(.rect(cornerRadius: 10))
-                HStack(spacing: 12) {
-                    regionChartContent("서울")
-                    regionChartContent("경기")
-                    regionChartContent("충청")
-                    regionChartContent("강원")
-                    regionChartContent("경상")
-                    regionChartContent("전라")
-                    regionChartContent("제주")
+                HStack(spacing: 14) {
+                    regionChartContent(label: "서울", data: model.regionChart.seoul)
+                    regionChartContent(label: "경기", data: model.regionChart.gyeonggi)
+                    regionChartContent(label: "충청", data: model.regionChart.chungcheong)
+                    regionChartContent(label: "강원", data: model.regionChart.gangwon)
+                    regionChartContent(label: "경상", data: model.regionChart.gyeongsang)
+                    regionChartContent(label: "전라", data: model.regionChart.jeolla)
+                    regionChartContent(label: "제주", data: model.regionChart.jeju)
                 }
                 .padding(12)
             }
@@ -155,24 +159,24 @@ extension ChartView {
         .padding(.horizontal, 26)
     }
     
-    private func regionChartContent(_ region: String) -> some View {
+    private func regionChartContent(label: String, data: AgreeCount) -> some View {
         VStack {
-            Text("20.0%\n(\(model.genderChart.male.agree)명)")
+            Text(String(format: "%.1f%%", Double(data.agree) / Double(total) * 100))
                 .foregroundStyle(.gray)
-                .font(.system(size: 10, weight: .medium))
+                .font(.system(size: 12, weight: .medium))
                 .fixedSize()
                 .multilineTextAlignment(.center)
             Rectangle()
                 .foregroundStyle(.cyan)
-                .frame(width: 15)
-            Text(region)
+                .frame(width: 15, height: 40 * Double(data.agree) / Double(total))
+            Text(label)
                 .font(.system(size: 14, weight: .medium))
             Rectangle()
                 .foregroundStyle(.green)
-                .frame(width: 15)
-            Text("20.0%\n(\(model.genderChart.male.disagree)명)")
+                .frame(width: 15, height: 40 * Double(data.disagree) / Double(total))
+            Text(String(format: "%.1f%%", Double(data.agree) / Double(total) * 100))
                 .foregroundStyle(.gray)
-                .font(.system(size: 10, weight: .medium))
+                .font(.system(size: 12, weight: .medium))
                 .fixedSize()
                 .multilineTextAlignment(.center)
         }
