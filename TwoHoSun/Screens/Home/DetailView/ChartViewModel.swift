@@ -26,11 +26,12 @@ class ChartViewModel {
                 self.getDetailPost(postId: postId)
             case 200:
                 guard let data = response.data else { return }
-                let summary = self.summarizeVotes(voteInfo: data.voteInfoList)
-                print(summary)
-                let chartModel = self.summarizeToChartModel(summary: summary)
-                self.chartModel = chartModel
-                print("CHARTMODEL: \(chartModel)")
+                print(data)
+//                let summary = self.summarizeVotes(voteInfo: data.voteInfoList)
+//                print(summary)
+//                let chartModel = self.summarizeToChartModel(summary: summary)
+//                self.chartModel = chartModel
+//                print("CHARTMODEL: \(chartModel)")
             default:
                 print("chart data error")
             }

@@ -21,12 +21,12 @@ struct TwoHoSunApp: App {
     var body: some Scene {
         WindowGroup {
             if appState.hasValidToken {
-//                MainTabView()
-                MyDetailView()
+                MainTabView()
+//                MyDetailView()
             } else {
                 NavigationStack(path: $path) {
-//                    OnBoardingView(navigationPath: $path)
-                    MyDetailView()
+                    OnBoardingView(navigationPath: $path)
+//                    MyDetailView()
                 }
             }
         }
