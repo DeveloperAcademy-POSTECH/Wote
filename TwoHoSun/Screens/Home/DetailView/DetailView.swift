@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-// TODO: 후에 모델작업은 수정 예정 여기서 사용하기 위해 임의로 제작
+
 struct DetailView : View {
     @Environment(\.dismiss) var dismiss
     @State private var commentText: String = ""
@@ -17,7 +17,7 @@ struct DetailView : View {
     @State private var isOpenComment: Bool = false
 
     let postData: PostModel
-    let viewModel: DetailViewModel
+    private let viewModel: DetailViewModel
 
     init(postData: PostModel) {
         self.postData = postData
@@ -47,6 +47,7 @@ struct DetailView : View {
                 self.endTextEditing()
             }
             .onAppear {
+                viewModel.fetchVoteDetailPost()
                 viewModel.getComments()
             }
             .navigationBarTitleDisplayMode(.inline)

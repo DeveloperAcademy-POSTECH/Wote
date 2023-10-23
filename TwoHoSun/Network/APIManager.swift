@@ -32,6 +32,7 @@ class APIManager {
         case getComments(postId: Int)
         case postComments(commentPost: CommentPostModel)
         case deleteComments(postId: Int, commentId: Int)
+        case getDetailPost(postId: Int)
 
         var headers: HTTPHeaders {
             switch self {
@@ -88,6 +89,11 @@ class APIManager {
                     "Content-Type": "application/json",
                     "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
                 ]
+            case .getDetailPost(postId: let postId):
+                return [
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
+                ]
             }
         }
 
@@ -115,6 +121,8 @@ class APIManager {
                 return .post
             case .deleteComments:
                 return .delete
+            case .getDetailPost:
+                return .get
             }
         }
 
@@ -183,6 +191,10 @@ class APIManager {
                     "size" : size,
                     "keyword": keyword
                 ]
+            case .getDetailPost(let postId):
+                return [
+                    "postId": postId
+                ]
             }
         }
 
@@ -210,6 +222,8 @@ class APIManager {
                 return URLEncoding.queryString
             case .getSearchResult:
                 return URLEncoding.queryString
+            case .getDetailPost:
+                return URLEncoding.default
             }
         }
 
@@ -237,6 +251,8 @@ class APIManager {
                 return "/api/posts/\(postId)/comments/\(commentId)"
             case .getSearchResult:
                 return "/api/posts/search"
+            case .getDetailPost(let postId):
+                return "/api/posts/\(postId)"
             }
         }
     }
