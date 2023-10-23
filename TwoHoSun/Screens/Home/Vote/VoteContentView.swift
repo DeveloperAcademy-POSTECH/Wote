@@ -12,18 +12,31 @@ import Kingfisher
 struct VoteContentView: View {
     @State private var isImageDetailPresented = false
     @State private var isLinkWebViewPresented = false
-    @State private var isMine = true
+    @State private var goNext = false
     let postData: PostModel
+    var isMainCell: Bool
     private let viewModel: VoteContentViewModel
-
-    init(postData: PostModel) {
+    
+    init(postData: PostModel, isMainCell: Bool = true) {
         self.postData = postData
+        self.isMainCell = isMainCell
         self.viewModel =  VoteContentViewModel(postData: postData)
     }
 
     var body: some View {
+        NavigationLink("", destination: DetailView(postData: postData), isActive: $goNext)
+        ZStack {
+            Color.clear
+                .frame(maxWidth: .infinity)
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    if postData.voted && isMainCell {
+                        goNext = true
+                    }
+                }
         VStack(alignment: .leading, spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
+                //                VStack (spacing: 0) {
                 decorationBoxView
                     .padding(.top, 22)
                 titleView
@@ -34,6 +47,7 @@ struct VoteContentView: View {
                     .padding(.top, 20)
                 tagView
                     .padding(.top, 16)
+                //                }
                 voteImageView
                     .padding(.top, 12)
                 voteView
@@ -48,6 +62,7 @@ struct VoteContentView: View {
             informationLabels
             dividerBlock
         }
+        }
         .fullScreenCover(isPresented: $isImageDetailPresented) {
             NavigationView {
                 ImageDetailView(imageURL: postData.image, externalURL: postData.externalURL)
@@ -58,6 +73,7 @@ struct VoteContentView: View {
                 LinkView(externalURL: postData.externalURL)
             }
         }
+
     }
 }
 
@@ -74,11 +90,13 @@ extension VoteContentView {
             Text(postData.title)
                 .font(.system(size: 20, weight: .bold))
             Spacer()
-            NavigationLink {
-                DetailView(postData: postData)
-            } label: {
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 16))
+            if isMainCell {
+                NavigationLink {
+                    DetailView(postData: postData)
+                } label: {
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 16))
+                }
             }
         }
     }
@@ -277,7 +295,7 @@ extension VoteContentView {
 
     @ViewBuilder
     private var commentCountButton: some View {
-        if postData.commentCount != 0 {
+        if postData.commentCount != 0 && isMainCell {
             Button {
                 print("comment button did tap")
             } label: {
