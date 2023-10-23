@@ -12,14 +12,11 @@ struct SearchView: View {
     @State private var searchText = ""
     @State private var dismissTabBar: Bool = false
     @State private var hasResult: Bool = false
-    @State private var hasRecommendation: Bool = false
-    @State private var hasRecentSearch: Bool = true
     private let viewModel = SearchViewModel()
 
     var body: some View {
         VStack(spacing: 0) {
             Divider()
-                .frame(height: 1)
                 .foregroundStyle(hasResult ? .clear : .black)
 
             if hasResult {
@@ -53,9 +50,6 @@ struct SearchView: View {
         }
         .navigationBarBackButtonHidden()
         .toolbar(dismissTabBar || hasResult ? .visible : .hidden, for: .tabBar)
-        .onAppear {
-            viewModel.fetchRecentSearch()
-        }
     }
 }
 
@@ -83,7 +77,7 @@ extension SearchView {
                 .clipShape(.capsule)
                 .onSubmit {
                     hasResult = true
-                    viewModel.searchWords.append(searchText)
+                    viewModel.setRecentSearch(searchWord: searchText)
                     viewModel.fetchSearchedData(keyword: searchText)
                 }
             if hasResult {
