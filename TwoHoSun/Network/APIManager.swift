@@ -58,10 +58,14 @@ class APIManager {
 //                    "Content-Type" : "application/json",
 //                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
 //                    ]
-                return [
-                    "Content-Type" : "application/json",
-                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
-                ]
+//                return [
+//                    "Content-Type" : "application/json",
+//                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
+//                ]
+                    return [
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer eyJwcm92aWRlcklkIjoiMDAwNjkwLmM0MmNjY2E4ZWM5MTQ3ZGFiZmM5MWQwN2FhZDM1NzAzLjIxNDYiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcm92aWRlcklkIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTY5ODA0MzY4OCwiZXhwIjoxNjk4NjQ4NDg4fQ.gA1FqiEdIUjaGEwtKNi1kQNwpR3ezY2abuaS7V7uWPY"
+                    ]
             case .postVoteCreate:
 //                return [
 //                    "Content-Type": "application/json",
@@ -72,9 +76,13 @@ class APIManager {
                     "Authorization": "Bearer eyJwcm92aWRlcklkIjoiMDAwNjkwLmM0MmNjY2E4ZWM5MTQ3ZGFiZmM5MWQwN2FhZDM1NzAzLjIxNDYiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcm92aWRlcklkIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTY5ODA0MzY4OCwiZXhwIjoxNjk4NjQ4NDg4fQ.gA1FqiEdIUjaGEwtKNi1kQNwpR3ezY2abuaS7V7uWPY"
                 ]
             case .postCreate:
+//                return [
+//                    "Content-Type": "application/json",
+//                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
+//                ]
                 return [
                     "Content-Type": "application/json",
-                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
+                    "Authorization": "Bearer eyJwcm92aWRlcklkIjoiMDAwNjkwLmM0MmNjY2E4ZWM5MTQ3ZGFiZmM5MWQwN2FhZDM1NzAzLjIxNDYiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcm92aWRlcklkIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTY5ODA0MzY4OCwiZXhwIjoxNjk4NjQ4NDg4fQ.gA1FqiEdIUjaGEwtKNi1kQNwpR3ezY2abuaS7V7uWPY"
                 ]
             case .getComments:
                 return [

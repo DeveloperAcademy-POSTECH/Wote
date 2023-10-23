@@ -216,8 +216,9 @@ extension MainView {
         }
     }
 }
-//#Preview {
-//    NavigationView {
-//        MainView()
-//    }
-//}
+
+#Preview {
+    NavigationView {
+        MainView()
+    }
+}

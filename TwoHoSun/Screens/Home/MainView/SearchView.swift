@@ -10,7 +10,6 @@ import SwiftUI
 struct SearchView: View {
     @Environment(\.dismiss) private var dismiss: DismissAction
     @State private var searchText = ""
-    @State private var searchWords: [String] = []
     @State private var dismissTabBar: Bool = false
     @State private var hasResult: Bool = false
     @State private var hasRecommendation: Bool = false
@@ -24,7 +23,10 @@ struct SearchView: View {
                 .foregroundStyle(hasResult ? .clear : .black)
 
             if hasResult {
-                if viewModel.searchedDatas.isEmpty {
+                if viewModel.isFetching {
+                    ProgressView()
+                        .padding(.top, 100)
+                } else if viewModel.searchedDatas.isEmpty {
                     Spacer()
                     emptyResultView
                 } else {
@@ -40,16 +42,6 @@ struct SearchView: View {
 
             Spacer()
         }
-        .onChange(of: searchWords) {
-            if searchWords.isEmpty {
-                hasRecentSearch = false
-            }
-        }
-        .onAppear {
-            if searchWords.isEmpty {
-                hasRecentSearch = false
-            }
-        }
         .padding(.horizontal, 12)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -61,6 +53,9 @@ struct SearchView: View {
         }
         .navigationBarBackButtonHidden()
         .toolbar(dismissTabBar || hasResult ? .visible : .hidden, for: .tabBar)
+        .onAppear {
+            viewModel.fetchRecentSearch()
+        }
     }
 }
 
@@ -88,7 +83,7 @@ extension SearchView {
                 .clipShape(.capsule)
                 .onSubmit {
                     hasResult = true
-                    searchWords.append(searchText)
+                    viewModel.searchWords.append(searchText)
                     viewModel.fetchSearchedData(keyword: searchText)
                 }
             if hasResult {
@@ -114,9 +109,11 @@ extension SearchView {
                 Spacer()
             }
             WrappingHStack(horizontalSpacing: 8) {
-                ForEach(Array(zip(searchWords.indices, searchWords)), id: \.0) { index, word in
+                ForEach(Array(zip(viewModel.searchWords.indices, viewModel.searchWords)), id: \.0) { index, word in
                     Button {
-                        searchWords.remove(at: index)
+//                        viewModel.searchWords.remove(at: index)
+//                        viewModel.searchedDatas.removeAll()
+                        viewModel.remove(at: index)
                     } label: {
                         HStack(spacing: 5) {
                             Text(word)
@@ -136,29 +133,6 @@ extension SearchView {
                     }
                 }
             }
-//            HStack(spacing: 8) {
-//                ForEach(Array(zip(searchWords.indices, searchWords)), id: \.0) { index, word in
-//                    Button {
-//                        searchWords.remove(at: index)
-//                    } label: {
-//                        HStack(spacing: 5) {
-//                            Text(word)
-//                                .font(.system(size: 14))
-//                            Image(systemName: "xmark")
-//                                .font(.system(size: 12))
-//                        }
-//                        .foregroundStyle(.gray)
-//                        .fixedSize()
-//                        .frame(height: 28)
-//                        .padding(.horizontal, 10)
-//                        .background(
-//                            Capsule()
-//                                .stroke(Color.gray, lineWidth: 1)
-//                                .foregroundStyle(.white)
-//                        )
-//                    }
-//                }
-//            }
         }
         .padding(.horizontal, 14)
         .padding(.top, 16)

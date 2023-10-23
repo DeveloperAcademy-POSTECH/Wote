@@ -26,14 +26,17 @@ struct TwoHoSunApp: App {
 //            } else {
 //            OnBoardingView()
 //            }
-            NavigationStack(path: $path) {
-
-                OnBoardingView(navigationPath: $path)
-            }
+//            NavigationStack(path: $path) {
+//
+//                OnBoardingView(navigationPath: $path)
+//            }
 //
 //            OnBoardingView()
 //            SchoolSearchView(selectedSchoolInfo: .constant(.none))
-            MainTabView()
+//            MainTabView()
+            NavigationStack {
+                SearchView()
+            }
         }
     }
 }
