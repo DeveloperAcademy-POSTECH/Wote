@@ -11,9 +11,9 @@ import Combine
 
 class LoginViewModel: ObservableObject {
     @Published var showSheet = false
-    @Published var navigationPath: [Route] = []
     @Published var authorization: String = ""
-    
+    @Published var goMain = false
+
     func setAuthorizationCode(_ code: String) {
         self.authorization = code
     }
@@ -31,7 +31,7 @@ class LoginViewModel: ObservableObject {
                 if response.message == "UNREGISTERED_USER" {
                     self.showSheet = true
                 } else {
-                    self.navigationPath.append(.mainTabView)
+                    self.goMain = true
                 }
             }
         }

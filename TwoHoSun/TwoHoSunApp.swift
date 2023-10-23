@@ -8,19 +8,30 @@
 import SwiftUI
 import Observation
 
+enum Route {
+    case mainTabView
+    case profileView
+}
+
 @main
 struct TwoHoSunApp: App {
     let appState = AppState()
+    @ObservedObject var viewModel = LoginViewModel()
+    @State private var path: [Route] = []
 
     var body: some Scene {
         WindowGroup {
 //            if appState.hasValidToken {
-//             MainView()
+//                MainTabView()
 //            } else {
-//            }
-//
 //            OnBoardingView()
-            SchoolSearchView(selectedSchoolInfo: .constant(.none))
+//            }
+            NavigationStack(path: $path) {
+
+                OnBoardingView(navigationPath: $path)
+            }
+//
+//            MainTabView()
         }
     }
 }

@@ -31,6 +31,7 @@ class KeychainManager {
         var dataTypeRef: AnyObject?
         let status = SecItemCopyMatching(query, &dataTypeRef)
         if status == errSecSuccess, let data = dataTypeRef as? Data, let value = String(data: data, encoding: .utf8) {
+            print(value)
             return value
         } else {
             return nil
