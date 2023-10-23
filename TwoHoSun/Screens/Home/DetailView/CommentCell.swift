@@ -117,4 +117,11 @@ struct CommentCell: View {
                 }
             })
     }
+//    @ViewBuilder
+//    var forReplayButton: some View {
+//        if comment.childComments!= nil {
+//            
+//        }
+//
+//    }
 }

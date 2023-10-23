@@ -11,12 +11,13 @@ struct DetailView : View {
     @Environment(\.dismiss) var dismiss
     @Namespace var commentId
     @State private var commentText: String = ""
-    @State private var alertOn: Bool = false
+    @State private var alertOn = false
     @FocusState var isFocus: Bool
-    @State private var isSendMessage: Bool = false
+    @State private var isSendMessage = false
     @State private var scrollSpot: Int = 0
-    @State private var isOpenComment: Bool = false
+    @State private var isOpenComment = false
     @State private var keyboardHeight: CGFloat = 0.0
+    @State private var isReplyButtonTap = false
 
     let postData: PostModel
     let viewModel: DetailViewModel
@@ -35,6 +36,7 @@ struct DetailView : View {
                 commentView
 
             }
+            forReplayButton
             commentInputView
                 .ignoresSafeArea(.all, edges: .bottom)
                 .onChange(of: isFocus) {
@@ -61,6 +63,7 @@ struct DetailView : View {
         }
         .onTapGesture {
             self.endTextEditing()
+            self.isReplyButtonTap = false
         }
         .onAppear {
             viewModel.getComments()
@@ -158,6 +161,7 @@ extension DetailView {
                 ForEach(viewModel.commentsDatas) { comment in
                     CommentCell(comment: comment) {
                         scrollSpot = comment.commentId
+                        isReplyButtonTap = true
                         isFocus = true
                     }
                     .id(comment.commentId)
@@ -189,6 +193,31 @@ extension DetailView {
         .background(.ultraThinMaterial)
         .animation(.easeInOut(duration: 0.3), value: commentText)
     }
+
+    @ViewBuilder
+    var forReplayButton: some View {
+        if isReplyButtonTap {
+            if let nickName = viewModel.getNicknameForComment(commentId: scrollSpot) {
+                HStack {
+                    Text("\(nickName)님에게 답글달기")
+                        .font(.system(size: 14, weight: .medium))
+                    Spacer()
+                    Button {
+                        isReplyButtonTap = false
+                    } label: {
+                        Image(systemName: "xmark")
+                            .foregroundStyle(.gray)
+                            .font(.system(size: 14))
+                    }
+                }
+                .frame(height: 50)
+                .padding(.horizontal, 26)
+            }
+
+        }
+
+    }
+
     struct CommentTextFieldStyle: TextFieldStyle {
         @Bindable var viewModel: DetailViewModel
         func _body(configuration: TextField<Self._Label>) -> some View {

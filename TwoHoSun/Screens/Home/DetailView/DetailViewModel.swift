@@ -17,6 +17,12 @@ class DetailViewModel {
     init(postId: Int) {
         self.postId = postId
     }
+    func getNicknameForComment(commentId: Int) -> String? {
+        if let comment = commentsDatas.first(where: { $0.commentId == commentId }) {
+            return comment.author.userNickname
+        }
+        return nil // 해당 commentId를 가진 댓글을 찾을 수 없는 경우
+    }
 
     func getComments() {
         APIManager.shared.requestAPI(type: .getComments(postId: postId)) { (response: GeneralResponse<[CommentsModel]>) in
