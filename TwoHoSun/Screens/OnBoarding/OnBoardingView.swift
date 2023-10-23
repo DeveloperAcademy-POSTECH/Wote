@@ -176,6 +176,3 @@ extension OnBoardingView {
         }
     }
 }
-//#Preview {
-//    OnBoardingView()
-//}
