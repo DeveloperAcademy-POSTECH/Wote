@@ -89,14 +89,16 @@ struct CommentCell: View {
                     .foregroundColor(.black)
                     .font(.system(size: 14))
                     .padding(.bottom, 4)
-                Button(action: {}, label: {
-                    Text("답글달기")
-                        .font(.system(size: 12))
-                        .foregroundStyle(.gray)
-                        .onTapGesture {
-                            onReplyButtonTapped()
-                        }
-                })
+                if comment.childComments != nil {
+                    Button(action: {}, label: {
+                        Text("답글달기")
+                            .font(.system(size: 12))
+                            .foregroundStyle(.gray)
+                            .onTapGesture {
+                                onReplyButtonTapped()
+                            }
+                    })
+                }
             }
         }
     }
