@@ -113,7 +113,7 @@ extension SearchView {
                     .font(.system(size: 14))
                 Spacer()
             }
-            HStack(spacing: 8) {
+            WrappingHStack(horizontalSpacing: 8) {
                 ForEach(Array(zip(searchWords.indices, searchWords)), id: \.0) { index, word in
                     Button {
                         searchWords.remove(at: index)
@@ -136,6 +136,29 @@ extension SearchView {
                     }
                 }
             }
+//            HStack(spacing: 8) {
+//                ForEach(Array(zip(searchWords.indices, searchWords)), id: \.0) { index, word in
+//                    Button {
+//                        searchWords.remove(at: index)
+//                    } label: {
+//                        HStack(spacing: 5) {
+//                            Text(word)
+//                                .font(.system(size: 14))
+//                            Image(systemName: "xmark")
+//                                .font(.system(size: 12))
+//                        }
+//                        .foregroundStyle(.gray)
+//                        .fixedSize()
+//                        .frame(height: 28)
+//                        .padding(.horizontal, 10)
+//                        .background(
+//                            Capsule()
+//                                .stroke(Color.gray, lineWidth: 1)
+//                                .foregroundStyle(.white)
+//                        )
+//                    }
+//                }
+//            }
         }
         .padding(.horizontal, 14)
         .padding(.top, 16)
@@ -155,5 +178,59 @@ extension SearchView {
 #Preview {
     NavigationStack {
         SearchView()
+    }
+}
+
+private struct WrappingHStack: Layout {
+    private var horizontalSpacing: CGFloat
+    private var verticalSpacing: CGFloat
+    
+    public init(horizontalSpacing: CGFloat, verticalSpacing: CGFloat? = nil) {
+        self.horizontalSpacing = horizontalSpacing
+        self.verticalSpacing = verticalSpacing ?? horizontalSpacing
+    }
+
+    public func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache _: inout ()) -> CGSize {
+        guard !subviews.isEmpty else { return .zero }
+
+        let height = subviews.map { $0.sizeThatFits(proposal).height }.max() ?? 0
+
+        var rowWidths = [CGFloat]()
+        var currentRowWidth: CGFloat = 0
+        subviews.forEach { subview in
+            if currentRowWidth + horizontalSpacing + subview.sizeThatFits(proposal).width >= proposal.width ?? 0 {
+                rowWidths.append(currentRowWidth)
+                currentRowWidth = subview.sizeThatFits(proposal).width
+            } else {
+                currentRowWidth += horizontalSpacing + subview.sizeThatFits(proposal).width
+            }
+        }
+        rowWidths.append(currentRowWidth)
+
+        let rowCount = CGFloat(rowWidths.count)
+        return CGSize(width: max(rowWidths.max() ?? 0, proposal.width ?? 0), height: rowCount * height + (rowCount - 1) * verticalSpacing)
+    }
+
+    public func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        let height = subviews.map { $0.dimensions(in: proposal).height }.max() ?? 0
+        guard !subviews.isEmpty else { return }
+        var tmpX = bounds.minX
+        var tmpY = height / 2 + bounds.minY
+        subviews.forEach { subview in
+            tmpX += subview.dimensions(in: proposal).width / 2
+            if tmpX + subview.dimensions(in: proposal).width / 2 > bounds.maxX {
+                tmpX = bounds.minX + subview.dimensions(in: proposal).width / 2
+                tmpY += height + verticalSpacing
+            }
+            subview.place(
+                at: CGPoint(x: tmpX, y: tmpY),
+                anchor: .center,
+                proposal: ProposedViewSize(
+                    width: subview.dimensions(in: proposal).width,
+                    height: subview.dimensions(in: proposal).height
+                )
+            )
+            tmpX += subview.dimensions(in: proposal).width / 2 + horizontalSpacing
+        }
     }
 }
