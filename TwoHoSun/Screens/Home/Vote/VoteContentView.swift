@@ -24,7 +24,7 @@ struct VoteContentView: View {
     }
 
     var body: some View {
-        NavigationLink("", destination: DetailView(postData: postData), isActive: $goNext)
+        NavigationLink("", destination: OthersDetailView(postData: postData), isActive: $goNext)
         ZStack {
             Color.clear
                 .frame(maxWidth: .infinity)
@@ -54,32 +54,11 @@ struct VoteContentView: View {
                     .padding(.top, 10)
             }
             .padding(.horizontal, 26)
-
-            HStack(spacing: 0) {
-                likeButton
-                    .padding(.trailing, 10)
-                commentButton
-                Spacer()
-                shareButton
-            }
-            .padding(.leading, 20)
-            .padding(.trailing, 26)
-            .padding(.top, 12)
-
-            VStack(alignment: .leading, spacing: 0) {
-                likeCountingLabel
-                    .padding(.top, 10)
-                commentCountButton
-                    .padding(.top, 8)
-                uploadTimeLabel
-                    .padding(.top, 8)
-                    .padding(.bottom, 20)
-            }
-            .padding(.leading, 26)
-
-            Rectangle()
-                .frame(height: 10)
-                .foregroundStyle(.gray)
+            ChartView()
+                .padding(.top, 20)
+            buttonsBar
+            informationLabels
+            dividerBlock
         }
         }
         .fullScreenCover(isPresented: $isImageDetailPresented) {
@@ -111,7 +90,7 @@ extension VoteContentView {
             Spacer()
             if isMainCell {
                 NavigationLink {
-                    DetailView(postData: postData)
+                    OthersDetailView(postData: postData)
                 } label: {
                     Image(systemName: "chevron.right")
                         .font(.system(size: 16))
@@ -333,5 +312,37 @@ extension VoteContentView {
 
     private func getFirstDecimalNum(_ voteRatio: Double) -> Int {
         return Int((voteRatio * 10).truncatingRemainder(dividingBy: 10))
+    }
+    
+    private var buttonsBar: some View {
+        HStack(spacing: 0) {
+            likeButton
+                .padding(.trailing, 10)
+            commentButton
+            Spacer()
+            shareButton
+        }
+        .padding(.leading, 20)
+        .padding(.trailing, 26)
+        .padding(.top, 12)
+    }
+    
+    private var informationLabels: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            likeCountingLabel
+                .padding(.top, 10)
+            commentCountButton
+                .padding(.top, 8)
+            uploadTimeLabel
+                .padding(.top, 8)
+                .padding(.bottom, 20)
+        }
+        .padding(.leading, 26)
+    }
+    
+    private var dividerBlock: some View {
+        Rectangle()
+            .frame(height: 10)
+            .foregroundStyle(Color(.secondarySystemBackground))
     }
 }

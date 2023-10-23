@@ -7,7 +7,7 @@
 
 import SwiftUI
 // TODO: 후에 모델작업은 수정 예정 여기서 사용하기 위해 임의로 제작
-struct DetailView : View {
+struct OthersDetailView : View {
     @Environment(\.dismiss) var dismiss
     @State private var commentText: String = ""
     @State private var alertOn: Bool = false
@@ -71,7 +71,7 @@ struct DetailView : View {
 
     }
 }
-extension DetailView {
+extension OthersDetailView {
     private var detailHeaderView: some View {
         HStack {
             Image(systemName: "person")
@@ -124,7 +124,7 @@ struct AlertCustomToggle: ToggleStyle {
     }
 }
 
-extension DetailView {
+extension OthersDetailView {
     var seperatorView: some View {
         Rectangle()
             .fill(.ultraThickMaterial)

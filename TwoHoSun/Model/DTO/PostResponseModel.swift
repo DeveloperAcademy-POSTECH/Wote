@@ -16,6 +16,8 @@ struct PostResponse: Codable {
     let title, contents, image, externalURL: String
     let likeCount, viewCount, commentCount: Int
     let voteCounts: VoteCounts
+//    let voteInfoList: [VoteInfo]
+    let postCategoryType: PostCategoryType
     let voted: Bool
     let mine: Bool
 }

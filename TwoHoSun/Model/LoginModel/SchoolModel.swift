@@ -19,7 +19,7 @@ struct SchoolInfoModel: Identifiable {
     let schoolAddress: String
 }
 
-enum SchoolType {
+enum SchoolDataType {
     case highSchool, middleSchool
 
     var schoolParam: String {
