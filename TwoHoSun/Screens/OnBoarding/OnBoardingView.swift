@@ -17,7 +17,6 @@ struct OnBoardingView : View {
     @Binding var navigationPath: [Route]
     
     var body: some View {
-  
             VStack {
                 ZStack {
                     if currentpage != 0 {
@@ -29,11 +28,16 @@ struct OnBoardingView : View {
                 }
                 TabView(selection: $currentpage,
                         content: {
-                    onboardingPage(title: "첫번째 온보딩\n여기에 들어가", description: "대충첫번재 온보딩이란뜻", onboardingImage: UIImage(systemName: "photo")!)
-                        .tag(0)
-                    onboardingPage(title: "두번째 온보딩\n여기에 들어가", description: "대충두번재 온보딩이란뜻어쩌고저쩌고", onboardingImage: UIImage(systemName: "photo")!)
-                        .tag(1)
-                    loginboadingPage.tag(2)
+                    onboardingPage(title: "첫번째 온보딩\n여기에 들어가", 
+                                   description: "중고등학생들의 소비 고민을 어쩌고 할 거야",
+                                   onboardingImage: UIImage(systemName: "photo")!)
+                                .tag(0)
+                    onboardingPage(title: "두번째 온보딩\n여기에 들어가", 
+                                   description: "중고등학생들의 소비 고민을 어쩌고 할 거야",
+                                   onboardingImage: UIImage(systemName: "photo")!)
+                                .tag(1)
+                    loginBoardingPage
+                                .tag(2)
                 })
                 .tabViewStyle(.page(indexDisplayMode: .never))
             }
@@ -90,38 +94,42 @@ extension OnBoardingView {
                     .font(.system(size: 36, weight: .bold))
                     .frame(maxWidth: .infinity, alignment: .leading)
                 Text(description)
-                    .font(.system(size: 14))
+                    .font(.system(size: 18))
                     .frame(maxWidth: .infinity, alignment: .leading)
             }.padding(.leading, 40)
             // MARK: 여기에 이미지 들어가야하기에 크기는 임의로 잡아서 잡아둠.
-            Image(uiImage: onboardingImage)
+            Image("dummyImg")
                 .resizable()
                 .frame(width: 52,height: 52)
                 .padding(EdgeInsets(top: 129, leading: 160, bottom: 270, trailing: 160))
-            Button(action: {}, label: {
+            Button {
+                if currentpage < 2 {
+                    currentpage += 1
+                }
+            } label: {
                 Text("다음")
                     .frame(width: 361,height: 52)
                     .background(Color.gray)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
-            })
+            }
             .buttonStyle(PlainButtonStyle())
         }
     }
 
-    private var loginboadingPage: some View {
+    private var loginBoardingPage: some View {
         VStack {
             // TODO: 현재는 임의의 로고 추후에 로고 이미지박스로 변경 예정
-            Image(systemName: "keyboard")
+            Image("vote")
                 .resizable()
                 .frame(width: 234, height: 72)
                 .padding(.top, 65)
             Text("중고등 학생들의 소비고민을 어쩌고 할거야")
-                .font(Font.system(size: 16))
-                .padding(.top,18)
-            Image(systemName: "photo")
+                .font(Font.system(size: 18))
+                .padding(.top, 18)
+            Image("dummyImg")
                 .resizable()
                 .frame(width: 52, height: 52)
-                .padding(.top,128)
+                .padding(.top, 128)
                 .padding(.bottom, 190)
             Text("계속하려면 로그인 하세요")
                 .font(Font.system(size: 16))
