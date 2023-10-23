@@ -223,6 +223,7 @@ extension MainView {
         }
     }
 }
+
 #Preview {
     NavigationView {
         MainView()
