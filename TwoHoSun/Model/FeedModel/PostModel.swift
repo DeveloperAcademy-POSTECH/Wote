@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PostModel : Identifiable {
+struct PostModel: Identifiable {
     let id = UUID()
     let postId: Int
     let date: String
@@ -22,7 +22,9 @@ struct PostModel : Identifiable {
     let viewCount: Int
     let commentCount: Int
     let voteCount: VoteCountModel
+    let postCategoryType: PostCategoryType
     let voted: Bool
+    let mine: Bool
 
     init(from postResponse: PostResponse) {
         self.postId = postResponse.postId
@@ -41,7 +43,8 @@ struct PostModel : Identifiable {
         self.voteCount = VoteCountModel(agreeCount: postResponse.voteCounts.agreeCount,
                                         disagreeCount: postResponse.voteCounts.disagreeCount)
         self.voted = postResponse.voted
-
+        self.mine = postResponse.mine
+        self.postCategoryType = postResponse.postCategoryType
     }
 }
 
