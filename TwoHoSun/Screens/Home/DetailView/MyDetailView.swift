@@ -15,7 +15,7 @@ struct MyDetailView: View {
         ScrollView {
             VStack {
                 detailHeaderView
-                
+                ChartView()
             }
         }
     }

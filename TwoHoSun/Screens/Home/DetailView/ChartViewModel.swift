@@ -27,8 +27,10 @@ class ChartViewModel {
             case 200:
                 guard let data = response.data else { return }
                 let summary = self.summarizeVotes(voteInfo: data.voteInfoList)
+                print(summary)
                 let chartModel = self.summarizeToChartModel(summary: summary)
                 self.chartModel = chartModel
+                print("CHARTMODEL: \(chartModel)")
             default:
                 print("chart data error")
             }
@@ -52,7 +54,7 @@ class ChartViewModel {
             summary.region[region, default: AgreeCount(agree: 0, disagree: 0)].disagree += disagreeCount
             
             // School and Grade
-            let schoolAndGradeKey = "\(vote.schoolType) \(vote.grade)"
+            let schoolAndGradeKey = "\(vote.schoolType.rawValue) \(vote.grade)"
             summary.schoolAndGrade[schoolAndGradeKey, default: AgreeCount(agree: 0, disagree: 0)].agree += agreeCount
             summary.schoolAndGrade[schoolAndGradeKey, default: AgreeCount(agree: 0, disagree: 0)].disagree += disagreeCount
         }

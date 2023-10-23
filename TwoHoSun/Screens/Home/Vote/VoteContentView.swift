@@ -24,7 +24,7 @@ struct VoteContentView: View {
     }
 
     var body: some View {
-        NavigationLink("", destination: DetailView(postData: postData), isActive: $goNext)
+        NavigationLink("", destination: OthersDetailView(postData: postData), isActive: $goNext)
         ZStack {
             Color.clear
                 .frame(maxWidth: .infinity)
@@ -54,10 +54,8 @@ struct VoteContentView: View {
                     .padding(.top, 10)
             }
             .padding(.horizontal, 26)
-            if isMine {
-                ChartView()
-                    .padding(.top, 20)
-            }
+            ChartView()
+                .padding(.top, 20)
             buttonsBar
             informationLabels
             dividerBlock
@@ -92,7 +90,7 @@ extension VoteContentView {
             Spacer()
             if isMainCell {
                 NavigationLink {
-                    DetailView(postData: postData)
+                    OthersDetailView(postData: postData)
                 } label: {
                     Image(systemName: "chevron.right")
                         .font(.system(size: 16))

@@ -170,7 +170,7 @@ extension ChartView {
             Rectangle()
                 .foregroundStyle(.green)
                 .frame(width: 15, height: 40 * Double(data.disagree) / Double(total))
-            Text(String(format: "%.1f%%", Double(data.agree) / Double(total) * 100))
+            Text(String(format: "%.1f%%", Double(data.disagree) / Double(total) * 100))
                 .foregroundStyle(.gray)
                 .font(.system(size: 12, weight: .medium))
                 .fixedSize()
