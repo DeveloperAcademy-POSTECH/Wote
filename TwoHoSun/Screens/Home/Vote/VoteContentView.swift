@@ -25,7 +25,7 @@ struct VoteContentView: View {
 
     var body: some View {
         NavigationLink("", 
-                       destination: DetailView(viewModel: DetailViewModel(postId: postData.postId), 
+                       destination: OthersDetailView(viewModel: DetailViewModel(postId: postData.postId),
                                                postId: postData.postId),
                        isActive: $goNext)
         ZStack {
@@ -89,7 +89,7 @@ extension VoteContentView {
             Spacer()
             if isMainCell {
                 NavigationLink {
-                    DetailView(viewModel: DetailViewModel(postId: postData.postId), postId: postData.postId)
+                    OthersDetailView(viewModel: DetailViewModel(postId: postData.postId), postId: postData.postId)
                 } label: {
                     Image(systemName: "chevron.right")
                         .font(.system(size: 16))
