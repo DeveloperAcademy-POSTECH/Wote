@@ -26,16 +26,18 @@ struct DetailView : View {
     }
 
     var body: some View {
-        VStack {
+        ScrollView {
             if !isFocus {
                 detailHeaderView
-                Image("splash")
+                Divider()
+                VoteContentView(postData: postData, isMainCell: false)
             }
             seperatorView
             commentView
+        }
             commentInputView
                 .ignoresSafeArea(.all, edges: .bottom)
-        }
+
         .onChange(of: viewModel.isSendMessage) { _, newVal in
             if newVal {
                 viewModel.postComments(commentPost: CommentPostModel(content: commentText, parentId: scrollSpot, postId: postData.postId))
@@ -114,7 +116,7 @@ extension DetailView {
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 24) {
-                    Text("댓글 20개")
+                    Text("댓글 \(viewModel.commentsDatas.count)개")
                         .font(.system(size: 14))
                         .foregroundStyle(.gray)
                         .padding(.bottom, 16)
@@ -148,7 +150,7 @@ extension DetailView {
                 .background(.white)
                 .cornerRadius(5)
         }
-        .padding(EdgeInsets(top: 17, leading: 26, bottom: 25, trailing: 22))
+        .padding(EdgeInsets(top: 17, leading: 26, bottom: 0, trailing: 22))
         .frame(maxWidth: .infinity)
         .frame(minHeight: 82)
         .background(.ultraThinMaterial)

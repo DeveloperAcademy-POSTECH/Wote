@@ -13,10 +13,12 @@ struct VoteContentView: View {
     @State private var isImageDetailPresented = false
     @State private var isLinkWebViewPresented = false
     let postData: PostModel
+    var isMainCell: Bool
     private let viewModel: VoteContentViewModel
 
-    init(postData: PostModel) {
+    init(postData: PostModel, isMainCell: Bool = true) {
         self.postData = postData
+        self.isMainCell = isMainCell
         self.viewModel =  VoteContentViewModel(postData: postData)
     }
 
@@ -92,11 +94,13 @@ extension VoteContentView {
             Text(postData.title)
                 .font(.system(size: 20, weight: .bold))
             Spacer()
-            NavigationLink {
-                DetailView(postData: postData)
-            } label: {
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 16))
+            if isMainCell {
+                NavigationLink {
+                    DetailView(postData: postData)
+                } label: {
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 16))
+                }
             }
         }
     }
@@ -295,7 +299,7 @@ extension VoteContentView {
 
     @ViewBuilder
     private var commentCountButton: some View {
-        if postData.commentCount != 0 {
+        if postData.commentCount != 0 && isMainCell {
             Button {
                 print("comment button did tap")
             } label: {
