@@ -34,14 +34,16 @@ struct MainView: View {
     @State private var touchPlus: Bool = false
     @State private var path : [MainPathType] = []
     @State private var isWriteViewPresented = false
+    //    @Binding var navigationPath: [Route]
 
     var body: some View {
-        NavigationStack {
+        ZStack(alignment: .bottomTrailing) {
             if viewModel.loading {
                 ProgressView("Loading")
             } else {
-                ZStack(alignment: .bottomTrailing) {
+                if viewModel.datalist.isEmpty {
                     emptyView
+                } else {
                     ScrollView {
                         LazyVStack {
                             filterBar
@@ -59,29 +61,30 @@ struct MainView: View {
                     .scrollIndicators(.hidden)
                     floatingButton
                 }
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        Image("splash")
-                            .resizable()
-                            .frame(width: 120,height: 36)
-                    }
-                    ToolbarItem(placement: .topBarTrailing) {
-                        HStack {
-                            noticeButton
-                            searchButton
-                        }
-                    }
+            }
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Image("splash")
+                    .resizable()
+                    .frame(width: 120,height: 36)
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                HStack {
+                    noticeButton
+                    searchButton
                 }
-                .fullScreenCover(isPresented: $isWriteViewPresented) {
-                    NavigationStack {
-                        WriteView(viewModel: WriteViewModel())
-                    }
-                }
+            }
+        }
+        .fullScreenCover(isPresented: $isWriteViewPresented) {
+            NavigationStack {
+                WriteView(isWriteViewPresented: $isWriteViewPresented, viewModel: WriteViewModel())
             }
         }
         .onAppear {
             viewModel.getPosts(30,first: true)
+            //            navigationPath.removeAll()
         }
     }
 
@@ -177,24 +180,22 @@ extension MainView {
 
     @ViewBuilder
     private var emptyView: some View {
-        if viewModel.datalist.isEmpty {
-            VStack {
-                filterBar
-                Spacer()
-                Image(systemName: "photo")
-                Text("아직 소비고민이 없어요")
-                Button {
-                    touchPlus.toggle()
-                } label: {
-                    Text("투표하러 가기")
-                        .font(.system(size: 18, weight: .semibold))
-                        .foregroundStyle(Color.white)
-                        .frame(width: 148, height: 52)
-                        .background(Color.gray)
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                }
-                Spacer()
+        VStack {
+            filterBar
+            Spacer()
+            Image(systemName: "photo")
+            Text("아직 소비고민이 없어요")
+            Button {
+                touchPlus.toggle()
+            } label: {
+                Text("투표하러 가기")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(Color.white)
+                    .frame(width: 148, height: 52)
+                    .background(Color.gray)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
             }
+            Spacer()
         }
     }
     func filterButton(_ title: String) -> some View {
@@ -215,8 +216,8 @@ extension MainView {
         }
     }
 }
-#Preview {
-    NavigationView {
-        MainView()
-    }
-}
+//#Preview {
+//    NavigationView {
+//        MainView()
+//    }
+//}

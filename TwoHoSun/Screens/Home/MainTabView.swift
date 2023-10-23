@@ -9,9 +9,10 @@ import SwiftUI
 
 struct MainTabView : View {
     @State private var selection = 0
+//    @Binding var path: [Route]
     var body: some View {
             TabView(selection: $selection) {
-                    MainView()
+                MainView()
                     .tabItem {
                         iconImage("1.square.fill")
                     }
@@ -35,6 +36,7 @@ struct MainTabView : View {
                     }
                     .tag(3)
             }
+            .navigationBarBackButtonHidden()
     }
 }
 

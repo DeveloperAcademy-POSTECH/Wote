@@ -17,6 +17,7 @@ final class ProfileSettingViewModel {
     var selectedSchoolInfo: SchoolInfoModel?
     var selectedGrade: String?    
     var nicknameValidationType = NicknameValidationType.none
+    var genderSelection = UserGender.boy
     var isNicknameDuplicated = false
     var isFormValid = true
     var model: ProfileSetting? 
@@ -76,7 +77,8 @@ final class ProfileSettingViewModel {
         guard let school = selectedSchoolInfo?.school,
               let grade = selectedGrade?.first else { return }
         model = ProfileSetting(userProfileImage: "",
-                               userNickname: nickname,
+                               userNickname: nickname, 
+                               userGender: genderSelection.rawValue,
                                school: school,
                                grade: Int(String(grade))!)
         postProfileSetting()
