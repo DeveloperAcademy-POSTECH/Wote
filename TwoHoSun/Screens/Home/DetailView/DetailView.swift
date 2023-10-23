@@ -16,20 +16,21 @@ struct DetailView : View {
     @State private var scrollSpot: Int = 0
     @State private var isOpenComment: Bool = false
 
-    let postData: PostModel
-    private let viewModel: DetailViewModel
-
-    init(postData: PostModel) {
-        self.postData = postData
-        self.viewModel = DetailViewModel(postId: postData.postId)
-    }
+    let viewModel: DetailViewModel
+    let postId: Int
 
     var body: some View {
         ScrollView {
             if !isFocus {
                 detailHeaderView
                 Divider()
-                VoteContentView(postData: postData, isMainCell: false)
+                if let postData = viewModel.detailPostData {
+                    VoteContentView(postData: postData,
+                                    isMainCell: false)
+                } else {
+                    ProgressView()
+                        .padding(.top, 100)
+                }
             }
             seperatorView
             commentView
@@ -39,7 +40,9 @@ struct DetailView : View {
 
             .onChange(of: viewModel.isSendMessage) { _, newVal in
                 if newVal {
-                    viewModel.postComments(commentPost: CommentPostModel(content: commentText, parentId: scrollSpot, postId: postData.postId))
+                    viewModel.postComments(commentPost: CommentPostModel(content: commentText,
+                                                                         parentId: scrollSpot,
+                                                                         postId: viewModel.detailPostData?.postId ?? 0))
                     commentText = ""
                 }
             }
@@ -78,7 +81,7 @@ extension DetailView {
             Image(systemName: "person")
                 .frame(width: 30, height: 30)
                 .clipShape(Circle())
-            Text(postData.author.userNickname)
+            Text(viewModel.detailPostData?.author.userNickname ?? "loading...")
                 .font(.system(size: 16))
             Text("님의 구매후기 받기")
                 .font(.system(size: 14))
