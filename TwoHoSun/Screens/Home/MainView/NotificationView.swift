@@ -45,14 +45,13 @@ extension NotificationView {
     private var notificationList: some View {
         List {
             listHeader("오늘 알림")
-                .listRowSeparator(.hidden)
             ForEach(0..<3) { _ in
                 notificationCell
             }
             .listRowInsets(EdgeInsets())
             .listRowSeparator(.hidden)
+            Divider()
             listHeader("이전 알림")
-                .listRowSeparator(.hidden)
             ForEach(0..<10) { _ in
                 notificationCellWithPostIcon
             }
@@ -65,15 +64,12 @@ extension NotificationView {
     }
 
     private func listHeader(_ headerName: String) -> some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Rectangle()
-                .frame(height: 1)
-            Text(headerName)
-                .font(.system(size: 14, weight: .medium))
-                .padding(.leading, 15)
-                .padding(.bottom, 10)
-        }
-        .foregroundStyle(.gray)
+        Text(headerName)
+            .font(.system(size: 14, weight: .medium))
+            .foregroundStyle(.gray)
+            .padding(.leading, 15)
+            .padding(.bottom, 10)
+            .listRowSeparator(.hidden)
     }
 
     private var notificationCell: some View {
