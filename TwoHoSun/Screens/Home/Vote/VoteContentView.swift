@@ -12,10 +12,11 @@ import Kingfisher
 struct VoteContentView: View {
     @State private var isImageDetailPresented = false
     @State private var isLinkWebViewPresented = false
+    @State private var goNext = false
     let postData: PostModel
     var isMainCell: Bool
     private let viewModel: VoteContentViewModel
-
+    
     init(postData: PostModel, isMainCell: Bool = true) {
         self.postData = postData
         self.isMainCell = isMainCell
@@ -23,8 +24,19 @@ struct VoteContentView: View {
     }
 
     var body: some View {
+        NavigationLink("", destination: DetailView(postData: postData), isActive: $goNext)
+        ZStack {
+            Color.clear
+                .frame(maxWidth: .infinity)
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    if postData.voted && isMainCell {
+                        goNext = true
+                    }
+                }
         VStack(alignment: .leading, spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
+                //                VStack (spacing: 0) {
                 decorationBoxView
                     .padding(.top, 22)
                 titleView
@@ -35,6 +47,7 @@ struct VoteContentView: View {
                     .padding(.top, 20)
                 tagView
                     .padding(.top, 16)
+                //                }
                 voteImageView
                     .padding(.top, 12)
                 voteView
@@ -68,6 +81,7 @@ struct VoteContentView: View {
                 .frame(height: 10)
                 .foregroundStyle(.gray)
         }
+        }
         .fullScreenCover(isPresented: $isImageDetailPresented) {
             NavigationView {
                 ImageDetailView(imageURL: postData.image, externalURL: postData.externalURL)
@@ -78,6 +92,7 @@ struct VoteContentView: View {
                 LinkView(externalURL: postData.externalURL)
             }
         }
+
     }
 }
 
