@@ -84,7 +84,10 @@ struct MainView: View {
         }
         .onAppear {
             viewModel.getPosts(30,first: true)
-            //            navigationPath.removeAll()
+        }
+        .onDisappear {
+            viewModel.nextIndex = 0
+            viewModel.loading = true
         }
     }
 
@@ -216,8 +219,8 @@ extension MainView {
         }
     }
 }
-//#Preview {
-//    NavigationView {
-//        MainView()
-//    }
-//}
+#Preview {
+    NavigationView {
+        MainView()
+    }
+}
