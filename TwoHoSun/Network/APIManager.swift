@@ -89,7 +89,7 @@ class APIManager {
                     "Content-Type": "application/json",
                     "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
                 ]
-            case .getDetailPost(postId: let postId):
+            case .getDetailPost:
                 return [
                     "Content-Type": "application/json",
                     "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
@@ -185,6 +185,8 @@ class APIManager {
                 return parameters
             case .deleteComments:
                 return [:]
+            case .getDetailPost:
+                return [:]
             case .getSearchResult(let page, let size, let keyword):
                 return [
                     "page" : page,
@@ -278,7 +280,7 @@ class APIManager {
                 case .failure(let error):
                     print(error)
                 }
-            }, receiveValue: completion )
+            }, receiveValue: completion)
             .store(in: &cancellable)
     }
 

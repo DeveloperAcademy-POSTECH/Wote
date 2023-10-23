@@ -186,7 +186,7 @@ extension SchoolSearchView {
         SchoolSearchView(selectedSchoolInfo:
                 .constant(SchoolInfoModel(school: SchoolModel(schoolName: "예문여고",
                                                               schoolRegion: "부산",
-                                                              schoolType: SchoolType.highSchool.schoolType),
+                                                              schoolType: SchoolDataType.highSchool.schoolType),
                                           schoolAddress: "부산시 수영구")))
     }
 }

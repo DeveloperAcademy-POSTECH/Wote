@@ -12,19 +12,30 @@ final class SearchViewModel {
     var searchedDatas = [PostModel]()
     var searchWords = [String]()
     var isFetching = false
-
-    func fetchRecentSearch() {
+    
+    init() {
         guard let recentSearch = UserDefaults.standard.array(forKey: "RecentSearch") as? [String] else { return }
         searchWords = recentSearch
     }
 
-    func setRecentSearch() {
+    func fetchRecentSearch() {
+        guard let recentSearch = UserDefaults.standard.array(forKey: "RecentSearch") as? [String] else { return }
+        print(recentSearch)
+        searchWords = recentSearch
+    }
+
+    func setRecentSearch(searchWord: String) {
+        searchWords.insert(searchWord, at: 0)
+        if searchWords.count > 5 {
+            searchWords.removeLast()
+        }
         UserDefaults.standard.set(searchWords, forKey: "RecentSearch")
     }
 
     func remove(at index: Int) {
         searchWords.remove(at: index)
         searchedDatas.removeAll()
+        UserDefaults.standard.set(searchWords, forKey: "RecentSearch")
     }
 
     func fetchSearchedData(page: Int = 0, size: Int = 20, keyword: String) {
