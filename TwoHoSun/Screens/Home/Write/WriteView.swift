@@ -8,23 +8,14 @@
 import PhotosUI
 import SwiftUI
 
-enum TitleCategoryType: String, CaseIterable {
-    case buyCategory = "살까 말까?"
-    case doCategory = "할까 말까?"
-    case eatCategory = "먹을까 말까?"
-}
-
 struct WriteView: View {
     @Environment(\.dismiss) var dismiss
-    @State private var content = ""
-    @State private var title = ""
     @State private var placeholderText = "욕설,비방,광고 등 소비 고민과 관련없는 내용은 통보 없이 삭제될 수 있습니다."
-    @State private var contentTextCount = 0
-    @State private var voteDeadlineValue = 0.0
     @State private var isRegisterButtonDidTap = false
-    @State private var selectedTitleCategory = TitleCategoryType.buyCategory
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var selectedImageData: Data?
+    @State private var isTagTextFieldShowed = false
+    @Binding var isWriteViewPresented: Bool
     @Bindable var viewModel: WriteViewModel
 
     var body: some View {
@@ -33,11 +24,7 @@ struct WriteView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     titleView
                         .padding(.top, 24)
-                    tagView
-                        .padding(.top, 32)
                     addImageView
-                        .padding(.top, 30)
-                    voteDeadlineView
                         .padding(.top, 32)
                     contentView
                         .padding(.top, 32)
@@ -45,9 +32,10 @@ struct WriteView: View {
                 }
                 .padding(.horizontal, 26)
             }
-            .scrollIndicators(.hidden)
             voteRegisterButton
+                .padding(.bottom, 12)
         }
+        .scrollIndicators(.hidden)
         .navigationTitle("소비고민 등록")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -56,6 +44,7 @@ struct WriteView: View {
             }
         }
         .toolbarBackground(.white, for: .navigationBar)
+        .ignoresSafeArea(.keyboard)
     }
 }
 
@@ -104,16 +93,16 @@ extension WriteView {
 
     private var categoryMenu: some View {
         Menu {
-            ForEach(TitleCategoryType.allCases, id: \.self) { titleCategory in
+            ForEach(PostCategoryType.allCases, id: \.self) { postCategory in
                 Button {
-                    selectedTitleCategory = titleCategory
+                    viewModel.postCategoryType = postCategory
                 } label: {
-                    Text(titleCategory.rawValue)
+                    Text(postCategory.title)
                 }
             }
         } label: {
             HStack(spacing: 9) {
-                Text(selectedTitleCategory.rawValue)
+                Text(viewModel.postCategoryType.title)
                     .font(.system(size: 14, weight: .semibold))
                     .foregroundStyle(.gray)
                     .frame(height: 44)
@@ -134,32 +123,7 @@ extension WriteView {
         }
 
     }
-
-    private var tagView: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            headerLabel("태그를 선택해 주세요. ", "(최대 3개 태그 선택 가능)")
-            HStack {
-                addTagButton
-                Spacer()
-            }
-        }
-    }
-
-    private var addTagButton: some View {
-        Button {
-            print("add tag button did tap!")
-        } label: {
-            ZStack {
-                Circle()
-                    .frame(width: 28, height: 28)
-                    .foregroundStyle(.gray)
-                Image(systemName: "plus")
-                    .font(.system(size: 14))
-                    .foregroundStyle(.black)
-            }
-        }
-    }
-
+    
     private var addImageView: some View {
         ZStack {
             VStack(alignment: .leading, spacing: 0) {
@@ -250,43 +214,6 @@ extension WriteView {
         }
     }
 
-    private var voteDeadlineView: some View {
-        VStack(alignment: .leading, spacing: 15) {
-            Text("투표 종료일을 선택해 주세요.")
-                .font(.system(size: 16, weight: .semibold))
-            voteSlider
-        }
-    }
-
-    private var voteSlider: some View {
-        VStack(spacing: 10) {
-            Slider(value: $voteDeadlineValue)
-                .onChange(of: voteDeadlineValue) { _, newValue in
-                    let stepSize: Double = 0.166
-                    let roundedValue = round(newValue / stepSize) * stepSize
-                    voteDeadlineValue = min(roundedValue, 1.0)
-                }
-                .tint(.gray)
-            HStack {
-                Text("1일")
-                Spacer()
-                Text("2일")
-                Spacer()
-                Text("3일")
-                Spacer()
-                Text("4일")
-                Spacer()
-                Text("5일")
-                Spacer()
-                Text("6일")
-                Spacer()
-                Text("7일")
-            }
-            .font(.system(size: 12, weight: .medium))
-            .foregroundStyle(.gray)
-        }
-    }
-
     private var contentView: some View {
         VStack(alignment: .leading, spacing: 12) {
             headerLabel("내용을 작성해 주세요. ", "(선택)")
@@ -296,12 +223,12 @@ extension WriteView {
 
     private var textView: some View {
         ZStack(alignment: .bottomTrailing) {
-            if content.isEmpty {
+            if viewModel.content.isEmpty {
                 TextEditor(text: $placeholderText)
                     .foregroundStyle(.gray)
             }
-            TextEditor(text: $content)
-              .opacity(self.content.isEmpty ? 0.25 : 1)
+            TextEditor(text: $viewModel.content)
+                .opacity(self.viewModel.content.isEmpty ? 0.25 : 1)
             contentTextCountView
                 .padding(.trailing, 15)
                 .padding(.bottom, 14)
@@ -315,7 +242,7 @@ extension WriteView {
     }
 
     private var contentTextCountView: some View {
-        Text("\(content.count) ")
+        Text("\(viewModel.content.count) ")
             .font(.system(size: 12, weight: .semibold))
             .foregroundStyle(.black) +
         Text("/ 100")
@@ -326,6 +253,10 @@ extension WriteView {
     private var voteRegisterButton: some View {
         Button {
             isRegisterButtonDidTap = true
+            if viewModel.isTitleValid {
+                viewModel.createPost()
+                isWriteViewPresented = false
+            }
             print("complete button did tap!")
         } label: {
             Text("투표 등록하기")
@@ -348,6 +279,6 @@ extension WriteView {
 
 #Preview {
     NavigationStack {
-        WriteView(viewModel: WriteViewModel())
+        WriteView(isWriteViewPresented: .constant(true), viewModel: WriteViewModel())
     }
 }

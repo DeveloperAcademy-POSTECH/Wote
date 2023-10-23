@@ -19,17 +19,6 @@ struct PostResponse: Codable {
     let voted: Bool
 }
 
-struct Author: Codable {
-    let id: Int
-    let userNickname: String?
-    let userProfileImage: String?
-}
-
-struct VoteCounts: Codable {
-    let agreeCount: Int
-    let disagreeCount: Int
-}
-
 enum PostStatus: String, Codable {
     case active = "ACTIVE"
     case complete = "COMPLETE"
