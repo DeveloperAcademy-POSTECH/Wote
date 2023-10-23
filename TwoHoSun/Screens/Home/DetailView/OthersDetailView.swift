@@ -7,30 +7,23 @@
 
 import SwiftUI
 // TODO: 후에 모델작업은 수정 예정 여기서 사용하기 위해 임의로 제작
-struct Comment : Hashable {
-    let nickname: String
-    let writetime: Int
-    let profileImage: String
-    let commentData: String
-    var isReply: Bool
-    let hasResponse: Bool
-}
+struct DetailView : View {
 
-struct OthersDetailView : View {
-    var userData : [Comment] = [
-        Comment(nickname: "우왁굳", writetime: 1, profileImage: "profile", commentData: "이야 이걸 안사? ", isReply: false, hasResponse: true),
-        Comment(nickname: "주용킴", writetime: 2, profileImage: "profile", commentData: "지금 세일이야?", isReply: true, hasResponse: false),
-        Comment(nickname: "고맙다링", writetime: 3, profileImage: "profile", commentData: "돈좀", isReply: false, hasResponse: true),
-        Comment(nickname: "헤이기가", writetime: 2, profileImage: "profile", commentData: "이안사? ", isReply: false, hasResponse: true),
-        Comment(nickname: "스크롤이안돼", writetime: 2, profileImage: "profile", commentData: "지금 세일이야?", isReply: true, hasResponse: false),
-        Comment(nickname: "전생에원빈", writetime: 3, profileImage: "profile", commentData: "돈좀", isReply: false, hasResponse: true)
-    ]
     @State private var commentText: String = ""
-    @State private var writerName: String = "김아무개"
     @State private var alertOn: Bool = false
     @FocusState var isFocus: Bool
     @State private var isSendMessage: Bool = false
     @State private var scrollSpot: Int = 0
+    @State private var isOpenComment: Bool = false
+    //    @State private var parentCommentId: Int = 0
+
+    let postData: PostModel
+    let viewModel: DetailViewModel
+
+    init(postData: PostModel) {
+        self.postData = postData
+        self.viewModel = DetailViewModel(postId: postData.postId)
+    }
 
     var body: some View {
         VStack {
@@ -43,9 +36,18 @@ struct OthersDetailView : View {
             commentInputView
                 .ignoresSafeArea(.all, edges: .bottom)
         }
+        .onChange(of: viewModel.isSendMessage) { _, newVal in
+            if newVal {
+                viewModel.postComments(commentPost: CommentPostModel(content: commentText, parentId: scrollSpot, postId: postData.postId))
+            }
+        }
         .onTapGesture {
             self.endTextEditing()
         }
+        .onAppear {
+            viewModel.getComments()
+        }
+
     }
 }
 extension OthersDetailView {
@@ -54,7 +56,7 @@ extension OthersDetailView {
             Image(systemName: "person")
                 .frame(width: 30, height: 30)
                 .clipShape(Circle())
-            Text(writerName)
+            Text(postData.author.userNickname)
                 .font(.system(size: 16))
             Text("님의 구매후기 받기")
                 .font(.system(size: 14))
@@ -117,14 +119,14 @@ extension OthersDetailView {
                         .foregroundStyle(.gray)
                         .padding(.bottom, 16)
                         .padding(.top, 20)
-                    ForEach(userData, id: \.self) { comment in
+                    ForEach(viewModel.commentsDatas) { comment in
                         CommentCell(comment: comment) {
-                            scrollSpot = comment.hashValue
+                            scrollSpot = comment.commentId
                             isFocus = true
                         }
-                        .id(comment.hashValue)
+                        .id(comment.commentId)
                     }
-                    .onChange(of: scrollSpot) { _ in
+                    .onChange(of: scrollSpot) { _, _ in
                         proxy.scrollTo(scrollSpot, anchor: .top)
                     }
                 }
@@ -138,7 +140,7 @@ extension OthersDetailView {
             TextField("소비고민을 함께 나누어 보세요", text: $commentText, axis: .vertical)
                 .lineLimit(5)
                 .focused($isFocus)
-                .textFieldStyle(CommentTextFieldStyle(isSendMessage: $isSendMessage))
+                .textFieldStyle(CommentTextFieldStyle(viewModel: viewModel))
                 .padding(.vertical, 10)
                 .padding(.horizontal, 12)
                 .frame(width: 342)
@@ -153,13 +155,15 @@ extension OthersDetailView {
         .animation(.easeInOut(duration: 0.3), value: commentText)
     }
     struct CommentTextFieldStyle: TextFieldStyle {
-        @Binding var isSendMessage: Bool
+        @Bindable var viewModel: DetailViewModel
         func _body(configuration: TextField<Self._Label>) -> some View {
             HStack {
                 configuration
                     .font(.system(size: 16))
                 Spacer()
-                Button(action: { isSendMessage.toggle()}, label: {
+                Button(action: {
+                    viewModel.isSendMessage = true
+                }, label: {
                     Image(systemName: "paperplane")
                         .foregroundStyle(.black)
                         .font(.system(size: 20))
@@ -170,5 +174,5 @@ extension OthersDetailView {
 }
 
 #Preview {
-    OthersDetailView()
+    DetailView()
 }

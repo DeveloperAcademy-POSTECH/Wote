@@ -74,8 +74,12 @@ extension VoteContentView {
             Text(postData.title)
                 .font(.system(size: 20, weight: .bold))
             Spacer()
-            Image(systemName: "chevron.right")
-                .font(.system(size: 16))
+            NavigationLink {
+                DetailView(postData: postData)
+            } label: {
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 16))
+            }
         }
     }
 
