@@ -40,7 +40,7 @@ struct PostModel : Identifiable {
         self.commentCount = postResponse.commentCount
         self.voteCount = VoteCountModel(agreeCount: postResponse.voteCounts.agreeCount,
                                         disagreeCount: postResponse.voteCounts.disagreeCount)
-        self.voted = postResponse.votedn
+        self.voted = postResponse.voted
 
     }
 }
