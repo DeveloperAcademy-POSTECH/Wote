@@ -347,21 +347,6 @@ extension ProfileSettingsView {
             }
             viewModel.setProfile()
         })
-
-//        Button {
-//            guard viewModel.isAllInputValid else {
-//                viewModel.setInvalidCondition()
-//                return
-//            }
-//            viewModel.setProfile()
-//        } label: {
-//            Text("완료")
-//                .font(.system(size: 20, weight: .semibold))
-//                .foregroundStyle(.white)
-//                .frame(width: 361, height: 52)
-//                .background(viewModel.isAllInputValid ? .blue : .gray)
-//                .cornerRadius(10)
-//        }
     }
 
     private func roundedIconTextField(for input: ProfileInputType, text: String?, isFilled: Bool) -> some View {

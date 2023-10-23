@@ -36,7 +36,7 @@ struct MainTabView : View {
                     }
                     .tag(3)
             }
-//            .navigationBarBackButtonHidden()
+            .navigationBarBackButtonHidden()
     }
 }
 
@@ -47,6 +47,6 @@ extension MainTabView {
             .frame(width: 30,height: 30)
     }
 }
-//#Preview {
-//    MainTabView()
-//}
+#Preview {
+    MainTabView()
+}

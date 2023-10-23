@@ -126,7 +126,7 @@ extension DetailView {
                         }
                         .id(comment.commentId)
                     }
-                    .onChange(of: scrollSpot) { _ in
+                    .onChange(of: scrollSpot) { _, _ in
                         proxy.scrollTo(scrollSpot, anchor: .top)
                     }
                 }

@@ -27,6 +27,7 @@ struct TwoHoSunApp: App {
 //            OnBoardingView()
 //            }
             NavigationStack(path: $path) {
+
                 OnBoardingView(navigationPath: $path)
             }
 //

@@ -37,7 +37,7 @@ struct OnBoardingView : View {
                 })
                 .tabViewStyle(.page(indexDisplayMode: .never))
             }
-            .onChange(of: viewModel.goMain, { oldValue, newValue in
+            .onChange(of: viewModel.goMain, { _, newValue in
                 if newValue {
                     self.navigationPath.append(.mainTabView)
                 }
