@@ -9,15 +9,17 @@ import SwiftUI
 
 struct SchoolSearchView: View {
     @State private var searchWord = ""
+//    @State private var textFieldBackgroundColor = Color.clear
     private let viewModel = SchoolSearchViewModel()
     @Binding var selectedSchoolInfo: SchoolInfoModel?
     @Environment(\.dismiss) var dismiss
+    @State private var isSearchInitiated = false
 
     var body: some View {
         ZStack(alignment: .top) {
             VStack(spacing: 0) {
                 schoolSearchField
-                schoolSearchResult
+                schoolSearchResultView
                 Spacer()
             }
         }
@@ -52,21 +54,49 @@ extension SchoolSearchView {
             .font(.system(size: 14, weight: .medium))
             .frame(height: 44)
             .padding(EdgeInsets(top: 0, leading: 17, bottom: 0, trailing: 0))
+            .background(isSearchInitiated ? .gray : .clear)
             .overlay {
                 RoundedRectangle(cornerRadius: 10)
                     .strokeBorder(.black, lineWidth: 1)
             }
+            .clipShape(RoundedRectangle(cornerRadius: 10))
             .padding(.horizontal, 26)
             .padding(.vertical, 20)
             .onSubmit {
                 Task {
+                    isSearchInitiated = true
                     try await viewModel.setSchoolData(searchWord: searchWord)
                 }
             }
+            .onTapGesture {
+                searchWord.removeAll()
+                viewModel.schools.removeAll()
+                isSearchInitiated = false
+            }
+    }
+
+    private var emptyResultView: some View {
+        VStack(spacing: 0) {
+            Divider()
+                .background(Color.gray)
+                .padding(.horizontal, 11)
+            Rectangle()
+                .frame(width: 90, height: 90)
+                .foregroundStyle(.gray)
+                .padding(.top, 186)
+            Text("검색 결과가 없습니다.")
+                .font(.system(size: 20, weight: .medium))
+                .foregroundStyle(.gray)
+                .padding(.top, 20)
+        }
     }
 
     private func schoolListCell(_ schoolInfo: SchoolInfoModel) -> some View {
-        VStack {
+        VStack(spacing: 0) {
+            Divider()
+                .background(Color.gray)
+                .frame(height: 1)
+                .padding(.horizontal, 11)
             HStack {
                 VStack(alignment: .leading) {
                     Text(schoolInfo.school.schoolName)
@@ -84,8 +114,6 @@ extension SchoolSearchView {
             }
             .padding(.vertical, 16)
             .padding(.horizontal, 26)
-            Rectangle()
-                .frame(height: 1)
         }
     }
 
@@ -122,8 +150,6 @@ extension SchoolSearchView {
 
     @ViewBuilder
     private var searchedSchoolList: some View {
-        Rectangle()
-            .frame(height: 1)
         List(viewModel.schools) { school in
             schoolListCell(school)
             .listRowInsets(EdgeInsets())
@@ -137,14 +163,20 @@ extension SchoolSearchView {
     }
 
     @ViewBuilder
-    private var schoolSearchResult: some View {
-        if viewModel.schools.isEmpty && !viewModel.isFetching {
-            searchDescriptionView
-        } else if viewModel.isFetching {
+    private var schoolSearchResultView: some View {
+        if viewModel.isFetching {
             ProgressView()
                 .padding(.top, 100)
         } else {
-            searchedSchoolList
+            if viewModel.schools.isEmpty {
+                if isSearchInitiated {
+                    emptyResultView
+                } else {
+                    searchDescriptionView
+                }
+            } else {
+                searchedSchoolList
+            }
         }
     }
 }

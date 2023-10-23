@@ -9,45 +9,38 @@ import SwiftUI
 
 struct SearchView: View {
     @Environment(\.dismiss) private var dismiss: DismissAction
-    @State private var searchText: String = ""
-    @State private var searchWords: [String] = []
+    @State private var searchText = ""
     @State private var dismissTabBar: Bool = false
     @State private var hasResult: Bool = false
     @State private var hasRecommendation: Bool = false
     @State private var hasRecentSearch: Bool = true
-    
+    private let viewModel = SearchViewModel()
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
+        VStack(spacing: 0) {
             Divider()
-            if !hasRecommendation, !hasRecentSearch, !hasResult {
-                Spacer()
-                    .frame(maxWidth: .infinity)
-            }
-            if hasRecommendation {
-                searchRecommendation
-            }
-            if hasRecentSearch {
-                recentSearch
-                Spacer()
-                    .frame(maxWidth: .infinity)
-            }
+                .frame(height: 1)
+                .foregroundStyle(hasResult ? .clear : .black)
+
             if hasResult {
-                ScrollView {
-                    VStack {
-                        Text("test")
+                if viewModel.isFetching {
+                    ProgressView()
+                        .padding(.top, 100)
+                } else if viewModel.searchedDatas.isEmpty {
+                    Spacer()
+                    emptyResultView
+                } else {
+                    ScrollView {
+                        ForEach(viewModel.searchedDatas) { data in
+                            MainCellView(postData: data)
+                        }
                     }
                 }
+            } else {
+                recentSearchView
             }
-        }
-        .onChange(of: searchWords) {
-            if searchWords.isEmpty {
-                hasRecentSearch = false
-            }
-        }
-        .onAppear {
-            if searchWords.isEmpty {
-                hasRecentSearch = false
-            }
+
+            Spacer()
         }
         .padding(.horizontal, 12)
         .toolbar {
@@ -60,6 +53,9 @@ struct SearchView: View {
         }
         .navigationBarBackButtonHidden()
         .toolbar(dismissTabBar || hasResult ? .visible : .hidden, for: .tabBar)
+        .onAppear {
+            viewModel.fetchRecentSearch()
+        }
     }
 }
 
@@ -85,29 +81,15 @@ extension SearchView {
                     hasResult ? Color(UIColor.secondarySystemBackground) : .white
                 )
                 .clipShape(.capsule)
-                .onChange(of: searchText) {
-                    if searchText.isEmpty {
-                        hasRecentSearch = searchWords.isEmpty ? false : true
-                        hasRecommendation = false
-                    } else {
-                        hasRecentSearch = false
-                        hasRecommendation = true
-                    }
-                    hasResult = false
-                }
                 .onSubmit {
-                    if searchWords.count > 4 {
-                        searchWords.removeLast()
-                    }
-                    searchWords.insert(searchText, at: 0)
-                    hasRecentSearch = false
-                    hasRecommendation = false
                     hasResult = true
+                    viewModel.searchWords.append(searchText)
+                    viewModel.fetchSearchedData(keyword: searchText)
                 }
             if hasResult {
                 Button {
                     hasResult = false
-                    searchText = ""
+                    searchText.removeAll()
                 } label: {
                     Image(systemName: "xmark")
                         .font(.system(size: 12))
@@ -118,15 +100,20 @@ extension SearchView {
         }
     }
     
-    private var recentSearch: some View {
+    private var recentSearchView: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("최근 검색어")
-                .foregroundStyle(.gray)
-                .font(.system(size: 14))
-            HStack(spacing: 8) {
-                ForEach(Array(zip(searchWords.indices, searchWords)), id: \.0) { index, word in
+            HStack {
+                Text("최근 검색어")
+                    .foregroundStyle(.gray)
+                    .font(.system(size: 14))
+                Spacer()
+            }
+            WrappingHStack(horizontalSpacing: 8) {
+                ForEach(Array(zip(viewModel.searchWords.indices, viewModel.searchWords)), id: \.0) { index, word in
                     Button {
-                        searchWords.remove(at: index)
+//                        viewModel.searchWords.remove(at: index)
+//                        viewModel.searchedDatas.removeAll()
+                        viewModel.remove(at: index)
                     } label: {
                         HStack(spacing: 5) {
                             Text(word)
@@ -150,39 +137,74 @@ extension SearchView {
         .padding(.horizontal, 14)
         .padding(.top, 16)
     }
-    
-    private var searchRecommendation: some View {
-        List {
-            // TODO: - 서버 나오면 onChange로 데이터 받아오는 로직 추가
-            ForEach(0..<5) { _ in
-                Button {
-                    if searchWords.count > 4 {
-                        searchWords.removeLast()
-                    }
-                    searchWords.insert(searchText, at: 0)
-                    hasRecentSearch = false
-                    hasRecommendation = false
-                    hasResult = true
-                } label: {
-                    HStack {
-                        Text("발렌시아가")
-                        Spacer()
-                        Image(systemName: "paperplane")
-                    }
-                    .frame(height: 48)
-                    .font(.system(size: 16))
-                    .foregroundStyle(.gray)
-                    .padding(.leading, 48)
-                    .padding(.trailing, 14)
-                }
-                .listRowSeparator(.hidden)
-                .listRowInsets(EdgeInsets())
-            }
+
+    private var emptyResultView: some View {
+        VStack(spacing: 20) {
+            Rectangle()
+                .frame(width: 90, height: 90)
+            Text("검색 결과가 없습니다.")
+                .font(.system(size: 20, weight: .medium))
         }
-        .listStyle(.plain)
+        .foregroundStyle(.gray)
     }
 }
 
 #Preview {
-    SearchView()
+    NavigationStack {
+        SearchView()
+    }
+}
+
+private struct WrappingHStack: Layout {
+    private var horizontalSpacing: CGFloat
+    private var verticalSpacing: CGFloat
+    
+    public init(horizontalSpacing: CGFloat, verticalSpacing: CGFloat? = nil) {
+        self.horizontalSpacing = horizontalSpacing
+        self.verticalSpacing = verticalSpacing ?? horizontalSpacing
+    }
+
+    public func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache _: inout ()) -> CGSize {
+        guard !subviews.isEmpty else { return .zero }
+
+        let height = subviews.map { $0.sizeThatFits(proposal).height }.max() ?? 0
+
+        var rowWidths = [CGFloat]()
+        var currentRowWidth: CGFloat = 0
+        subviews.forEach { subview in
+            if currentRowWidth + horizontalSpacing + subview.sizeThatFits(proposal).width >= proposal.width ?? 0 {
+                rowWidths.append(currentRowWidth)
+                currentRowWidth = subview.sizeThatFits(proposal).width
+            } else {
+                currentRowWidth += horizontalSpacing + subview.sizeThatFits(proposal).width
+            }
+        }
+        rowWidths.append(currentRowWidth)
+
+        let rowCount = CGFloat(rowWidths.count)
+        return CGSize(width: max(rowWidths.max() ?? 0, proposal.width ?? 0), height: rowCount * height + (rowCount - 1) * verticalSpacing)
+    }
+
+    public func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        let height = subviews.map { $0.dimensions(in: proposal).height }.max() ?? 0
+        guard !subviews.isEmpty else { return }
+        var tmpX = bounds.minX
+        var tmpY = height / 2 + bounds.minY
+        subviews.forEach { subview in
+            tmpX += subview.dimensions(in: proposal).width / 2
+            if tmpX + subview.dimensions(in: proposal).width / 2 > bounds.maxX {
+                tmpX = bounds.minX + subview.dimensions(in: proposal).width / 2
+                tmpY += height + verticalSpacing
+            }
+            subview.place(
+                at: CGPoint(x: tmpX, y: tmpY),
+                anchor: .center,
+                proposal: ProposedViewSize(
+                    width: subview.dimensions(in: proposal).width,
+                    height: subview.dimensions(in: proposal).height
+                )
+            )
+            tmpX += subview.dimensions(in: proposal).width / 2 + horizontalSpacing
+        }
+    }
 }

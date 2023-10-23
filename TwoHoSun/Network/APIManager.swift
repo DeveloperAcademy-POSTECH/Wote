@@ -27,6 +27,7 @@ class APIManager {
         case refreshToken
         case getPosts(page: Int, size: Int)
         case postVoteCreate(postId: Int, param: String)
+        case getSearchResult(page: Int, size: Int, keyword: String)
         case postCreate(postCreate: PostCreateModel)
         case getComments(postId: Int)
         case postComments(commentPost: CommentPostModel)
@@ -57,7 +58,7 @@ class APIManager {
                 return [
                     "Content-Type" : "application/json",
                     "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
-                ]
+                    ]
             case .postVoteCreate:
                 return [
                     "Content-Type": "application/json",
@@ -79,6 +80,11 @@ class APIManager {
                     "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
                 ]
             case .deleteComments:
+                return [
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
+                ]
+            case .getSearchResult:
                 return [
                     "Content-Type": "application/json",
                     "Authorization": "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
@@ -105,6 +111,8 @@ class APIManager {
                 return .get
             case .postVoteCreate:
                 return .post
+            case .getSearchResult:
+                return .get
             case .postCreate:
                 return .post
             case .getComments:
@@ -179,6 +187,12 @@ class APIManager {
                 return [:]
             case .getDetailPost:
                 return [:]
+            case .getSearchResult(let page, let size, let keyword):
+                return [
+                    "page" : page,
+                    "size" : size,
+                    "keyword": keyword
+                ]
             }
         }
 
@@ -203,6 +217,8 @@ class APIManager {
             case .postComments:
                 return JSONEncoding.default
             case .deleteComments:
+                return URLEncoding.queryString
+            case .getSearchResult:
                 return URLEncoding.queryString
             case .getDetailPost:
                 return URLEncoding.queryString
@@ -231,6 +247,8 @@ class APIManager {
                 return "/api/posts/\(postComment.postId)/comments"
             case .deleteComments(let postId, let commentId):
                 return "/api/posts/\(postId)/comments/\(commentId)"
+            case .getSearchResult:
+                return "/api/posts/search"
             case .getDetailPost(let postId):
                 return "/api/posts/\(postId)"
             }

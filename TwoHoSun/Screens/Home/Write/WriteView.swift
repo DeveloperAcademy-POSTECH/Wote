@@ -45,6 +45,9 @@ struct WriteView: View {
         }
         .toolbarBackground(.white, for: .navigationBar)
         .ignoresSafeArea(.keyboard)
+        .onTapGesture {
+            dismissKeyboard()
+        }
     }
 }
 
@@ -239,6 +242,9 @@ extension WriteView {
             RoundedRectangle(cornerRadius: 5)
                 .strokeBorder(.gray, lineWidth: 1)
         }
+        .onSubmit {
+            dismissKeyboard()
+        }
     }
 
     private var contentTextCountView: some View {
@@ -274,6 +280,10 @@ extension WriteView {
         Text(description)
             .font(.system(size: 12, weight: .medium))
             .foregroundStyle(.gray)
+    }
+
+    private func dismissKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
 
