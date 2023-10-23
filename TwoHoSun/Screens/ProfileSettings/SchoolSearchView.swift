@@ -9,15 +9,17 @@ import SwiftUI
 
 struct SchoolSearchView: View {
     @State private var searchWord = ""
+//    @State private var textFieldBackgroundColor = Color.clear
     private let viewModel = SchoolSearchViewModel()
     @Binding var selectedSchoolInfo: SchoolInfoModel?
     @Environment(\.dismiss) var dismiss
+    @State private var isSearchInitiated = false
 
     var body: some View {
         ZStack(alignment: .top) {
             VStack(spacing: 0) {
                 schoolSearchField
-                schoolSearchResult
+                schoolSearchResultView
                 Spacer()
             }
         }
@@ -52,16 +54,24 @@ extension SchoolSearchView {
             .font(.system(size: 14, weight: .medium))
             .frame(height: 44)
             .padding(EdgeInsets(top: 0, leading: 17, bottom: 0, trailing: 0))
+            .background(isSearchInitiated ? .gray : .clear)
             .overlay {
                 RoundedRectangle(cornerRadius: 10)
                     .strokeBorder(.black, lineWidth: 1)
             }
+            .clipShape(RoundedRectangle(cornerRadius: 10))
             .padding(.horizontal, 26)
             .padding(.vertical, 20)
             .onSubmit {
                 Task {
+                    isSearchInitiated = true
                     try await viewModel.setSchoolData(searchWord: searchWord)
                 }
+            }
+            .onTapGesture {
+                searchWord.removeAll()
+                viewModel.schools.removeAll()
+                isSearchInitiated = false
             }
     }
 
@@ -140,8 +150,6 @@ extension SchoolSearchView {
 
     @ViewBuilder
     private var searchedSchoolList: some View {
-//        Rectangle()
-//            .frame(height: 1)
         List(viewModel.schools) { school in
             schoolListCell(school)
             .listRowInsets(EdgeInsets())
@@ -155,13 +163,15 @@ extension SchoolSearchView {
     }
 
     @ViewBuilder
-    private var schoolSearchResult: some View {
-        if viewModel.schools.isEmpty && !viewModel.isFetching {
+    private var schoolSearchResultView: some View {
+        if viewModel.schools.isEmpty && !viewModel.isFetching && !isSearchInitiated {
             searchDescriptionView
         } else if viewModel.isFetching {
             ProgressView()
                 .padding(.top, 100)
-        } else {
+        } else if viewModel.schools.isEmpty && isSearchInitiated {
+            emptyResultView
+        } else if !viewModel.isFetching {
             searchedSchoolList
         }
     }
