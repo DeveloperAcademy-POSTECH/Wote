@@ -53,8 +53,10 @@ struct VoteContentView: View {
                     .padding(.top, 10)
             }
             .padding(.horizontal, 26)
-            ChartView()
-                .padding(.top, 20)
+            if(postData.mine){
+                ChartView(voteInfoList: postData.voteInfoList)
+                    .padding(.top, 20)
+            }
             buttonsBar
             informationLabels
             dividerBlock

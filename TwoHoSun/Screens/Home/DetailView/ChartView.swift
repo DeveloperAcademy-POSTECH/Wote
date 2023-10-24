@@ -9,7 +9,13 @@ import SwiftUI
 
 struct ChartView: View {
     @State var currentPage: Int = 0
-    let viewModel = ChartViewModel(postId: 301)
+    let voteInfoList: [VoteInfo]
+    let viewModel: ChartViewModel
+    
+    init(voteInfoList: [VoteInfo]) {
+        self.voteInfoList = voteInfoList
+        self.viewModel = ChartViewModel(voteInfoList: voteInfoList)
+    }
     
     var body: some View {
         VStack(spacing: 10) {
@@ -195,6 +201,6 @@ extension ChartView {
     }
 }
 
-#Preview {
-    ChartView()
-}
+//#Preview {
+//    ChartView()
+//}

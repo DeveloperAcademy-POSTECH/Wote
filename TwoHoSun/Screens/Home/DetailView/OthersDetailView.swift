@@ -26,7 +26,8 @@ struct OthersDetailView : View {
                 Divider()
                 if let postData = viewModel.detailPostData {
                     VoteContentView(postData: postData,
-                                    isMainCell: false)
+                                    isMainCell: true)
+                    
                 } else {
                     ProgressView()
                         .padding(.top, 100)
@@ -34,6 +35,7 @@ struct OthersDetailView : View {
             }
             seperatorView
             commentView
+            
         }
         commentInputView
             .ignoresSafeArea(.all, edges: .bottom)
@@ -91,44 +93,6 @@ extension OthersDetailView {
         }
         .padding(.horizontal, 26)
     }
-}
-struct AlertCustomToggle: ToggleStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        let isOn = configuration.isOn
-        return ZStack {
-            RoundedRectangle(cornerRadius: 17)
-                .frame(width: 61, height: 21)
-                .foregroundStyle(Color.gray)
-                .overlay(alignment: .leading) {
-                    Text(isOn ? "ON" : "OFF")
-                        .font(.system(size: 14, weight: .bold))
-                        .offset(x: isOn ? 5 : 25)
-                        .padding(.trailing, 8)
-                }
-                .overlay(alignment: .leading) {
-                    Image("smile")
-                        .resizable()
-                        .frame(width: 15,height: 15)
-                        .clipShape(Circle())
-                        .rotationEffect(Angle.degrees(isOn ? 180 : 0))
-                        .offset(x: isOn ? 35 : 5)
-                }
-                .mask {
-                    RoundedRectangle(cornerRadius: 17)
-                        .frame(width: 61, height: 21)
-                }
-
-        }
-        .onTapGesture {
-            withAnimation {
-                configuration.isOn.toggle()
-            }
-
-        }
-    }
-}
-
-extension OthersDetailView {
     var seperatorView: some View {
         Rectangle()
             .fill(.ultraThickMaterial)
@@ -194,3 +158,39 @@ extension OthersDetailView {
         }
     }
 }
+struct AlertCustomToggle: ToggleStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        let isOn = configuration.isOn
+        return ZStack {
+            RoundedRectangle(cornerRadius: 17)
+                .frame(width: 61, height: 21)
+                .foregroundStyle(Color.gray)
+                .overlay(alignment: .leading) {
+                    Text(isOn ? "ON" : "OFF")
+                        .font(.system(size: 14, weight: .bold))
+                        .offset(x: isOn ? 5 : 25)
+                        .padding(.trailing, 8)
+                }
+                .overlay(alignment: .leading) {
+                    Image("smile")
+                        .resizable()
+                        .frame(width: 15,height: 15)
+                        .clipShape(Circle())
+                        .rotationEffect(Angle.degrees(isOn ? 180 : 0))
+                        .offset(x: isOn ? 35 : 5)
+                }
+                .mask {
+                    RoundedRectangle(cornerRadius: 17)
+                        .frame(width: 61, height: 21)
+                }
+
+        }
+        .onTapGesture {
+            withAnimation {
+                configuration.isOn.toggle()
+            }
+
+        }
+    }
+}
+
