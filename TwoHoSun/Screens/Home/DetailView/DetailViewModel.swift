@@ -11,11 +11,28 @@ import Observation
 @Observable
 class DetailViewModel {
     var commentsDatas: [CommentsModel] = []
+    var detailPostData: PostModel?
     var postId: Int
     var isSendMessage: Bool = false
 
     init(postId: Int) {
         self.postId = postId
+    }
+
+    func fetchVoteDetailPost() {
+        APIManager.shared.requestAPI(type: .getDetailPost(postId: postId)) { (response: GeneralResponse<PostResponse>) in
+            switch response.status {
+            case 200:
+                print("상세 조회 성공")
+                guard let data = response.data else { return }
+                self.detailPostData = PostModel(from: data)
+            case 401:
+                APIManager.shared.refreshAllTokens()
+                self.fetchVoteDetailPost()
+            default:
+                print("error")
+            }
+        }
     }
 
     func getComments() {
@@ -31,6 +48,7 @@ class DetailViewModel {
             }
         }
     }
+
     func postComments(commentPost: CommentPostModel) {
         APIManager.shared.requestAPI(type: .postComments(commentPost: commentPost)) { (response: GeneralResponse<NoData>) in
             switch response.status {
@@ -46,6 +64,7 @@ class DetailViewModel {
             }
         }
     }
+
     func deleteComments(postId: Int, commentId: Int) {
         APIManager.shared.requestAPI(type: .deleteComments(postId: postId, commentId: commentId)) { (response: GeneralResponse<NoData>) in
             switch response.status {

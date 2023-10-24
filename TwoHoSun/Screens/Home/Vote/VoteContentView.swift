@@ -24,7 +24,10 @@ struct VoteContentView: View {
     }
 
     var body: some View {
-        NavigationLink("", destination: OthersDetailView(postData: postData), isActive: $goNext)
+        NavigationLink("", 
+                       destination: OthersDetailView(viewModel: DetailViewModel(postId: postData.postId),
+                                               postId: postData.postId),
+                       isActive: $goNext)
         ZStack {
             Color.clear
                 .frame(maxWidth: .infinity)
@@ -36,7 +39,6 @@ struct VoteContentView: View {
                 }
         VStack(alignment: .leading, spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
-                //                VStack (spacing: 0) {
                 decorationBoxView
                     .padding(.top, 22)
                 titleView
@@ -45,9 +47,6 @@ struct VoteContentView: View {
                     .padding(.top, 10)
                 contentTextView
                     .padding(.top, 20)
-                tagView
-                    .padding(.top, 16)
-                //                }
                 voteImageView
                     .padding(.top, 12)
                 voteView
@@ -90,7 +89,7 @@ extension VoteContentView {
             Spacer()
             if isMainCell {
                 NavigationLink {
-                    OthersDetailView(postData: postData)
+                    OthersDetailView(viewModel: DetailViewModel(postId: postData.postId), postId: postData.postId)
                 } label: {
                     Image(systemName: "chevron.right")
                         .font(.system(size: 16))
@@ -107,7 +106,7 @@ extension VoteContentView {
                 .padding(.trailing, 12)
             Image(systemName: "person.fill")
                 .padding(.trailing, 3)
-            Text("\(postData.viewCount)")
+            Text("\(postData.voteCount.agreeCount + postData.voteCount.disagreeCount)")
         }
         .font(.system(size: 12))
         .foregroundStyle(.gray)
@@ -179,8 +178,13 @@ extension VoteContentView {
     private var completedVoteView: some View {
         ZStack {
             HStack(spacing: 0) {
-                voteResultView(for: .agree, viewModel.buyCountRatio)
-                voteResultView(for: .disagree, viewModel.notBuyCountRatio)
+                voteResultView(voteType: .agree,
+                               postCategoryType: postData.postCategoryType,
+                               viewModel.buyCountRatio)
+                voteResultView(voteType: .disagree,
+                               postCategoryType: postData.postCategoryType,
+                               viewModel.notBuyCountRatio)
+
             }
             .frame(width: 338, height: 60)
             vsLabel
@@ -189,14 +193,14 @@ extension VoteContentView {
         }
     }
 
-    private func voteResultView(for voteType: VoteType, _ voteRatio: Double) -> some View {
+    private func voteResultView(voteType: VoteType, postCategoryType: PostCategoryType, _ voteRatio: Double) -> some View {
         ZStack {
             Rectangle()
                 .foregroundStyle(voteType.color)
                 .frame(width: 338 * voteRatio / 100)
             if voteRatio >= 20 {
                 VStack(spacing: 0) {
-                    Text(voteType.title)
+                    Text(voteType == .agree ? postCategoryType.agree : postCategoryType.disagree)
                         .font(.system(size: 16))
                     Text("(" + String(format: getFirstDecimalNum(voteRatio) == 0 ? "%.0f" : "%.1f", voteRatio) + "%)")
                         .font(.system(size: 12))
@@ -212,7 +216,7 @@ extension VoteContentView {
                     print("buy button tap")
                     viewModel.postVoteCreate(VoteType.agree.rawValue)
                 } label: {
-                    Text("산다")
+                    Text(postData.postCategoryType.agree)
                         .font(.system(size: 20, weight: .medium))
                         .foregroundStyle(.black)
                         .frame(width: 169, height: 60)
@@ -222,7 +226,7 @@ extension VoteContentView {
                     print("not buy button tap")
                     viewModel.postVoteCreate(VoteType.disagree.rawValue)
                 } label: {
-                    Text("안산다")
+                    Text(postData.postCategoryType.disagree)
                         .font(.system(size: 20, weight: .medium))
                         .foregroundStyle(.black)
                         .frame(width: 169, height: 60)
@@ -268,14 +272,6 @@ extension VoteContentView {
                 .font(.system(size: 24))
                 .foregroundStyle(.gray)
         }
-    }
-
-    private func tag(_ content: String) -> some View {
-        Text("# \(content)")
-            .foregroundStyle(.white)
-            .padding(.horizontal, 4)
-            .padding(.vertical, 2)
-            .background(Color.gray)
     }
 
     @ViewBuilder

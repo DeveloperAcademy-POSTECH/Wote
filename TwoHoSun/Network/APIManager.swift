@@ -193,6 +193,10 @@ class APIManager {
                     "size" : size,
                     "keyword": keyword
                 ]
+            case .getDetailPost(let postId):
+                return [
+                    "postId": postId
+                ]
             }
         }
 
@@ -221,7 +225,7 @@ class APIManager {
             case .getSearchResult:
                 return URLEncoding.queryString
             case .getDetailPost:
-                return URLEncoding.queryString
+                return URLEncoding.default
             }
         }
 

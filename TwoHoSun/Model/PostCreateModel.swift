@@ -32,4 +32,26 @@ enum PostCategoryType: String, CaseIterable, Codable {
             return "먹을까 말까?"
         }
     }
+
+    var agree: String {
+        switch self {
+        case .purchaseConsideration:
+            return "산다"
+        case .actionConsideration:
+            return "한다"
+        case .foodConsideration:
+            return "먹는다"
+        }
+    }
+
+    var disagree: String {
+        switch self {
+        case .purchaseConsideration:
+            return "안산다"
+        case .actionConsideration:
+            return "안한다"
+        case .foodConsideration:
+            return "참는다"
+        }
+    }
 }

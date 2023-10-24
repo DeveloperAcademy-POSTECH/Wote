@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct VoteCreateRequest: Codable {
-    let votetype: VoteType
+    let votetype: PostCategoryType
 }
 
 enum VoteType: String, Codable {
