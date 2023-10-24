@@ -19,6 +19,13 @@ class DetailViewModel {
         self.postId = postId
     }
 
+    func getNicknameForComment(commentId: Int) -> String? {
+        if let comment = commentsDatas.first(where: { $0.commentId == commentId }) {
+            return comment.author.userNickname
+        }
+        return nil
+    }
+    
     func fetchVoteDetailPost() {
         APIManager.shared.requestAPI(type: .getDetailPost(postId: postId)) { (response: GeneralResponse<PostResponse>) in
             switch response.status {

@@ -185,8 +185,6 @@ class APIManager {
                 return parameters
             case .deleteComments:
                 return [:]
-            case .getDetailPost:
-                return [:]
             case .getSearchResult(let page, let size, let keyword):
                 return [
                     "page" : page,

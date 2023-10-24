@@ -20,23 +20,20 @@ struct VoteContentView: View {
     init(postData: PostModel, isMainCell: Bool = true) {
         self.postData = postData
         self.isMainCell = isMainCell
-        self.viewModel =  VoteContentViewModel(postData: postData)
+        self.viewModel = VoteContentViewModel(postData: postData)
     }
 
     var body: some View {
-        NavigationLink("", 
-                       destination: DetailView(viewModel: DetailViewModel(postId: postData.postId),
-                                               postId: postData.postId),
-                       isActive: $goNext)
         ZStack {
-            Color.clear
-                .frame(maxWidth: .infinity)
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    if postData.voted && isMainCell {
-                        goNext = true
-                    }
-                }
+            if isMainCell {
+                Color.clear
+                    .frame(maxWidth: .infinity)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        if postData.voted && isMainCell {
+                            goNext = true
+                        }
+                    }}
         VStack(alignment: .leading, spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
                 decorationBoxView
@@ -53,6 +50,7 @@ struct VoteContentView: View {
                     .padding(.top, 10)
             }
             .padding(.horizontal, 26)
+
             if !isMainCell {
                 if(postData.mine) {
                     ChartView(voteInfoList: postData.voteInfoList)
@@ -64,6 +62,12 @@ struct VoteContentView: View {
             dividerBlock
         }
         }
+        .navigationDestination(
+             isPresented: $goNext) {
+                 DetailView(viewModel: DetailViewModel(postId: postData.postId),postId: postData.postId)
+                  Text("")
+                      .hidden()
+             }
         .fullScreenCover(isPresented: $isImageDetailPresented) {
             NavigationView {
                 ImageDetailView(imageURL: postData.image, externalURL: postData.externalURL)
@@ -97,6 +101,7 @@ extension VoteContentView {
                 } label: {
                     Image(systemName: "chevron.right")
                         .font(.system(size: 16))
+                        .foregroundStyle(.gray)
                 }
             }
         }
@@ -145,7 +150,7 @@ extension VoteContentView {
                     .frame(width: 200, height: 200)
                 linkButton
                     .padding(.trailing, 12)
-                    .padding(.bottom, 10)
+                    .padding(.bottom, 16)
             }
             .onTapGesture {
                 isImageDetailPresented = true
@@ -161,10 +166,10 @@ extension VoteContentView {
                 Image(systemName: "link")
                 Text("링크")
             }
-            .font(.system(size: 10))
+            .font(.system(size: 14))
             .foregroundStyle(.white)
-            .padding(.horizontal, 4)
-            .padding(.vertical, 2)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 4)
             .background(Color.gray)
             .clipShape(RoundedRectangle(cornerRadius: 15))
         }
@@ -188,7 +193,6 @@ extension VoteContentView {
                 voteResultView(voteType: .disagree,
                                postCategoryType: postData.postCategoryType,
                                viewModel.notBuyCountRatio)
-
             }
             .frame(width: 338, height: 60)
             vsLabel
@@ -224,7 +228,7 @@ extension VoteContentView {
                         .font(.system(size: 20, weight: .medium))
                         .foregroundStyle(.black)
                         .frame(width: 169, height: 60)
-                        .background(Color.orange)
+                        .background(VoteType.agree.color)
                 }
                 Button {
                     print("not buy button tap")
@@ -234,7 +238,7 @@ extension VoteContentView {
                         .font(.system(size: 20, weight: .medium))
                         .foregroundStyle(.black)
                         .frame(width: 169, height: 60)
-                        .background(Color.pink)
+                        .background(VoteType.disagree.color)
                 }
             }
             vsLabel
