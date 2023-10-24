@@ -20,7 +20,7 @@ struct VoteContentView: View {
     init(postData: PostModel, isMainCell: Bool = true) {
         self.postData = postData
         self.isMainCell = isMainCell
-        self.viewModel =  VoteContentViewModel(postData: postData)
+        self.viewModel = VoteContentViewModel(postData: postData)
     }
 
     var body: some View {
@@ -93,6 +93,7 @@ extension VoteContentView {
                 } label: {
                     Image(systemName: "chevron.right")
                         .font(.system(size: 16))
+                        .foregroundStyle(.gray)
                 }
             }
         }
@@ -184,7 +185,6 @@ extension VoteContentView {
                 voteResultView(voteType: .disagree,
                                postCategoryType: postData.postCategoryType,
                                viewModel.notBuyCountRatio)
-
             }
             .frame(width: 338, height: 60)
             vsLabel
