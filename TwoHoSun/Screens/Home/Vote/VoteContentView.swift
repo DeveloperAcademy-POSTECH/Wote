@@ -25,7 +25,7 @@ struct VoteContentView: View {
 
     var body: some View {
         NavigationLink("", 
-                       destination: OthersDetailView(viewModel: DetailViewModel(postId: postData.postId),
+                       destination: DetailView(viewModel: DetailViewModel(postId: postData.postId),
                                                postId: postData.postId),
                        isActive: $goNext)
         ZStack {
@@ -53,9 +53,11 @@ struct VoteContentView: View {
                     .padding(.top, 10)
             }
             .padding(.horizontal, 26)
-            if(postData.mine){
-                ChartView(voteInfoList: postData.voteInfoList)
-                    .padding(.top, 20)
+            if !isMainCell {
+                if(postData.mine) {
+                    ChartView(voteInfoList: postData.voteInfoList)
+                        .padding(.top, 20)
+                }
             }
             buttonsBar
             informationLabels
@@ -91,7 +93,7 @@ extension VoteContentView {
             Spacer()
             if isMainCell {
                 NavigationLink {
-                    OthersDetailView(viewModel: DetailViewModel(postId: postData.postId), postId: postData.postId)
+                    DetailView(viewModel: DetailViewModel(postId: postData.postId), postId: postData.postId)
                 } label: {
                     Image(systemName: "chevron.right")
                         .font(.system(size: 16))

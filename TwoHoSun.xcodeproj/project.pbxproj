@@ -56,10 +56,9 @@
 		FD6673372AE071550015007D /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6673362AE071550015007D /* APIManager.swift */; };
 		FD8D9F812ADC5FAD0072F4BA /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */; };
 		FDB4B14E2AE641E600720328 /* ChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB4B14D2AE641E600720328 /* ChartViewModel.swift */; };
-		FDB4B1502AE68FC000720328 /* OthersDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB4B14F2AE68FC000720328 /* OthersDetailView.swift */; };
+		FDB4B1502AE68FC000720328 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB4B14F2AE68FC000720328 /* DetailView.swift */; };
 		FDDB990C2ADC1BEC00B1163F /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = FDDB990B2ADC1BEC00B1163F /* .swiftlint.yml */; };
 		FDDEC15B2AE3EABA004509EA /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEC15A2AE3EABA004509EA /* SearchView.swift */; };
-		FDF2D6C22AE51DFE0027EE8F /* MyDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDF2D6C12AE51DFE0027EE8F /* MyDetailView.swift */; };
 		FDF2D6C82AE59ACA0027EE8F /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDF2D6C72AE59ACA0027EE8F /* ChartView.swift */; };
 		FDF2D6CC2AE5D0AC0027EE8F /* MainCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDF2D6CB2AE5D0AC0027EE8F /* MainCellView.swift */; };
 		FDF2D6CE2AE5DAD90027EE8F /* VoteInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDF2D6CD2AE5DAD90027EE8F /* VoteInfoModel.swift */; };
@@ -117,11 +116,10 @@
 		FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		FD92803A2ADD8A4C007285BA /* File */ = {isa = PBXFileReference; lastKnownFileType = text; path = File; sourceTree = "<group>"; };
 		FDB4B14D2AE641E600720328 /* ChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewModel.swift; sourceTree = "<group>"; };
-		FDB4B14F2AE68FC000720328 /* OthersDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OthersDetailView.swift; sourceTree = "<group>"; };
+		FDB4B14F2AE68FC000720328 /* DetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		FDDB99042ADBF37100B1163F /* TwoHoSun.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TwoHoSun.entitlements; sourceTree = "<group>"; };
 		FDDB990B2ADC1BEC00B1163F /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		FDDEC15A2AE3EABA004509EA /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
-		FDF2D6C12AE51DFE0027EE8F /* MyDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDetailView.swift; sourceTree = "<group>"; };
 		FDF2D6C72AE59ACA0027EE8F /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		FDF2D6CB2AE5D0AC0027EE8F /* MainCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainCellView.swift; sourceTree = "<group>"; };
 		FDF2D6CD2AE5DAD90027EE8F /* VoteInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteInfoModel.swift; sourceTree = "<group>"; };
@@ -217,8 +215,7 @@
 		C7DE44B92AE0BB4E001639CB /* DetailView */ = {
 			isa = PBXGroup;
 			children = (
-				FDF2D6C12AE51DFE0027EE8F /* MyDetailView.swift */,
-				FDB4B14F2AE68FC000720328 /* OthersDetailView.swift */,
+				FDB4B14F2AE68FC000720328 /* DetailView.swift */,
 				FDF2D6C72AE59ACA0027EE8F /* ChartView.swift */,
 				FDB4B14D2AE641E600720328 /* ChartViewModel.swift */,
 				C73F8E802AE54B24001C6B07 /* DetailViewModel.swift */,
@@ -242,7 +239,6 @@
 			children = (
 				FD3205602ADD1F8100B0D5F6 /* MainView.swift */,
 				FDF2D6CB2AE5D0AC0027EE8F /* MainCellView.swift */,
-				FDDEC15A2AE3EABA004509EA /* SearchView.swift */,
 				C7E459D22AE01FDE00ECD008 /* MainViewModel.swift */,
 				ABB71D7B2AE2B3F100BE0671 /* NotificationView.swift */,
 				FDDEC15A2AE3EABA004509EA /* SearchView.swift */,
@@ -478,7 +474,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FDF2D6C22AE51DFE0027EE8F /* MyDetailView.swift in Sources */,
 				ABBEEAF52AE64F7900F6D918 /* SeachViewModel.swift in Sources */,
 				FD6673372AE071550015007D /* APIManager.swift in Sources */,
 				C7F1FD882ADDA39500C5A2A1 /* DesciptionView.swift in Sources */,
@@ -505,7 +500,7 @@
 				ABBFB6322AE3EABD006CE8CA /* VoteCreateRequestModel.swift in Sources */,
 				AB45225A2ADDDC9E00B69F24 /* SchoolSearchViewModel.swift in Sources */,
 				FD3205682ADD5C0D00B0D5F6 /* TwoHoSunApp.swift in Sources */,
-				FDB4B1502AE68FC000720328 /* OthersDetailView.swift in Sources */,
+				FDB4B1502AE68FC000720328 /* DetailView.swift in Sources */,
 				C7F1FD842ADDA2F000C5A2A1 /* OnBoardingView.swift in Sources */,
 				C7DE44BD2AE0DCE7001639CB /* CommentCell.swift in Sources */,
 				ABB71D7C2AE2B3F100BE0671 /* NotificationView.swift in Sources */,
@@ -665,7 +660,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"TwoHoSun/Preview Content\"";
-				DEVELOPMENT_TEAM = 578Q9VP5B4;
 				DEVELOPMENT_TEAM = Q535Z3S7Z3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -701,7 +695,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"TwoHoSun/Preview Content\"";
-				DEVELOPMENT_TEAM = 578Q9VP5B4;
 				DEVELOPMENT_TEAM = NG2NLR2Z86;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;

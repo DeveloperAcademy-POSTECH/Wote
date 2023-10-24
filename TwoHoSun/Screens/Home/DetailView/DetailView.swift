@@ -7,7 +7,7 @@
 
 import SwiftUI
 // TODO: 후에 모델작업은 수정 예정 여기서 사용하기 위해 임의로 제작
-struct OthersDetailView : View {
+struct DetailView : View {
     @Environment(\.dismiss) var dismiss
     @State private var commentText: String = ""
     @State private var alertOn: Bool = false
@@ -26,7 +26,7 @@ struct OthersDetailView : View {
                 Divider()
                 if let postData = viewModel.detailPostData {
                     VoteContentView(postData: postData,
-                                    isMainCell: true)
+                                    isMainCell: false)
                     
                 } else {
                     ProgressView()
@@ -77,7 +77,7 @@ struct OthersDetailView : View {
 
     }
 }
-extension OthersDetailView {
+extension DetailView {
     private var detailHeaderView: some View {
         HStack {
             Image(systemName: "person")
@@ -193,4 +193,3 @@ struct AlertCustomToggle: ToggleStyle {
         }
     }
 }
-
