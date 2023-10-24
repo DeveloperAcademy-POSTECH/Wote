@@ -11,11 +11,14 @@ import Foundation
 final class VoteContentViewModel {
     let postData: PostModel
     var isVoted: Bool
-    var agreeCount = 0
-    var disagreeCount = 0
+    var agreeCount: Int
+    var disagreeCount: Int
+
     init(postData: PostModel) {
         self.postData = postData
-        isVoted =  postData.voted ? true : false
+        self.agreeCount = postData.voteCount.agreeCount
+        self.disagreeCount = postData.voteCount.disagreeCount
+        isVoted = postData.voted ? true : false
     }
 
     var totalCount: Int {

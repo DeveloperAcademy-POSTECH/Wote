@@ -27,9 +27,9 @@ enum VoteType: String, Codable {
     var color: Color {
         switch self {
         case .agree:
-            return .orange
+            return Color("agreeColor")
         case .disagree:
-            return .pink
+            return Color("disagreeColor")
         }
     }
 }
