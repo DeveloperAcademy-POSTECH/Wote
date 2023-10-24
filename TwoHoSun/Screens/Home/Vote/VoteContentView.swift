@@ -24,19 +24,16 @@ struct VoteContentView: View {
     }
 
     var body: some View {
-        NavigationLink("", 
-                       destination: DetailView(viewModel: DetailViewModel(postId: postData.postId),
-                                               postId: postData.postId),
-                       isActive: $goNext)
         ZStack {
-            Color.clear
-                .frame(maxWidth: .infinity)
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    if postData.voted && isMainCell {
-                        goNext = true
-                    }
-                }
+            if isMainCell {
+                Color.clear
+                    .frame(maxWidth: .infinity)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        if postData.voted && isMainCell {
+                            goNext = true
+                        }
+                    }}
         VStack(alignment: .leading, spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
                 decorationBoxView
@@ -53,6 +50,7 @@ struct VoteContentView: View {
                     .padding(.top, 10)
             }
             .padding(.horizontal, 26)
+
             if !isMainCell {
                 if(postData.mine) {
                     ChartView(voteInfoList: postData.voteInfoList)
@@ -64,6 +62,12 @@ struct VoteContentView: View {
             dividerBlock
         }
         }
+        .navigationDestination(
+             isPresented: $goNext) {
+                 DetailView(viewModel: DetailViewModel(postId: postData.postId),postId: postData.postId)
+                  Text("")
+                      .hidden()
+             }
         .fullScreenCover(isPresented: $isImageDetailPresented) {
             NavigationView {
                 ImageDetailView(imageURL: postData.image, externalURL: postData.externalURL)
