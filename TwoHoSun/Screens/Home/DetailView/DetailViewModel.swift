@@ -13,7 +13,7 @@ class DetailViewModel {
     var commentsDatas: [CommentsModel] = []
     var postId: Int
     var isSendMessage: Bool = false
-
+    
     init(postId: Int) {
         self.postId = postId
     }
@@ -24,11 +24,13 @@ class DetailViewModel {
         return nil // 해당 commentId를 가진 댓글을 찾을 수 없는 경우
     }
 
-    func getComments() {
+    func getComments(onlyChild: Bool = false) {
         APIManager.shared.requestAPI(type: .getComments(postId: postId)) { (response: GeneralResponse<[CommentsModel]>) in
             switch response.status {
             case 200:
                 guard let data = response.data else {return}
+                print(self.commentsDatas)
+
                 self.commentsDatas = data
                 self.isSendMessage = false
             default:
@@ -43,6 +45,7 @@ class DetailViewModel {
                 APIManager.shared.refreshAllTokens()
                 self.postComments(commentPost: commentPost)
             case 200:
+          
                 print("post 잘됨.")
                 self.getComments()
 

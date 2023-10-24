@@ -34,7 +34,6 @@ struct DetailView : View {
                 Divider()
                 VoteContentView(postData: postData, isMainCell: false)
                 commentView
-
             }
             forReplayButton
             commentInputView
@@ -165,6 +164,8 @@ extension DetailView {
                         isFocus = true
                     }
                     .id(comment.commentId)
+                    makeChildComments(comment: comment)
+
                 }
                 .onChange(of: scrollSpot) { _, _ in
                     proxy.scrollTo(scrollSpot, anchor: .top)
@@ -174,6 +175,37 @@ extension DetailView {
         .padding(.horizontal, 26)
     }
 
+    @ViewBuilder
+    func makeChildComments(comment: CommentsModel) -> some View {
+        if let childComments = comment.childComments, !childComments.isEmpty {
+            HStack {
+                Spacer()
+                    .frame(width: 32,height: 32)
+                if isOpenComment {
+                    VStack {
+                        ForEach(childComments) { comment in
+                            CommentCell(comment: comment) {
+                            }
+                        }
+                    }
+                } else {
+                    Button(action: {
+                        isOpenComment.toggle()
+                    }, label: {
+                        HStack {
+                            Rectangle()
+                                .fill(.gray)
+                                .frame(width: 29, height: 1)
+                            Text("답글 \(comment.childComments!.count)개 더보기")
+                                .font(.system(size: 12))
+                                .foregroundStyle(.gray)
+                        }
+                    })
+                }
+            }
+
+        }
+    }
     var commentInputView: some View {
         withAnimation(.easeInOut) {
             TextField("소비고민을 함께 나누어 보세요", text: $commentText, axis: .vertical)

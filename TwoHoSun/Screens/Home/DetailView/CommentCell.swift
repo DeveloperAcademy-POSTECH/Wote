@@ -31,6 +31,8 @@ enum TimeCalendar {
 }
 
 import SwiftUI
+import Observation
+
 struct CommentCell: View {
     let comment: CommentsModel
     var onReplyButtonTapped: () -> Void
@@ -45,26 +47,6 @@ struct CommentCell: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            makeCellView(comment: comment)
-            if hasChildComments {
-                HStack {
-                    Spacer()
-                        .frame(width: 32,height: 32)
-                    if isOpenComment {
-                        VStack {
-                            ForEach(comment.childComments!) { comment in
-                                makeCellView(comment: comment)
-                            }
-                        }
-                    } else {
-                        moreCommentButton
-                    }
-                }
-            }
-        }
-    }
-    func makeCellView(comment: CommentsModel) -> some View {
         HStack(alignment: .top) {
             Image(systemName: "person")
                 .resizable()
@@ -90,38 +72,13 @@ struct CommentCell: View {
                     .font(.system(size: 14))
                     .padding(.bottom, 4)
                 if comment.childComments != nil {
-                    Button(action: {}, label: {
+                    Button(action: {onReplyButtonTapped()}, label: {
                         Text("답글달기")
                             .font(.system(size: 12))
                             .foregroundStyle(.gray)
-                            .onTapGesture {
-                                onReplyButtonTapped()
-                            }
                     })
                 }
             }
         }
     }
-
-    var moreCommentButton: some View {
-            Button(action: {
-                isOpenComment.toggle()
-            }, label: {
-                HStack {
-                    Rectangle()
-                        .fill(.gray)
-                        .frame(width: 29, height: 1)
-                    Text("답글 \(comment.childComments!.count)개 더보기")
-                        .font(.system(size: 12))
-                        .foregroundStyle(.gray)
-                }
-            })
-    }
-//    @ViewBuilder
-//    var forReplayButton: some View {
-//        if comment.childComments!= nil {
-//            
-//        }
-//
-//    }
 }
