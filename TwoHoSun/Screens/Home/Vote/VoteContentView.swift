@@ -142,7 +142,7 @@ extension VoteContentView {
                     .frame(width: 200, height: 200)
                 linkButton
                     .padding(.trailing, 12)
-                    .padding(.bottom, 10)
+                    .padding(.bottom, 16)
             }
             .onTapGesture {
                 isImageDetailPresented = true
@@ -158,10 +158,10 @@ extension VoteContentView {
                 Image(systemName: "link")
                 Text("링크")
             }
-            .font(.system(size: 10))
+            .font(.system(size: 14))
             .foregroundStyle(.white)
-            .padding(.horizontal, 4)
-            .padding(.vertical, 2)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 4)
             .background(Color.gray)
             .clipShape(RoundedRectangle(cornerRadius: 15))
         }
