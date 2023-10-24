@@ -224,7 +224,7 @@ extension VoteContentView {
                         .font(.system(size: 20, weight: .medium))
                         .foregroundStyle(.black)
                         .frame(width: 169, height: 60)
-                        .background(Color.orange)
+                        .background(VoteType.agree.color)
                 }
                 Button {
                     print("not buy button tap")
@@ -234,7 +234,7 @@ extension VoteContentView {
                         .font(.system(size: 20, weight: .medium))
                         .foregroundStyle(.black)
                         .frame(width: 169, height: 60)
-                        .background(Color.pink)
+                        .background(VoteType.disagree.color)
                 }
             }
             vsLabel
