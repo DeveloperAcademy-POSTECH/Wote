@@ -45,26 +45,6 @@ struct CommentCell: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            makeCellView(comment: comment)
-            if hasChildComments {
-                HStack {
-                    Spacer()
-                        .frame(width: 32,height: 32)
-                    if isOpenComment {
-                        VStack {
-                            ForEach(comment.childComments!) { comment in
-                                makeCellView(comment: comment)
-                            }
-                        }
-                    } else {
-                        moreCommentButton
-                    }
-                }
-            }
-        }
-    }
-    func makeCellView(comment: CommentsModel) -> some View {
         HStack(alignment: .top) {
             Image(systemName: "person")
                 .resizable()
@@ -89,30 +69,14 @@ struct CommentCell: View {
                     .foregroundColor(.black)
                     .font(.system(size: 14))
                     .padding(.bottom, 4)
-                Button(action: {}, label: {
-                    Text("답글달기")
-                        .font(.system(size: 12))
-                        .foregroundStyle(.gray)
-                        .onTapGesture {
-                            onReplyButtonTapped()
-                        }
-                })
+                if comment.childComments != nil {
+                    Button(action: {onReplyButtonTapped()}, label: {
+                        Text("답글달기")
+                            .font(.system(size: 12))
+                            .foregroundStyle(.gray)
+                    })
+                }
             }
         }
-    }
-
-    var moreCommentButton: some View {
-            Button(action: {
-                isOpenComment.toggle()
-            }, label: {
-                HStack {
-                    Rectangle()
-                        .fill(.gray)
-                        .frame(width: 29, height: 1)
-                    Text("답글 \(comment.childComments!.count)개 더보기")
-                        .font(.system(size: 12))
-                        .foregroundStyle(.gray)
-                }
-            })
     }
 }
