@@ -7,7 +7,7 @@
 
 import SwiftUI
 // TODO: 후에 모델작업은 수정 예정 여기서 사용하기 위해 임의로 제작
-struct OthersDetailView : View {
+struct DetailView : View {
     @Environment(\.dismiss) var dismiss
     @State private var commentText: String = ""
     @State private var alertOn: Bool = false
@@ -27,6 +27,7 @@ struct OthersDetailView : View {
                 if let postData = viewModel.detailPostData {
                     VoteContentView(postData: postData,
                                     isMainCell: false)
+                    
                 } else {
                     ProgressView()
                         .padding(.top, 100)
@@ -34,6 +35,7 @@ struct OthersDetailView : View {
             }
             seperatorView
             commentView
+            
         }
         commentInputView
             .ignoresSafeArea(.all, edges: .bottom)
@@ -75,7 +77,7 @@ struct OthersDetailView : View {
 
     }
 }
-extension OthersDetailView {
+extension DetailView {
     private var detailHeaderView: some View {
         HStack {
             Image(systemName: "person")
@@ -91,44 +93,6 @@ extension OthersDetailView {
         }
         .padding(.horizontal, 26)
     }
-}
-struct AlertCustomToggle: ToggleStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        let isOn = configuration.isOn
-        return ZStack {
-            RoundedRectangle(cornerRadius: 17)
-                .frame(width: 61, height: 21)
-                .foregroundStyle(Color.gray)
-                .overlay(alignment: .leading) {
-                    Text(isOn ? "ON" : "OFF")
-                        .font(.system(size: 14, weight: .bold))
-                        .offset(x: isOn ? 5 : 25)
-                        .padding(.trailing, 8)
-                }
-                .overlay(alignment: .leading) {
-                    Image("smile")
-                        .resizable()
-                        .frame(width: 15,height: 15)
-                        .clipShape(Circle())
-                        .rotationEffect(Angle.degrees(isOn ? 180 : 0))
-                        .offset(x: isOn ? 35 : 5)
-                }
-                .mask {
-                    RoundedRectangle(cornerRadius: 17)
-                        .frame(width: 61, height: 21)
-                }
-
-        }
-        .onTapGesture {
-            withAnimation {
-                configuration.isOn.toggle()
-            }
-
-        }
-    }
-}
-
-extension OthersDetailView {
     var seperatorView: some View {
         Rectangle()
             .fill(.ultraThickMaterial)
@@ -191,6 +155,41 @@ extension OthersDetailView {
                         .font(.system(size: 20))
                 })
             }
+        }
+    }
+}
+struct AlertCustomToggle: ToggleStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        let isOn = configuration.isOn
+        return ZStack {
+            RoundedRectangle(cornerRadius: 17)
+                .frame(width: 61, height: 21)
+                .foregroundStyle(Color.gray)
+                .overlay(alignment: .leading) {
+                    Text(isOn ? "ON" : "OFF")
+                        .font(.system(size: 14, weight: .bold))
+                        .offset(x: isOn ? 5 : 25)
+                        .padding(.trailing, 8)
+                }
+                .overlay(alignment: .leading) {
+                    Image("smile")
+                        .resizable()
+                        .frame(width: 15,height: 15)
+                        .clipShape(Circle())
+                        .rotationEffect(Angle.degrees(isOn ? 180 : 0))
+                        .offset(x: isOn ? 35 : 5)
+                }
+                .mask {
+                    RoundedRectangle(cornerRadius: 17)
+                        .frame(width: 61, height: 21)
+                }
+
+        }
+        .onTapGesture {
+            withAnimation {
+                configuration.isOn.toggle()
+            }
+
         }
     }
 }

@@ -23,6 +23,7 @@ struct PostModel: Identifiable {
     let commentCount: Int
     let voteCount: VoteCountModel
     let postCategoryType: PostCategoryType
+    let voteInfoList: [VoteInfo]
     let voted: Bool
     let mine: Bool
 
@@ -43,6 +44,7 @@ struct PostModel: Identifiable {
         self.voteCount = VoteCountModel(agreeCount: postResponse.voteCounts.agreeCount,
                                         disagreeCount: postResponse.voteCounts.disagreeCount)
         self.voted = postResponse.voted
+        self.voteInfoList = postResponse.voteInfoList ?? []
         self.mine = postResponse.mine
         self.postCategoryType = postResponse.postCategoryType
     }
