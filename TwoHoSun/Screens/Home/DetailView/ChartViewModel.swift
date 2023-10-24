@@ -10,33 +10,41 @@ import Observation
 
 @Observable
 class ChartViewModel {
-    var postId: Int
+//    var postId: Int
+    let voteInfoList: [VoteInfo]
     var chartModel: ChartModel = ChartModel(genderChart: GenderChart(male: AgreeCount(agree: 0, disagree: 0), female: AgreeCount(agree: 0, disagree: 0)), gradeChart: GradeChart(middleFirst: AgreeCount(agree: 0, disagree: 0), middleSecond: AgreeCount(agree: 0, disagree: 0), middleThird: AgreeCount(agree: 0, disagree: 0), highFirst: AgreeCount(agree: 0, disagree: 0), highSecond: AgreeCount(agree: 0, disagree: 0), highThird: AgreeCount(agree: 0, disagree: 0)), regionChart: RegionChart(seoul: AgreeCount(agree: 0, disagree: 0), gyeonggi: AgreeCount(agree: 0, disagree: 0), chungcheong: AgreeCount(agree: 0, disagree: 0), gangwon: AgreeCount(agree: 0, disagree: 0), gyeongsang: AgreeCount(agree: 0, disagree: 0), jeolla: AgreeCount(agree: 0, disagree: 0), jeju: AgreeCount(agree: 0, disagree: 0)))
     
-    init(postId: Int) {
-        self.postId = postId
-        getDetailPost(postId: postId)
+    init(voteInfoList: [VoteInfo]) {
+        self.voteInfoList = voteInfoList
+        getChartData(voteInfoList: voteInfoList)
+//        self.postId = postId
+//        getDetailPost(postId: postId)
     }
     
-    func getDetailPost(postId: Int) {
-        APIManager.shared.requestAPI(type: .getDetailPost(postId: postId)) { (response: GeneralResponse<PostResponse>) in
-            switch response.status {
-            case 401:
-                APIManager.shared.refreshAllTokens()
-                self.getDetailPost(postId: postId)
-            case 200:
-                guard let data = response.data else { return }
-                print(data)
+    func getChartData(voteInfoList: [VoteInfo]) {
+        let summary = self.summarizeVotes(voteInfo: voteInfoList)
+        let chartModel = self.summarizeToChartModel(summary: summary)
+        self.chartModel = chartModel
+    }
+    
+//    func getDetailPost(postId: Int) {
+//        APIManager.shared.requestAPI(type: .getDetailPost(postId: postId)) { (response: GeneralResponse<PostResponse>) in
+//            switch response.status {
+//            case 401:
+//                APIManager.shared.refreshAllTokens()
+//                self.getDetailPost(postId: postId)
+//            case 200:
+//                guard let data = response.data else { return }
+//                print(data)
 //                let summary = self.summarizeVotes(voteInfo: data.voteInfoList)
 //                print(summary)
 //                let chartModel = self.summarizeToChartModel(summary: summary)
 //                self.chartModel = chartModel
-//                print("CHARTMODEL: \(chartModel)")
-            default:
-                print("chart data error")
-            }
-        }
-    }
+//            default:
+//                print("chart data error")
+//            }
+//        }
+//    }
     
     func summarizeVotes(voteInfo: [VoteInfo]) -> VoteSummary {
         var summary = VoteSummary(gender: [:], grade: [:], region: [:], schoolAndGrade: [:])
