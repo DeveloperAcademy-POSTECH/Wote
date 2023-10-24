@@ -12,8 +12,8 @@ import Alamofire
 @Observable
 final class WriteViewModel {
     var title = ""
-    var externalURL = " "
-    var content = " "
+    var externalURL = ""
+    var content = ""
     var postCategoryType = PostCategoryType.purchaseConsideration
     var postCreateModel: PostCreateModel?
 
@@ -25,7 +25,7 @@ final class WriteViewModel {
     func createPost() {
         postCreateModel = PostCreateModel(postType: PostType.allSchool.rawValue,
                                           title: title + " " + postCategoryType.title,
-                                          contents: content,
+                                          contents: content.isEmpty ? " " : content,
                                           image: "https://github.com/DeveloperAcademy-POSTECH/MacC-Team8-2HoSun/assets/108191001/890db0c2-508e-465c-a307-cd498375613a",
                                           externalURL: "https://www.apple.com/kr/ipad-air/",
                                           postTagList: [],

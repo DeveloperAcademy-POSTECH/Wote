@@ -20,7 +20,7 @@ struct VoteContentView: View {
     init(postData: PostModel, isMainCell: Bool = true) {
         self.postData = postData
         self.isMainCell = isMainCell
-        self.viewModel =  VoteContentViewModel(postData: postData)
+        self.viewModel = VoteContentViewModel(postData: postData)
     }
 
     var body: some View {
@@ -97,6 +97,7 @@ extension VoteContentView {
                 } label: {
                     Image(systemName: "chevron.right")
                         .font(.system(size: 16))
+                        .foregroundStyle(.gray)
                 }
             }
         }
@@ -145,7 +146,7 @@ extension VoteContentView {
                     .frame(width: 200, height: 200)
                 linkButton
                     .padding(.trailing, 12)
-                    .padding(.bottom, 10)
+                    .padding(.bottom, 16)
             }
             .onTapGesture {
                 isImageDetailPresented = true
@@ -161,10 +162,10 @@ extension VoteContentView {
                 Image(systemName: "link")
                 Text("링크")
             }
-            .font(.system(size: 10))
+            .font(.system(size: 14))
             .foregroundStyle(.white)
-            .padding(.horizontal, 4)
-            .padding(.vertical, 2)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 4)
             .background(Color.gray)
             .clipShape(RoundedRectangle(cornerRadius: 15))
         }
@@ -188,7 +189,6 @@ extension VoteContentView {
                 voteResultView(voteType: .disagree,
                                postCategoryType: postData.postCategoryType,
                                viewModel.notBuyCountRatio)
-
             }
             .frame(width: 338, height: 60)
             vsLabel
@@ -224,7 +224,7 @@ extension VoteContentView {
                         .font(.system(size: 20, weight: .medium))
                         .foregroundStyle(.black)
                         .frame(width: 169, height: 60)
-                        .background(Color.orange)
+                        .background(VoteType.agree.color)
                 }
                 Button {
                     print("not buy button tap")
@@ -234,7 +234,7 @@ extension VoteContentView {
                         .font(.system(size: 20, weight: .medium))
                         .foregroundStyle(.black)
                         .frame(width: 169, height: 60)
-                        .background(Color.pink)
+                        .background(VoteType.disagree.color)
                 }
             }
             vsLabel
