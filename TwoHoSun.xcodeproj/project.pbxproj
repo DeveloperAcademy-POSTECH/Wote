@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5E5099542AED59DE0053E529 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5099532AED59DE0053E529 /* AppDelegate.swift */; };
 		AB4522532ADDD99500B69F24 /* SchoolSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */; };
 		AB4522562ADDDBC400B69F24 /* SchoolResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */; };
 		AB45225A2ADDDC9E00B69F24 /* SchoolSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522592ADDDC9E00B69F24 /* SchoolSearchViewModel.swift */; };
@@ -66,6 +67,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5E5099532AED59DE0053E529 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolSearchView.swift; sourceTree = "<group>"; };
 		AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolResponseModel.swift; sourceTree = "<group>"; };
 		AB4522592ADDDC9E00B69F24 /* SchoolSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolSearchViewModel.swift; sourceTree = "<group>"; };
@@ -288,6 +290,7 @@
 				FD1DEBAB2ADC218800588CE6 /* Utility */,
 				FD1DEBA62ADC20E400588CE6 /* Resources */,
 				FD132BF32ADBE8FB00F31AAF /* Preview Content */,
+				5E5099532AED59DE0053E529 /* AppDelegate.swift */,
 			);
 			path = TwoHoSun;
 			sourceTree = "<group>";
@@ -489,6 +492,7 @@
 				C73F8E922AE58EAD001C6B07 /* CommentPostModel.swift in Sources */,
 				C73F8E902AE562FE001C6B07 /* Date+.swift in Sources */,
 				FDDEC15B2AE3EABA004509EA /* SearchView.swift in Sources */,
+				5E5099542AED59DE0053E529 /* AppDelegate.swift in Sources */,
 				ABBBC6782AE471B700B1E614 /* WriteViewModel.swift in Sources */,
 				FDB4B14E2AE641E600720328 /* ChartViewModel.swift in Sources */,
 				FD3205612ADD1F8100B0D5F6 /* MainView.swift in Sources */,
@@ -660,7 +664,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"TwoHoSun/Preview Content\"";
-				DEVELOPMENT_TEAM = Q535Z3S7Z3;
+				DEVELOPMENT_TEAM = 2ZA4H6HG9F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TwoHoSun/Info.plist;
@@ -695,7 +699,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"TwoHoSun/Preview Content\"";
-				DEVELOPMENT_TEAM = Q535Z3S7Z3;
+				DEVELOPMENT_TEAM = 2ZA4H6HG9F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TwoHoSun/Info.plist;
