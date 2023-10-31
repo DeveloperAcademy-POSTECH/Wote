@@ -65,39 +65,24 @@ struct SchoolSearchView: View {
             VStack(spacing: 0) {
                 schoolSearchField
                     .padding(.horizontal, 16)
-                    .padding(.top, 20)
                 schoolSearchResultView
-                Spacer()
             }
+            .padding(.top, 109)
         }
-        .ignoresSafeArea(edges: /*@START_MENU_TOKEN@*/.bottom/*@END_MENU_TOKEN@*/)
+        .ignoresSafeArea(edges: .vertical)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                backButton
-            }
             ToolbarItem(placement: .principal) {
                 Text("학교 검색")
                     .font(.system(size: 18, weight: .medium))
             }
         }
         .foregroundStyle(.white)
-        .toolbarBackground(Color.background, for: .navigationBar)
-        .toolbarBackground(.visible, for: .navigationBar)
+        .toolbarBackground(.hidden, for: .navigationBar)
     }
 }
 
 extension SchoolSearchView {
-
-    private var backButton: some View {
-        Button {
-            dismiss()
-        } label: {
-            Image(systemName: "chevron.backward")
-                .font(.system(size: 20, weight: .medium))
-                .foregroundStyle(Color.accentBlue)
-        }
-    }
 
     private var schoolSearchField: some View {
         TextField("",

@@ -89,7 +89,6 @@ enum ProfileInputType {
 struct ProfileSettingsView: View {
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var selectedImageData: Data?
-    @State private var isSchoolSearchSheetPresented = false
     @State private var isProfileSheetShowed = false
     @Binding var navigationPath: [Route]
     @Bindable var viewModel: ProfileSettingViewModel
@@ -120,11 +119,8 @@ struct ProfileSettingsView: View {
                     .padding(.bottom, 12)
             }
             .scrollIndicators(.hidden)
-            .fullScreenCover(isPresented: $isSchoolSearchSheetPresented) {
-                NavigationView {
-                    SchoolSearchView(selectedSchoolInfo: $viewModel.selectedSchoolInfo)
-                }
-            }
+            .navigationTitle("프로필 설정")
+            .toolbar(.hidden, for: .navigationBar)
             .navigationBarBackButtonHidden()
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)
@@ -286,19 +282,21 @@ extension ProfileSettingsView {
     }
 
     private var schoolInputView: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("학교")
-                .font(.system(size: 16, weight: .medium))
-            roundedIconTextField(for: .school,
-                                 text: viewModel.selectedSchoolInfo?.school.schoolName,
-                                 isFilled: viewModel.isSchoolFilled)
-            if !viewModel.isFormValid && !viewModel.isSchoolFilled {
-                validationAlertMessage(for: .school, isValid: viewModel.isSchoolFilled)
+        NavigationLink {
+            SchoolSearchView(selectedSchoolInfo: $viewModel.selectedSchoolInfo)
+        } label: {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("학교")
+                    .font(.system(size: 16, weight: .medium))
+                roundedIconTextField(for: .school,
+                                     text: viewModel.selectedSchoolInfo?.school.schoolName,
+                                     isFilled: viewModel.isSchoolFilled)
+                if !viewModel.isFormValid && !viewModel.isSchoolFilled {
+                    validationAlertMessage(for: .school, isValid: viewModel.isSchoolFilled)
+                }
             }
         }
-        .onTapGesture {
-            isSchoolSearchSheetPresented = true
-        }
+
     }
 
     private var gradeInputView: some View {
