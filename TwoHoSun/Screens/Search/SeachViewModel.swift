@@ -25,14 +25,17 @@ final class SearchViewModel {
     func addRecentSearch(searchWord: String) {
         // TODO: set recent search storage limit
         searchWords.insert(searchWord, at: 0)
+        setRecentSearch()
     }
 
     func removeRecentSearch(at index: Int) {
         searchWords.remove(at: index)
+        setRecentSearch()
     }
 
     func removeAllRecentSearch() {
         searchWords.removeAll()
+        setRecentSearch()
     }
 
     func setRecentSearch() {

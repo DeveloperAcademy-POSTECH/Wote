@@ -19,7 +19,6 @@ struct SearchView: View {
             Color.background
             VStack(spacing: 0) {
                 searchField
-                    .padding(.top, 20)
                 HStack {
                     recentSearchLabel
                     Spacer()
@@ -30,8 +29,9 @@ struct SearchView: View {
                     .padding(.top, 16)
             }
             .padding(.horizontal, 16)
+            .padding(.top, 116)
         }
-        .ignoresSafeArea(edges: .bottom)
+        .ignoresSafeArea(edges: .vertical)
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -44,11 +44,6 @@ struct SearchView: View {
             }
         }
         .toolbar(dismissTabBar ? .visible : .hidden, for: .tabBar)
-        .toolbarBackground(Color.background, for: .navigationBar)
-        .toolbarBackground(.visible, for: .navigationBar)
-        .onDisappear {
-            viewModel.setRecentSearch()
-        }
     }
 }
 

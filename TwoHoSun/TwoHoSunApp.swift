@@ -24,14 +24,12 @@ struct TwoHoSunApp: App {
         WindowGroup {
             if appState.hasValidToken {
                 MainTabView()
-//                MyDetailView()
             } else {
                 NavigationStack(path: $path) {
                     OnBoardingView(navigationPath: $path)
-//                    MyDetailView()
                 }
+                .tint(Color.accentBlue)
             }
-////            ProfileSettingsView(navigationPath: $path, viewModel: ProfileSettingViewModel())
         }
     }
 }

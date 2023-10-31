@@ -78,7 +78,6 @@ struct SchoolSearchView: View {
             }
         }
         .foregroundStyle(.white)
-        .toolbarBackground(.hidden, for: .navigationBar)
     }
 }
 
