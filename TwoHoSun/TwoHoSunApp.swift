@@ -32,7 +32,7 @@ struct TwoHoSunApp: App {
                 }
             }
 ////            ProfileSettingsView(navigationPath: $path, viewModel: ProfileSettingViewModel())
-//        }
+        }
     }
 }
 
