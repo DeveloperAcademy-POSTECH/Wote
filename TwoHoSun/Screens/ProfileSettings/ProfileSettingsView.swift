@@ -92,37 +92,32 @@ struct ProfileSettingsView: View {
     var body: some View {
         ZStack {
             Color.background
-            VStack {
-                VStack(spacing: 0) {
-                    titleLabel
-                    profileImage
-                        .padding(.top, 60)
-                    nicknameInputView
-                        .padding(.top, 46)
-                    schoolInputView
-
-                    //                    .padding(.top, viewModel.nicknameValidationType != .none ? 104 : 125)
-
-                }
-                .padding(.horizontal, 16)
-                .padding(.top, 70)
-                .padding(.bottom, 104)
-
+            VStack(spacing: 0) {
+                titleLabel
+                    .padding(.top, 70)
+                profileImage
+                    .padding(.top, 60)
+                nicknameInputView
+                    .padding(.top, 46)
+                schoolInputView
                 nextButton
                     .padding(.bottom, 12)
             }
-            .fullScreenCover(isPresented: $isSchoolSearchSheetPresented) {
-                NavigationView {
-                    SchoolSearchView(selectedSchoolInfo: $viewModel.selectedSchoolInfo)
-                }
-            }
-            .photosPicker(isPresented: $retryProfileImage, selection: $selectedPhoto)
-            .navigationBarBackButtonHidden()
+            .padding(.horizontal, 16)
         }
         .ignoresSafeArea(.all)
-        .ignoresSafeArea(.keyboard, edges: .bottom)
         .onTapGesture {
             endTextEditing()
+        }
+        .navigationBarBackButtonHidden()
+
+//        .ignoresSafeArea(.keyboard, edges: .bottom)
+
+        .photosPicker(isPresented: $retryProfileImage, selection: $selectedPhoto)
+        .fullScreenCover(isPresented: $isSchoolSearchSheetPresented) {
+            NavigationView {
+                SchoolSearchView(selectedSchoolInfo: $viewModel.selectedSchoolInfo)
+            }
         }
         //        .onAppear {
         //            UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]). = UIColor(Color.disableGray)
@@ -177,7 +172,7 @@ extension ProfileSettingsView {
             selectProfileButton
         }
         .onTapGesture {
-            if let selectedImageData = selectedImageData {
+            if selectedImageData != nil {
                 isProfileSheetShowed = true
             }
         }
@@ -271,7 +266,8 @@ extension ProfileSettingsView {
     private var checkDuplicatedIdButton: some View {
         Button {
             viewModel.postNickname()
-            if viewModel.nicknameValidationType == .valid { endTextEditing() }
+            if viewModel.nicknameValidationType == .valid { endTextEditing()
+            }
         } label: {
             Text("중복확인")
                 .font(.system(size: 14, weight: .medium))
@@ -280,7 +276,8 @@ extension ProfileSettingsView {
                 .background(Color.disableGray)
                 .cornerRadius(10)
         }
-        .disabled(viewModel.isDuplicateButtonEnabled() ? false : true)
+        .disabled(viewModel.nicknameValidationType == .length)
+
     }
 
     private var schoolInputView: some View {
@@ -292,8 +289,10 @@ extension ProfileSettingsView {
                                  isFilled: viewModel.isSchoolFilled)
             if !viewModel.isFormValid && !viewModel.isSchoolFilled {
                 validationAlertMessage(for: .school, isValid: viewModel.isSchoolFilled)
+                    .padding(.top, 6)
             }
         }
+        .padding(.bottom, viewModel.isFormValid ? 124 : 104)
         .onTapGesture {
             isSchoolSearchSheetPresented = true
         }
@@ -310,7 +309,10 @@ extension ProfileSettingsView {
                 .background(viewModel.isAllInputValid ? Color.lightBlue : Color.disableGray)
                 .cornerRadius(10)
         }
-        .simultaneousGesture(TapGesture().onEnded {
+        .disabled(viewModel.isAllInputValid ? false : true)
+        .simultaneousGesture(
+            TapGesture()
+                .onEnded {
             guard viewModel.isAllInputValid else {
                 viewModel.setInvalidCondition()
                 return
@@ -343,7 +345,7 @@ extension ProfileSettingsView {
 
     private func nicknameValidationAlertMessage(for input: NicknameValidationType) -> some View {
         HStack(spacing: 8) {
-            Image(systemName: "light.beacon.max")
+            Image(systemName: viewModel.nicknameValidationType == .valid ?  "checkmark.circle.fill" : "light.beacon.max")
             Text(input.alertMessage)
             Spacer()
         }
@@ -358,14 +360,8 @@ extension ProfileSettingsView {
             Spacer()
         }
         .font(.system(size: 12))
-        .foregroundStyle(.red)
+        .foregroundStyle(Color.errorRed)
     }
-
-    // MARK: - Custom Methods
-
-//    private func dismissKeyboard() {
-//        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-//    }
 
     struct TitleTextStyle: ViewModifier {
         func body(content: Content) -> some View {
