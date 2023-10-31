@@ -85,6 +85,7 @@ struct ProfileSettingsView: View {
     @State private var selectedImageData: Data?
     @State private var isSchoolSearchSheetPresented = false
     @State private var isProfileSheetShowed = false
+    @State private var retryProfileImage = false
     @Binding var navigationPath: [Route]
     @Bindable var viewModel: ProfileSettingViewModel
 
@@ -115,13 +116,14 @@ struct ProfileSettingsView: View {
                     SchoolSearchView(selectedSchoolInfo: $viewModel.selectedSchoolInfo)
                 }
             }
+            .photosPicker(isPresented: $retryProfileImage, selection: $selectedPhoto)
             .navigationBarBackButtonHidden()
         }
         .ignoresSafeArea(.all)
         .ignoresSafeArea(.keyboard, edges: .bottom)
-//        .onAppear {
-//            UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]). = UIColor(Color.disableGray)
-//        }
+        //        .onAppear {
+        //            UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]). = UIColor(Color.disableGray)
+        //        }
     }
 
 }
@@ -182,12 +184,11 @@ extension ProfileSettingsView {
                     selectedPhoto = nil
                     selectedImageData = nil
                 }
-
                 Button("프로필 재설정") {
-
+                    retryProfileImage = true
                 }
             }
-//            .preferredColorScheme(UIColor(Color.disableGray))
+            //            .preferredColorScheme(UIColor(Color.disableGray))
         }
     }
 
