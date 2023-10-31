@@ -9,7 +9,7 @@ import SwiftUI
 
 extension Color {
     static let fontGray = Color(UIColor(hexCode: "8F8F8F"))
-    static let backGround = Color(UIColor(hexCode: "15151A"))
+    static let background = Color(UIColor(hexCode: "15151A"))
     static let errorRed = Color(UIColor(hexCode: "F42BOF"))
     static let blueStroke = Color(UIColor(hexCode: "434258"))
     static let disableGray = Color(UIColor(hexCode: "22242B"))

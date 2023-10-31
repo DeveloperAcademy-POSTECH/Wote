@@ -15,9 +15,7 @@ extension UIColor {
         if hexFormatted.hasPrefix("#") {
             hexFormatted = String(hexFormatted.dropFirst())
         }
-
         assert(hexFormatted.count == 6, "Invalid hex code used.")
-
         var rgbValue: UInt64 = 0
         Scanner(string: hexFormatted).scanHexInt64(&rgbValue)
 
@@ -26,6 +24,4 @@ extension UIColor {
                   blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
                   alpha: alpha)
     }
-
-  
 }
