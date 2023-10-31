@@ -23,7 +23,7 @@ struct SchoolSearchView: View {
                     .padding(.horizontal, 16)
                     .padding(.top, 20)
                 schoolSearchResultView
-                    .padding(.top, 22)
+                    .padding(.top, 16)
                 Spacer()
             }
         }
@@ -86,59 +86,60 @@ extension SchoolSearchView {
     }
 
     private var emptyResultView: some View {
-        VStack(spacing: 0) {
-            Divider()
-                .background(Color.gray)
-                .padding(.horizontal, 11)
-            Rectangle()
-                .frame(width: 90, height: 90)
-                .foregroundStyle(.gray)
-                .padding(.top, 186)
+        VStack(spacing: 20) {
+            Image("imgNoResult")
             Text("검색 결과가 없습니다.")
                 .font(.system(size: 20, weight: .medium))
-                .foregroundStyle(.gray)
-                .padding(.top, 20)
+                .foregroundStyle(Color.descriptionGray)
         }
+        .padding(.top, 170)
     }
 
-    private func schoolListCell(_ schoolInfo: SchoolInfoModel) -> some View {
+    private func schoolListCell(_ schoolInfo: SchoolInfoModel, isLastCell: Bool) -> some View {
         VStack(spacing: 0) {
-            Divider()
-                .background(Color.gray)
-                .frame(height: 1)
-                .padding(.horizontal, 11)
             HStack {
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 0) {
                     Text(schoolInfo.school.schoolName)
-                        .font(.system(size: 16, weight: .medium))
+                        .font(.system(size: 18, weight: .medium))
+                        .padding(.bottom, 13)
                     HStack(spacing: 5) {
                         infoLabel("도로명")
                         infoDescription(schoolInfo.schoolAddress)
                     }
-                    HStack(spacing: 13) {
+                    .padding(.bottom, 10)
+                    HStack(spacing: 16) {
                         infoLabel("지역")
                         infoDescription(schoolInfo.school.schoolRegion)
                     }
+                    .padding(.bottom, 10)
                 }
                 Spacer()
             }
+            .background(Color.clear)
             .padding(.vertical, 16)
             .padding(.horizontal, 26)
+
+            if !isLastCell {
+                Divider()
+                    .background(Color.dividerGray)
+                    .padding(.horizontal, 16)
+            }
         }
     }
 
     private func infoLabel(_ labelName: String) -> some View {
         Text(labelName)
-            .font(.system(size: 10, weight: .medium))
+            .font(.system(size: 12, weight: .medium))
             .padding(.vertical, 4)
             .padding(.horizontal, 5)
-            .background(Color.gray)
+            .background(Color.lightBlue)
             .clipShape(RoundedRectangle(cornerRadius: 3.0))
     }
 
     private func infoDescription(_ description: String) -> some View {
         Text(description)
             .font(.system(size: 13, weight: .medium))
+            .foregroundStyle(Color.infoGray)
     }
 
     private var searchDescriptionView: some View {
@@ -161,12 +162,19 @@ extension SchoolSearchView {
 
     @ViewBuilder
     private var searchedSchoolList: some View {
-        List(viewModel.schools) { school in
-            schoolListCell(school)
+        List(viewModel.schools.indices, id: \.self) { index in
+            let school = viewModel.schools[index]
+            schoolListCell(school, isLastCell: index == viewModel.schools.count - 1)
             .listRowInsets(EdgeInsets())
+            .listRowBackground(Color.clear)
             .listRowSeparator(.hidden)
             .onTapGesture {
-                selectedSchoolInfo = school
+                let schoolModel = school.school
+                selectedSchoolInfo = SchoolInfoModel(school: SchoolModel(schoolName: schoolModel.schoolName,
+                                                                         schoolRegion: regionMapping[schoolModel.schoolRegion] 
+                                                                         ?? schoolModel.schoolRegion,
+                                                                         schoolType: schoolModel.schoolType),
+                                                     schoolAddress: school.schoolAddress)
                 dismiss()
             }
         }

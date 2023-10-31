@@ -23,4 +23,6 @@ extension Color {
     static let fixedGray = Color(UIColor(hexCode: "232323"))
     static let darkBlueStroke = Color(UIColor(hexCode: "666697"))
     static let shadowBlue = Color(UIColor(hexCode: "5F5BFF", alpha: 0.15))
+    static let infoGray = Color(UIColor(hexCode: "D0D0D0"))
+    static let dividerGray = Color(UIColor(hexCode: "1E1E1E"))
 }
