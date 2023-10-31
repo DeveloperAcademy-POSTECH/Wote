@@ -20,21 +20,24 @@ final class SearchViewModel {
 
     func fetchRecentSearch() {
         guard let recentSearch = UserDefaults.standard.array(forKey: "RecentSearch") as? [String] else { return }
-        print(recentSearch)
         searchWords = recentSearch
     }
 
-    func setRecentSearch(searchWord: String) {
+    func addRecentSearch(searchWord: String) {
+        // TODO: set recent search storage limit
         searchWords.insert(searchWord, at: 0)
-        if searchWords.count > 5 {
-            searchWords.removeLast()
-        }
-        UserDefaults.standard.set(searchWords, forKey: "RecentSearch")
     }
 
-    func remove(at index: Int) {
+    func removeRecentSearch(at index: Int) {
         searchWords.remove(at: index)
         searchedDatas.removeAll()
+    }
+
+    func removeAllRecentSearch() {
+        searchWords.removeAll()
+    }
+
+    func setRecentSearch() {
         UserDefaults.standard.set(searchWords, forKey: "RecentSearch")
     }
 

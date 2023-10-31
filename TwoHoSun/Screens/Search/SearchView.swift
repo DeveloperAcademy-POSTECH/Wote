@@ -46,8 +46,8 @@ struct SearchView: View {
         .toolbar(dismissTabBar ? .visible : .hidden, for: .tabBar)
         .toolbarBackground(Color.background, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
-        .onTapGesture {
-            endTextEditing()
+        .onDisappear {
+            viewModel.setRecentSearch()
         }
     }
 }
@@ -84,6 +84,7 @@ extension SearchView {
             }
             .onSubmit {
                 // TODO: screen transition to result
+                viewModel.addRecentSearch(searchWord: searchText)
             }
             .tint(Color.placeholderGray)
     }
@@ -96,7 +97,7 @@ extension SearchView {
 
     private var deleteAllButton: some View {
         Button {
-            print("delete all recent search keyword")
+            viewModel.removeAllRecentSearch()
         } label: {
             Text("전체 삭제")
                 .font(.system(size: 14, weight: .medium))
@@ -104,7 +105,7 @@ extension SearchView {
         }
     }
 
-    private var recentSearchCell: some View {
+    private func recentSearchCell(word: String, index: Int) -> some View {
         HStack(spacing: 0) {
             ZStack {
                 Circle()
@@ -115,26 +116,30 @@ extension SearchView {
                     .font(.system(size: 18, weight: .light))
                     .foregroundStyle(Color.darkGray)
             }
-            Text("닌텐도 스위치")
+            Text(word)
                 .font(.system(size: 16))
                 .foregroundStyle(Color.woteWhite)
                 .padding(.leading, 16)
             Spacer()
-            Button {
-                print("delete button did tap")
-            } label: {
-                Image(systemName: "xmark")
-                    .font(.system(size: 14))
-                    .foregroundStyle(Color.darkGray)
-            }
+            deleteButton(index)
         }
         .padding(.vertical, 8)
     }
 
+    private func deleteButton(_ index: Int) -> some View {
+        Button {
+            viewModel.removeRecentSearch(at: index)
+        } label: {
+            Image(systemName: "xmark")
+                .font(.system(size: 14))
+                .foregroundStyle(Color.darkGray)
+        }
+    }
+
     private var recentSearchWords: some View {
         List {
-            ForEach(0..<3) { _ in
-                recentSearchCell
+            ForEach(viewModel.searchWords.indices, id: \.self) { index in
+                recentSearchCell(word: viewModel.searchWords[index],                    index: index)
                     .listRowInsets(EdgeInsets())
                     .listRowSeparator(.hidden)
                     .listRowBackground(Color.clear)
@@ -182,6 +187,7 @@ extension SearchView {
 //        .padding(.top, 16)
 //    }
 
+    // TODO: - change emptyResultView Layout
     private var emptyResultView: some View {
         VStack(spacing: 20) {
             Rectangle()
