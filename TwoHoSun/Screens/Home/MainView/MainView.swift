@@ -39,6 +39,7 @@ struct MainView: View {
     var body: some View {
         NavigationStack {
             ZStack(alignment: .bottomTrailing) {
+                Color.backGround
                 if viewModel.loading {
                     ProgressView("Loading")
                 } else {
