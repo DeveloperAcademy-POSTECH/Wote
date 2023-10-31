@@ -21,33 +21,18 @@ struct TwoHoSunApp: App {
     @State private var path: [Route] = []
 
     var body: some Scene {
-//        WindowGroup {
-//            if appState.hasValidToken {
-//                MainTabView()
-////                MyDetailView()
-//            } else {
-//                NavigationStack(path: $path) {
-//                    OnBoardingView(navigationPath: $path)
-////                    MyDetailView()
-//                }
-//            }
+        WindowGroup {
+            if appState.hasValidToken {
+                MainTabView()
+//                MyDetailView()
+            } else {
+                NavigationStack(path: $path) {
+                    OnBoardingView(navigationPath: $path)
+//                    MyDetailView()
+                }
+            }
 ////            ProfileSettingsView(navigationPath: $path, viewModel: ProfileSettingViewModel())
 //        }
-        WindowGroup {
-//            if appState.hasValidToken {
-//                MainTabView()
-////                MyDetailView()
-//            } else {
-//                NavigationStack(path: $path) {
-//                    OnBoardingView(navigationPath: $path)
-////                    MyDetailView()
-//                }
-//            }
-            NavigationStack(path: $path) {
-                OnBoardingView(navigationPath: $path)
-            }
-//            ProfileSettingsView(navigationPath: $path, viewModel: ProfileSettingViewModel())
-        }
     }
 }
 
