@@ -121,6 +121,9 @@ struct ProfileSettingsView: View {
         }
         .ignoresSafeArea(.all)
         .ignoresSafeArea(.keyboard, edges: .bottom)
+        .onTapGesture {
+            endTextEditing()
+        }
         //        .onAppear {
         //            UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]). = UIColor(Color.disableGray)
         //        }
@@ -268,7 +271,7 @@ extension ProfileSettingsView {
     private var checkDuplicatedIdButton: some View {
         Button {
             viewModel.postNickname()
-            if viewModel.nicknameValidationType == .valid { dismissKeyboard() }
+            if viewModel.nicknameValidationType == .valid { endTextEditing() }
         } label: {
             Text("중복확인")
                 .font(.system(size: 14, weight: .medium))
@@ -360,9 +363,9 @@ extension ProfileSettingsView {
 
     // MARK: - Custom Methods
 
-    private func dismissKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-    }
+//    private func dismissKeyboard() {
+//        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+//    }
 
     struct TitleTextStyle: ViewModifier {
         func body(content: Content) -> some View {
