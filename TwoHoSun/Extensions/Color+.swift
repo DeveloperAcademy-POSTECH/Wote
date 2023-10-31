@@ -10,10 +10,13 @@ import SwiftUI
 extension Color {
     static let fontGray = Color(UIColor(hexCode: "8F8F8F"))
     static let background = Color(UIColor(hexCode: "15151A"))
-    static let errorRed = Color(UIColor(hexCode: "F42BOF"))
-    static let blueStroke = Color(UIColor(hexCode: "434258"))
+    static let errorRed = Color(UIColor(hexCode: "F42B0F"))
+    static let grayStroke = Color(UIColor(hexCode: "434258"))
     static let disableGray = Color(UIColor(hexCode: "22242B"))
     static let checkColor = Color(UIColor(hexCode: "3BCC3C"))
     static let whiteGray = Color(UIColor(hexCode: "CCCCCC"))
     static let lightBlue = Color(UIColor(hexCode: "607DEA"))
+    static let deepBlue = Color(UIColor(hexCode: "0280F4"))
+    static let strokeBlue = Color(UIColor(hexCode: "5F5BFF"))
+    static let placeholderColor = Color(UIColor(hexCode: "B3AEBA"))
 }

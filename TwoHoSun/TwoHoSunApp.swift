@@ -22,15 +22,16 @@ struct TwoHoSunApp: App {
 
     var body: some Scene {
         WindowGroup {
-            if appState.hasValidToken {
-                MainTabView()
-//                MyDetailView()
-            } else {
-                NavigationStack(path: $path) {
-                    OnBoardingView(navigationPath: $path)
-//                    MyDetailView()
-                }
-            }
+//            if appState.hasValidToken {
+//                MainTabView()
+////                MyDetailView()
+//            } else {
+//                NavigationStack(path: $path) {
+//                    OnBoardingView(navigationPath: $path)
+////                    MyDetailView()
+//                }
+//            }
+            ProfileSettingsView(navigationPath: .constant([]), viewModel: ProfileSettingViewModel())
         }
     }
 }

@@ -17,7 +17,6 @@ final class ProfileSettingViewModel {
     var selectedSchoolInfo: SchoolInfoModel?
     var selectedGrade: String?    
     var nicknameValidationType = NicknameValidationType.none
-    var genderSelection = UserGender.boy
     var isNicknameDuplicated = false
     var isFormValid = true
     var model: ProfileSetting? 
@@ -28,13 +27,9 @@ final class ProfileSettingViewModel {
         return selectedSchoolInfo != nil
     }
 
-    var isGradeFilled: Bool {
-        return selectedGrade != nil
-    }
-
     var isAllInputValid: Bool {
         return nicknameValidationType == .valid
-                && isGradeFilled && isSchoolFilled
+                 && isSchoolFilled
     }
 
     private func isNicknameLengthValid(_ text: String) -> Bool {
@@ -74,13 +69,10 @@ final class ProfileSettingViewModel {
     }
     
     func setProfile() {
-        guard let school = selectedSchoolInfo?.school,
-              let grade = selectedGrade?.first else { return }
+        guard let school = selectedSchoolInfo?.school else { return }
         model = ProfileSetting(userProfileImage: "",
-                               userNickname: nickname, 
-                               userGender: genderSelection.rawValue,
-                               school: school,
-                               grade: Int(String(grade))!)
+                               userNickname: nickname,
+                               school: school)
         postProfileSetting()
     }
 

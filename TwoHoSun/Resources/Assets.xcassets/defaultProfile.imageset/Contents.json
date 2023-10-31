@@ -1,17 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "Frame@1x.png",
+      "filename" : "_defaultProfile-1.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Frame@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Frame@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
