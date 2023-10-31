@@ -68,7 +68,7 @@ struct MainView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Image("splash")
+                    Image("logo")
                         .resizable()
                         .frame(width: 120,height: 36)
                 }
