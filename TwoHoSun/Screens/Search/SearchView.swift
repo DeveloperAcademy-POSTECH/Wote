@@ -1,0 +1,210 @@
+//
+//  SearchView.swift
+//  TwoHoSun
+//
+//  Created by 관식 on 10/21/23.
+//
+
+import SwiftUI
+
+struct SearchView: View {
+    @Environment(\.dismiss) private var dismiss: DismissAction
+    @State private var searchText = ""
+    @State private var dismissTabBar: Bool = false
+    @State private var hasResult: Bool = false
+    private let viewModel = SearchViewModel()
+
+    var body: some View {
+        ZStack(alignment: .top) {
+            Color.background
+            VStack(spacing: 0) {
+                searchField
+                    .padding(.top, 20)
+                HStack {
+                    recentSearchLabel
+                    Spacer()
+                    deleteAllButton
+                }
+                .padding(.top, 32)
+                recentSearchWords
+                    .padding(.top, 16)
+            }
+            .padding(.horizontal, 16)
+        }
+        .ignoresSafeArea(edges: .bottom)
+        .navigationBarBackButtonHidden()
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                backButton
+            }
+            ToolbarItem(placement: .principal) {
+                Text("통합검색")
+                    .font(.system(size: 18, weight: .medium))
+                    .foregroundStyle(.white)
+            }
+        }
+        .toolbar(dismissTabBar ? .visible : .hidden, for: .tabBar)
+        .toolbarBackground(Color.background, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
+        .onTapGesture {
+            endTextEditing()
+        }
+    }
+}
+
+extension SearchView {
+    
+    private var backButton: some View {
+        Button {
+            dismissTabBar.toggle()
+            dismiss()
+        } label: {
+            HStack(spacing: 5) {
+                Image(systemName: "chevron.backward")
+                    .font(.system(size: 20, weight: .medium))
+                Text("소비고민")
+                    .font(.system(size: 16))
+            }
+            .foregroundStyle(Color.accentBlue)
+        }
+    }
+    
+    private var searchField: some View {
+        TextField("search",
+                  text: $searchText,
+                  prompt: Text("원하는 소비항목을 검색해보세요.")
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundStyle(Color.placeholderGray))
+            .font(.system(size: 16, weight: .medium))
+            .foregroundStyle(.white) // TODO: change text color when textField is active
+            .padding(EdgeInsets(top: 13, leading: 16, bottom: 12, trailing: 0))
+            .overlay {
+                RoundedRectangle(cornerRadius: 10)
+                    .strokeBorder(Color.darkBlue, lineWidth: 1)
+            }
+            .onSubmit {
+                // TODO: screen transition to result
+            }
+            .tint(Color.placeholderGray)
+    }
+
+    private var recentSearchLabel: some View {
+        Text("최근 검색")
+            .font(.system(size: 14, weight: .medium))
+            .foregroundStyle(.white)
+    }
+
+    private var deleteAllButton: some View {
+        Button {
+            print("delete all recent search keyword")
+        } label: {
+            Text("전체 삭제")
+                .font(.system(size: 14, weight: .medium))
+                .foregroundStyle(Color.darkGray)
+        }
+    }
+
+    private var recentSearchCell: some View {
+        HStack(spacing: 0) {
+            ZStack {
+                Circle()
+                    .strokeBorder(Color.purpleStroke, lineWidth: 1)
+                    .frame(width: 28, height: 28)
+                    .foregroundStyle(.clear)
+                Image(systemName: "clock.arrow.circlepath")
+                    .font(.system(size: 18, weight: .light))
+                    .foregroundStyle(Color.darkGray)
+            }
+            Text("닌텐도 스위치")
+                .font(.system(size: 16))
+                .foregroundStyle(Color.woteWhite)
+                .padding(.leading, 16)
+            Spacer()
+            Button {
+                print("delete button did tap")
+            } label: {
+                Image(systemName: "xmark")
+                    .font(.system(size: 14))
+                    .foregroundStyle(Color.darkGray)
+            }
+        }
+        .padding(.vertical, 8)
+    }
+
+    private var recentSearchWords: some View {
+        List {
+            ForEach(0..<3) { _ in
+                recentSearchCell
+                    .listRowInsets(EdgeInsets())
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Color.clear)
+            }
+        }
+        .listStyle(.plain)
+    }
+
+    // TODO: - set search result layout
+//    private var recentSearchView: some View {
+//        VStack(alignment: .leading, spacing: 16) {
+//            HStack {
+//                Text("최근 검색어")
+//                    .foregroundStyle(.gray)
+//                    .font(.system(size: 14))
+//                Spacer()
+//            }
+//            WrappingHStack(horizontalSpacing: 8) {
+//                ForEach(Array(zip(viewModel.searchWords.indices, viewModel.searchWords)), id: \.0) { index, word in
+//                    Button {
+////                        viewModel.searchWords.remove(at: index)
+////                        viewModel.searchedDatas.removeAll()
+//                        viewModel.remove(at: index)
+//                    } label: {
+//                        HStack(spacing: 5) {
+//                            Text(word)
+//                                .font(.system(size: 14))
+//                            Image(systemName: "xmark")
+//                                .font(.system(size: 12))
+//                        }
+//                        .foregroundStyle(.gray)
+//                        .fixedSize()
+//                        .frame(height: 28)
+//                        .padding(.horizontal, 10)
+//                        .background(
+//                            Capsule()
+//                                .stroke(Color.gray, lineWidth: 1)
+//                                .foregroundStyle(.white)
+//                        )
+//                    }
+//                }
+//            }
+//        }
+//        .padding(.horizontal, 14)
+//        .padding(.top, 16)
+//    }
+
+    private var emptyResultView: some View {
+        VStack(spacing: 20) {
+            Rectangle()
+                .frame(width: 90, height: 90)
+            Text("검색 결과가 없습니다.")
+                .font(.system(size: 20, weight: .medium))
+        }
+        .foregroundStyle(.gray)
+    }
+}
+
+extension UINavigationController: UIGestureRecognizerDelegate {
+    override open func viewDidLoad() {
+        super.viewDidLoad()
+        interactivePopGestureRecognizer?.delegate = self
+    }
+    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return viewControllers.count > 1
+    }
+}
+
+#Preview {
+    NavigationStack {
+        SearchView()
+    }
+}

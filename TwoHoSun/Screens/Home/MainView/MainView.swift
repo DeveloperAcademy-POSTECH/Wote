@@ -65,6 +65,7 @@ struct MainView: View {
                     }
                 }
             }
+            .navigationTitle("소비고민")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {

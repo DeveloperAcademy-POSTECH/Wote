@@ -25,4 +25,7 @@ extension Color {
     static let shadowBlue = Color(UIColor(hexCode: "5F5BFF", alpha: 0.15))
     static let infoGray = Color(UIColor(hexCode: "D0D0D0"))
     static let dividerGray = Color(UIColor(hexCode: "1E1E1E"))
+    static let darkGray = Color(UIColor(hexCode: "616161"))
+    static let purpleStroke = Color(UIColor(hexCode: "26263C"))
+    static let woteWhite = Color(UIColor(hexCode: "D9D9D9"))
 }
