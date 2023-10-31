@@ -9,28 +9,37 @@ import SwiftUI
 
 struct SchoolSearchView: View {
     @State private var searchWord = ""
-//    @State private var textFieldBackgroundColor = Color.clear
-    private let viewModel = SchoolSearchViewModel()
     @Binding var selectedSchoolInfo: SchoolInfoModel?
     @Environment(\.dismiss) var dismiss
     @State private var isSearchInitiated = false
 
+    private let viewModel = SchoolSearchViewModel()
+
     var body: some View {
         ZStack(alignment: .top) {
+            Color.background
             VStack(spacing: 0) {
                 schoolSearchField
+                    .padding(.horizontal, 16)
+                    .padding(.top, 20)
                 schoolSearchResultView
+                    .padding(.top, 22)
                 Spacer()
             }
         }
-        .navigationTitle("학교 검색")
+        .ignoresSafeArea(edges: /*@START_MENU_TOKEN@*/.bottom/*@END_MENU_TOKEN@*/)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 backButton
             }
+            ToolbarItem(placement: .principal) {
+                Text("학교 검색")
+                    .font(.system(size: 18, weight: .medium))
+            }
         }
-        .toolbarBackground(.white, for: .navigationBar)
+        .foregroundStyle(.white)
+        .toolbarBackground(Color.background, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
     }
 }
@@ -42,26 +51,27 @@ extension SchoolSearchView {
             dismiss()
         } label: {
             Image(systemName: "chevron.backward")
-                .font(.system(size: 20))
-                .accentColor(.gray)
+                .font(.system(size: 20, weight: .medium))
+                .foregroundStyle(Color.accentBlue)
         }
     }
 
     private var schoolSearchField: some View {
         TextField("",
                   text: $searchWord,
-                  prompt: Text("학교명 검색"))
-            .font(.system(size: 14, weight: .medium))
+                  prompt: Text("학교명 검색")
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundStyle(Color.placeholderGray))
+            .font(.system(size: 16, weight: .medium))
+            .tint(Color.placeholderGray)
             .frame(height: 44)
-            .padding(EdgeInsets(top: 0, leading: 17, bottom: 0, trailing: 0))
+            .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 0))
             .background(isSearchInitiated ? .gray : .clear)
             .overlay {
                 RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(.black, lineWidth: 1)
+                    .strokeBorder(Color.blueStroke, lineWidth: 1)
             }
             .clipShape(RoundedRectangle(cornerRadius: 10))
-            .padding(.horizontal, 26)
-            .padding(.vertical, 20)
             .onSubmit {
                 Task {
                     isSearchInitiated = true
@@ -142,10 +152,11 @@ extension SchoolSearchView {
                     .padding(.bottom, 5)
                 Text("예) 세원고, 세원고등학교")
                     .font(.system(size: 14, weight: .light))
+                    .foregroundStyle(Color.descriptionGray)
             }
             Spacer()
         }
-        .padding(.leading, 43)
+        .padding(.leading, 32)
     }
 
     @ViewBuilder
