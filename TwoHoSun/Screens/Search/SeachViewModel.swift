@@ -9,7 +9,6 @@ import Foundation
 
 @Observable
 final class SearchViewModel {
-    var searchedDatas = [PostModel]()
     var searchWords = [String]()
     var isFetching = false
     
@@ -30,7 +29,6 @@ final class SearchViewModel {
 
     func removeRecentSearch(at index: Int) {
         searchWords.remove(at: index)
-        searchedDatas.removeAll()
     }
 
     func removeAllRecentSearch() {
@@ -41,20 +39,21 @@ final class SearchViewModel {
         UserDefaults.standard.set(searchWords, forKey: "RecentSearch")
     }
 
+    // TODO: - fetching result data
     func fetchSearchedData(page: Int = 0, size: Int = 20, keyword: String) {
-        isFetching = true
-        APIManager.shared.requestAPI(
-            type: .getSearchResult(page: page, size: size, keyword: keyword)
-        ) { (response: GeneralResponse<[PostResponse]>) in
-            if response.status == 401 {
-                APIManager.shared.refreshAllTokens()
-                self.fetchSearchedData(keyword: keyword)
-            } else {
-                guard let data = response.data else { return }
-                let result = data.map { PostModel(from: $0) }
-                self.searchedDatas = result
-                self.isFetching = false
-            }
-        }
+//        isFetching = true
+//        APIManager.shared.requestAPI(
+//            type: .getSearchResult(page: page, size: size, keyword: keyword)
+//        ) { (response: GeneralResponse<[PostResponse]>) in
+//            if response.status == 401 {
+//                APIManager.shared.refreshAllTokens()
+//                self.fetchSearchedData(keyword: keyword)
+//            } else {
+//                guard let data = response.data else { return }
+//                let result = data.map { PostModel(from: $0) }
+//                self.searchedDatas = result
+//                self.isFetching = false
+//            }
+//        }
     }
 }

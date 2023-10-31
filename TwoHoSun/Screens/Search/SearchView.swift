@@ -85,6 +85,7 @@ extension SearchView {
             .onSubmit {
                 // TODO: screen transition to result
                 viewModel.addRecentSearch(searchWord: searchText)
+                searchText.removeAll()
             }
             .tint(Color.placeholderGray)
     }
