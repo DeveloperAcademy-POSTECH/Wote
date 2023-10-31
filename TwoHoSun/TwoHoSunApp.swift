@@ -23,7 +23,7 @@ struct TwoHoSunApp: App {
     var body: some Scene {
         WindowGroup {
 //            if appState.hasValidToken {
-                MainTabView()
+//                MainTabView()
 ////                MyDetailView()
 //            } else {
 //                NavigationStack(path: $path) {
@@ -31,7 +31,7 @@ struct TwoHoSunApp: App {
 ////                    MyDetailView()
 //                }
 //            }
-//            ProfileSettingsView(navigationPath: $path, viewModel: ProfileSettingViewModel())
+            ProfileSettingsView(navigationPath: $path, viewModel: ProfileSettingViewModel())
         }
     }
 }

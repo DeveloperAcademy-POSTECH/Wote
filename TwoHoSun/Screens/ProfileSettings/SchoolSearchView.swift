@@ -7,13 +7,57 @@
 
 import SwiftUI
 
+enum SchoolSearchTextFieldState {
+    case inactive, active, submitted
+
+    var placeholderColor: Color {
+        switch self {
+        case .submitted:
+            return Color.descriptionGray
+        default:
+            return Color.placeholderGray
+        }
+    }
+
+    var backgroundColor: Color {
+        switch self {
+        case .inactive:
+            return .clear
+        case .active:
+            return .activeBlack
+        case .submitted:
+            return .fixedGray
+        }
+    }
+
+    var foregroundColor: Color {
+        switch self {
+        case .submitted:
+            return Color.descriptionGray
+        default:
+            return Color.placeholderGray
+        }
+    }
+
+    var strokeColor: Color {
+        switch self {
+        case .inactive:
+            return Color.darkBlue
+        case .active:
+            return Color.darkBlueStroke
+        case .submitted:
+            return Color.clear
+        }
+    }
+}
+
 struct SchoolSearchView: View {
     @State private var searchWord = ""
     @Binding var selectedSchoolInfo: SchoolInfoModel?
     @Environment(\.dismiss) var dismiss
-    @State private var isSearchInitiated = false
-
+    @State private var textFieldState = SchoolSearchTextFieldState.inactive
     private let viewModel = SchoolSearchViewModel()
+    @FocusState private var isFocused: Bool
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -23,7 +67,6 @@ struct SchoolSearchView: View {
                     .padding(.horizontal, 16)
                     .padding(.top, 20)
                 schoolSearchResultView
-                    .padding(.top, 16)
                 Spacer()
             }
         }
@@ -61,27 +104,36 @@ extension SchoolSearchView {
                   text: $searchWord,
                   prompt: Text("학교명 검색")
                             .font(.system(size: 16, weight: .medium))
-                            .foregroundStyle(Color.placeholderGray))
+                            .foregroundStyle(textFieldState.placeholderColor))
+            .focused($isFocused)
             .font(.system(size: 16, weight: .medium))
-            .tint(Color.placeholderGray)
-            .frame(height: 44)
             .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 0))
-            .background(isSearchInitiated ? .gray : .clear)
-            .overlay {
-                RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(Color.blueStroke, lineWidth: 1)
-            }
-            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .frame(height: 44)
+            .background(textFieldState.backgroundColor)
+            .tint(Color.placeholderGray)
             .onSubmit {
                 Task {
-                    isSearchInitiated = true
+                    textFieldState = .submitted
                     try await viewModel.setSchoolData(searchWord: searchWord)
                 }
             }
-            .onTapGesture {
-                searchWord.removeAll()
-                viewModel.schools.removeAll()
-                isSearchInitiated = false
+            .onChange(of: isFocused) { _, isFocused in
+                if isFocused {
+                    textFieldState = .active
+                }
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .overlay {
+                if textFieldState == .active {
+                    RoundedRectangle(cornerRadius: 10)
+                        .strokeBorder(textFieldState.strokeColor, lineWidth: 1)
+                        .blur(radius: 3)
+                        .shadow(color: Color.shadowBlue, radius: 2)
+                }
+            }
+            .overlay {
+                RoundedRectangle(cornerRadius: 10)
+                    .strokeBorder(textFieldState.strokeColor, lineWidth: 1)
             }
     }
 
@@ -187,14 +239,17 @@ extension SchoolSearchView {
             ProgressView()
                 .padding(.top, 100)
         } else {
-            if viewModel.schools.isEmpty {
-                if isSearchInitiated {
+            switch textFieldState {
+            case .submitted:
+                if viewModel.schools.isEmpty {
                     emptyResultView
                 } else {
-                    searchDescriptionView
+                    searchedSchoolList
+                        .padding(.top, 16)
                 }
-            } else {
-                searchedSchoolList
+            default:
+                searchDescriptionView
+                    .padding(.top, 32)
             }
         }
     }
