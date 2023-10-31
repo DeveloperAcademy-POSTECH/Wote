@@ -15,6 +15,8 @@ enum Route {
 
 @main
 struct TwoHoSunApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     let appState = AppState()
     @State private var path: [Route] = []
 
