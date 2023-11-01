@@ -38,7 +38,7 @@ extension NotificationView {
                     notificationCell
                 }
                 Divider()
-                    .foregroundStyle(Color.divider)
+                    .foregroundStyle(Color.dividerGray)
                     .listRowBackground(Color.clear)
                 listHeader("이전 알림")
                 ForEach(0..<10) { _ in
