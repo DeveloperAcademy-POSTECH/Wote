@@ -36,11 +36,17 @@ struct MainVoteView: View {
     let viewModel: VoteContentViewModel
 
     var body: some View {
-        ZStack {
+        ZStack(alignment: .bottomTrailing) {
             Color.background
-            voteContentCell
-                .padding(.horizontal, 24)
-            Spacer()
+            VStack {
+                Spacer()
+                voteContentCell
+                    .padding(.horizontal, 24)
+                Spacer()
+            }
+            createVoteButton
+                .padding(.bottom, 21)
+                .padding(.trailing, 24)
         }
     }
 }
@@ -145,7 +151,7 @@ extension MainVoteView {
                     let voteButtonWidth = UIScreen.main.bounds.width - 48
                     Rectangle()
                         .frame(width: voteButtonWidth * voteRatio * 0.01, height: 48)
-                        .foregroundStyle(voteType == selectedType ? Color.accentBlue : Color.gray200)
+                        .foregroundStyle(voteType == selectedType ? Color.lightBlue : Color.gray200)
                 }
                 .clipShape(Capsule())
             HStack(spacing: 4) {
@@ -170,6 +176,24 @@ extension MainVoteView {
                 Image("icnCaretDown")
             }
             Spacer()
+        }
+    }
+
+    private var createVoteButton: some View {
+        NavigationLink {
+            Text("Write View")
+        } label: {
+            HStack(spacing: 2) {
+                Image(systemName: "plus")
+                    .font(.system(size: 14))
+                Text("투표만들기")
+                    .font(.system(size: 14, weight: .medium))
+            }
+            .foregroundStyle(.white)
+            .padding(.horizontal, 11)
+            .padding(.vertical, 12)
+            .background(Color.lightBlue)
+            .clipShape(Capsule())
         }
     }
 
