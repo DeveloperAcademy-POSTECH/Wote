@@ -13,8 +13,7 @@ final class SearchViewModel {
     var isFetching = false
     
     init() {
-        guard let recentSearch = UserDefaults.standard.array(forKey: "RecentSearch") as? [String] else { return }
-        searchWords = recentSearch
+        fetchRecentSearch()
     }
 
     func fetchRecentSearch() {
