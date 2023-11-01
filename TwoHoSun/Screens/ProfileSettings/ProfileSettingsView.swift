@@ -101,7 +101,7 @@ struct ProfileSettingsView: View {
                     .padding(.top, 46)
                 schoolInputView
                 nextButton
-                    .padding(.bottom, 12)
+
             }
             .padding(.horizontal, 16)
         }
@@ -110,20 +110,26 @@ struct ProfileSettingsView: View {
             endTextEditing()
         }
         .navigationBarBackButtonHidden()
-
-//        .ignoresSafeArea(.keyboard, edges: .bottom)
-
         .photosPicker(isPresented: $retryProfileImage, selection: $selectedPhoto)
         .fullScreenCover(isPresented: $isSchoolSearchSheetPresented) {
             NavigationView {
                 SchoolSearchView(selectedSchoolInfo: $viewModel.selectedSchoolInfo)
             }
         }
-        //        .onAppear {
-        //            UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]). = UIColor(Color.disableGray)
-        //        }
+        .customConfirmDialog(isPresented: $isProfileSheetShowed) {
+            Button("프로필 삭제하기", role: .destructive) {
+                selectedPhoto = nil
+                selectedImageData = nil
+                isProfileSheetShowed.toggle()
+            }
+            .frame(height: 42)
+            Divider()
+            Button("프로필 재설정하기") {
+                retryProfileImage = true
+            }
+            .frame(height: 42)
+        }
     }
-
 }
 
 extension ProfileSettingsView {
@@ -157,17 +163,18 @@ extension ProfileSettingsView {
 
     private var profileImage: some View {
         ZStack(alignment: .bottomTrailing) {
-            photoPickerView {
-                Image("defaultProfile")
-                    .resizable()
-                    .frame(width: 130, height: 130)
-            }
             if let selectedImageData,
                let uiImage = UIImage(data: selectedImageData) {
                 Image(uiImage: uiImage)
                     .resizable()
                     .frame(width: 130, height: 130)
                     .clipShape(Circle())
+            } else {
+                photoPickerView {
+                    Image("defaultProfile")
+                        .resizable()
+                        .frame(width: 130, height: 130)
+                }
             }
             selectProfileButton
         }
@@ -175,18 +182,6 @@ extension ProfileSettingsView {
             if selectedImageData != nil {
                 isProfileSheetShowed = true
             }
-        }
-        .confirmationDialog("프로필 설정", isPresented: $isProfileSheetShowed) {
-            VStack {
-                Button("프로필 삭제하기", role: .destructive) {
-                    selectedPhoto = nil
-                    selectedImageData = nil
-                }
-                Button("프로필 재설정") {
-                    retryProfileImage = true
-                }
-            }
-            //            .preferredColorScheme(UIColor(Color.disableGray))
         }
     }
 
@@ -296,6 +291,7 @@ extension ProfileSettingsView {
         .onTapGesture {
             isSchoolSearchSheetPresented = true
         }
+        
     }
 
     private var nextButton: some View {
@@ -309,16 +305,17 @@ extension ProfileSettingsView {
                 .background(viewModel.isAllInputValid ? Color.lightBlue : Color.disableGray)
                 .cornerRadius(10)
         }
+
         .disabled(viewModel.isAllInputValid ? false : true)
         .simultaneousGesture(
             TapGesture()
                 .onEnded {
-            guard viewModel.isAllInputValid else {
-                viewModel.setInvalidCondition()
-                return
-            }
-            viewModel.setProfile()
-        })
+                    guard viewModel.isAllInputValid else {
+                        viewModel.setInvalidCondition()
+                        return
+                    }
+                    viewModel.setProfile()
+                })
     }
 
     private func roundedIconTextField(for input: ProfileInputType, text: String?, isFilled: Bool) -> some View {
@@ -371,7 +368,6 @@ extension ProfileSettingsView {
                 .padding(.bottom, 8)
         }
     }
-
 }
 
 #Preview {
