@@ -12,7 +12,6 @@
 		AB4522562ADDDBC400B69F24 /* SchoolResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */; };
 		AB45225A2ADDDC9E00B69F24 /* SchoolSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522592ADDDC9E00B69F24 /* SchoolSearchViewModel.swift */; };
 		AB45225C2ADE665100B69F24 /* URLConst.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB45225B2ADE665100B69F24 /* URLConst.swift */; };
-		AB4522612ADE871900B69F24 /* Secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = AB4522602ADE871900B69F24 /* Secret.plist */; };
 		AB4D82692ADD7F4D00F35CCB /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4D82682ADD7F4D00F35CCB /* ProfileSettingsView.swift */; };
 		ABB71D642AE26EB100BE0671 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = ABB71D632AE26EB100BE0671 /* Kingfisher */; };
 		ABB71D6E2AE2754300BE0671 /* PostResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D6D2AE2754300BE0671 /* PostResponseModel.swift */; };
@@ -56,6 +55,7 @@
 		FD3205612ADD1F8100B0D5F6 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3205602ADD1F8100B0D5F6 /* MainView.swift */; };
 		FD3205682ADD5C0D00B0D5F6 /* TwoHoSunApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3205672ADD5C0D00B0D5F6 /* TwoHoSunApp.swift */; };
 		FD3646F52ADD8E2D0064DF94 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FD3646F42ADD8E2D0064DF94 /* Alamofire */; };
+		FD3C157A2AF26EF0008430D6 /* Secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = FD3C15792AF26EF0008430D6 /* Secret.plist */; };
 		FD4E75B62ADE9C20000C2277 /* ProfileSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4E75B52ADE9C20000C2277 /* ProfileSettingViewModel.swift */; };
 		FD6673372AE071550015007D /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6673362AE071550015007D /* APIManager.swift */; };
 		FD8D9F812ADC5FAD0072F4BA /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */; };
@@ -75,7 +75,6 @@
 		AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolResponseModel.swift; sourceTree = "<group>"; };
 		AB4522592ADDDC9E00B69F24 /* SchoolSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolSearchViewModel.swift; sourceTree = "<group>"; };
 		AB45225B2ADE665100B69F24 /* URLConst.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLConst.swift; sourceTree = "<group>"; };
-		AB4522602ADE871900B69F24 /* Secret.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Secret.plist; sourceTree = "<group>"; };
 		AB4D82682ADD7F4D00F35CCB /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
 		ABB71D6D2AE2754300BE0671 /* PostResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostResponseModel.swift; sourceTree = "<group>"; };
 		ABB71D712AE2756E00BE0671 /* VoteContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteContentView.swift; sourceTree = "<group>"; };
@@ -119,6 +118,7 @@
 		FD32055D2ADD16AC00B0D5F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FD3205602ADD1F8100B0D5F6 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		FD3205672ADD5C0D00B0D5F6 /* TwoHoSunApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoHoSunApp.swift; sourceTree = "<group>"; };
+		FD3C15792AF26EF0008430D6 /* Secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Secret.plist; path = ../../../../../Downloads/Secret.plist; sourceTree = "<group>"; };
 		FD4E75B52ADE9C20000C2277 /* ProfileSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingViewModel.swift; sourceTree = "<group>"; };
 		FD6673362AE071550015007D /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
@@ -323,7 +323,7 @@
 			children = (
 				FD132BF12ADBE8FB00F31AAF /* Assets.xcassets */,
 				AB45225B2ADE665100B69F24 /* URLConst.swift */,
-				AB4522602ADE871900B69F24 /* Secret.plist */,
+				FD3C15792AF26EF0008430D6 /* Secret.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -459,9 +459,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD3C157A2AF26EF0008430D6 /* Secret.plist in Resources */,
 				FDDB990C2ADC1BEC00B1163F /* .swiftlint.yml in Resources */,
 				FD132BF52ADBE8FB00F31AAF /* Preview Assets.xcassets in Resources */,
-				AB4522612ADE871900B69F24 /* Secret.plist in Resources */,
 				FD132BF22ADBE8FB00F31AAF /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

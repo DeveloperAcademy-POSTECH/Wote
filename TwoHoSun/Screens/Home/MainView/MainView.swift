@@ -10,6 +10,7 @@ import SwiftUI
 enum MainPathType {
     case toAll
     case ourSchool
+    case notification
 }
 
 struct MainView: View {
