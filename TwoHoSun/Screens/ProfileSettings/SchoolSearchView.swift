@@ -67,7 +67,7 @@ struct SchoolSearchView: View {
                     .padding(.horizontal, 16)
                 schoolSearchResultView
             }
-            .padding(.top, 109)
+            .padding(.top, 116)
         }
         .ignoresSafeArea(edges: .vertical)
         .navigationBarTitleDisplayMode(.inline)

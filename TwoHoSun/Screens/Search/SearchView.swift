@@ -135,7 +135,7 @@ extension SearchView {
     private var recentSearchWords: some View {
         List {
             ForEach(viewModel.searchWords.indices, id: \.self) { index in
-                recentSearchCell(word: viewModel.searchWords[index],                    index: index)
+                recentSearchCell(word: viewModel.searchWords[index], index: index)
                     .listRowInsets(EdgeInsets())
                     .listRowSeparator(.hidden)
                     .listRowBackground(Color.clear)
