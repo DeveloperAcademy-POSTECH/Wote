@@ -49,7 +49,7 @@ struct OnBoardingView : View {
             .navigationDestination(for: Route.self) { route in
                 switch route {
                 case .mainTabView:
-                    MainTabView()
+                    WoteTabView()
                 case .profileView:
                     ProfileSettingsView(navigationPath: $navigationPath, viewModel: ProfileSettingViewModel())
                 }

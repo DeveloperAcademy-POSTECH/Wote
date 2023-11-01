@@ -1,5 +1,5 @@
 //
-//  TabView.swift
+//  WoteTabType.swift
 //  TwoHoSun
 //
 //  Created by 235 on 10/18/23.
@@ -44,7 +44,7 @@ enum WoteTabType: Int, CaseIterable {
     }
 }
 
-struct MainTabView : View {
+struct WoteTabView: View {
     @State private var selection = WoteTabType.consider
 
     var body: some View {
@@ -79,5 +79,5 @@ struct MainTabView : View {
 }
 
 #Preview {
-    MainTabView()
+    WoteTabView()
 }
