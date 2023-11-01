@@ -22,13 +22,28 @@ struct DetailView : View {
 //    let viewModel: DetailViewModel
 //    let postId: Int
 
+    enum VoteType {
+        case agree, disagree
+        var title: String {
+            switch self {
+            case .agree:
+                return "추천"
+            case .disagree:
+                return "비추천"
+            }
+        }
+    }
     var body: some View {
         ZStack {
             Color.background
+                .ignoresSafeArea()
             ScrollView {
                 detailHeaderView
                 Divider()
                 detailCell
+                commentPreview
+                voteResultView(.agree, 0.47)
+                voteResultView(.disagree, 0.33)
                 //            if let postData = viewModel.detailPostData {
                 //                VoteContentView(postData: postData,
                 //                                isMainCell: false)
@@ -97,12 +112,13 @@ extension DetailView {
     private var detailHeaderView: some View {
         HStack {
             // TODO: 추후에 서버의 이미지와 연동
-            Image(systemName: "person")
+            Image("defaultProfile")
+                .resizable()
                 .frame(width: 32, height: 32)
                 .clipShape(Circle())
             Text( "일단써놈")
                 .font(.system(size: 16, weight: .medium))
-//                .foregroundStyle(Color.)
+                .foregroundStyle(Color.whiteGray)
             Text("님의 구매후기 받기")
                 .font(.system(size: 14))
             Spacer()
@@ -168,12 +184,56 @@ extension DetailView {
     }
     var commentPreview: some View {
         VStack {
-            Text("댓글")
-            HStack {
-                Image("default")
+            HStack(spacing: 4) {
+                Text("댓글")
+                    .foregroundStyle(Color.priceGray)
+                    .font(.system(size: 14, weight: .medium))
+//                if data가 있으면 {
+//                    Text("개")
+//                }
+                Spacer()
+            }
+            HStack(spacing: 7) {
+                Image("defaultProfile")
+                    .resizable()
+                    .frame(width: 24, height: 24)
+                Text("댓글 추가...")
+                    .foregroundStyle(Color.priceGray)
+                    .frame(width: 258)
+                    .padding(.horizontal, 12)
             }
         }
+        .padding(.vertical, 12)
+        .padding(.horizontal, 14)
+        .background(Color.lightGray)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
     }
+
+    func voteResultView(_ type: VoteType, _ percent: Double) -> some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("구매 \(type.title) 의견")
+                .font(.system(size: 14))
+                .foregroundStyle(Color.lightGray)
+            HStack(spacing: 8) {
+                //TODO: viewModel로 부터 데이터를 받아서 어떤 유형인지 여기에 알려주면 댐.
+                Text("🌳"+SpendTItleType.ecoWarrior.title)
+                Text("💸"+SpendTItleType.flexer.title)
+
+            }
+            Text("투표 후 구매 \(type.title) 의견을 선택한 유형을 확인해봐요!")
+                .font(.system(size: 16, weight: .medium))
+            ProgressView(value: percent)
+                .tint(Color.lightBlue)
+                .background(Color.darkGray2)
+        }
+    }
+//    struct VoteResultProgressStyle: ProgressViewStyle {
+//        func makeBody(configuration: Configuration) -> some View {
+//            ProgressView(configuration)
+//                .tint(Color.lightBlue)
+//                .background(Color.darkGray2)
+//        }
+//    }
 //    var commentView : some View {
 //        ScrollViewReader { proxy in
 //            LazyVStack(alignment: .leading, spacing: 24) {
@@ -331,5 +391,7 @@ struct AlertCustomToggle: ToggleStyle {
 }
 
 #Preview {
-     DetailView()
+    NavigationStack {
+        DetailView()
+    }
 }
