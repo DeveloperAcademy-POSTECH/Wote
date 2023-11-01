@@ -8,54 +8,45 @@
 import SwiftUI
 
 struct NotificationView: View {
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @State private var dismiss: Bool = false
+    
     var body: some View {
         ZStack {
-            Color.white
+            Color.background
             notificationList
         }
-        .navigationBarBackButtonHidden()
         .navigationTitle("알림")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(Color.background, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
         .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                backButton
+            ToolbarItem(placement: .principal) {
+                Text("알림")
+                    .foregroundStyle(.white)
             }
         }
-        .toolbarBackground(.white, for: .navigationBar)
-        .toolbar(dismiss ? .visible : .hidden, for: .tabBar)
-
     }
 }
 
 extension NotificationView {
-
-    private var backButton: some View {
-        Button {
-            dismiss.toggle()
-            self.presentationMode.wrappedValue.dismiss()
-        } label: {
-            Image(systemName: "chevron.backward")
-                .font(.system(size: 20))
-                .foregroundStyle(.gray)
-        }
-    }
-
     private var notificationList: some View {
         List {
             listHeader("오늘 알림")
+                .listRowBackground(Color.clear)
             ForEach(0..<3) { _ in
                 notificationCell
             }
             .listRowInsets(EdgeInsets())
+            .listRowBackground(Color.clear)
             .listRowSeparator(.hidden)
             Divider()
+                .listRowBackground(Color.clear)
             listHeader("이전 알림")
+                .listRowBackground(Color.clear)
             ForEach(0..<10) { _ in
                 notificationCellWithPostIcon
             }
             .listRowInsets(EdgeInsets())
+            .listRowBackground(Color.clear)
             .listRowSeparator(.hidden)
         }
         .listStyle(.plain)

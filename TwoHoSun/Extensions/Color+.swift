@@ -16,4 +16,5 @@ extension Color {
     static let checkColor = Color(UIColor(hexCode: "3BCC3C"))
     static let whiteGray = Color(UIColor(hexCode: "CCCCCC"))
     static let lightBlue = Color(UIColor(hexCode: "607DEA"))
+    static let lightBlue2 = Color(UIColor(hexCode: "5F7CEA"))
 }

@@ -10,6 +10,7 @@ import SwiftUI
 enum MainPathType {
     case toAll
     case ourSchool
+    case notification
 }
 
 struct MainView: View {
@@ -39,7 +40,7 @@ struct MainView: View {
     var body: some View {
         NavigationStack {
             ZStack(alignment: .bottomTrailing) {
-                Color.backGround
+                Color.background
                 if viewModel.loading {
                     ProgressView("Loading")
                 } else {
@@ -65,6 +66,7 @@ struct MainView: View {
                     }
                 }
             }
+            .navigationTitle("소비고민")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -93,6 +95,7 @@ struct MainView: View {
                 viewModel.loading = true
             }
         }
+        .tint(Color.lightBlue2)
     }
 
 }
