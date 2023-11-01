@@ -39,7 +39,6 @@ extension NotificationView {
                 }
                 Divider()
                     .foregroundStyle(Color.dividerGray)
-                    .listRowBackground(Color.clear)
                 listHeader("이전 알림")
                 ForEach(0..<10) { _ in
                     notificationCell
@@ -55,8 +54,6 @@ extension NotificationView {
             .font(.system(size: 14, weight: .medium))
             .foregroundStyle(.white)
             .padding(.top, 16)
-            .listRowSeparator(.hidden)
-            .listRowBackground(Color.clear)
     }
 
     private var notificationCell: some View {
