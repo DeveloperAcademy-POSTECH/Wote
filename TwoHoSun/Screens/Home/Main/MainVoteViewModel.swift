@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable
-final class VoteContentViewModel {
+final class MainVoteViewModel {
     // TODO: - fetch data
 //    let postData: PostModel
     var isVoted: Bool = true

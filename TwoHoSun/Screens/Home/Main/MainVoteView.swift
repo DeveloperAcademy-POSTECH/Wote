@@ -33,7 +33,7 @@ struct MainVoteView: View {
 
     @State private var isVoted = false
     @State private var selectedVoteType = UserVoteType.agree
-    let viewModel: VoteContentViewModel
+    let viewModel: MainVoteViewModel
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
