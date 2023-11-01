@@ -24,9 +24,8 @@ struct HighSchoolContent: Codable, Hashable {
     let seq: String
 
     func convertToSchoolInfoModel() -> SchoolInfoModel {
-        let formattedRegion = regionMapping[region] ?? region
         return SchoolInfoModel(school: SchoolModel(schoolName: schoolName,
-                                                   schoolRegion: formattedRegion,
+                                                   schoolRegion: region,
                                                    schoolType: SchoolDataType.highSchool.schoolType),
                                schoolAddress: adres)
     }
@@ -47,9 +46,8 @@ struct MiddleSchoolContent: Codable, Hashable {
     let seq: String
 
     func convertToSchoolInfoModel() -> SchoolInfoModel {
-        let formattedRegion = regionMapping[region] ?? region
         return SchoolInfoModel(school: SchoolModel(schoolName: schoolName,
-                                                   schoolRegion: formattedRegion,
+                                                   schoolRegion: region,
                                                    schoolType: SchoolDataType.middleSchool.schoolType),
                                schoolAddress: adres)
     }

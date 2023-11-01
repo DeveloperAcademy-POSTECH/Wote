@@ -150,7 +150,7 @@ extension DetailView {
                     .font(.system(size: 14))
                     .foregroundStyle(Color.white)
                     .frame(width: 94, height: 29)
-                    .background(Color.darkGray)
+                    .background(Color.darkGray2)
                     .clipShape(RoundedRectangle(cornerRadius: 34))
                 Spacer()
                 Button {

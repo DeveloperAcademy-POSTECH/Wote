@@ -145,9 +145,7 @@ class APIManager {
                         "schoolName": model.school.schoolName,
                         "schoolRegion": model.school.schoolRegion,
                         "schoolType": model.school.schoolType
-                    ],
-                    "userGender": model.userGender,
-                    "grade": model.grade
+                    ]
                 ]
             case .refreshToken:
                 return [

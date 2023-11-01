@@ -33,24 +33,24 @@ enum NicknameValidationType {
         case .none:
             return .clear
         case .valid:
-            return .blue
+            return Color.deepBlue
         default:
-            return .red
+            return Color.errorRed
         }
     }
 
     var textfieldBorderColor: Color {
         switch self {
         case .none, .valid:
-            return .black
+            return Color.grayStroke
         default:
-            return .red
+            return Color.errorRed
         }
     }
 }
 
 enum ProfileInputType {
-    case nickname, school, grade
+    case nickname, school
 
     var iconName: String {
         switch self {
@@ -58,8 +58,6 @@ enum ProfileInputType {
             return ""
         case .school:
             return "magnifyingglass"
-        case .grade:
-            return "chevron.down"
         }
     }
 
@@ -69,8 +67,6 @@ enum ProfileInputType {
             return "한/영 10자 이내(특수문자 불가)"
         case .school:
             return "학교를 검색해주세요."
-        case .grade:
-            return "학년을 선택해주세요."
         }
     }
 
@@ -80,8 +76,6 @@ enum ProfileInputType {
             return "닉네임을 입력해주세요."
         case .school:
             return "학교를 입력해주세요."
-        case .grade:
-            return "학년을 선택해주세요."
         }
     }
 }
@@ -89,45 +83,49 @@ enum ProfileInputType {
 struct ProfileSettingsView: View {
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var selectedImageData: Data?
-    @State private var isSchoolSearchSheetPresented = false
     @State private var isProfileSheetShowed = false
+    @State private var retryProfileImage = false
     @Binding var navigationPath: [Route]
     @Bindable var viewModel: ProfileSettingViewModel
 
     var body: some View {
         ZStack {
-            Color.white
+            Color.background
             VStack(spacing: 0) {
-                ScrollView {
-                    VStack(spacing: 0) {
-                        titleLabel
-                            .padding(.leading, 26)
-                            .padding(.top, 70)
-                        profileImage
-                            .padding(.top, 48)
-                        VStack(spacing: 30) {
-                            nicknameInputView
-                            genderPicker
-                            schoolInputView
-                            gradeInputView
-                        }
-                        .padding(.top, 46)
-                        .padding(.horizontal, 26)
-                        .padding(.bottom, 70)
-                    }
-                }
+                titleLabel
+                    .padding(.top, 70)
+                profileImage
+                    .padding(.top, 60)
+                nicknameInputView
+                    .padding(.top, 46)
+                schoolInputView
                 nextButton
-                    .padding(.bottom, 12)
+
             }
-            .scrollIndicators(.hidden)
-            .fullScreenCover(isPresented: $isSchoolSearchSheetPresented) {
-                NavigationView {
-                    SchoolSearchView(selectedSchoolInfo: $viewModel.selectedSchoolInfo)
-                }
+            .padding(.horizontal, 16)
+        }
+        .ignoresSafeArea(.all)
+        .onTapGesture {
+            endTextEditing()
+        }
+        .navigationBarBackButtonHidden()
+        .photosPicker(isPresented: $retryProfileImage, selection: $selectedPhoto)
+        .customConfirmDialog(isPresented: $isProfileSheetShowed) {
+            Button("프로필 삭제하기", role: .destructive) {
+                selectedPhoto = nil
+                selectedImageData = nil
+                isProfileSheetShowed.toggle()
             }
+            .frame(height: 42)
+            Divider()
+            Button("프로필 재설정하기") {
+                retryProfileImage = true
+            }
+            .frame(height: 42)
+            .navigationTitle("프로필 설정")
+            .toolbar(.hidden, for: .navigationBar)
             .navigationBarBackButtonHidden()
         }
-        .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 }
 
@@ -136,98 +134,110 @@ extension ProfileSettingsView {
     // MARK: - UI Components
 
     private var titleLabel: some View {
-        HStack {
-            Text("Vote 프로필")
-                .font(.system(size: 32, weight: .bold)) +
-            Text("을\n설정해 주세요.")
-                .font(.system(size: 32, weight: .medium))
+        HStack(spacing: 7) {
+            VStack(alignment: .leading, spacing: 9) {
+                Image("logo")
+                    .resizable()
+                    .frame(width: 86, height: 28)
+                Text("설정해")
+                    .font(.system(size: 32, weight: .medium))
+                    .foregroundStyle(Color.white)
+            }
+            VStack(alignment: .leading) {
+                Text("프로필")
+                    .font(.system(size: 32, weight: .bold))
+                    .foregroundStyle(Color.white) +
+                Text("을")
+                    .font(.system(size: 32, weight: .medium))
+                    .foregroundStyle(Color.white)
+                Text("주세요.")
+                    .font(.system(size: 32, weight: .medium))
+                    .foregroundStyle(Color.white)
+            }
             Spacer()
         }
     }
 
     private var profileImage: some View {
         ZStack(alignment: .bottomTrailing) {
-            photoPickerView {
-                Circle()
-                    .frame(width: 130, height: 130)
-                    .foregroundStyle(.gray)
-            }
             if let selectedImageData,
                let uiImage = UIImage(data: selectedImageData) {
                 Image(uiImage: uiImage)
                     .resizable()
                     .frame(width: 130, height: 130)
                     .clipShape(Circle())
+            } else {
+                photoPickerView {
+                    Image("defaultProfile")
+                        .resizable()
+                        .frame(width: 130, height: 130)
+                }
             }
             selectProfileButton
         }
         .onTapGesture {
-            if let selectedImageData = selectedImageData { 
+            if selectedImageData != nil {
                 isProfileSheetShowed = true
-            }
-        }
-        .confirmationDialog("프로필 설정", isPresented: $isProfileSheetShowed) {
-            Button("프로필 삭제하기", role: .destructive) {
-                selectedPhoto = nil
-                selectedImageData = nil
-            }
-            Button("프로필 재설정") {
-                
             }
         }
     }
 
     private var selectProfileButton: some View {
-        photoPickerView {
             ZStack {
                 Circle()
-                    .frame(width: 40, height: 40)
-                    .foregroundStyle(.black)
-                Image(systemName: "camera")
+                    .frame(width: 34, height: 34)
+                    .foregroundStyle(Color.lightBlue)
+                Image(systemName: "plus")
                     .font(.system(size: 20))
                     .foregroundStyle(.white)
             }
-        }
-
     }
 
     @ViewBuilder
-       func photoPickerView<Content: View>(@ViewBuilder content: () -> Content) -> some View {
-           PhotosPicker(selection: $selectedPhoto,
-                        matching: .images,
-                        photoLibrary: .shared()) {
-               content()
-                   .onChange(of: selectedPhoto) { _, newValue in
-                       PHPhotoLibrary.requestAuthorization { status in
-                           guard status == .authorized else { return }
-
-                           Task {
-                               if let data = try? await newValue?.loadTransferable(type: Data.self) {
-                                   selectedImageData = data
-                               }
-                           }
-                       }
-                   }
-           }
-       }
+    func photoPickerView<Content: View>(@ViewBuilder content: () -> Content) -> some View {
+        PhotosPicker(selection: $selectedPhoto,
+                     matching: .images,
+                     photoLibrary: .shared()) {
+            content()
+                .onChange(of: selectedPhoto) { _, newValue in
+                    PHPhotoLibrary.requestAuthorization { status in
+                        guard status == .authorized else { return }
+                        Task {
+                            if let data = try? await newValue?.loadTransferable(type: Data.self) {
+                                selectedImageData = data
+                            }
+                        }
+                    }
+                }
+        }
+    }
 
     private var nicknameInputView: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("닉네임")
-                .font(.system(size: 16, weight: .medium))
-                .padding(.bottom, 8)
+                .modifier(TitleTextStyle())
             HStack(spacing: 10) {
                 HStack {
                     TextField("",
                               text: $viewModel.nickname,
                               prompt: Text(ProfileInputType.nickname.placeholder)
-                        .font(.system(size: 12)))
+                        .font(.system(size: 12))
+                        .foregroundStyle(Color.placeholderGray))
+                    .foregroundStyle(Color.white)
                     .frame(height: 44)
                     .padding(EdgeInsets(top: 0, leading: 17, bottom: 0, trailing: 0))
                 }
                 .overlay {
-                    RoundedRectangle(cornerRadius: 10)
-                        .strokeBorder(viewModel.nicknameValidationType.textfieldBorderColor, lineWidth: 1)
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .strokeBorder(viewModel.nicknameValidationType.textfieldBorderColor, lineWidth: 1)
+                        if (viewModel.nicknameValidationType == .none || viewModel.nicknameValidationType == .valid) {
+                            RoundedRectangle(cornerRadius: 10)
+                                .strokeBorder(viewModel.nicknameValidationType.textfieldBorderColor, lineWidth: 1)
+                                .shadow(color: Color.strokeBlue.opacity(0.15), radius: 2)
+                                .blur(radius: 3)
+                        }
+                    }
                 }
                 .onChange(of: viewModel.nickname) { _, newValue in
                     viewModel.checkNicknameValidation(newValue)
@@ -240,93 +250,39 @@ extension ProfileSettingsView {
                     .padding(.top, 6)
             }
         }
+        .padding(.bottom, viewModel.nicknameValidationType != .none ? 28 : 48)
     }
 
     private var checkDuplicatedIdButton: some View {
         Button {
             viewModel.postNickname()
-            if viewModel.nicknameValidationType == .valid { dismissKeyboard() }
+            if viewModel.nicknameValidationType == .valid { endTextEditing()
+            }
         } label: {
             Text("중복확인")
-                .font(.system(size: 14))
+                .font(.system(size: 14, weight: .medium))
                 .foregroundStyle(.white)
-                .frame(width: 100, height: 44)
-                .background(viewModel.isDuplicateButtonEnabled() ? .black : .gray)
+                .frame(width: 103, height: 44)
+                .background(Color.disableGray)
                 .cornerRadius(10)
         }
-        .disabled(viewModel.isDuplicateButtonEnabled() ? false : true)
-    }
+        .disabled(viewModel.nicknameValidationType == .length)
 
-    private var genderPicker: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("성별")
-                .font(.system(size: 16, weight: .medium))
-            HStack(spacing: 0) {
-                ForEach(UserGender.allCases, id: \.self) { gender in
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(viewModel.genderSelection == gender ? .blue : .clear)
-                        Text(gender.rawValue + "자")
-                            .font(.system(size: 14))
-                            .foregroundColor(viewModel.genderSelection == gender ? .white : .black)
-                    }
-                    .onTapGesture {
-                        withAnimation(.easeOut) {
-                            viewModel.genderSelection = gender
-                        }
-                    }
-                }
-            }
-            .frame(height: 44)
-            .overlay {
-                RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(.black, lineWidth: 1)
-            }
-        }
     }
 
     private var schoolInputView: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("학교")
-                .font(.system(size: 16, weight: .medium))
+        VStack(alignment: .leading, spacing: 0) {
+            Text("우리 학교")
+                .modifier(TitleTextStyle())
             roundedIconTextField(for: .school,
                                  text: viewModel.selectedSchoolInfo?.school.schoolName,
                                  isFilled: viewModel.isSchoolFilled)
             if !viewModel.isFormValid && !viewModel.isSchoolFilled {
                 validationAlertMessage(for: .school, isValid: viewModel.isSchoolFilled)
+                    .padding(.top, 6)
             }
         }
-        .onTapGesture {
-            isSchoolSearchSheetPresented = true
-        }
-    }
-
-    private var gradeInputView: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("학년")
-                .font(.system(size: 16))
-            gradeMenu
-            if !viewModel.isFormValid && !viewModel.isGradeFilled {
-                validationAlertMessage(for: .grade, isValid: viewModel.isGradeFilled)
-            }
-        }
-    }
-
-    private var gradeMenu: some View {
-        Menu {
-            ForEach(1..<4) { grade in
-                Button {
-                    viewModel.selectedGrade = "\(grade)학년"
-                } label: {
-                    Text("\(grade)학년")
-                }
-            }
-        } label: {
-            roundedIconTextField(for: .grade, 
-                                 text: viewModel.selectedGrade,
-                                 isFilled: viewModel.isGradeFilled)
-        }
-        .accentColor(.black)
+        .padding(.bottom, viewModel.isFormValid ? 124 : 104)
     }
 
     private var nextButton: some View {
@@ -337,42 +293,47 @@ extension ProfileSettingsView {
                 .font(.system(size: 20, weight: .semibold))
                 .foregroundStyle(.white)
                 .frame(width: 361, height: 52)
-                .background(viewModel.isAllInputValid ? .blue : .gray)
+                .background(viewModel.isAllInputValid ? Color.lightBlue : Color.disableGray)
                 .cornerRadius(10)
         }
-        .simultaneousGesture(TapGesture().onEnded {
-            guard viewModel.isAllInputValid else {
-                viewModel.setInvalidCondition()
-                return
-            }
-            viewModel.setProfile()
-        })
+
+        .disabled(viewModel.isAllInputValid ? false : true)
+        .simultaneousGesture(
+            TapGesture()
+                .onEnded {
+                    guard viewModel.isAllInputValid else {
+                        viewModel.setInvalidCondition()
+                        return
+                    }
+                    viewModel.setProfile()
+                })
     }
 
     private func roundedIconTextField(for input: ProfileInputType, text: String?, isFilled: Bool) -> some View {
         VStack(spacing: 10) {
             HStack(spacing: 0) {
                 Text(text ?? input.placeholder)
-                    .font(.system(size: 12))
-                    .foregroundColor(text != nil ? .black : .gray)
-                    .frame(height: 44)
+                    .font(.system(size: 14))
+                    .foregroundColor(text != nil ? .white : Color.placeholderGray)
+                    .frame(height: 45)
                     .padding(.leading, 17)
                 Spacer()
                 Image(systemName: input.iconName)
                     .font(.system(size: 16))
-                    .padding(.trailing, 18)
+                    .foregroundStyle(Color.placeholderGray)
+                    .padding(.trailing, 12)
             }
             .frame(maxWidth: .infinity)
             .overlay {
                 RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(!isFilled && !viewModel.isFormValid ? .red : .black, lineWidth: 1)
+                    .strokeBorder(!isFilled && !viewModel.isFormValid ? Color.errorRed : Color.grayStroke, lineWidth: 1)
             }
         }
     }
 
     private func nicknameValidationAlertMessage(for input: NicknameValidationType) -> some View {
         HStack(spacing: 8) {
-            Image(systemName: "light.beacon.max")
+            Image(systemName: viewModel.nicknameValidationType == .valid ?  "checkmark.circle.fill" : "light.beacon.max")
             Text(input.alertMessage)
             Spacer()
         }
@@ -387,12 +348,19 @@ extension ProfileSettingsView {
             Spacer()
         }
         .font(.system(size: 12))
-        .foregroundStyle(.red)
+        .foregroundStyle(Color.errorRed)
     }
 
-    // MARK: - Custom Methods
-    
-    private func dismissKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    struct TitleTextStyle: ViewModifier {
+        func body(content: Content) -> some View {
+            content
+                .font(.system(size: 16, weight: .medium))
+                .foregroundStyle(Color.white)
+                .padding(.bottom, 8)
+        }
     }
+}
+
+#Preview {
+    ProfileSettingsView(navigationPath: .constant([]), viewModel: ProfileSettingViewModel())
 }
