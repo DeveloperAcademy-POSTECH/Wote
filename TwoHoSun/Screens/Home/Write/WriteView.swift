@@ -9,7 +9,6 @@ import PhotosUI
 import SwiftUI
 
 struct WriteView: View {
-    @Environment(\.dismiss) var dismiss
     @State private var placeholderText = "욕설,비방,광고 등 소비 고민과 관련없는 내용은 통보 없이 삭제될 수 있습니다."
     @State private var isRegisterButtonDidTap = false
     @State private var selectedPhoto: PhotosPickerItem?
@@ -17,67 +16,56 @@ struct WriteView: View {
     @State private var isTagTextFieldShowed = false
     @Binding var isWriteViewPresented: Bool
     @Bindable var viewModel: WriteViewModel
-
+    
     var body: some View {
-        VStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 0) {
-                    titleView
-                        .padding(.top, 24)
-                    addImageView
-                        .padding(.top, 32)
-                    contentView
-                        .padding(.top, 32)
-                        .padding(.bottom, 20)
+        ZStack {
+            Color.background
+            VStack {
+                ScrollView {
+                    VStack(alignment: .leading) {
+                        titleView
+                        addImageView
+                        contentView
+                    }
                 }
-                .padding(.horizontal, 26)
+                voteRegisterButton
             }
-            voteRegisterButton
-                .padding(.bottom, 12)
-        }
-        .scrollIndicators(.hidden)
-        .navigationTitle("소비고민 등록")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                backButton
+            .scrollIndicators(.hidden)
+            .toolbarBackground(Color.background, for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("투표만들기")
+                        .foregroundStyle(.white)
+                        .font(.system(size: 18, weight: .medium))
+                }
             }
-        }
-        .toolbarBackground(.white, for: .navigationBar)
-        .ignoresSafeArea(.keyboard)
-        .onTapGesture {
-            dismissKeyboard()
+            .ignoresSafeArea(.keyboard)
+            .onTapGesture {
+                dismissKeyboard()
+            }
         }
     }
 }
 
 extension WriteView {
-
-    private var backButton: some View {
-        Button {
-            dismiss()
-        } label: {
-            Image(systemName: "chevron.backward")
-                .font(.system(size: 20))
-                .foregroundStyle(.gray)
-        }
-    }
-
     private var titleView: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            headerLabel("제목을 입력해주세요. ", "(필수)")
+        VStack(alignment: .leading) {
+            headerLabel("제목을 입력해주세요. ", "(필수)", essential: true)
                 .padding(.bottom, 12)
             HStack {
                 TextField("",
                           text: $viewModel.title,
                           prompt:
-                            Text("한/영 15자 이내(물품)")
-                                .font(.system(size: 14)))
+                            Text("예) 아이폰, 맥북 에어 사고싶은데")
+                    .font(.system(size: 14))
+                    .foregroundStyle(Color.placeholderGray)
+                )
                 .frame(height: 44)
-                .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 0))
+                .padding(.horizontal, 16)
                 .overlay {
                     RoundedRectangle(cornerRadius: 10)
-                        .strokeBorder(.gray, lineWidth: 1)
+                        .strokeBorder(Color.darkBlue, lineWidth: 1)
                 }
                 categoryMenu
             }
@@ -93,7 +81,7 @@ extension WriteView {
             }
         }
     }
-
+    
     private var categoryMenu: some View {
         Menu {
             ForEach(PostCategoryType.allCases, id: \.self) { postCategory in
@@ -104,33 +92,33 @@ extension WriteView {
                 }
             }
         } label: {
-            HStack(spacing: 9) {
+            HStack(spacing: 18) {
                 Text(viewModel.postCategoryType.title)
                     .font(.system(size: 14, weight: .semibold))
-                    .foregroundStyle(.gray)
+                    .foregroundStyle(.white)
                     .frame(height: 44)
-                    .padding(.leading, 16)
                 Button {
-
+                    
                 } label: {
                     Image(systemName: "chevron.down")
                         .font(.system(size: 16))
-                        .foregroundStyle(.gray)
-                        .padding(.trailing, 12 )
+                        .foregroundStyle(Color.placeholderGray)
                 }
             }
-            .overlay {
+            .padding(.leading, 16)
+            .padding(.trailing, 12)
+            .background {
                 RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(.gray, lineWidth: 1)
+                    .foregroundStyle(Color.disableGray)
             }
         }
-
+        
     }
     
     private var addImageView: some View {
         ZStack {
             VStack(alignment: .leading, spacing: 0) {
-                headerLabel("고민하는 상품 사진을 등록해 주세요. ", "(최대 4개)")
+                headerLabel("고민하는 상품 사진을 등록해 주세요. ", "(최대 4개)", essential: false)
                     .padding(.bottom, 12)
                 imageView
                 addImageButton
@@ -139,7 +127,7 @@ extension WriteView {
             }
         }
     }
-
+    
     @ViewBuilder
     private var imageView: some View {
         if let selectedImageData,
@@ -156,7 +144,7 @@ extension WriteView {
             }
         }
     }
-
+    
     private var removeImageButton: some View {
         Button {
             selectedPhoto = nil
@@ -167,7 +155,7 @@ extension WriteView {
                 .foregroundStyle(.black)
         }
     }
-
+    
     private var addImageButton: some View {
         PhotosPicker(selection: $selectedPhoto,
                      matching: .images,
@@ -190,7 +178,7 @@ extension WriteView {
             .onChange(of: selectedPhoto) { _, newValue in
                 PHPhotoLibrary.requestAuthorization { status in
                     guard status == .authorized else { return }
-
+                    
                     Task {
                         if let data = try? await newValue?.loadTransferable(type: Data.self) {
                             selectedImageData = data
@@ -200,15 +188,15 @@ extension WriteView {
             }
         }
     }
-
+    
     private var addLinkButton: some View {
         TextField("",
                   text: $viewModel.externalURL,
                   prompt:
                     Text("링크 주소 입력하기")
-                        .font(.system(size: 14, weight: .medium)) +
-                    Text("(선택)")
-                        .font(.system(size: 12, weight: .medium)))
+            .font(.system(size: 14, weight: .medium)) +
+                  Text("(선택)")
+            .font(.system(size: 12, weight: .medium)))
         .frame(height: 44)
         .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 0))
         .overlay {
@@ -216,14 +204,14 @@ extension WriteView {
                 .strokeBorder(.gray, lineWidth: 1)
         }
     }
-
+    
     private var contentView: some View {
         VStack(alignment: .leading, spacing: 12) {
-            headerLabel("내용을 작성해 주세요. ", "(선택)")
+            headerLabel("내용을 작성해 주세요. ", "(선택)", essential: false)
             textView
         }
     }
-
+    
     private var textView: some View {
         ZStack(alignment: .bottomTrailing) {
             if viewModel.content.isEmpty {
@@ -246,7 +234,7 @@ extension WriteView {
             dismissKeyboard()
         }
     }
-
+    
     private var contentTextCountView: some View {
         Text("\(viewModel.content.count) ")
             .font(.system(size: 12, weight: .semibold))
@@ -255,7 +243,7 @@ extension WriteView {
             .font(.system(size: 12, weight: .semibold))
             .foregroundStyle(.gray)
     }
-
+    
     private var voteRegisterButton: some View {
         Button {
             isRegisterButtonDidTap = true
@@ -273,15 +261,16 @@ extension WriteView {
                 .cornerRadius(10)
         }
     }
-
-    private func headerLabel(_ title: String, _ description: String) -> some View {
+    
+    private func headerLabel(_ title: String, _ description: String, essential: Bool) -> some View {
         Text(title)
-            .font(.system(size: 16, weight: .semibold)) +
-        Text(description)
-            .font(.system(size: 12, weight: .medium))
-            .foregroundStyle(.gray)
+            .font(.system(size: 16, weight: .medium))
+            .foregroundStyle(.white)
+        + Text(description)
+            .font(.system(size: 12, weight: .semibold))
+            .foregroundStyle(essential ? .red : Color.subGray3)
     }
-
+    
     private func dismissKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
