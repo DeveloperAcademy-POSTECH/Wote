@@ -82,7 +82,7 @@ struct WoteTabView: View {
                 }
 
                 ToolbarItem(placement: .topBarTrailing) {
-                    HStack {
+                    HStack(spacing: 0) {
                         notificationButton
                         searchButton
                     }
@@ -100,7 +100,7 @@ extension WoteTabView {
     private func tabDestinationView(for tab: WoteTabType) -> some View {
         switch tab {
         case .consider:
-            MainVoteView()
+            MainVoteView(viewModel: VoteContentViewModel())
         case .review:
             Text("소비후기")
         case .myPage:

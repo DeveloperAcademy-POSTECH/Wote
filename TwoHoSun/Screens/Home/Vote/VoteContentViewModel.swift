@@ -9,17 +9,18 @@ import Foundation
 
 @Observable
 final class VoteContentViewModel {
-    let postData: PostModel
-    var isVoted: Bool
-    var agreeCount: Int
-    var disagreeCount: Int
+    // TODO: - fetch data
+//    let postData: PostModel
+    var isVoted: Bool = true
+    var agreeCount: Int = 33
+    var disagreeCount: Int = 62
 
-    init(postData: PostModel) {
-        self.postData = postData
-        self.agreeCount = postData.voteCount.agreeCount
-        self.disagreeCount = postData.voteCount.disagreeCount
-        isVoted = postData.voted ? true : false
-    }
+//    init(postData: PostModel) {
+//        self.postData = postData
+//        self.agreeCount = postData.voteCount.agreeCount
+//        self.disagreeCount = postData.voteCount.disagreeCount
+//        isVoted = postData.voted ? true : false
+//    }
 
     var totalCount: Int {
         return agreeCount + disagreeCount
@@ -34,18 +35,18 @@ final class VoteContentViewModel {
         return 100 - buyCountRatio
     }
 
-    func postVoteCreate(_ voteType: String) {
-        APIManager.shared.requestAPI(type: .postVoteCreate(postId: postData.postId, param: voteType)) { (response: GeneralResponse<VoteCounts>) in
-            if response.status == 401 {
-                APIManager.shared.refreshAllTokens()
-                self.postVoteCreate(voteType)
-            } else {
-                guard let data = response.data else {return}
-                self.isVoted = true
-                self.agreeCount = data.agreeCount
-                self.disagreeCount = data.disagreeCount
-                print("Vote Completed!")
-            }
-        }
-    }
+//    func postVoteCreate(_ voteType: String) {
+//        APIManager.shared.requestAPI(type: .postVoteCreate(postId: postData.postId, param: voteType)) { (response: GeneralResponse<VoteCounts>) in
+//            if response.status == 401 {
+//                APIManager.shared.refreshAllTokens()
+//                self.postVoteCreate(voteType)
+//            } else {
+//                guard let data = response.data else {return}
+//                self.isVoted = true
+//                self.agreeCount = data.agreeCount
+//                self.disagreeCount = data.disagreeCount
+//                print("Vote Completed!")
+//            }
+//        }
+//    }
 }

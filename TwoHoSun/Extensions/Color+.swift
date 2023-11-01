@@ -29,5 +29,10 @@ extension Color {
     static let purpleStroke = Color(UIColor(hexCode: "26263C"))
     static let woteWhite = Color(UIColor(hexCode: "D9D9D9"))
     static let activeBlack = Color(UIColor(hexCode: "09090D"))
+
+    static let gray100 = Color(UIColor(hexCode: "8894B0"))
+    static let gray200 = Color(UIColor(hexCode: "2C2F37"))
+    static let blue100 = Color(UIColor(hexCode: "293351"))
+    static let black100 = Color(UIColor(hexCode: "1B1D22"))
 }
 

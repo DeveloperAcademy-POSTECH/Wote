@@ -27,14 +27,14 @@ struct DetailView : View {
             ScrollView {
                 detailHeaderView
                 Divider()
-                if let postData = viewModel.detailPostData {
-                    VoteContentView(postData: postData,
-                                    isMainCell: false)
-                } else {
-                    ProgressView()
-                        .padding(.top, 100)
-                }
-                commentView
+//                if let postData = viewModel.detailPostData {
+//                    VoteContentView(postData: postData,
+//                                    isMainCell: false)
+//                } else {
+//                    ProgressView()
+//                        .padding(.top, 100)
+//                }
+//                commentView
             }
             forReplayButton
             commentInputView

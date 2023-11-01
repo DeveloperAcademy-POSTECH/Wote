@@ -13,7 +13,7 @@ struct MainCellView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             voteHeaderView
-            VoteContentView(postData: postData)
+//            VoteContentView(postData: postData)
         }
     }
 }
