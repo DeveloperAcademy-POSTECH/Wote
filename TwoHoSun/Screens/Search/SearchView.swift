@@ -32,37 +32,18 @@ struct SearchView: View {
             .padding(.top, 116)
         }
         .ignoresSafeArea(edges: .vertical)
-        .navigationBarBackButtonHidden()
         .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                backButton
-            }
             ToolbarItem(placement: .principal) {
                 Text("통합검색")
                     .font(.system(size: 18, weight: .medium))
                     .foregroundStyle(.white)
             }
         }
-        .toolbar(dismissTabBar ? .visible : .hidden, for: .tabBar)
+        .toolbar(.hidden, for: .tabBar)
     }
 }
 
 extension SearchView {
-    
-    private var backButton: some View {
-        Button {
-            dismissTabBar.toggle()
-            dismiss()
-        } label: {
-            HStack(spacing: 5) {
-                Image(systemName: "chevron.backward")
-                    .font(.system(size: 20, weight: .medium))
-                Text("소비고민")
-                    .font(.system(size: 16))
-            }
-            .foregroundStyle(Color.accentBlue)
-        }
-    }
     
     private var searchField: some View {
         TextField("search",
@@ -192,16 +173,6 @@ extension SearchView {
                 .font(.system(size: 20, weight: .medium))
         }
         .foregroundStyle(.gray)
-    }
-}
-
-extension UINavigationController: UIGestureRecognizerDelegate {
-    override open func viewDidLoad() {
-        super.viewDidLoad()
-        interactivePopGestureRecognizer?.delegate = self
-    }
-    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return viewControllers.count > 1
     }
 }
 

@@ -86,7 +86,7 @@ struct MainView: View {
                 }
             }
             .onAppear {
-                viewModel.getPosts(30,first: true)
+                viewModel.getPosts(30, first: true)
             }
             .onDisappear {
                 touchPlus = false
