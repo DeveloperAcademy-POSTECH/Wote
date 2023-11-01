@@ -156,6 +156,15 @@
 			path = ProfileSettings;
 			sourceTree = "<group>";
 		};
+		AB637DE42AF184A0004ADB64 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				FDDEC15A2AE3EABA004509EA /* SearchView.swift */,
+				ABBEEAF42AE64F7900F6D918 /* SeachViewModel.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
 		ABB71D6B2AE2752C00BE0671 /* Vote */ = {
 			isa = PBXGroup;
 			children = (
@@ -249,8 +258,6 @@
 				FDF2D6CB2AE5D0AC0027EE8F /* MainCellView.swift */,
 				C7E459D22AE01FDE00ECD008 /* MainViewModel.swift */,
 				ABB71D7B2AE2B3F100BE0671 /* NotificationView.swift */,
-				FDDEC15A2AE3EABA004509EA /* SearchView.swift */,
-				ABBEEAF42AE64F7900F6D918 /* SeachViewModel.swift */,
 			);
 			path = MainView;
 			sourceTree = "<group>";
@@ -340,6 +347,7 @@
 				FD32055F2ADD1F6B00B0D5F6 /* Home */,
 				FD1DEBA92ADC212500588CE6 /* Component */,
 				AB4D82662ADD7F3700F35CCB /* ProfileSettings */,
+				AB637DE42AF184A0004ADB64 /* Search */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -672,7 +680,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"TwoHoSun/Preview Content\"";
-				DEVELOPMENT_TEAM = 2ZA4H6HG9F;
+				DEVELOPMENT_TEAM = Q535Z3S7Z3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TwoHoSun/Info.plist;
@@ -707,7 +715,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"TwoHoSun/Preview Content\"";
-				DEVELOPMENT_TEAM = 2ZA4H6HG9F;
+				DEVELOPMENT_TEAM = Q535Z3S7Z3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TwoHoSun/Info.plist;

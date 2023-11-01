@@ -65,6 +65,7 @@ struct MainView: View {
                     }
                 }
             }
+            .navigationTitle("소비고민")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -85,7 +86,7 @@ struct MainView: View {
                 }
             }
             .onAppear {
-                viewModel.getPosts(30,first: true)
+                viewModel.getPosts(30, first: true)
             }
             .onDisappear {
                 touchPlus = false
@@ -93,6 +94,7 @@ struct MainView: View {
                 viewModel.loading = true
             }
         }
+        .tint(Color.accentBlue)
     }
 
 }
