@@ -17,4 +17,7 @@ extension Color {
     static let whiteGray = Color(UIColor(hexCode: "CCCCCC"))
     static let lightBlue = Color(UIColor(hexCode: "607DEA"))
     static let subGray1 = Color(UIColor(hexCode: "808080"))
+    static let subGray2 = Color(UIColor(hexCode: "D9D9D9"))
+    static let subGray3 = Color(UIColor(hexCode: "9E9E9E"))
+    static let subGray4 = Color(UIColor(hexCode: "C5C5C5"))
 }
