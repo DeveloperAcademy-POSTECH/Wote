@@ -38,17 +38,14 @@ struct MainVoteView: View {
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             Color.background
-            VStack {
-                Spacer()
-                voteContentCell
-                    .padding(.horizontal, 24)
-                Spacer()
-            }
+                .ignoresSafeArea()
+            votePagingView
             createVoteButton
                 .padding(.bottom, 21)
                 .padding(.trailing, 24)
         }
     }
+
 }
 
 extension MainVoteView {
@@ -59,8 +56,25 @@ extension MainVoteView {
             .foregroundStyle(.white)
     }
 
+    private var votePagingView: some View {
+        GeometryReader { proxy in
+            TabView {
+                ForEach(0..<5) { _ in
+                    voteContentCell
+                }
+                .rotationEffect(.degrees(-90))
+                .frame(width: proxy.size.width, height: proxy.size.height)
+            }
+            .frame(width: proxy.size.height, height: proxy.size.width)
+            .rotationEffect(.degrees(90), anchor: .topLeading)
+            .offset(x: proxy.size.width)
+            .tabViewStyle(.page(indexDisplayMode: .never))
+        }
+    }
+
     private var voteContentCell: some View {
         VStack(alignment: .leading, spacing: 6) {
+            Spacer()
             HStack(spacing: 8) {
                 Image("imgDefaultProfile")
                     .frame(width: 32, height: 32)
@@ -92,7 +106,10 @@ extension MainVoteView {
             detailResultButton
                 .padding(.bottom, 18)
             nextVoteButton
+            Spacer()
         }
+        .frame(maxHeight: .infinity)
+        .padding(.horizontal, 24)
     }
 
     private var detailResultButton: some View {
@@ -135,6 +152,7 @@ extension MainVoteView {
                     Image(systemName: voteType.iconImage)
                     Text(voteType.title)
                 }
+                .font(.system(size: 16))
                 .foregroundStyle(.white)
                 .padding(.leading, 20)
             }
@@ -162,6 +180,7 @@ extension MainVoteView {
                             "%.0f" : "%.1f", voteRatio) + "%")
             }
             .foregroundStyle(.white)
+            .font(.system(size: 16))
             .padding(.horizontal, 20)
         }
         .frame(height: 48)

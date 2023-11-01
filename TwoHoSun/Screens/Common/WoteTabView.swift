@@ -72,6 +72,7 @@ struct WoteTabView: View {
                         }
                 }
             }
+            .tint(Color.accentBlue)
             .onAppear {
                 UITabBar.appearance().unselectedItemTintColor = .gray100
                 UITabBar.appearance().backgroundColor = .background
