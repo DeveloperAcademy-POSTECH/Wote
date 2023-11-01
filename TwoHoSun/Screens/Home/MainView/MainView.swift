@@ -70,7 +70,7 @@ struct MainView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Image("splash")
+                    Image("logo")
                         .resizable()
                         .frame(width: 120,height: 36)
                 }
@@ -87,7 +87,7 @@ struct MainView: View {
                 }
             }
             .onAppear {
-                viewModel.getPosts(30,first: true)
+                viewModel.getPosts(30, first: true)
             }
             .onDisappear {
                 touchPlus = false
@@ -95,7 +95,7 @@ struct MainView: View {
                 viewModel.loading = true
             }
         }
-        .tint(Color.lightBlue2)
+        .tint(Color.accentBlue)
     }
 
 }

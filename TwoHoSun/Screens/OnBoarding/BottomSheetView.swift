@@ -12,16 +12,29 @@ enum AgreeType: Int {
     static func fromRawValue(_ rawValue: Int) -> AgreeType? {
         return AgreeType(rawValue: rawValue)
     }
+    
     var text: String {
         switch self {
         case .needs:
-            return "서비스 이용약관, 개인정보 수집 및 이용 동의 (필수)"
+            return "서비스 이용약관, 개인정보 수집 및 이용 동의"
         case .personalData:
-            return "개인정보 수집 및 이용 동의 (선택)"
+            return "개인정보 수집 및 이용 동의"
         case .marketing:
-            return "마케팅 정보 수신 동의 (선택)"
+            return "마케팅 정보 수신 동의"
         }
     }
+    
+    var isRequired: Bool {
+        switch self {
+        case .needs:
+            return true
+        case .personalData:
+            return false
+        case .marketing:
+            return false
+        }
+    }
+    
     var nextPage: some View {
         switch self {
         case .needs:
@@ -44,36 +57,39 @@ struct BottomSheetView: View {
     }
 
     var body: some View {
-        VStack {
-            ZStack {
-                Text("약관 동의")
-                    .font(Font.system(size: 18, weight: .bold))
-                HStack {
-                    Button(action: {
-                        dismiss()
-                    }, label: {
-                        Image(systemName: "xmark")
-                            .foregroundStyle(Color.gray)
-                    })
-                    Spacer()
+        ZStack {
+            Color.disableGray
+            VStack(spacing: 24) {
+                ZStack {
+                    Text("약관 동의")
+                        .font(.system(size: 20, weight: .bold))
+                    HStack {
+                        Button(action: {
+                            dismiss()
+                        }, label: {
+                            Image(systemName: "xmark")
+                                .font(.system(size: 20))
+                        })
+                        Spacer()
+                    }
                 }
-            }
-
-            VStack(alignment: .leading, spacing: 18) {
+                .foregroundStyle(.white)
                 allCheckBoxView
-                    .padding(.bottom, 8)
-                    .padding(.top, 50)
+                    .padding(.vertical, 8)
                 ForEach(0..<3) { index in
                     if let agreeType = AgreeType.fromRawValue(index) {
                         CheckBoxView(checked: $checked[index], agreeType: agreeType)
                     }
                 }
+                .padding(.horizontal, 12)
+                Spacer()
+                nextButtonView
             }
-            nextButtonView
-                .padding(.top, 42)
+            .padding(.top, 56)
+            .padding(.bottom, 46)
+            .padding(.horizontal, 16)
         }
-        .padding(.top, 23)
-        .padding(.horizontal, 15)
+        .ignoresSafeArea()
         .alert(isPresented: $showAlert) {
             Alert(title: Text("이용약관에 동의를 해주세요"), dismissButton: .default(Text("확인")))
         }
@@ -84,32 +100,38 @@ struct BottomSheetView: View {
         var agreeType: AgreeType
 
         var body: some View {
-            VStack {
+            VStack(alignment: .leading, spacing: 6) {
                 HStack {
-                    HStack {
-                        Image(systemName: checked ? "checkmark.square.fill" : "square")
-                            .foregroundColor(checked ? Color(UIColor.black) : Color.gray)
+                    HStack(spacing: 4) {
+                        Image(systemName: checked ? "checkmark.square" : "square")
+                            .foregroundStyle(checked ? Color.checkColor : Color.whiteGray)
                             .contentShape(Rectangle())
                         Text(agreeType.text)
+                            .foregroundStyle(.white)
+                            .font(.system(size: 14))
                             .lineLimit(1)
-                            .font(Font.system(size: 14))
-                    }.onTapGesture {
+                            .padding(.leading, 4)
+                        Text(agreeType.isRequired ? "(필수)" : "(선택)")
+                            .foregroundStyle(agreeType.isRequired ? .red : Color.subGray4)
+                            .font(.system(size: 14))
+                    }
+                    .onTapGesture {
                         self.checked.toggle()
                     }
                     Spacer()
                     NavigationLink(destination: agreeType.nextPage, label: {
                         Image(systemName: "chevron.right")
-                            .resizable()
-                            .frame(width: 12, height: 19)
+                            .font(.system(size: 16))
+                            .foregroundStyle(Color.subGray3)
                     })
-                    .padding(.trailing, 13)
                 }
-                .padding(.leading, 10)
                 if agreeType.rawValue == 2 {
-                    Text("마케팅 정보는 문자, E-mail, Push알림으로 받을 수 있으면 동의 여부는 알림설정에서 확인 가능합니다.")
-                        .font(Font.system(size: 10))
-                        .padding(.leading, 37)
-                        .padding(.trailing, 85)
+                    Text("마케팅 정보는 문자, E-mail, Push알림으로 받을 수 있으면\n동의 여부는 알림설정에서 확인 가능합니다.")
+                        .font(.system(size: 10, weight: .medium))
+                        .foregroundStyle(Color.subGray3)
+                        .fixedSize()
+                        .lineSpacing(2)
+                        .padding(.leading, 28)
                 }
             }
         }
@@ -127,32 +149,39 @@ extension BottomSheetView {
             }
         }, label: {
             Text("동의하고 계속하기")
-                .font(Font.system(size: 16))
-                .frame(width: 336, height: 54)
-                .background(Color.gray)
+                .font(.system(size: 18, weight: .semibold))
+                .foregroundStyle(checked[0] ? .white : .black)
+                .frame(maxWidth: .infinity)
+                .frame(height: 54)
+                .background(checked[0] ? Color.lightBlue : Color.whiteGray)
         })
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .buttonStyle(PlainButtonStyle())
     }
 
     private var allCheckBoxView: some View {
-        HStack {
-            Image(systemName: allChecked ? "checkmark.square.fill" : "square")
-                .resizable()
-                .frame(width: 28, height: 28)
-                .foregroundColor(allChecked ? Color(UIColor.black) : Color.gray)
-
-            Text("전체 동의")
-                .font(Font.system(size: 18, weight: .bold)) + Text(" (선택 포함)").font(Font.system(size: 14))
-        }
-        .onTapGesture {
+        Button {
             checked = Array(repeating: !allChecked, count: checked.count)
+        } label: {
+            ZStack {
+                RoundedRectangle(cornerRadius: 5)
+                    .stroke(Color.subGray1, lineWidth: 1)
+                HStack(spacing: 4) {
+                    Image(systemName: allChecked ? "checkmark.square" : "square")
+                        .font(.system(size: 24))
+                        .foregroundColor(allChecked ? Color.checkColor : Color.whiteGray)
+                    Text("전체 동의")
+                        .font(.system(size: 18, weight: .bold))
+                        .foregroundStyle(.white)
+                    Text("(선택 포함)")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundStyle(Color.subGray2)
+                    Spacer()
+                }
+                .padding(.leading, 12)
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 58, alignment: .leading)
         }
-        .padding(.leading, 13)
-        .frame(width: 361, height: 58, alignment: .leading)
-        .overlay(
-            RoundedRectangle(cornerRadius: 5)
-                .stroke(Color.gray, lineWidth: 1)
-        )
     }
 }
