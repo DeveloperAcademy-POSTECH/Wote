@@ -24,4 +24,7 @@ extension UIColor {
                   blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
                   alpha: alpha)
     }
+
+    static let background = UIColor(hexCode: "15151A")
+    static let gray100 = UIColor(hexCode: "717071")
 }

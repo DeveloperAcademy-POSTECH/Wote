@@ -30,3 +30,4 @@ extension Color {
     static let woteWhite = Color(UIColor(hexCode: "D9D9D9"))
     static let activeBlack = Color(UIColor(hexCode: "09090D"))
 }
+
