@@ -95,10 +95,12 @@ struct DetailView : View {
                     dismiss()
                 } label: {
                     Label("소비고민", systemImage: "chevron.backward")
+                        .foregroundStyle(Color.accentBlue)
                 }
             }
             ToolbarItem(placement: .principal) {
                 Text("상세보기")
+                    .foregroundStyle(Color.white)
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {}, label: {
