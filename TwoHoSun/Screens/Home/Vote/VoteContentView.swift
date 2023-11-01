@@ -53,8 +53,7 @@ struct VoteContentView: View {
 
             if !isMainCell {
                 if(postData.mine) {
-                    ChartView(voteInfoList: postData.voteInfoList)
-                        .padding(.top, 20)
+
                 }
             }
             buttonsBar
@@ -64,7 +63,7 @@ struct VoteContentView: View {
         }
         .navigationDestination(
              isPresented: $goNext) {
-                 DetailView(viewModel: DetailViewModel(postId: postData.postId),postId: postData.postId)
+//                 DetailView(viewModel: DetailViewModel(postId: postData.postId),postId: postData.postId)
                   Text("")
                       .hidden()
              }
@@ -97,7 +96,7 @@ extension VoteContentView {
             Spacer()
             if isMainCell {
                 NavigationLink {
-                    DetailView(viewModel: DetailViewModel(postId: postData.postId), postId: postData.postId)
+//                    DetailView(viewModel: DetailViewModel(postId: postData.postId), postId: postData.postId)
                 } label: {
                     Image(systemName: "chevron.right")
                         .font(.system(size: 16))
