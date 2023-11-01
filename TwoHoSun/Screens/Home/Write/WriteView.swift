@@ -50,10 +50,10 @@ struct WriteView: View {
 
 extension WriteView {
     private var titleView: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 4) {
             headerLabel("제목을 입력해주세요. ", "(필수)", essential: true)
-                .padding(.bottom, 12)
-            HStack {
+                .padding(.bottom, 4)
+            HStack(spacing: 6) {
                 TextField("",
                           text: $viewModel.title,
                           prompt:
@@ -69,12 +69,10 @@ extension WriteView {
                 }
                 categoryMenu
             }
-            .padding(.bottom, 4)
             if !viewModel.isTitleValid && isRegisterButtonDidTap {
                 HStack(spacing: 8) {
                     Image(systemName: "light.beacon.max")
-                    Text("제목 입력은 필수입니다.")
-                    Spacer()
+                    Text("제목을 입력해주세요.")
                 }
                 .font(.system(size: 12))
                 .foregroundStyle(.red)
@@ -116,15 +114,10 @@ extension WriteView {
     }
     
     private var addImageView: some View {
-        ZStack {
-            VStack(alignment: .leading, spacing: 0) {
-                headerLabel("고민하는 상품 사진을 등록해 주세요. ", "(최대 4개)", essential: false)
-                    .padding(.bottom, 12)
-                imageView
-                addImageButton
-                    .padding(.bottom, 10)
-                addLinkButton
-            }
+        VStack(alignment: .leading) {
+            headerLabel("고민하는 상품의 사진을 등록해 주세요. ", "(선택)", essential: false)
+            imageView
+            addImageButton
         }
     }
     
@@ -161,19 +154,17 @@ extension WriteView {
                      matching: .images,
                      photoLibrary: .shared()) {
             HStack(spacing: 7) {
-                Spacer()
                 Image(systemName: "plus")
                     .font(.system(size: 16))
                 Text("상품 이미지")
                     .font(.system(size: 14, weight: .medium))
-                Spacer()
             }
-            .padding(.vertical, 14)
             .frame(maxWidth: .infinity)
-            .foregroundStyle(.gray)
+            .frame(height: 44)
+            .foregroundStyle(Color.lightBlue)
             .overlay {
-                RoundedRectangle(cornerRadius: 5)
-                    .strokeBorder(.gray, lineWidth: 1)
+                RoundedRectangle(cornerRadius: 10)
+                    .strokeBorder(Color.darkBlue, lineWidth: 1)
             }
             .onChange(of: selectedPhoto) { _, newValue in
                 PHPhotoLibrary.requestAuthorization { status in
