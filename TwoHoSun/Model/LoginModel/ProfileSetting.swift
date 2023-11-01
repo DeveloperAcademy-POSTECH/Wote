@@ -10,9 +10,7 @@ import Foundation
 struct ProfileSetting: Codable {
     var userProfileImage: String
     var userNickname: String
-    var userGender: String
     var school: SchoolModel
-    var grade: Int
 }
 
 enum UserGender: String, CaseIterable {
