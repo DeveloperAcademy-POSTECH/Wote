@@ -296,7 +296,6 @@ extension ProfileSettingsView {
                 }
             }
         }
-
     }
 
     private var gradeInputView: some View {

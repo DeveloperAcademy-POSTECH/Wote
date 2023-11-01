@@ -40,30 +40,30 @@ struct MainView: View {
         NavigationStack {
             ZStack(alignment: .bottomTrailing) {
                 Color.background
-                if viewModel.loading {
-                    ProgressView("Loading")
-                } else {
-                    if viewModel.datalist.isEmpty {
-                        emptyView
-                    } else {
-                        ScrollView {
-                            LazyVStack {
-                                filterBar
-                                ForEach(viewModel.datalist) { data in
-                                    MainCellView(postData: data)
-                                        .onAppear {
-                                            guard let index = viewModel.datalist.firstIndex(where: {$0.id == data.id}) else {return}
-                                            if index % 10 == 0 && !viewModel.lastPage {
-                                                viewModel.getPosts()
-                                            }
-                                        }
-                                }
-                            }
-                        }
-                        .scrollIndicators(.hidden)
-                        floatingButton
-                    }
-                }
+//                if viewModel.loading {
+//                    ProgressView("Loading")
+//                } else {
+//                    if viewModel.datalist.isEmpty {
+//                        emptyView
+//                    } else {
+//                        ScrollView {
+//                            LazyVStack {
+//                                filterBar
+//                                ForEach(viewModel.datalist) { data in
+//                                    MainCellView(postData: data)
+//                                        .onAppear {
+//                                            guard let index = viewModel.datalist.firstIndex(where: {$0.id == data.id}) else {return}
+//                                            if index % 10 == 0 && !viewModel.lastPage {
+//                                                viewModel.getPosts()
+//                                            }
+//                                        }
+//                                }
+//                            }
+//                        }
+//                        .scrollIndicators(.hidden)
+//                        floatingButton
+//                    }
+//                }
             }
             .navigationTitle("소비고민")
             .navigationBarTitleDisplayMode(.inline)
