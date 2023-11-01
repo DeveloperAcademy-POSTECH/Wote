@@ -83,7 +83,6 @@ enum ProfileInputType {
 struct ProfileSettingsView: View {
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var selectedImageData: Data?
-    @State private var isSchoolSearchSheetPresented = false
     @State private var isProfileSheetShowed = false
     @State private var retryProfileImage = false
     @Binding var navigationPath: [Route]
@@ -128,6 +127,9 @@ struct ProfileSettingsView: View {
                 retryProfileImage = true
             }
             .frame(height: 42)
+            .navigationTitle("프로필 설정")
+            .toolbar(.hidden, for: .navigationBar)
+            .navigationBarBackButtonHidden()
         }
     }
 }
@@ -289,7 +291,6 @@ extension ProfileSettingsView {
         .onTapGesture {
             isSchoolSearchSheetPresented = true
         }
-        
     }
 
     private var nextButton: some View {
