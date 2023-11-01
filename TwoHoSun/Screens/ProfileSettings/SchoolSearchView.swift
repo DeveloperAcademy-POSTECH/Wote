@@ -7,128 +7,177 @@
 
 import SwiftUI
 
+enum SchoolSearchTextFieldState {
+    case inactive, active, submitted
+
+    var placeholderColor: Color {
+        switch self {
+        case .submitted:
+            return Color.descriptionGray
+        default:
+            return Color.placeholderGray
+        }
+    }
+
+    var backgroundColor: Color {
+        switch self {
+        case .inactive:
+            return .clear
+        case .active:
+            return .activeBlack
+        case .submitted:
+            return .fixedGray
+        }
+    }
+
+    var foregroundColor: Color {
+        switch self {
+        case .submitted:
+            return Color.descriptionGray
+        default:
+            return Color.placeholderGray
+        }
+    }
+
+    var strokeColor: Color {
+        switch self {
+        case .inactive:
+            return Color.darkBlue
+        case .active:
+            return Color.darkBlueStroke
+        case .submitted:
+            return Color.clear
+        }
+    }
+}
+
 struct SchoolSearchView: View {
     @State private var searchWord = ""
-//    @State private var textFieldBackgroundColor = Color.clear
-    private let viewModel = SchoolSearchViewModel()
     @Binding var selectedSchoolInfo: SchoolInfoModel?
     @Environment(\.dismiss) var dismiss
-    @State private var isSearchInitiated = false
+    @State private var textFieldState = SchoolSearchTextFieldState.inactive
+    private let viewModel = SchoolSearchViewModel()
+    @FocusState private var isFocused: Bool
 
     var body: some View {
         ZStack(alignment: .top) {
+            Color.background
             VStack(spacing: 0) {
                 schoolSearchField
+                    .padding(.horizontal, 16)
                 schoolSearchResultView
-                Spacer()
             }
+            .padding(.top, 20)
         }
-        .navigationTitle("학교 검색")
+        .ignoresSafeArea(edges: .bottom)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                backButton
+            ToolbarItem(placement: .principal) {
+                Text("학교 검색")
+                    .font(.system(size: 18, weight: .medium))
             }
         }
-        .toolbarBackground(.white, for: .navigationBar)
+        .toolbarBackground(Color.background, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
+        .foregroundStyle(.white)
     }
 }
 
 extension SchoolSearchView {
 
-    private var backButton: some View {
-        Button {
-            dismiss()
-        } label: {
-            Image(systemName: "chevron.backward")
-                .font(.system(size: 20))
-                .accentColor(.gray)
-        }
-    }
-
     private var schoolSearchField: some View {
         TextField("",
                   text: $searchWord,
-                  prompt: Text("학교명 검색"))
-            .font(.system(size: 14, weight: .medium))
+                  prompt: Text("학교명 검색")
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundStyle(textFieldState.placeholderColor))
+            .focused($isFocused)
+            .font(.system(size: 16, weight: .medium))
+            .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 0))
             .frame(height: 44)
-            .padding(EdgeInsets(top: 0, leading: 17, bottom: 0, trailing: 0))
-            .background(isSearchInitiated ? .gray : .clear)
-            .overlay {
-                RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(.black, lineWidth: 1)
-            }
-            .clipShape(RoundedRectangle(cornerRadius: 10))
-            .padding(.horizontal, 26)
-            .padding(.vertical, 20)
+            .background(textFieldState.backgroundColor)
+            .tint(Color.placeholderGray)
             .onSubmit {
                 Task {
-                    isSearchInitiated = true
+                    textFieldState = .submitted
                     try await viewModel.setSchoolData(searchWord: searchWord)
                 }
             }
-            .onTapGesture {
-                searchWord.removeAll()
-                viewModel.schools.removeAll()
-                isSearchInitiated = false
+            .onChange(of: isFocused) { _, isFocused in
+                if isFocused {
+                    textFieldState = .active
+                }
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .overlay {
+                if textFieldState == .active {
+                    RoundedRectangle(cornerRadius: 10)
+                        .strokeBorder(textFieldState.strokeColor, lineWidth: 1)
+                        .blur(radius: 3)
+                        .shadow(color: Color.shadowBlue, radius: 2)
+                }
+            }
+            .overlay {
+                RoundedRectangle(cornerRadius: 10)
+                    .strokeBorder(textFieldState.strokeColor, lineWidth: 1)
             }
     }
 
     private var emptyResultView: some View {
-        VStack(spacing: 0) {
-            Divider()
-                .background(Color.gray)
-                .padding(.horizontal, 11)
-            Rectangle()
-                .frame(width: 90, height: 90)
-                .foregroundStyle(.gray)
-                .padding(.top, 186)
+        VStack(spacing: 20) {
+            Image("imgNoResult")
             Text("검색 결과가 없습니다.")
                 .font(.system(size: 20, weight: .medium))
-                .foregroundStyle(.gray)
-                .padding(.top, 20)
+                .foregroundStyle(Color.descriptionGray)
         }
+        .padding(.top, 170)
     }
 
-    private func schoolListCell(_ schoolInfo: SchoolInfoModel) -> some View {
+    private func schoolListCell(_ schoolInfo: SchoolInfoModel, isLastCell: Bool) -> some View {
         VStack(spacing: 0) {
-            Divider()
-                .background(Color.gray)
-                .frame(height: 1)
-                .padding(.horizontal, 11)
             HStack {
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 0) {
                     Text(schoolInfo.school.schoolName)
-                        .font(.system(size: 16, weight: .medium))
+                        .font(.system(size: 18, weight: .medium))
+                        .padding(.bottom, 13)
                     HStack(spacing: 5) {
                         infoLabel("도로명")
                         infoDescription(schoolInfo.schoolAddress)
                     }
-                    HStack(spacing: 13) {
+                    .padding(.bottom, 10)
+                    HStack(spacing: 16) {
                         infoLabel("지역")
                         infoDescription(schoolInfo.school.schoolRegion)
                     }
+                    .padding(.bottom, 10)
                 }
                 Spacer()
             }
+            .background(Color.clear)
             .padding(.vertical, 16)
             .padding(.horizontal, 26)
+
+            if !isLastCell {
+                Divider()
+                    .background(Color.dividerGray)
+                    .padding(.horizontal, 16)
+            }
         }
     }
 
     private func infoLabel(_ labelName: String) -> some View {
         Text(labelName)
-            .font(.system(size: 10, weight: .medium))
+            .font(.system(size: 12, weight: .medium))
             .padding(.vertical, 4)
             .padding(.horizontal, 5)
-            .background(Color.gray)
+            .background(Color.lightBlue)
             .clipShape(RoundedRectangle(cornerRadius: 3.0))
     }
 
     private func infoDescription(_ description: String) -> some View {
         Text(description)
             .font(.system(size: 13, weight: .medium))
+            .foregroundStyle(Color.infoGray)
     }
 
     private var searchDescriptionView: some View {
@@ -142,20 +191,28 @@ extension SchoolSearchView {
                     .padding(.bottom, 5)
                 Text("예) 세원고, 세원고등학교")
                     .font(.system(size: 14, weight: .light))
+                    .foregroundStyle(Color.descriptionGray)
             }
             Spacer()
         }
-        .padding(.leading, 43)
+        .padding(.leading, 32)
     }
 
     @ViewBuilder
     private var searchedSchoolList: some View {
-        List(viewModel.schools) { school in
-            schoolListCell(school)
+        List(viewModel.schools.indices, id: \.self) { index in
+            let school = viewModel.schools[index]
+            schoolListCell(school, isLastCell: index == viewModel.schools.count - 1)
             .listRowInsets(EdgeInsets())
+            .listRowBackground(Color.clear)
             .listRowSeparator(.hidden)
             .onTapGesture {
-                selectedSchoolInfo = school
+                let schoolModel = school.school
+                selectedSchoolInfo = SchoolInfoModel(school: SchoolModel(schoolName: schoolModel.schoolName,
+                                                                         schoolRegion: regionMapping[schoolModel.schoolRegion] 
+                                                                         ?? schoolModel.schoolRegion,
+                                                                         schoolType: schoolModel.schoolType),
+                                                     schoolAddress: school.schoolAddress)
                 dismiss()
             }
         }
@@ -168,14 +225,17 @@ extension SchoolSearchView {
             ProgressView()
                 .padding(.top, 100)
         } else {
-            if viewModel.schools.isEmpty {
-                if isSearchInitiated {
+            switch textFieldState {
+            case .submitted:
+                if viewModel.schools.isEmpty {
                     emptyResultView
                 } else {
-                    searchDescriptionView
+                    searchedSchoolList
+                        .padding(.top, 16)
                 }
-            } else {
-                searchedSchoolList
+            default:
+                searchDescriptionView
+                    .padding(.top, 32)
             }
         }
     }
