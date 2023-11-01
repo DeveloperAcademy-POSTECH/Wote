@@ -186,7 +186,6 @@ extension ProfileSettingsView {
     }
 
     private var selectProfileButton: some View {
-        photoPickerView {
             ZStack {
                 Circle()
                     .frame(width: 34, height: 34)
@@ -195,7 +194,6 @@ extension ProfileSettingsView {
                     .font(.system(size: 20))
                     .foregroundStyle(.white)
             }
-        }
     }
 
     @ViewBuilder
