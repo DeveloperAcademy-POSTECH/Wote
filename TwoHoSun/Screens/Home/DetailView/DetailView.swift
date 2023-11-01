@@ -41,6 +41,7 @@ struct DetailView : View {
                 detailHeaderView
                 Divider()
                 detailCell
+                    .padding(.top, 30)
                 commentPreview
                 voteResultView(.agree, 0.47)
                 voteResultView(.disagree, 0.33)
@@ -112,22 +113,24 @@ struct DetailView : View {
 }
 extension DetailView {
     private var detailHeaderView: some View {
-        HStack {
+        HStack(spacing: 0) {
             // TODO: 추후에 서버의 이미지와 연동
             Image("defaultProfile")
                 .resizable()
                 .frame(width: 32, height: 32)
                 .clipShape(Circle())
-            Text( "일단써놈")
+                .padding(.trailing, 10)
+            Text( "일단써놈 ")
                 .font(.system(size: 16, weight: .medium))
                 .foregroundStyle(Color.whiteGray)
             Text("님의 구매후기 받기")
                 .font(.system(size: 14))
+                .foregroundStyle(Color.whiteGray)
             Spacer()
             Toggle("", isOn: $alertOn)
                 .toggleStyle(AlertCustomToggle())
         }
-        .padding(.horizontal, 24)
+
     }
 
     private var detailCell: some View {
@@ -141,7 +144,12 @@ extension DetailView {
                 .foregroundStyle(Color.priceGray)
                 .font(.system(size: 14))
                 .padding(.bottom, 18)
-            Text("어쩌고저쩌고.....50자")
+            Text("어쩌고저쩌고이래라야어쩌고저쩌고이래라야어쩌고저쩌고이래라야어쩌고저쩌고이래라야어쩌고저쩌고이래라야")
+                .lineLimit(nil)
+                .frame(width: 342)
+                .fixedSize()
+                .multilineTextAlignment(.leading)
+                .foregroundStyle(Color.whiteGray)
 
             VStack(spacing: 8) {
                 Text("O사다")
@@ -154,10 +162,13 @@ extension DetailView {
                 .frame(height: 218)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
             Link(destination: URL(string: "https://naver.com")!, label: {
-                Text("https://naver.com")
+                Text("https://naver.comeeeefqefewqfewqfewqfewqffqewfq")
                     .tint(Color.white)
                     .font(.system(size: 16))
                     .frame(maxWidth: .infinity)
+                    .multilineTextAlignment(.leading)
+                    .truncationMode(.tail)
+                    .lineLimit(1)
                     .padding(.vertical,10)
                     .background(Color.lightGray)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
@@ -199,10 +210,17 @@ extension DetailView {
                 Image("defaultProfile")
                     .resizable()
                     .frame(width: 24, height: 24)
-                Text("댓글 추가...")
-                    .foregroundStyle(Color.priceGray)
-                    .frame(width: 258)
-                    .padding(.horizontal, 12)
+                HStack {
+                    Text("댓글 추가...")
+                        .font(.system(size: 12))
+                        .foregroundStyle(Color.priceGray)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 4)
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity)
+                .background(Color.textFieldGray)
+                .clipShape(RoundedRectangle(cornerRadius: 20))
             }
         }
         .padding(.vertical, 12)
@@ -224,6 +242,7 @@ extension DetailView {
             }
             Text("투표 후 구매 \(type.title) 의견을 선택한 유형을 확인해봐요!")
                 .font(.system(size: 16, weight: .medium))
+                .foregroundStyle(Color.white)
             ProgressView(value: percent)
                 .tint(Color.lightBlue)
                 .background(Color.darkGray2)

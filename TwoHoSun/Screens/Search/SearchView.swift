@@ -17,6 +17,7 @@ struct SearchView: View {
     var body: some View {
         ZStack(alignment: .top) {
             Color.background
+                .ignoresSafeArea()
             VStack(spacing: 0) {
                 searchField
                 HStack {
@@ -31,7 +32,6 @@ struct SearchView: View {
             .padding(.horizontal, 16)
             .padding(.top, 20)
         }
-        .ignoresSafeArea(edges: .bottom)
         .toolbarBackground(Color.background, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbar {

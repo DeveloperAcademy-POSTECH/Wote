@@ -7,109 +7,95 @@
 
 import SwiftUI
 
+import Kingfisher
+
 struct NotificationView: View {
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @State private var dismiss: Bool = false
     var body: some View {
         ZStack {
-            Color.white
+            Color.background
+                .ignoresSafeArea()
             notificationList
         }
-        .navigationBarBackButtonHidden()
         .navigationTitle("알림")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(Color.background, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
         .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                backButton
+            ToolbarItem(placement: .principal) {
+                Text("알림")
+                    .foregroundStyle(.white)
             }
         }
-        .toolbarBackground(.white, for: .navigationBar)
-        .toolbar(dismiss ? .visible : .hidden, for: .tabBar)
-
     }
 }
 
 extension NotificationView {
-
-    private var backButton: some View {
-        Button {
-            dismiss.toggle()
-            self.presentationMode.wrappedValue.dismiss()
-        } label: {
-            Image(systemName: "chevron.backward")
-                .font(.system(size: 20))
-                .foregroundStyle(.gray)
-        }
-    }
-
     private var notificationList: some View {
-        List {
-            listHeader("오늘 알림")
-            ForEach(0..<3) { _ in
-                notificationCell
+        ScrollView {
+            VStack(alignment: .leading) {
+                listHeader("오늘 알림")
+                ForEach(0..<3) { _ in
+                    notificationCell
+                }
+                Divider()
+                    .foregroundStyle(Color.dividerGray)
+                listHeader("이전 알림")
+                ForEach(0..<10) { _ in
+                    notificationCell
+                }
             }
-            .listRowInsets(EdgeInsets())
-            .listRowSeparator(.hidden)
-            Divider()
-            listHeader("이전 알림")
-            ForEach(0..<10) { _ in
-                notificationCellWithPostIcon
-            }
-            .listRowInsets(EdgeInsets())
-            .listRowSeparator(.hidden)
+            .padding(.horizontal, 16)
         }
-        .listStyle(.plain)
-        .listSectionSpacing(0)
         .scrollIndicators(.hidden)
     }
 
     private func listHeader(_ headerName: String) -> some View {
         Text(headerName)
             .font(.system(size: 14, weight: .medium))
-            .foregroundStyle(.gray)
-            .padding(.leading, 15)
-            .padding(.bottom, 10)
-            .listRowSeparator(.hidden)
+            .foregroundStyle(.white)
+            .padding(.top, 16)
     }
 
     private var notificationCell: some View {
-        HStack(alignment: .top, spacing: 14) {
-            Circle()
+        HStack(alignment: .top, spacing: 16) {
+            KFImage(URL(string: "https://picsum.photos/100")!)
+                .placeholder {
+                    ProgressView()
+                        .preferredColorScheme(.dark)
+                }
+                .onFailure { error in
+                    print(error.localizedDescription)
+                }
+                .cancelOnDisappear(true)
+                .resizable()
                 .frame(width: 46, height: 46)
-                .foregroundStyle(.gray)
+                .clipShape(.circle)
             VStack(alignment: .leading, spacing: 6) {
-                Text("밍니님이 회원님의 게시글에 답글을\n남겼어요.")
+                Text("선호님이 회원님의 게시글에 답글을 남겼어요.")
                     .font(.system(size: 16, weight: .medium))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .foregroundStyle(.white)
+                    .lineSpacing(2)
                 Text("2분 전")
                     .font(.system(size: 14))
-                    .foregroundStyle(.gray)
+                    .foregroundStyle(Color.subGray5)
+            }
+            if Bool.random() {
+                KFImage(URL(string: "https://picsum.photos/100")!)
+                    .placeholder {
+                        ProgressView()
+                            .preferredColorScheme(.dark)
+                    }
+                    .onFailure { error in
+                        print(error.localizedDescription)
+                    }
+                    .cancelOnDisappear(true)
+                    .resizable()
+                    .frame(width: 40, height: 40)
+                    .clipShape(.rect(cornerRadius: 8))
             }
         }
-        .padding(.horizontal, 26)
-        .padding(.vertical, 15)
-    }
-
-    private var notificationCellWithPostIcon: some View {
-        HStack(alignment: .top, spacing: 0) {
-            Circle()
-                .frame(width: 46, height: 46)
-                .foregroundStyle(.gray)
-                .padding(.trailing, 14)
-            VStack(alignment: .leading) {
-                Text("바부님이 회원님의 게시글에 답글을\n남겼어요.")
-                    .font(.system(size: 16, weight: .medium))
-                Spacer()
-                Text("2분 전")
-                    .font(.system(size: 14))
-                    .foregroundStyle(.gray)
-            }
-            Spacer()
-            RoundedRectangle(cornerRadius: 8)
-                .frame(width: 40, height: 40)
-                .foregroundStyle(.gray)
-        }
-        .padding(.horizontal, 26)
-        .padding(.vertical, 15)
+        .padding(.vertical, 16)
     }
 }
 

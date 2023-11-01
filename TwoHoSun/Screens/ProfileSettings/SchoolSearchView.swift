@@ -62,6 +62,7 @@ struct SchoolSearchView: View {
     var body: some View {
         ZStack(alignment: .top) {
             Color.background
+                .ignoresSafeArea()
             VStack(spacing: 0) {
                 schoolSearchField
                     .padding(.horizontal, 16)
@@ -69,7 +70,6 @@ struct SchoolSearchView: View {
             }
             .padding(.top, 20)
         }
-        .ignoresSafeArea(edges: .bottom)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
