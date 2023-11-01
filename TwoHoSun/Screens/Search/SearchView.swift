@@ -29,9 +29,11 @@ struct SearchView: View {
                     .padding(.top, 16)
             }
             .padding(.horizontal, 16)
-            .padding(.top, 116)
+            .padding(.top, 20)
         }
-        .ignoresSafeArea(edges: .vertical)
+        .ignoresSafeArea(edges: .bottom)
+        .toolbarBackground(Color.background, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text("통합검색")
@@ -39,7 +41,6 @@ struct SearchView: View {
                     .foregroundStyle(.white)
             }
         }
-        .toolbar(.hidden, for: .tabBar)
     }
 }
 

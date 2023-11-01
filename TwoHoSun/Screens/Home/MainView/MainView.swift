@@ -94,6 +94,7 @@ struct MainView: View {
                 viewModel.loading = true
             }
         }
+        .tint(Color.accentBlue)
     }
 
 }

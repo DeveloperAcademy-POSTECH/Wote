@@ -67,9 +67,9 @@ struct SchoolSearchView: View {
                     .padding(.horizontal, 16)
                 schoolSearchResultView
             }
-            .padding(.top, 116)
+            .padding(.top, 20)
         }
-        .ignoresSafeArea(edges: .vertical)
+        .ignoresSafeArea(edges: .bottom)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -77,6 +77,8 @@ struct SchoolSearchView: View {
                     .font(.system(size: 18, weight: .medium))
             }
         }
+        .toolbarBackground(Color.background, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
         .foregroundStyle(.white)
     }
 }
