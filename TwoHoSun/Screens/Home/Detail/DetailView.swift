@@ -9,19 +9,8 @@ import SwiftUI
 // TODO: 후에 모델작업은 수정 예정 여기서 사용하기 위해 임의로 제작
 struct DetailView : View {
     @Environment(\.dismiss) var dismiss
-    //    @Namespace var commentId
-    //    @State private var commentText: String = ""
     @State private var alertOn = false
     @State private var showDetailComments = false
-    //    @FocusState var isFocus: Bool
-    //    @State private var isSendMessage = false
-    //    @State private var scrollSpot: Int = 0
-    //    @State private var isOpenComment = false
-    //    @State private var keyboardHeight: CGFloat = 0.0
-    //    @State private var isReplyButtonTap = false
-
-    //    let viewModel: DetailViewModel
-    //    let postId: Int
 
     enum VoteType {
         case agree, disagree
@@ -34,6 +23,7 @@ struct DetailView : View {
             }
         }
     }
+
     var body: some View {
         ZStack {
             Color.background
@@ -52,37 +42,8 @@ struct DetailView : View {
                     .padding(EdgeInsets(top: 32, leading: 0, bottom: 48, trailing: 0))
                 voteResultView(.disagree, 0.33)
             }
-         
-        }
 
-        //
-        //        .onAppear(perform: {
-        //            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { notification in
-        //                if let keyboardSize = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
-        //                    keyboardHeight = keyboardSize.height
-        //                }
-        //            }
-        //            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
-        //                keyboardHeight = 0
-        //            }
-        //        })
-        //        .toolbar(.hidden, for: .tabBar)
-        //        .onChange(of: viewModel.isSendMessage) { _, newVal in
-        //            if newVal {
-        //                viewModel.postComments(commentPost: CommentPostModel(content: commentText,
-        //                                                                     parentId: scrollSpot,
-        //                                                                     postId: viewModel.detailPostData?.postId ?? 0))
-        //                commentText = ""
-        //            }
-        //        }
-        //        .onTapGesture {
-        //            self.endTextEditing()
-        //            self.isReplyButtonTap = false
-        //        }
-        //        .onAppear {
-        //            viewModel.fetchVoteDetailPost()
-        //            viewModel.getComments()
-        //        }
+        }
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
         .toolbar {
@@ -130,20 +91,14 @@ extension DetailView {
                 .toggleStyle(AlertCustomToggle())
         }
         .padding(.horizontal, 24)
-
     }
 
     private var detailCell: some View {
         //TODO: 데이터 연결할것
         VStack(alignment: .leading) {
-           detailTextView(title: "ACG마운틴 플라이 할인 살말?", price: 1000, description: "어쩌고저쩌고사고말고어쩌라고")
-            VStack(spacing: 8) {
-                Text("O사다")
-                Text("X안사다")
-            }
-            .padding(.bottom, 24)
-            .padding(.horizontal, 24)
-
+            detailTextView(title: "ACG마운틴 플라이 할인 살말?", price: 1000, description: "어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고")
+            VoteView()
+                .padding(.all, 24)
             Image("logo")
                 .resizable()
                 .frame(height: 218)
@@ -186,29 +141,28 @@ extension DetailView {
             .padding(.top, 18)
         }
     }
-    
+
     @ViewBuilder
     func detailTextView(title: String, price: Int, description: String) -> some View {
-            VStack(alignment: .leading) {
-                Text(title)
-                    .foregroundStyle(Color.white)
-                    .font(.system(size: 18, weight: .bold))
-                    .padding(.bottom, 4)
-                Text("금액: \(price)원")
-                    .foregroundStyle(Color.priceGray)
-                    .font(.system(size: 14))
-                    .padding(.bottom, 18)
-            }
-            .padding(.leading, 20)
+        VStack(alignment: .leading) {
+            Text(title)
+                .foregroundStyle(Color.white)
+                .font(.system(size: 18, weight: .bold))
+                .padding(.bottom, 4)
+            Text("금액: \(price)원")
+                .foregroundStyle(Color.priceGray)
+                .font(.system(size: 14))
+                .padding(.bottom, 18)
+        }
+        .padding(.leading, 20)
 
-            Text(description)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .lineLimit(3)
-                .multilineTextAlignment(.leading)
-                .foregroundStyle(Color.whiteGray)
-                .padding(.horizontal, 24)
+        Text(description)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .lineLimit(3)
+            .multilineTextAlignment(.leading)
+            .foregroundStyle(Color.whiteGray)
+            .padding(.horizontal, 24)
     }
-
 
     var commentPreview: some View {
         //TODO: 뷰모델에서 댓글이 있는지를 체크한담에 있으면 삼항연산자를 통해 할 예정
@@ -269,131 +223,6 @@ extension DetailView {
         }
         .padding(.horizontal, 24)
     }
-    //    struct VoteResultProgressStyle: ProgressViewStyle {
-    //        func makeBody(configuration: Configuration) -> some View {
-    //            ProgressView(configuration)
-    //                .tint(Color.lightBlue)
-    //                .background(Color.darkGray2)
-    //        }
-    //    }
-    //    var commentView : some View {
-    //        ScrollViewReader { proxy in
-    //            LazyVStack(alignment: .leading, spacing: 24) {
-    //                Text("댓글 \(viewModel.commentsDatas.count)개")
-    //                    .font(.system(size: 14))
-    //                    .foregroundStyle(.gray)
-    //                    .padding(.bottom, 16)
-    //                    .padding(.top, 20)
-    //                    .id(commentId)
-    //                ForEach(viewModel.commentsDatas) { comment in
-    //                    CommentCell(comment: comment) {
-    //                        scrollSpot = comment.commentId
-    //                        isReplyButtonTap = true
-    //                        isFocus = true
-    //                    }
-    //                    .id(comment.commentId)
-    //                    makeChildComments(comment: comment)
-    //                }
-    //                .onChange(of: scrollSpot) { _, _ in
-    //                    proxy.scrollTo(scrollSpot, anchor: .top)
-    //                }
-    //            }
-    //        }
-    //        .padding(.horizontal, 26)
-    //    }
-    //
-    //    @ViewBuilder
-    //    func makeChildComments(comment: CommentsModel) -> some View {
-    //        if let childComments = comment.childComments, !childComments.isEmpty {
-    //            HStack {
-    //                Spacer()
-    //                    .frame(width: 32,height: 32)
-    //                if isOpenComment {
-    //                    VStack {
-    //                        ForEach(childComments) { comment in
-    //                            CommentCell(comment: comment) {
-    //                            }
-    //                        }
-    //                    }
-    //                } else {
-    //                    Button(action: {
-    //                        isOpenComment.toggle()
-    //                    }, label: {
-    //                        HStack {
-    //                            Rectangle()
-    //                                .fill(.gray)
-    //                                .frame(width: 29, height: 1)
-    //                            Text("답글 \(comment.childComments!.count)개 더보기")
-    //                                .font(.system(size: 12))
-    //                                .foregroundStyle(.gray)
-    //                        }
-    //                    })
-    //                }
-    //            }
-    //
-    //        }
-    //    }
-    //
-    //    @ViewBuilder
-    //    var forReplayButton: some View {
-    //        if isReplyButtonTap {
-    //            if let nickName = viewModel.getNicknameForComment(commentId: scrollSpot) {
-    //                HStack {
-    //                    Text("\(nickName)님에게 답글달기")
-    //                        .font(.system(size: 14, weight: .medium))
-    //                    Spacer()
-    //                    Button {
-    //                        isReplyButtonTap = false
-    //                    } label: {
-    //                        Image(systemName: "xmark")
-    //                            .foregroundStyle(.gray)
-    //                            .font(.system(size: 14))
-    //                    }
-    //                }
-    //                .frame(height: 50)
-    //                .padding(.horizontal, 26)
-    //            }
-    //
-    //        }
-    //
-    //    }
-    //    var commentInputView: some View {
-    //        withAnimation(.easeInOut) {
-    //            TextField("소비고민을 함께 나누어 보세요", text: $commentText, axis: .vertical)
-    //                .lineLimit(5)
-    //                .focused($isFocus)
-    //                .textFieldStyle(CommentTextFieldStyle(viewModel: viewModel))
-    //                .padding(.vertical, 10)
-    //                .padding(.horizontal, 12)
-    //                .frame(width: 342)
-    //                .frame(minHeight: 40)
-    //                .background(.white)
-    //                .cornerRadius(5)
-    //        }
-    //        .padding(EdgeInsets(top: 17, leading: 26, bottom: 0, trailing: 22))
-    //        .frame(maxWidth: .infinity)
-    //        .frame(minHeight: 82)
-    //        .background(.ultraThinMaterial)
-    //        .animation(.easeInOut(duration: 0.3), value: commentText)
-    //    }
-    //
-    //    struct CommentTextFieldStyle: TextFieldStyle {
-    //        @Bindable var viewModel: DetailViewModel
-    //        func _body(configuration: TextField<Self._Label>) -> some View {
-    //            HStack {
-    //                configuration
-    //                    .font(.system(size: 16))
-    //                Spacer()
-    //                Button(action: {
-    //                    viewModel.isSendMessage = true
-    //                }, label: {
-    //                    Image(systemName: "paperplane")
-    //                        .foregroundStyle(.black)
-    //                        .font(.system(size: 20))
-    //                })
-    //            }
-    //        }
-    //    }
 }
 struct AlertCustomToggle: ToggleStyle {
     func makeBody(configuration: Configuration) -> some View {
