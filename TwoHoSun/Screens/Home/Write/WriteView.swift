@@ -26,7 +26,8 @@ struct WriteView: View {
                     VStack(spacing: 48) {
                         titleView
                         priceView
-                        addImageView
+                        imageView
+                        linkView
                         contentView
                     }
                     .padding(.top, 16)
@@ -66,6 +67,7 @@ extension WriteView {
                     .font(.system(size: 14))
                     .foregroundStyle(Color.placeholderGray)
                 )
+                .foregroundStyle(.white)
                 .frame(height: 44)
                 .padding(.horizontal, 16)
                 .overlay {
@@ -142,16 +144,16 @@ extension WriteView {
         }
     }
     
-    private var addImageView: some View {
+    private var imageView: some View {
         VStack(alignment: .leading) {
             headerLabel("고민하는 상품의 사진을 등록해 주세요. ", essential: false)
-            imageView
+            selectedImageView
             addImageButton
         }
     }
     
     @ViewBuilder
-    private var imageView: some View {
+    private var selectedImageView: some View {
         if let selectedImageData,
            let uiImage = UIImage(data: selectedImageData) {
             ZStack(alignment: .topTrailing) {
@@ -209,30 +211,33 @@ extension WriteView {
         }
     }
     
-    private var addLinkButton: some View {
-        TextField("",
-                  text: $viewModel.externalURL,
-                  prompt:
-                    Text("링크 주소 입력하기")
-            .font(.system(size: 14, weight: .medium)) +
-                  Text("(선택)")
-            .font(.system(size: 12, weight: .medium)))
-        .frame(height: 44)
-        .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 0))
-        .overlay {
-            RoundedRectangle(cornerRadius: 5)
-                .strokeBorder(.gray, lineWidth: 1)
+    private var linkView: some View {
+        VStack(alignment: .leading) {
+            headerLabel("해당 상품의 링크를 등록해 주세요. ", essential: false)
+            TextField("",
+                      text: $viewModel.externalURL,
+                      prompt: Text("예) https://www.wote.ac.kr/")
+                .font(.system(size: 14))
+                .foregroundStyle(Color.placeholderGray)
+            )
+            .foregroundStyle(.white)
+            .frame(height: 44)
+            .padding(.horizontal, 16)
+            .overlay {
+                RoundedRectangle(cornerRadius: 10)
+                    .strokeBorder(Color.darkBlue, lineWidth: 1)
+            }
         }
     }
     
     private var contentView: some View {
         VStack(alignment: .leading, spacing: 8) {
             headerLabel("고민하는 내용을 작성해 주세요. ", essential: false)
-            textView
+            textEditorView
         }
     }
     
-    private var textView: some View {
+    private var textEditorView: some View {
         ZStack(alignment: .bottomTrailing) {
             if viewModel.content.isEmpty {
                 TextEditor(text: $placeholderText)
