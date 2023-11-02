@@ -59,6 +59,8 @@ enum VoteCategoryType {
 
 struct WoteTabView: View {
     @State private var selection = WoteTabType.consider
+    @State private var isVoteCategoryButtonDidTap = false
+    @State private var selectedVoteCategoryType = VoteCategoryType.all
 
     var body: some View {
         NavigationStack {
@@ -110,16 +112,52 @@ extension WoteTabView {
     }
 
     private var voteCategoryButton: some View {
-        Button {
+        ZStack(alignment: .bottom) {
+            Button {
+                isVoteCategoryButtonDidTap.toggle()
+            } label: {
+                HStack(spacing: 5) {
+                    Text(selectedVoteCategoryType.title)
+                        .font(.system(size: 20, weight: .bold))
+                        .foregroundStyle(.white)
+                    Image(systemName: "chevron.down")
+                        .font(.system(size: 16))
+                        .foregroundStyle(Color.descriptionGray)
+                }
+            }
 
-        } label: {
-            HStack(spacing: 5) {
-                Text("전국 투표")
-                    .font(.system(size: 20, weight: .bold))
-                    .foregroundStyle(.white)
-                Image(systemName: "chevron.down")
-                    .font(.system(size: 16))
-                    .foregroundStyle(Color.descriptionGray)
+            if isVoteCategoryButtonDidTap {
+                VStack(alignment: .leading, spacing: 0) {
+                    Button {
+                        selectedVoteCategoryType = .all
+                        isVoteCategoryButtonDidTap = false
+                    } label: {
+                        Text("전국 투표")
+                            .padding(.leading, 15)
+                            .padding(.top, 14)
+                            .padding(.bottom, 12)
+                    }
+                    Divider()
+                        .background(Color.gray300)
+                    Button {
+                        selectedVoteCategoryType = .mySchool
+                        isVoteCategoryButtonDidTap = false
+                    } label: {
+                        Text("우리 학교 투표")
+                            .padding(.leading, 15)
+                            .padding(.top, 12)
+                            .padding(.bottom, 14)
+                    }
+                }
+                .frame(width: 131, height: 88)
+                .font(.system(size: 14))
+                .foregroundStyle(Color.woteWhite)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.disableGray)
+                        .strokeBorder(Color.gray300, lineWidth: 1)
+                )
+//                .offset(y: 70)
             }
         }
     }
