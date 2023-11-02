@@ -32,8 +32,7 @@ struct SearchView: View {
             .padding(.horizontal, 16)
             .padding(.top, 20)
         }
-        .toolbarBackground(Color.background, for: .navigationBar)
-        .toolbarBackground(.visible, for: .navigationBar)
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text("통합검색")

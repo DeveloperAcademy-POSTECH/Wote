@@ -74,12 +74,15 @@ struct WoteTabView: View {
                         }
                 }
             }
+            .tint(Color.accentBlue)
             .onAppear {
                 UITabBar.appearance().unselectedItemTintColor = .gray100
                 UITabBar.appearance().backgroundColor = .background
             }
-            .tint(Color.accentBlue)
+            .navigationTitle(selection.tabTitle)
+            .toolbar(.hidden, for: .navigationBar)
         }
+        .tint(Color.accentBlue)
     }
 }
 
