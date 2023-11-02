@@ -197,8 +197,8 @@ extension WriteView {
     }
     
     private var contentView: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            headerLabel("내용을 작성해 주세요. ", "(선택)", essential: false)
+        VStack(alignment: .leading, spacing: 8) {
+            headerLabel("고민하는 내용을 작성해 주세요. ", "(선택)", essential: false)
             textView
         }
     }
@@ -207,19 +207,22 @@ extension WriteView {
         ZStack(alignment: .bottomTrailing) {
             if viewModel.content.isEmpty {
                 TextEditor(text: $placeholderText)
-                    .foregroundStyle(.gray)
+                    .foregroundStyle(Color.placeholderGray)
+                    .scrollContentBackground(.hidden)
             }
             TextEditor(text: $viewModel.content)
-                .opacity(self.viewModel.content.isEmpty ? 0.25 : 1)
+                .foregroundStyle(.white)
+                .scrollContentBackground(.hidden)
+                .padding(.bottom, 20)
             contentTextCountView
-                .padding(.trailing, 15)
-                .padding(.bottom, 14)
         }
         .font(.system(size: 14, weight: .medium))
-        .frame(height: 109)
+        .frame(height: 110)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 10)
         .overlay {
-            RoundedRectangle(cornerRadius: 5)
-                .strokeBorder(.gray, lineWidth: 1)
+            RoundedRectangle(cornerRadius: 10)
+                .strokeBorder(Color.darkBlue, lineWidth: 1)
         }
         .onSubmit {
             dismissKeyboard()
@@ -229,10 +232,10 @@ extension WriteView {
     private var contentTextCountView: some View {
         Text("\(viewModel.content.count) ")
             .font(.system(size: 12, weight: .semibold))
-            .foregroundStyle(.black) +
-        Text("/ 100")
+            .foregroundStyle(Color.descriptionGray)
+        + Text("/ 150")
             .font(.system(size: 12, weight: .semibold))
-            .foregroundStyle(.gray)
+            .foregroundStyle(.white)
     }
     
     private var voteRegisterButton: some View {
