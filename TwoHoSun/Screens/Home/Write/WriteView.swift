@@ -25,6 +25,7 @@ struct WriteView: View {
                 ScrollView {
                     VStack(spacing: 48) {
                         titleView
+                        priceView
                         addImageView
                         contentView
                     }
@@ -55,7 +56,7 @@ struct WriteView: View {
 extension WriteView {
     private var titleView: some View {
         VStack(alignment: .leading, spacing: 4) {
-            headerLabel("제목을 입력해주세요. ", "(필수)", essential: true)
+            headerLabel("제목을 입력해주세요. ", essential: true)
                 .padding(.bottom, 4)
             HStack(spacing: 6) {
                 TextField("",
@@ -114,12 +115,36 @@ extension WriteView {
                     .foregroundStyle(Color.disableGray)
             }
         }
-        
+    }
+    
+    private var priceView: some View {
+        VStack(alignment: .leading) {
+            headerLabel("해당 상품의 가격을 알려주세요.", essential: false)
+            HStack {
+                TextField("",
+                          text: $viewModel.price,
+                          prompt: Text("예) 200,000")
+                    .font(.system(size: 14))
+                    .foregroundStyle(Color.placeholderGray)
+                )
+                .font(.system(size: 14))
+                .keyboardType(.numberPad)
+                Text("원")
+                    .font(.system(size: 14, weight: .semibold))
+            }
+            .foregroundStyle(.white)
+            .frame(height: 44)
+            .padding(.horizontal, 16)
+            .overlay {
+                RoundedRectangle(cornerRadius: 10)
+                    .strokeBorder(Color.darkBlue, lineWidth: 1)
+            }
+        }
     }
     
     private var addImageView: some View {
         VStack(alignment: .leading) {
-            headerLabel("고민하는 상품의 사진을 등록해 주세요. ", "(선택)", essential: false)
+            headerLabel("고민하는 상품의 사진을 등록해 주세요. ", essential: false)
             imageView
             addImageButton
         }
@@ -202,7 +227,7 @@ extension WriteView {
     
     private var contentView: some View {
         VStack(alignment: .leading, spacing: 8) {
-            headerLabel("고민하는 내용을 작성해 주세요. ", "(선택)", essential: false)
+            headerLabel("고민하는 내용을 작성해 주세요. ", essential: false)
             textView
         }
     }
@@ -261,12 +286,12 @@ extension WriteView {
         }
     }
     
-    private func headerLabel(_ title: String, _ description: String, essential: Bool) -> some View {
+    private func headerLabel(_ title: String, essential: Bool) -> some View {
         Text(title)
             .font(.system(size: 16, weight: .medium))
             .foregroundStyle(.white)
-        + Text(description)
-            .font(.system(size: 12, weight: .semibold))
+        + Text(essential ? "(필수)" : "(선택)")
+            .font(.system(size: 12, weight: essential ? .semibold : .medium))
             .foregroundStyle(essential ? .red : Color.subGray3)
     }
     
