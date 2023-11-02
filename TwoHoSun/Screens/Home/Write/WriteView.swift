@@ -20,17 +20,22 @@ struct WriteView: View {
     var body: some View {
         ZStack {
             Color.background
+                .ignoresSafeArea()
             VStack {
                 ScrollView {
-                    VStack(alignment: .leading) {
+                    VStack(spacing: 48) {
                         titleView
                         addImageView
                         contentView
                     }
+                    .padding(.top, 16)
                 }
                 voteRegisterButton
             }
+            .ignoresSafeArea(.keyboard)
+            .padding(.horizontal, 16)
             .scrollIndicators(.hidden)
+            .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.background, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbar {
@@ -40,7 +45,6 @@ struct WriteView: View {
                         .font(.system(size: 18, weight: .medium))
                 }
             }
-            .ignoresSafeArea(.keyboard)
             .onTapGesture {
                 dismissKeyboard()
             }
@@ -247,11 +251,12 @@ extension WriteView {
             }
             print("complete button did tap!")
         } label: {
-            Text("투표 등록하기")
-                .font(.system(size: 18, weight: .semibold))
+            Text("등록하기")
+                .font(.system(size: 20, weight: .bold))
                 .foregroundStyle(.white)
-                .frame(width: 361, height: 52)
-                .background(viewModel.isTitleValid ? Color.blue : Color.gray)
+                .frame(maxWidth: .infinity)
+                .frame(height: 52)
+                .background(Color.disableGray)
                 .cornerRadius(10)
         }
     }
