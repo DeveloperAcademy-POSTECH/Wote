@@ -56,6 +56,9 @@ struct MainVoteView: View {
                 .padding(.bottom, 21)
                 .padding(.trailing, 24)
         }
+        .onTapGesture {
+            isVoteCategoryButtonDidTap = false
+        }
     }
 
 }
