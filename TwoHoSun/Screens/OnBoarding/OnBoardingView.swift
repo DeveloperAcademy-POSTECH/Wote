@@ -44,7 +44,8 @@ struct OnBoardingView : View {
                     appleLoginButton
                     hyeprLinkText
                 }
-            })
+                .padding(.bottom, 60)
+            }
             .navigationDestination(for: Route.self) { route in
                 switch route {
                 case .mainTabView:
@@ -52,7 +53,6 @@ struct OnBoardingView : View {
                 case .profileView:
                     ProfileSettingsView(navigationPath: $navigationPath, viewModel: ProfileSettingViewModel())
                 }
-                .padding(.bottom, 60)
             }
             .padding(.horizontal, 26)
         }
@@ -68,7 +68,7 @@ struct OnBoardingView : View {
         .navigationDestination(for: Route.self) { route in
             switch route {
             case .mainTabView:
-                MainTabView()
+                WoteTabView()
             case .profileView:
                 ProfileSettingsView(navigationPath: $navigationPath, viewModel: ProfileSettingViewModel())
             }
