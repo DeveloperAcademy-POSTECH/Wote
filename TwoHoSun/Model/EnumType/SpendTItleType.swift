@@ -11,25 +11,25 @@ enum SpendTItleType {
     var title: String {
         switch self {
         case .ecoWarrior:
-            return "지구지킴이"
+            return "🌍 지구지킴이"
         case .saving:
-            return "지갑지킴이"
+            return "💰 지갑지킴이"
         case .flexer:
-            return "Flexer킹"
+            return "👑 Flexer킹"
         case .trendy:
-            return "유행선도자"
+            return "🥇 유행선도자"
         case .beutyLover:
-            return "예쁜게최고야짜릿해"
+            return "💎 예쁜게최고야짜릿해"
         case .impulseBuyer:
-            return "지름신강림러"
+            return "💸 지름신강림러"
         case .adventurer:
-            return "프로도전러"
+            return "🛹 프로도전러"
         case .safetyShopper:
-            return "실패줄임러"
+            return "✋ 실패줄임러"
         }
     }
     
-    var color: Color {
+    var textColor: Color {
         switch self {
         case .ecoWarrior:
             return Color.green
@@ -37,6 +37,14 @@ enum SpendTItleType {
             return Color.yellow
         default:
             return Color.blue
+        }
+    }
+    var backgroundColor: Color {
+        switch self{
+        case .ecoWarrior:
+            return Color.purple
+        default:
+            return Color.accentBlue
         }
     }
 }
