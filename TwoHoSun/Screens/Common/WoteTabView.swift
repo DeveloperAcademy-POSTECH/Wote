@@ -157,9 +157,10 @@ extension WoteTabView {
                         .fill(Color.disableGray)
                         .strokeBorder(Color.gray300, lineWidth: 1)
                 )
-//                .offset(y: 70)
+                .offset(y: 70)
             }
         }
+        .zIndex(1)
     }
 
     private var notificationButton: some View {

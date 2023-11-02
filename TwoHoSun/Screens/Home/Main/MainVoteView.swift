@@ -30,7 +30,6 @@ enum UserVoteType {
 }
 
 struct MainVoteView: View {
-
     @State private var isVoted = false
     @State private var selectedVoteType = UserVoteType.agree
     let viewModel: MainVoteViewModel
@@ -101,7 +100,8 @@ extension MainVoteView {
             RoundedRectangle(cornerRadius: 16)
                 .strokeBorder(Color.disableGray, lineWidth: 1)
                 .frame(height: 218)
-            voteView
+            VoteView(isVoted: isVoted,
+                     selectedVoteType: selectedVoteType)
                 .padding(.vertical, 10)
             detailResultButton
                 .padding(.bottom, 18)
@@ -124,66 +124,6 @@ extension MainVoteView {
                 .background(Color.blue100)
                 .clipShape(RoundedRectangle(cornerRadius: 28))
         }
-    }
-
-    @ViewBuilder
-    private var voteView: some View {
-        VStack(spacing: 8) {
-            if isVoted {
-                completedVoteButton(voteType: .agree, selectedType: selectedVoteType)
-                completedVoteButton(voteType: .disagree, selectedType: selectedVoteType)
-            } else {
-                incompletedVoteButton(.agree)
-                incompletedVoteButton(.disagree)
-            }
-        }
-    }
-
-    private func incompletedVoteButton(_ voteType: UserVoteType) -> some View {
-        Button {
-            isVoted = true
-            selectedVoteType = voteType
-        } label: {
-            ZStack(alignment: .leading) {
-                Capsule()
-                    .frame(maxWidth: .infinity)
-                    .foregroundStyle(Color.black100)
-                HStack(spacing: 4) {
-                    Image(systemName: voteType.iconImage)
-                    Text(voteType.title)
-                }
-                .font(.system(size: 16))
-                .foregroundStyle(.white)
-                .padding(.leading, 20)
-            }
-        }
-        .frame(height: 48)
-    }
-
-    private func completedVoteButton(voteType: UserVoteType, selectedType: UserVoteType) -> some View {
-        ZStack(alignment: .leading) {
-            let voteRatio = voteType == .agree ? viewModel.buyCountRatio : viewModel.notBuyCountRatio
-            Capsule()
-                .foregroundStyle(Color.black100)
-                .overlay(alignment: .leading) {
-                    let voteButtonWidth = UIScreen.main.bounds.width - 48
-                    Rectangle()
-                        .frame(width: voteButtonWidth * voteRatio * 0.01, height: 48)
-                        .foregroundStyle(voteType == selectedType ? Color.lightBlue : Color.gray200)
-                }
-                .clipShape(Capsule())
-            HStack(spacing: 4) {
-                Image(systemName:voteType.iconImage)
-                Text(voteType.title)
-                Spacer()
-                Text(String(format: getFirstDecimalNum(voteRatio) == 0 ? 
-                            "%.0f" : "%.1f", voteRatio) + "%")
-            }
-            .foregroundStyle(.white)
-            .font(.system(size: 16))
-            .padding(.horizontal, 20)
-        }
-        .frame(height: 48)
     }
 
     private var nextVoteButton: some View {
