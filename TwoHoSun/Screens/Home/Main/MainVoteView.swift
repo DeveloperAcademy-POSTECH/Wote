@@ -34,6 +34,7 @@ struct MainVoteView: View {
     @State private var selectedVoteType = UserVoteType.agree
     @State private var selectedVoteCategoryType = VoteCategoryType.all
     @State private var isVoteCategoryButtonDidTap = false
+    @State private var currentVote = 0
     let viewModel: MainVoteViewModel
 
     var body: some View {
@@ -156,9 +157,11 @@ extension MainVoteView {
 
     private var votePagingView: some View {
         GeometryReader { proxy in
-            TabView {
-                ForEach(0..<5) { _ in
+            TabView(selection: $currentVote) {
+                // TODO: - cell 5개로 설정해 둠
+                ForEach(0..<5) { index in
                     voteContentCell
+                        .tag(index)
                 }
                 .rotationEffect(.degrees(-90))
                 .frame(width: proxy.size.width, height: proxy.size.height)
@@ -225,15 +228,20 @@ extension MainVoteView {
         }
     }
 
+    @ViewBuilder
     private var nextVoteButton: some View {
-        HStack {
-            Spacer()
-            Button {
-                print("swipe gesture")
-            } label: {
-                Image("icnCaretDown")
+        if currentVote != 4 {
+            HStack {
+                Spacer()
+                Button {
+                    withAnimation {
+                        currentVote += 1
+                    }
+                } label: {
+                    Image("icnCaretDown")
+                }
+                Spacer()
             }
-            Spacer()
         }
     }
 
@@ -259,7 +267,6 @@ extension MainVoteView {
         return Int((voteRatio * 10).truncatingRemainder(dividingBy: 10))
     }
 }
-
 
 #Preview {
     WoteTabView()
