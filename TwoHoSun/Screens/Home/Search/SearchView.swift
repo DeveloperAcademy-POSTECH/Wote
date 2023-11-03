@@ -26,41 +26,42 @@ struct SearchView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var searchText = ""
     @State private var hasResult: Bool = false
-    @State private var isSearchResultViewShown = true
+    @State private var isSearchResultViewShown = false
     @State private var searchFilterType = SearchFilterType.progressing
+    @State private var searchTextFieldState = SearchTextFieldState.inactive
+    @FocusState private var isFocused: Bool
     private let viewModel = SearchViewModel()
 
     var body: some View {
         ZStack(alignment: .top) {
             Color.background
                 .ignoresSafeArea()
-            VStack(alignment: .leading, spacing: 0) {
-                if isSearchResultViewShown {
-                    searchFilterView
-                    searchResultView
-                        .padding(.top, 24)
-                } else {
-                    HStack {
-                        recentSearchLabel
-                        Spacer()
-                        deleteAllButton
-                    }
-                    recentSearchView
+            VStack( spacing: 0) {
+                HStack(spacing: 8) {
+                    backButton
+                    searchField
+                        .padding(.horizontal, 8)
                 }
+                .padding(.horizontal, 8)
+                VStack(alignment: .leading) {
+                    if isSearchResultViewShown {
+                        searchFilterView
+                            .padding(.bottom, 24)
+                        searchResultView
+                    } else {
+                        HStack {
+                            recentSearchLabel
+                            Spacer()
+                            deleteAllButton
+                        }
+                        recentSearchView
+                    }
+                }
+                .padding(.top, 24)
+                .padding(.horizontal, 16)
             }
-            .padding(.top, 24)
-            .padding(.horizontal, 16)
         }
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden()
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                backButton
-            }
-            ToolbarItem(placement: .principal) {
-                searchField
-            }
-        }
+        .toolbar(.hidden, for: .navigationBar)
     }
 }
 
@@ -72,6 +73,7 @@ extension SearchView {
         } label: {
             Image(systemName: "chevron.left")
                 .font(.system(size: 20, weight: .medium))
+                .foregroundStyle(Color.accentBlue)
         }
     }
 
@@ -82,28 +84,47 @@ extension SearchView {
                       prompt: Text("원하는 소비항목을 검색해보세요.")
                                 .font(.system(size: 14, weight: .medium))
                                 .foregroundStyle(Color.placeholderGray))
+                .focused($isFocused)
                 .font(.system(size: 14, weight: .medium))
-                .foregroundStyle(.white)
+                .foregroundStyle(searchTextFieldState.foregroundColor)
                 .tint(Color.placeholderGray)
+                .frame(height: 32)
                 .padding(.leading, 16)
+                .onChange(of: isFocused) { _, isFocused in
+                    if isFocused {
+                        searchTextFieldState = .active
+                    }
+                }
                 .onSubmit {
-                    // TODO: screen transition to result
+                    searchTextFieldState = .submitted
                     isSearchResultViewShown = true
                     viewModel.addRecentSearch(searchWord: searchText)
                 }
             Spacer()
             Button {
                 searchText.removeAll()
+                searchTextFieldState = .active
+                isFocused = true
             } label: {
                 Image(systemName: "xmark")
                     .font(.system(size: 12))
                     .foregroundStyle(Color.subGray2)
-                    .padding(.trailing, 4)
+                    .padding(.trailing, 16)
+            }
+        }
+        .background(searchTextFieldState.backgroundColor)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .overlay {
+            if searchTextFieldState == .active {
+                RoundedRectangle(cornerRadius: 10)
+                    .strokeBorder(searchTextFieldState.strokeColor, lineWidth: 1)
+                    .blur(radius: 3)
+                    .shadow(color: Color.shadowBlue, radius: 2)
             }
         }
         .overlay {
             RoundedRectangle(cornerRadius: 10)
-                .strokeBorder(Color.darkBlue, lineWidth: 1)
+                .strokeBorder(searchTextFieldState.strokeColor, lineWidth: 1)
         }
         .frame(height: 32)
     }
@@ -181,7 +202,7 @@ extension SearchView {
         }
     }
 
-    private var searchVoteResultCell: some View {
+    private var voteSearchResultCell: some View {
         VStack(alignment: .leading, spacing: 18) {
             HStack(spacing: 8) {
                 Circle()
@@ -236,7 +257,7 @@ extension SearchView {
                     .foregroundStyle(.pink)
             default:
                 ForEach(0..<5) { _ in
-                    searchVoteResultCell
+                    voteSearchResultCell
                 }
                 .listRowBackground(Color.clear)
                 .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))

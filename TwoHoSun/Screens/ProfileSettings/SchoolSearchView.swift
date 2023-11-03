@@ -7,55 +7,11 @@
 
 import SwiftUI
 
-enum SchoolSearchTextFieldState {
-    case inactive, active, submitted
-
-    var placeholderColor: Color {
-        switch self {
-        case .submitted:
-            return Color.descriptionGray
-        default:
-            return Color.placeholderGray
-        }
-    }
-
-    var backgroundColor: Color {
-        switch self {
-        case .inactive:
-            return .clear
-        case .active:
-            return .activeBlack
-        case .submitted:
-            return .fixedGray
-        }
-    }
-
-    var foregroundColor: Color {
-        switch self {
-        case .submitted:
-            return Color.descriptionGray
-        default:
-            return Color.placeholderGray
-        }
-    }
-
-    var strokeColor: Color {
-        switch self {
-        case .inactive:
-            return Color.darkBlue
-        case .active:
-            return Color.darkBlueStroke
-        case .submitted:
-            return Color.clear
-        }
-    }
-}
-
 struct SchoolSearchView: View {
     @State private var searchWord = ""
     @Binding var selectedSchoolInfo: SchoolInfoModel?
     @Environment(\.dismiss) var dismiss
-    @State private var textFieldState = SchoolSearchTextFieldState.inactive
+    @State private var textFieldState = SearchTextFieldState.inactive
     private let viewModel = SchoolSearchViewModel()
     @FocusState private var isFocused: Bool
 
