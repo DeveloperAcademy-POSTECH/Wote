@@ -8,9 +8,8 @@
 import SwiftUI
 
 struct SearchView: View {
-    @Environment(\.dismiss) private var dismiss: DismissAction
+    @Environment(\.dismiss) private var dismiss
     @State private var searchText = ""
-    @State private var dismissTabBar: Bool = false
     @State private var hasResult: Bool = false
     private let viewModel = SearchViewModel()
 
@@ -19,7 +18,6 @@ struct SearchView: View {
             Color.background
                 .ignoresSafeArea()
             VStack(spacing: 0) {
-                searchField
                 HStack {
                     recentSearchLabel
                     Spacer()
@@ -33,37 +31,59 @@ struct SearchView: View {
             .padding(.top, 20)
         }
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden()
         .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                backButton
+            }
             ToolbarItem(placement: .principal) {
-                Text("통합검색")
-                    .font(.system(size: 18, weight: .medium))
-                    .foregroundStyle(.white)
+                searchField
             }
         }
     }
 }
 
 extension SearchView {
-    
+
+    private var backButton: some View {
+        Button {
+            dismiss()
+        } label: {
+            Image(systemName: "chevron.left")
+                .font(.system(size: 20, weight: .medium))
+        }
+    }
+
     private var searchField: some View {
-        TextField("search",
-                  text: $searchText,
-                  prompt: Text("원하는 소비항목을 검색해보세요.")
-                            .font(.system(size: 16, weight: .medium))
-                            .foregroundStyle(Color.placeholderGray))
-            .font(.system(size: 16, weight: .medium))
-            .foregroundStyle(.white) // TODO: change text color when textField is active
-            .padding(EdgeInsets(top: 13, leading: 16, bottom: 12, trailing: 0))
-            .overlay {
-                RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(Color.darkBlue, lineWidth: 1)
-            }
-            .onSubmit {
-                // TODO: screen transition to result
-                viewModel.addRecentSearch(searchWord: searchText)
+        HStack {
+            TextField("search",
+                      text: $searchText,
+                      prompt: Text("원하는 소비항목을 검색해보세요.")
+                                .font(.system(size: 14, weight: .medium))
+                                .foregroundStyle(Color.placeholderGray))
+                .font(.system(size: 14, weight: .medium))
+                .foregroundStyle(.white)
+                .tint(Color.placeholderGray)
+                .padding(.leading, 16)
+                .onSubmit {
+                    // TODO: screen transition to result
+                    viewModel.addRecentSearch(searchWord: searchText)
+                }
+            Spacer()
+            Button {
                 searchText.removeAll()
+            } label: {
+                Image(systemName: "xmark")
+                    .font(.system(size: 12))
+                    .foregroundStyle(Color.subGray2)
+                    .padding(.trailing, 4)
             }
-            .tint(Color.placeholderGray)
+        }
+        .overlay {
+            RoundedRectangle(cornerRadius: 10)
+                .strokeBorder(Color.darkBlue, lineWidth: 1)
+        }
+        .frame(height: 32)
     }
 
     private var recentSearchLabel: some View {
