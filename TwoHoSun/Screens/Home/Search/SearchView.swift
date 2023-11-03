@@ -7,28 +7,49 @@
 
 import SwiftUI
 
+enum SearchFilterType: Int, CaseIterable {
+    case progressing, end, review
+
+    var filterTitle: String {
+        switch self {
+        case .progressing:
+            return "진행중인 투표"
+        case .end:
+            return "종료된 투표"
+        case .review:
+            return "후기"
+        }
+    }
+}
+
 struct SearchView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var searchText = ""
     @State private var hasResult: Bool = false
+    @State private var isSearchResultViewShown = true
+    @State private var searchFilterType = SearchFilterType.progressing
     private let viewModel = SearchViewModel()
 
     var body: some View {
         ZStack(alignment: .top) {
             Color.background
                 .ignoresSafeArea()
-            VStack(spacing: 0) {
-                HStack {
-                    recentSearchLabel
-                    Spacer()
-                    deleteAllButton
+            VStack(alignment: .leading, spacing: 0) {
+                if isSearchResultViewShown {
+                    searchFilterView
+                    searchResultView
+                        .padding(.top, 24)
+                } else {
+                    HStack {
+                        recentSearchLabel
+                        Spacer()
+                        deleteAllButton
+                    }
+                    recentSearchView
                 }
-                .padding(.top, 32)
-                recentSearchWords
-                    .padding(.top, 16)
             }
+            .padding(.top, 24)
             .padding(.horizontal, 16)
-            .padding(.top, 20)
         }
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
@@ -67,6 +88,7 @@ extension SearchView {
                 .padding(.leading, 16)
                 .onSubmit {
                     // TODO: screen transition to result
+                    isSearchResultViewShown = true
                     viewModel.addRecentSearch(searchWord: searchText)
                 }
             Spacer()
@@ -118,22 +140,18 @@ extension SearchView {
                 .foregroundStyle(Color.woteWhite)
                 .padding(.leading, 16)
             Spacer()
-            deleteButton(index)
+            Button {
+                viewModel.removeRecentSearch(at: index)
+            } label: {
+                Image(systemName: "xmark")
+                    .font(.system(size: 14))
+                    .foregroundStyle(Color.darkGray)
+            }
         }
         .padding(.vertical, 8)
     }
 
-    private func deleteButton(_ index: Int) -> some View {
-        Button {
-            viewModel.removeRecentSearch(at: index)
-        } label: {
-            Image(systemName: "xmark")
-                .font(.system(size: 14))
-                .foregroundStyle(Color.darkGray)
-        }
-    }
-
-    private var recentSearchWords: some View {
+    private var recentSearchView: some View {
         List {
             ForEach(viewModel.searchWords.indices, id: \.self) { index in
                 recentSearchCell(word: viewModel.searchWords[index], index: index)
@@ -145,54 +163,97 @@ extension SearchView {
         .listStyle(.plain)
     }
 
-    // TODO: - set search result layout
-//    private var recentSearchView: some View {
-//        VStack(alignment: .leading, spacing: 16) {
-//            HStack {
-//                Text("최근 검색어")
-//                    .foregroundStyle(.gray)
-//                    .font(.system(size: 14))
-//                Spacer()
-//            }
-//            WrappingHStack(horizontalSpacing: 8) {
-//                ForEach(Array(zip(viewModel.searchWords.indices, viewModel.searchWords)), id: \.0) { index, word in
-//                    Button {
-////                        viewModel.searchWords.remove(at: index)
-////                        viewModel.searchedDatas.removeAll()
-//                        viewModel.remove(at: index)
-//                    } label: {
-//                        HStack(spacing: 5) {
-//                            Text(word)
-//                                .font(.system(size: 14))
-//                            Image(systemName: "xmark")
-//                                .font(.system(size: 12))
-//                        }
-//                        .foregroundStyle(.gray)
-//                        .fixedSize()
-//                        .frame(height: 28)
-//                        .padding(.horizontal, 10)
-//                        .background(
-//                            Capsule()
-//                                .stroke(Color.gray, lineWidth: 1)
-//                                .foregroundStyle(.white)
-//                        )
-//                    }
-//                }
-//            }
-//        }
-//        .padding(.horizontal, 14)
-//        .padding(.top, 16)
-//    }
+    private var searchFilterView: some View {
+        HStack(spacing: 8) {
+            ForEach(SearchFilterType.allCases, id: \.self) { filter in
+                Button {
+                    searchFilterType = filter
+                } label: {
+                    Text(filter.filterTitle)
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundStyle(searchFilterType == filter ? Color.white : Color.gray100)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(searchFilterType == filter ? Color.lightBlue : Color.disableGray)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
+            }
+        }
+    }
 
-    // TODO: - change emptyResultView Layout
+    private var searchVoteResultCell: some View {
+        VStack(alignment: .leading, spacing: 18) {
+            HStack(spacing: 8) {
+                Circle()
+                    .frame(width: 32, height: 32)
+                    .foregroundStyle(.gray)
+                Text("얄루")
+                    .font(.system(size: 16, weight: .bold))
+                    .foregroundStyle(.white)
+                Spacer()
+                Text("소비성향")
+                    .font(.system(size: 14))
+                    .foregroundStyle(.white)
+            }
+            HStack {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("ACG 마운틴 플라이 살까 말까?sdffdsfsdfsdf")
+                        .font(.system(size: 16, weight: .bold))
+                        .foregroundStyle(.white)
+                        .lineLimit(1)
+                    Text("어쩌고저쩌고50자미만임~~asdfasadsafsdadsf")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundStyle(.white)
+                        .lineLimit(1)
+                        .padding(.bottom, 9)
+                    HStack(spacing: 0) {
+                        Text("161,100원 · 64명 투표 · ")
+                        Image(systemName: "message")
+                        Text("245명")
+                    }
+                    .font(.system(size: 14))
+                    .foregroundStyle(Color.gray100)
+                }
+                Spacer()
+                Rectangle()
+                    .frame(width: 66, height: 66)
+                    .foregroundStyle(.gray)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+            }
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 24)
+        .background(Color.disableGray)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+    }
+
+    private var searchResultView: some View {
+        List {
+            switch searchFilterType {
+            case .review:
+                // TODO: - create review search result layout
+                Text("review cell")
+                    .foregroundStyle(.pink)
+            default:
+                ForEach(0..<5) { _ in
+                    searchVoteResultCell
+                }
+                .listRowBackground(Color.clear)
+                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
+                .listRowSeparator(.hidden)
+            }
+        }
+        .listStyle(.plain)
+        .scrollIndicators(.hidden)
+    }
+
     private var emptyResultView: some View {
         VStack(spacing: 20) {
-            Rectangle()
-                .frame(width: 90, height: 90)
+            Image("imgNoResult")
             Text("검색 결과가 없습니다.")
                 .font(.system(size: 20, weight: .medium))
+                .foregroundStyle(Color.descriptionGray)
         }
-        .foregroundStyle(.gray)
     }
 }
 
