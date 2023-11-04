@@ -32,16 +32,32 @@ enum UserVoteType {
 struct MainVoteView: View {
     @State private var isVoted = false
     @State private var selectedVoteType = UserVoteType.agree
+    @State private var selectedVoteCategoryType = VoteCategoryType.all
+    @State private var isVoteCategoryButtonDidTap = false
+    @State private var currentVote = 0
     let viewModel: MainVoteViewModel
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             Color.background
                 .ignoresSafeArea()
-            votePagingView
+            ZStack(alignment: .topLeading) {
+                VStack(spacing: 0) {
+                    navigationBar
+                    votePagingView
+                }
+
+                if isVoteCategoryButtonDidTap {
+                    voteCategoryMenu
+                        .offset(x: 16, y: 40)
+                }
+            }
             createVoteButton
                 .padding(.bottom, 21)
                 .padding(.trailing, 24)
+        }
+        .onTapGesture {
+            isVoteCategoryButtonDidTap = false
         }
     }
 
@@ -49,17 +65,106 @@ struct MainVoteView: View {
 
 extension MainVoteView {
 
-    private var voteCategory: some View {
-        Text("고등학교 투표")
-            .font(.system(size: 20, weight: .bold))
-            .foregroundStyle(.white)
+    private var navigationBar: some View {
+        HStack(spacing: 0) {
+            voteCategoryButton
+            Spacer()
+            notificationButton
+                .padding(.trailing, 8)
+            searchButton
+        }
+        .padding(.horizontal, 16)
+    }
+
+    private var notificationButton: some View {
+        NavigationLink {
+            NotificationView()
+        } label: {
+            ZStack {
+                RoundedRectangle(cornerRadius: 6)
+                    .frame(width: 39, height: 39)
+                    .foregroundStyle(Color.disableGray)
+                Image(systemName: "bell.fill")
+                    .font(.system(size: 16))
+                    .foregroundStyle(Color.woteWhite)
+            }
+        }
+    }
+
+    private var searchButton: some View {
+        NavigationLink {
+            SearchView()
+        } label: {
+            ZStack {
+                RoundedRectangle(cornerRadius: 6)
+                    .frame(width: 39, height: 39)
+                    .foregroundStyle(Color.disableGray)
+                Image(systemName: "magnifyingglass")
+                    .font(.system(size: 16))
+                    .foregroundStyle(Color.woteWhite)
+            }
+        }
+    }
+
+    private var voteCategoryMenu: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Button {
+                selectedVoteCategoryType = .all
+                isVoteCategoryButtonDidTap = false
+                // TODO: - fetch new data
+            } label: {
+                Text("전국 투표")
+                    .padding(.leading, 15)
+                    .padding(.top, 14)
+                    .padding(.bottom, 12)
+            }
+            Divider()
+                .background(Color.gray300)
+            Button {
+                selectedVoteCategoryType = .mySchool
+                isVoteCategoryButtonDidTap = false
+                // TODO: - fetch new data
+            } label: {
+                Text("우리 학교 투표")
+                    .padding(.leading, 15)
+                    .padding(.top, 12)
+                    .padding(.bottom, 14)
+            }
+        }
+        .frame(width: 131, height: 88)
+        .font(.system(size: 14))
+        .foregroundStyle(Color.woteWhite)
+        .background(
+            RoundedRectangle(cornerRadius: 10)
+                .fill(Color.disableGray)
+                .strokeBorder(Color.gray300, lineWidth: 1)
+        )
+    }
+
+    private var voteCategoryButton: some View {
+        ZStack(alignment: .topLeading) {
+            Button {
+                isVoteCategoryButtonDidTap.toggle()
+            } label: {
+                HStack(spacing: 5) {
+                    Text(selectedVoteCategoryType.title)
+                        .font(.system(size: 20, weight: .bold))
+                        .foregroundStyle(.white)
+                    Image(systemName: "chevron.down")
+                        .font(.system(size: 16))
+                        .foregroundStyle(Color.descriptionGray)
+                }
+            }
+        }
     }
 
     private var votePagingView: some View {
         GeometryReader { proxy in
-            TabView {
-                ForEach(0..<5) { _ in
+            TabView(selection: $currentVote) {
+                // TODO: - cell 5개로 설정해 둠
+                ForEach(0..<5) { index in
                     voteContentCell
+                        .tag(index)
                 }
                 .rotationEffect(.degrees(-90))
                 .frame(width: proxy.size.width, height: proxy.size.height)
@@ -126,15 +231,20 @@ extension MainVoteView {
         }
     }
 
+    @ViewBuilder
     private var nextVoteButton: some View {
-        HStack {
-            Spacer()
-            Button {
-                print("swipe gesture")
-            } label: {
-                Image("icnCaretDown")
+        if currentVote != 4 {
+            HStack {
+                Spacer()
+                Button {
+                    withAnimation {
+                        currentVote += 1
+                    }
+                } label: {
+                    Image("icnCaretDown")
+                }
+                Spacer()
             }
-            Spacer()
         }
     }
 

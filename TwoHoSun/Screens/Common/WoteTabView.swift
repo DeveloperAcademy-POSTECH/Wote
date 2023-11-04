@@ -50,7 +50,7 @@ enum VoteCategoryType {
     var title: String {
         switch self {
         case .all:
-            return "전국투표"
+            return "전국 투표"
         case .mySchool:
             return "OO고등학교 투표"
         }
@@ -79,21 +79,10 @@ struct WoteTabView: View {
                 UITabBar.appearance().unselectedItemTintColor = .gray100
                 UITabBar.appearance().backgroundColor = .background
             }
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    voteCategoryButton
-                }
-
-                ToolbarItem(placement: .topBarTrailing) {
-                    HStack(spacing: 0) {
-                        notificationButton
-                        searchButton
-                    }
-                }
-            }
-            .toolbarBackground(Color.background, for: .navigationBar)
-            .toolbarBackground(.visible, for: .navigationBar)
+            .navigationTitle(selection.tabTitle)
+            .toolbar(.hidden, for: .navigationBar)
         }
+        .tint(Color.accentBlue)
     }
 }
 
@@ -149,7 +138,6 @@ extension WoteTabView {
                             .padding(.bottom, 14)
                     }
                 }
-                .frame(width: 131, height: 88)
                 .font(.system(size: 14))
                 .foregroundStyle(Color.woteWhite)
                 .background(
@@ -158,37 +146,6 @@ extension WoteTabView {
                         .strokeBorder(Color.gray300, lineWidth: 1)
                 )
                 .offset(y: 70)
-            }
-        }
-        .zIndex(1)
-    }
-
-    private var notificationButton: some View {
-        NavigationLink {
-            NotificationView()
-        } label: {
-            ZStack {
-                RoundedRectangle(cornerRadius: 6)
-                    .frame(width: 39, height: 39)
-                    .foregroundStyle(Color.disableGray)
-                Image(systemName: "bell.fill")
-                    .font(.system(size: 16))
-                    .foregroundStyle(Color.woteWhite)
-            }
-        }
-    }
-
-    private var searchButton: some View {
-        NavigationLink {
-            SearchView()
-        } label: {
-            ZStack {
-                RoundedRectangle(cornerRadius: 6)
-                    .frame(width: 39, height: 39)
-                    .foregroundStyle(Color.disableGray)
-                Image(systemName: "magnifyingglass")
-                    .font(.system(size: 16))
-                    .foregroundStyle(Color.woteWhite)
             }
         }
     }
