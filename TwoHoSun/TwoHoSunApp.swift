@@ -23,14 +23,14 @@ struct TwoHoSunApp: App {
     var body: some Scene {
         WindowGroup {
 //            if appState.hasValidToken {
-//                WoteTabView()
+//                MainTabView()
 //            } else {
 //                NavigationStack(path: $path) {
 //                    OnBoardingView(navigationPath: $path)
 //                }
 //                .tint(Color.accentBlue)
 //            }
-            WoteTabView()
+            DetailView()
         }
     }
 }
