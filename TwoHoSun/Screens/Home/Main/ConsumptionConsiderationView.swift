@@ -199,7 +199,7 @@ extension ConsumptionConsiderationView {
             HStack(spacing: 0) {
                 Text("161,100원 · 64명 투표 · ")
                 Image(systemName: "message")
-                Text("245명")
+                Text("245개")
             }
             .font(.system(size: 14))
             .foregroundStyle(Color.gray100)
@@ -214,7 +214,6 @@ extension ConsumptionConsiderationView {
             }
             .padding(.top, 8)
             nextVoteButton
-                .padding(.top, 24)
         }
         .padding(.horizontal, 24)
     }
@@ -226,7 +225,7 @@ extension ConsumptionConsiderationView {
             Text("상세보기")
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundStyle(.white)
-                .frame(maxWidth: .infinity, maxHeight: 48)
+                .frame(maxWidth: .infinity, minHeight: 43, maxHeight: 48)
                 .background(Color.blue100)
                 .clipShape(Capsule())
         }

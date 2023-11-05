@@ -42,7 +42,6 @@ struct DetailView : View {
                     .padding(EdgeInsets(top: 32, leading: 0, bottom: 48, trailing: 0))
                 voteResultView(.disagree, 0.33)
             }
-
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -88,10 +87,11 @@ extension DetailView {
     private var detailCell: some View {
         // TODO: 데이터 연결할것
         VStack(alignment: .leading) {
-            detailTextView(title: "ACG마운틴 플라이 할인 살말?", 
+            detailTextView(title: "ACG마운틴 플라이 할인 살말?",
                            price: 1000,
                            description: "어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고")
             VoteView()
+                .frame(height: 104)
                 .padding(.all, 24)
             Image("logo")
                 .resizable()
@@ -143,11 +143,14 @@ extension DetailView {
                 .foregroundStyle(Color.white)
                 .font(.system(size: 18, weight: .bold))
                 .padding(.bottom, 4)
-            Text("금액: \(price)원")
-                .foregroundStyle(Color.priceGray)
-                .font(.system(size: 14))
-                .padding(.bottom, 18)
+            HStack(spacing: 3) {
+                SpendTypeLabel(spendType: .saving)
+                Text("금액: \(price)원")
+                    .foregroundStyle(Color.priceGray)
+                    .font(.system(size: 14))
+            }
         }
+        .padding(.bottom, 18)
         .padding(.leading, 20)
 
         Text(description)

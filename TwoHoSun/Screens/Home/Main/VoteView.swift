@@ -48,7 +48,7 @@ extension VoteView {
                 .padding(.leading, 20)
             }
         }
-        .frame(maxHeight: 48)
+        .frame(minHeight: 43, maxHeight: 48)
     }
 
     private func completedVoteButton(voteType: UserVoteType, selectedType: UserVoteType, voteRatio: Double) -> some View {
@@ -73,7 +73,7 @@ extension VoteView {
             .font(.system(size: 16))
             .padding(.horizontal, 20)
         }
-        .frame(maxHeight: 48)
+        .frame(minHeight: 43, maxHeight: 48)
     }
 
     private func getFirstDecimalNum(_ voteRatio: Double) -> Int {
