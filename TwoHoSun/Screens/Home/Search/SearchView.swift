@@ -216,10 +216,21 @@ extension SearchView {
             }
             HStack {
                 VStack(alignment: .leading, spacing: 6) {
-                    Text("ACG 마운틴 플라이 살까 말까?sdffdsfsdfsdf")
-                        .font(.system(size: 16, weight: .bold))
-                        .foregroundStyle(.white)
-                        .lineLimit(1)
+                    HStack(spacing: 4) {
+                        if searchFilterType == .end {
+                            Text("종료")
+                                .font(.system(size: 12, weight: .medium))
+                                .foregroundStyle(.white)
+                                .padding(.vertical, 4)
+                                .padding(.horizontal, 5)
+                                .background(Color.black200)
+                                .clipShape(RoundedRectangle(cornerRadius: 3))
+                        }
+                        Text("ACG 마운틴 플라이 살까 말까?sdffdsfsdfsdf")
+                            .font(.system(size: 16, weight: .bold))
+                            .foregroundStyle(.white)
+                            .lineLimit(1)
+                    }
                     Text("어쩌고저쩌고50자미만임~~asdfasadsafsdadsf")
                         .font(.system(size: 14, weight: .medium))
                         .foregroundStyle(.white)
