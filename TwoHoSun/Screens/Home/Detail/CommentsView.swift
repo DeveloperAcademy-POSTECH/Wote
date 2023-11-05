@@ -72,25 +72,28 @@ extension CommentsView {
                 .resizable()
                 .frame(width: 32, height: 32)
             withAnimation(.easeInOut) {
-                TextField("", text: $commentText, 
-                          prompt: Text("소비고민을 함께 나누어 보세요")
+                TextField("", text: $commentText, prompt: Text("소비고민을 함께 나누어 보세요")
                     .foregroundStyle(Color.white)
                     .font(.system(size: 14)) ,axis: .vertical)
                     .font(.system(size: 14))
                     .foregroundStyle(Color.white)
                     .lineLimit(5)
                     .focused($isFocus)
-                    .padding(.vertical, 10)
-                    .padding(.horizontal, 10)
-                    .frame(maxWidth: .infinity)
-                    .frame(minHeight: 37)
-                    .background(isFocus ? Color.darkblue2325 : Color.textFieldGray)
-                    .cornerRadius(12)
+                    .padding(.all, 10)
+                    .frame(maxWidth: .infinity, minHeight: 37)
+                    .background {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 12)
+                                .strokeBorder(isFocus ? Color.darkBlueStroke : Color.textFieldGray, lineWidth: 1)
+                                .background(isFocus ? Color.darkblue2325 : Color.textFieldGray)
+                        }
+                    }
             }
+            .cornerRadius(12)
             .animation(.easeInOut(duration: 0.3), value: commentText)
             if isFocus {
                 Image(systemName: "paperplane")
-                    .foregroundStyle(Color.subGray1)
+                    .foregroundStyle(commentText.isEmpty ?  Color.subGray1 : Color.white)
                     .font(.system(size: 20))
             }
         }
