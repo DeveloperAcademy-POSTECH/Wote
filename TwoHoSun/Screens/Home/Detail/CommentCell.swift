@@ -40,9 +40,9 @@ struct CommentCell: View {
         return !comment.childComments!.isEmpty
     }
 
-    var lastEdit: (String , Int) {
-        return comment.modifiedDate.toDate()!.differenceCurrentTime()
-    }
+    //    var lastEdit: (String , Int) {
+    //        return comment.modifiedDate.toDate()!.differenceCurrentTime()
+    //    }
 
     var body: some View {
         HStack(alignment: .top) {
@@ -55,28 +55,32 @@ struct CommentCell: View {
                 HStack {
                     Text(comment.author.userNickname!)
                         .font(.system(size: 14, weight: .medium))
-                    Text("\(lastEdit.1) \(lastEdit.0)")
-                        .opacity(0.5)
+                        .foregroundStyle(Color.white)
+                    Text("\(comment.modifiedDate)")
                         .font(.system(size: 12))
+                        .foregroundStyle(Color.descriptionGray)
+
                     Spacer()
                     Button(action: {}, label: {
                         Image(systemName: "ellipsis")
-                            .foregroundStyle(.gray)
+                            .foregroundStyle(Color.descriptionGray)
                     })
                 }
                 .padding(.bottom, 6)
                 Text("\(comment.content)")
-                    .foregroundColor(.black)
+                    .foregroundStyle(Color.white)
                     .font(.system(size: 14))
                     .padding(.bottom, 4)
-                if comment.childComments != nil {
-                    Button(action: {onReplyButtonTapped()}, label: {
-                        Text("답글달기")
-                            .font(.system(size: 12))
-                            .foregroundStyle(.gray)
-                    })
-                }
+                Button(action: {onReplyButtonTapped()}, label: {
+                    Text("답글달기")
+                        .font(.system(size: 12))
+                        .foregroundStyle(Color.descriptionGray)
+                })
             }
         }
     }
+}
+
+#Preview {
+    CommentCell(comment: CommentsModel(commentId: 1, createDate: "2023-11-04T17:43:48.467Z", modifiedDate: "2023-11-04T17:43:48.467Z", content: "와 이걸 안먹어?", author: Author(id: 2, userNickname: "우왕 ㅋ", userProfileImage: nil), childComments: nil), onReplyButtonTapped: {})
 }

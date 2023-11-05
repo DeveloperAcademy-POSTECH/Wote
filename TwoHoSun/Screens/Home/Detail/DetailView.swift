@@ -66,9 +66,10 @@ struct DetailView : View {
                 })
             }
         }
-        .sheet(isPresented: $showDetailComments, content: {
-
-        })
+        .sheet(isPresented: $showDetailComments) {
+            CommentsView()
+                .presentationDetents([.fraction(0.9),.large])
+        }
     }
 }
 extension DetailView {
