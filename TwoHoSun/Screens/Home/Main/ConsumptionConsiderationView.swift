@@ -221,7 +221,7 @@ extension ConsumptionConsiderationView {
 
     private var detailResultButton: some View {
         NavigationLink {
-            Text("상세 결과 뷰")
+            DetailView()
         } label: {
             Text("상세보기")
                 .font(.system(size: 16, weight: .semibold))
@@ -251,7 +251,7 @@ extension ConsumptionConsiderationView {
 
     private var createVoteButton: some View {
         NavigationLink {
-            Text("Write View")
+            WriteView(viewModel: WriteViewModel())
         } label: {
             HStack(spacing: 2) {
                 Image(systemName: "plus")

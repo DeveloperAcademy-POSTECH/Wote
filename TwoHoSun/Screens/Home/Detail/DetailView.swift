@@ -45,16 +45,7 @@ struct DetailView : View {
 
         }
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden()
         .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    dismiss()
-                } label: {
-                    Label("소비고민", systemImage: "chevron.backward")
-                        .foregroundStyle(Color.accentBlue)
-                }
-            }
             ToolbarItem(placement: .principal) {
                 Text("상세보기")
                     .foregroundStyle(Color.white)
@@ -66,6 +57,7 @@ struct DetailView : View {
                 })
             }
         }
+        .toolbarBackground(Color.background, for: .navigationBar)
         .sheet(isPresented: $showDetailComments, content: {
 
         })
