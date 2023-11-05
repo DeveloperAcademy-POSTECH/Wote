@@ -8,13 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		5E5099542AED59DE0053E529 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5099532AED59DE0053E529 /* AppDelegate.swift */; };
+		AB3BACFA2AF7A55500E792BE /* SearchTextFieldState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3BACF92AF7A55500E792BE /* SearchTextFieldState.swift */; };
 		AB4522532ADDD99500B69F24 /* SchoolSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */; };
 		AB4522562ADDDBC400B69F24 /* SchoolResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */; };
 		AB45225A2ADDDC9E00B69F24 /* SchoolSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522592ADDDC9E00B69F24 /* SchoolSearchViewModel.swift */; };
 		AB45225C2ADE665100B69F24 /* URLConst.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB45225B2ADE665100B69F24 /* URLConst.swift */; };
 		AB4D82692ADD7F4D00F35CCB /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4D82682ADD7F4D00F35CCB /* ProfileSettingsView.swift */; };
 		AB90140E2AF4093A00D60918 /* SearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB90140D2AF4093A00D60918 /* SearchResultView.swift */; };
-		AB9014112AF5064B00D60918 /* SearchTextFieldState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB9014102AF5064B00D60918 /* SearchTextFieldState.swift */; };
 		ABB71D642AE26EB100BE0671 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = ABB71D632AE26EB100BE0671 /* Kingfisher */; };
 		ABB71D6E2AE2754300BE0671 /* PostResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D6D2AE2754300BE0671 /* PostResponseModel.swift */; };
 		ABB71D742AE2758200BE0671 /* ImageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D732AE2758200BE0671 /* ImageDetailView.swift */; };
@@ -70,13 +70,13 @@
 
 /* Begin PBXFileReference section */
 		5E5099532AED59DE0053E529 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		AB3BACF92AF7A55500E792BE /* SearchTextFieldState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTextFieldState.swift; sourceTree = "<group>"; };
 		AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolSearchView.swift; sourceTree = "<group>"; };
 		AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolResponseModel.swift; sourceTree = "<group>"; };
 		AB4522592ADDDC9E00B69F24 /* SchoolSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolSearchViewModel.swift; sourceTree = "<group>"; };
 		AB45225B2ADE665100B69F24 /* URLConst.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLConst.swift; sourceTree = "<group>"; };
 		AB4D82682ADD7F4D00F35CCB /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
 		AB90140D2AF4093A00D60918 /* SearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultView.swift; sourceTree = "<group>"; };
-		AB9014102AF5064B00D60918 /* SearchTextFieldState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTextFieldState.swift; sourceTree = "<group>"; };
 		ABB71D6D2AE2754300BE0671 /* PostResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostResponseModel.swift; sourceTree = "<group>"; };
 		ABB71D732AE2758200BE0671 /* ImageDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailView.swift; sourceTree = "<group>"; };
 		ABB71D792AE2A64300BE0671 /* LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkView.swift; sourceTree = "<group>"; };
@@ -165,14 +165,6 @@
 				AB90140D2AF4093A00D60918 /* SearchResultView.swift */,
 			);
 			path = Search;
-			sourceTree = "<group>";
-		};
-		AB90140F2AF5063200D60918 /* Enums */ = {
-			isa = PBXGroup;
-			children = (
-				AB9014102AF5064B00D60918 /* SearchTextFieldState.swift */,
-			);
-			path = Enums;
 			sourceTree = "<group>";
 		};
 		ABB71D6C2AE2753800BE0671 /* DTO */ = {
@@ -380,8 +372,8 @@
 		FD1DEBAB2ADC218800588CE6 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				AB90140F2AF5063200D60918 /* Enums */,
 				FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */,
+				AB3BACF92AF7A55500E792BE /* SearchTextFieldState.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -517,7 +509,7 @@
 				ABB71D6E2AE2754300BE0671 /* PostResponseModel.swift in Sources */,
 				ABB71D7A2AE2A64300BE0671 /* LinkView.swift in Sources */,
 				C771136F2AF0E7B600BAB128 /* UIColor+.swift in Sources */,
-				AB9014112AF5064B00D60918 /* SearchTextFieldState.swift in Sources */,
+				AB3BACFA2AF7A55500E792BE /* SearchTextFieldState.swift in Sources */,
 				FD4E75B62ADE9C20000C2277 /* ProfileSettingViewModel.swift in Sources */,
 				C73F8E882AE55101001C6B07 /* Author.swift in Sources */,
 				AB45225C2ADE665100B69F24 /* URLConst.swift in Sources */,
