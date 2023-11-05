@@ -73,14 +73,14 @@ extension CommentsView {
 //                    .frame(minHeight: 40)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 10)
-                    .background(Color.textFieldGray)
+                    .background(isFocus ?  : Color.textFieldGray)
                     .cornerRadius(12)
             }
 //            .background(.ultraThinMaterial)
             .animation(.easeInOut(duration: 0.3), value: commentText)
             if isFocus {
                 Image(systemName: "paperplane")
-                    .foregroundStyle(Color.descriptionGray)
+                    .foregroundStyle(Color.subGray1)
                     .font(.system(size: 20))
             }
         }

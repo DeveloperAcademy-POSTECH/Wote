@@ -58,12 +58,12 @@ struct CommentCell: View {
                         .foregroundStyle(Color.white)
                     Text("\(comment.modifiedDate)")
                         .font(.system(size: 12))
-                        .foregroundStyle(Color.descriptionGray)
+                        .foregroundStyle(Color.subGray1)
 
                     Spacer()
                     Button(action: {}, label: {
                         Image(systemName: "ellipsis")
-                            .foregroundStyle(Color.descriptionGray)
+                            .foregroundStyle(Color.subGray1)
                     })
                 }
                 .padding(.bottom, 6)
@@ -74,7 +74,7 @@ struct CommentCell: View {
                 Button(action: {onReplyButtonTapped()}, label: {
                     Text("답글달기")
                         .font(.system(size: 12))
-                        .foregroundStyle(Color.descriptionGray)
+                        .foregroundStyle(Color.subGray1)
                 })
             }
         }

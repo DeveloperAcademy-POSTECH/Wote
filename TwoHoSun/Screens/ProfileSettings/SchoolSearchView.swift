@@ -13,7 +13,7 @@ enum SchoolSearchTextFieldState {
     var placeholderColor: Color {
         switch self {
         case .submitted:
-            return Color.descriptionGray
+            return Color.subGray1
         default:
             return Color.placeholderGray
         }
@@ -33,7 +33,7 @@ enum SchoolSearchTextFieldState {
     var foregroundColor: Color {
         switch self {
         case .submitted:
-            return Color.descriptionGray
+            return Color.subGray1
         default:
             return Color.placeholderGray
         }
@@ -128,7 +128,7 @@ extension SchoolSearchView {
             Image("imgNoResult")
             Text("검색 결과가 없습니다.")
                 .font(.system(size: 20, weight: .medium))
-                .foregroundStyle(Color.descriptionGray)
+                .foregroundStyle(Color.subGray1)
         }
         .padding(.top, 170)
     }
@@ -191,7 +191,7 @@ extension SchoolSearchView {
                     .padding(.bottom, 5)
                 Text("예) 세원고, 세원고등학교")
                     .font(.system(size: 14, weight: .light))
-                    .foregroundStyle(Color.descriptionGray)
+                    .foregroundStyle(Color.subGray1)
             }
             Spacer()
         }
