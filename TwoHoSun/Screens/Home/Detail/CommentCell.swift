@@ -52,14 +52,15 @@ struct CommentCell: View {
                 .frame(width: 32, height: 32)
                 .clipShape(Circle())
             VStack(alignment: .leading) {
-                HStack {
+                HStack(spacing: 8) {
+                    SpendTypeLabel(spendType: .ecoWarrior, usage: .comments)
                     Text(comment.author.userNickname!)
                         .font(.system(size: 14, weight: .medium))
                         .foregroundStyle(Color.white)
-                    Text("\(comment.modifiedDate)")
+//                    Text("\(comment.modifiedDate)")
+                    Text("1시간전")
                         .font(.system(size: 12))
                         .foregroundStyle(Color.subGray1)
-
                     Spacer()
                     Button(action: {}, label: {
                         Image(systemName: "ellipsis")

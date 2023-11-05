@@ -17,43 +17,52 @@ struct CommentsView: View {
                                           CommentsModel(commentId: 5, createDate: "2023-11-04T17:43:48.467Z", modifiedDate: "2023-11-04T17:43:48.467Z", content: "와 이?", author: Author(id: 3, userNickname: "ㅓㅓㅗ", userProfileImage: nil), childComments: nil),
                                           CommentsModel(commentId: 6, createDate: "2023-11-04T17:43:48.467Z", modifiedDate: "2023-11-04T17:43:48.467Z", content: "먹어?", author: Author(id: 4, userNickname: "ㅎ ㅋ", userProfileImage: nil), childComments: nil)]
     var body: some View {
-        ZStack(alignment: .top) {
+        ZStack {
             Color.lightGray
                 .ignoresSafeArea()
             VStack {
                 Text("댓글")
                     .foregroundStyle(.white)
                     .font(.system(size: 15))
-                    .padding(.bottom, 16)
+                    .frame(maxWidth: .infinity)
+                    .padding(.bottom, 13)
                     .padding(.top, 38)
-                Divider()
-                    .padding(.bottom, 15)
+                    .overlay(Divider().background(Color.subGray1), alignment: .bottom)
+                    .padding(.bottom, 13)
                 comments
-                Divider()
                 commentInputView
             }
         }
-        .ignoresSafeArea(.keyboard)
+//        .navigationBarTitleDisplayMode(.inline)
+//        .toolbar {
+//            ToolbarItem(placement: .principal) {
+//                Text("댓글")
+//                    .foregroundStyle(Color.white)
+//            }
+//        }
     }
 }
 
 extension CommentsView {
     var comments : some View {
         ScrollViewReader { proxy in
-            LazyVStack(alignment: .leading, spacing: 28) {
-                ForEach(commentsModel, id: \.commentId) { comment in
-                    CommentCell(comment: comment) {
-                        //                                scrollSpot = comment.commentId
-                        //                                isReplyButtonTap = true
-                        //                                isFocus = true
+            ScrollView {
+                LazyVStack(alignment: .leading, spacing: 28) {
+                    ForEach(commentsModel, id: \.commentId) { comment in
+                        CommentCell(comment: comment) {
+                            //                                scrollSpot = comment.commentId
+                            //                                isReplyButtonTap = true
+                            //                                isFocus = true
+                        }
+                        //                            .id(comment.commentId)
+                        //                            makeChildComments(comment: comment)
                     }
-                    //                            .id(comment.commentId)
-                    //                            makeChildComments(comment: comment)
+                    //                        .onChange(of: scrollSpot) { _, _ in
+                    //                            proxy.scrollTo(scrollSpot, anchor: .top)
+                    //                        }
                 }
-                //                        .onChange(of: scrollSpot) { _, _ in
-                //                            proxy.scrollTo(scrollSpot, anchor: .top)
-                //                        }
             }
+//            .frame(minHeight: 200, maxHeight: 300)
         }
         .padding(.horizontal, 24)
     }
@@ -86,8 +95,7 @@ extension CommentsView {
             }
         }
         .frame(maxWidth: .infinity)
-        .frame(minHeight: 82)
-        .padding(EdgeInsets(top: 11, leading: 24, bottom: 34, trailing: 24))
-        .modifier(Keyboard())
+        .padding(EdgeInsets(top: 11, leading: 24, bottom: 10, trailing: 24))
+        .overlay(Divider().background(Color.subGray1), alignment: .top)
     }
 }
