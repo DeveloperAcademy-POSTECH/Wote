@@ -212,9 +212,7 @@ extension SearchView {
                     .font(.system(size: 16, weight: .bold))
                     .foregroundStyle(.white)
                 Spacer()
-                Text("소비성향")
-                    .font(.system(size: 14))
-                    .foregroundStyle(.white)
+                SpendTypeLabel(spendType: .saving)
             }
             HStack {
                 VStack(alignment: .leading, spacing: 6) {
