@@ -286,8 +286,7 @@ extension ProfileSettingsView {
                 }
             }
         }
-        .padding(.bottom, viewModel.isFormValid ? 124: 104)
-    
+        .padding(.bottom, viewModel.isFormValid ? 124 : 104)
     }
     
     private var nextButton: some View {

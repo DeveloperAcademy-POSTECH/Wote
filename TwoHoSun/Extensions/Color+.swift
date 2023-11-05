@@ -16,6 +16,10 @@ extension Color {
     static let checkColor = Color(UIColor(hexCode: "3BCC3C"))
     static let whiteGray = Color(UIColor(hexCode: "CCCCCC"))
     static let lightBlue = Color(UIColor(hexCode: "607DEA"))
+    static let darkblue = Color(UIColor(hexCode: "293351"))
+    static let lightGray = Color(UIColor(hexCode: "2C2F37"))
+    static let darkGray2 = Color(UIColor(hexCode: "1B1D22"))
+    static let priceGray = Color(UIColor(hexCode: "8894B0"))
     static let deepBlue = Color(UIColor(hexCode: "0280F4"))
     static let strokeBlue = Color(UIColor(hexCode: "5F5BFF"))
     static let subGray1 = Color(UIColor(hexCode: "808080"))
@@ -42,5 +46,6 @@ extension Color {
     static let gray300 = Color(UIColor(hexCode: "363636"))
     static let blue100 = Color(UIColor(hexCode: "293351"))
     static let black100 = Color(UIColor(hexCode: "1B1D22"))
+    static let textFieldGray = Color(UIColor(hexCode: "474D52"))
 }
 
