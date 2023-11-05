@@ -92,7 +92,7 @@ extension WoteTabView {
     private func tabDestinationView(for tab: WoteTabType) -> some View {
         switch tab {
         case .consider:
-            MainVoteView(viewModel: MainVoteViewModel())
+            ConsumptionConsiderationView(viewModel: MainVoteViewModel())
         case .review:
             Text("소비후기")
         case .myPage:

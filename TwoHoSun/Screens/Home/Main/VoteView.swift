@@ -48,7 +48,7 @@ extension VoteView {
                 .padding(.leading, 20)
             }
         }
-        .frame(height: 48)
+        .frame(maxHeight: 48)
     }
 
     private func completedVoteButton(voteType: UserVoteType, selectedType: UserVoteType, voteRatio: Double) -> some View {
@@ -58,7 +58,7 @@ extension VoteView {
                 .overlay(alignment: .leading) {
                     let voteButtonWidth = UIScreen.main.bounds.width - 48
                     Rectangle()
-                        .frame(width: voteButtonWidth * voteRatio * 0.01, height: 48)
+                        .frame(width: voteButtonWidth * voteRatio * 0.01)
                         .foregroundStyle(voteType == selectedType ? Color.lightBlue : Color.gray200)
                 }
                 .clipShape(Capsule())
@@ -73,7 +73,7 @@ extension VoteView {
             .font(.system(size: 16))
             .padding(.horizontal, 20)
         }
-        .frame(height: 48)
+        .frame(maxHeight: 48)
     }
 
     private func getFirstDecimalNum(_ voteRatio: Double) -> Int {

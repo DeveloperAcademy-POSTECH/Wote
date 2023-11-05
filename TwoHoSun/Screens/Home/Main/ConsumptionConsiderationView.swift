@@ -29,7 +29,7 @@ enum UserVoteType {
     }
 }
 
-struct MainVoteView: View {
+struct ConsumptionConsiderationView: View {
     @State private var isVoted = false
     @State private var selectedVoteType = UserVoteType.agree
     @State private var selectedVoteCategoryType = VoteCategoryType.all
@@ -44,7 +44,9 @@ struct MainVoteView: View {
             ZStack(alignment: .topLeading) {
                 VStack(spacing: 0) {
                     navigationBar
+                    Spacer()
                     votePagingView
+                    Spacer()
                 }
 
                 if isVoteCategoryButtonDidTap {
@@ -63,7 +65,7 @@ struct MainVoteView: View {
 
 }
 
-extension MainVoteView {
+extension ConsumptionConsiderationView {
 
     private var navigationBar: some View {
         HStack(spacing: 0) {
@@ -178,7 +180,6 @@ extension MainVoteView {
 
     private var voteContentCell: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Spacer()
             HStack(spacing: 8) {
                 Image("imgDefaultProfile")
                     .frame(width: 32, height: 32)
@@ -205,16 +206,16 @@ extension MainVoteView {
             .padding(.bottom, 14)
             RoundedRectangle(cornerRadius: 16)
                 .strokeBorder(Color.disableGray, lineWidth: 1)
-                .frame(height: 218)
-            VoteView(isVoted: isVoted,
-                     selectedVoteType: selectedVoteType)
-                .padding(.vertical, 10)
-            detailResultButton
-                .padding(.bottom, 18)
+                .frame(maxHeight: 218)
+            VStack(spacing: 16) {
+                VoteView(isVoted: isVoted,
+                         selectedVoteType: selectedVoteType)
+                detailResultButton
+            }
+            .padding(.top, 8)
             nextVoteButton
-            Spacer()
+                .padding(.top, 24)
         }
-        .frame(maxHeight: .infinity)
         .padding(.horizontal, 24)
     }
 
@@ -225,10 +226,9 @@ extension MainVoteView {
             Text("상세보기")
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundStyle(.white)
-                .frame(maxWidth: .infinity)
-                .frame(height: 48)
+                .frame(maxWidth: .infinity, maxHeight: 48)
                 .background(Color.blue100)
-                .clipShape(RoundedRectangle(cornerRadius: 28))
+                .clipShape(Capsule())
         }
     }
 

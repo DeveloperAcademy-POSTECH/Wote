@@ -40,7 +40,7 @@ enum SpendTItleType {
         }
     }
     var backgroundColor: Color {
-        switch self{
+        switch self {
         case .ecoWarrior:
             return Color.purple
         default:
