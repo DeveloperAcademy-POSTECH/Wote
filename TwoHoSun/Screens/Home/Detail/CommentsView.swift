@@ -9,6 +9,8 @@ import SwiftUI
 
 struct CommentsView: View {
     @State private var commentText = ""
+    @State private var isReplyButtonTap = false
+    @State private var scrollSpot: Int = 0
     @FocusState private var isFocus: Bool
     let commentsModel: [CommentsModel] = [CommentsModel(commentId: 1, createDate: "2023-11-04T17:43:48.467Z", modifiedDate: "2023-11-04T17:43:48.467Z", content: "와 이걸 안먹어?", author: Author(id: 2, userNickname: "우왕 ㅋ", userProfileImage: nil), childComments: nil),
                                           CommentsModel(commentId: 2, createDate: "2023-11-04T17:43:48.467Z", modifiedDate: "2023-11-04T17:43:48.467Z", content: "와 이?", author: Author(id: 3, userNickname: "ㅓㅓㅗ", userProfileImage: nil), childComments: nil),
@@ -20,16 +22,17 @@ struct CommentsView: View {
         ZStack {
             Color.lightGray
                 .ignoresSafeArea()
-            VStack {
+            VStack(spacing: 0) {
                 Text("댓글")
                     .foregroundStyle(.white)
-                    .font(.system(size: 15))
+                    .font(.system(size: 15, weight: .medium))
                     .frame(maxWidth: .infinity)
                     .padding(.bottom, 13)
                     .padding(.top, 38)
                     .overlay(Divider().background(Color.subGray1), alignment: .bottom)
                     .padding(.bottom, 13)
                 comments
+                forReplyLabel
                 commentInputView
             }
         }
@@ -50,22 +53,23 @@ extension CommentsView {
                 LazyVStack(alignment: .leading, spacing: 28) {
                     ForEach(commentsModel, id: \.commentId) { comment in
                         CommentCell(comment: comment) {
-                            //                                scrollSpot = comment.commentId
-                            //                                isReplyButtonTap = true
-                            //                                isFocus = true
+                                scrollSpot = comment.commentId
+                                isReplyButtonTap = true
+                                isFocus = true
                         }
                         //                            .id(comment.commentId)
                         //                            makeChildComments(comment: comment)
                     }
-                    //                        .onChange(of: scrollSpot) { _, _ in
-                    //                            proxy.scrollTo(scrollSpot, anchor: .top)
-                    //                        }
+                    .onChange(of: scrollSpot) { _, _ in
+                        proxy.scrollTo(scrollSpot, anchor: .top)
+                    }
                 }
             }
 //            .frame(minHeight: 200, maxHeight: 300)
         }
         .padding(.horizontal, 24)
     }
+
     var commentInputView: some View {
         HStack {
             Image("defaultProfile")
@@ -98,7 +102,32 @@ extension CommentsView {
             }
         }
         .frame(maxWidth: .infinity)
-        .padding(EdgeInsets(top: 11, leading: 24, bottom: 10, trailing: 24))
+        .padding(EdgeInsets(top: 11, leading: 24, bottom: 9, trailing: 24))
         .overlay(Divider().background(Color.subGray1), alignment: .top)
+    }
+
+    @ViewBuilder
+    var forReplyLabel: some View {
+        //TODO: 추후에 유저 닉네임 가져오기
+        if isReplyButtonTap {
+//             if let nickName = viewModel.getNicknameForComment(commentId: scrollSpot) {
+            HStack {
+                     Text("선ㅋ호ㅋ님에게 답글달기")
+                         .font(.system(size: 14))
+                         .foregroundStyle(Color.grayC4C4)
+                     Spacer()
+                     Button {
+                         isReplyButtonTap = false
+                     } label: {
+                         Image(systemName: "xmark")
+                             .foregroundStyle(.white)
+                             .font(.system(size: 14))
+                     }
+                 }
+                 .padding(.vertical, 14)
+                 .padding(.horizontal, 24)
+                 .background(Divider().background(Color.subGray1), alignment: .top)
+             }
+//         }
     }
 }
