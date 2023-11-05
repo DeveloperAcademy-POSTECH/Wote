@@ -32,9 +32,8 @@ struct CommentsView: View {
                 Divider()
                 commentInputView
             }
-
-
         }
+        .ignoresSafeArea(.keyboard)
     }
 }
 
@@ -64,19 +63,21 @@ extension CommentsView {
                 .resizable()
                 .frame(width: 32, height: 32)
             withAnimation(.easeInOut) {
-                TextField("소비고민을 함께 나누어 보세요", text: $commentText, axis: .vertical)
+                TextField("", text: $commentText, 
+                          prompt: Text("소비고민을 함께 나누어 보세요")
+                    .foregroundStyle(Color.white)
+                    .font(.system(size: 14)) ,axis: .vertical)
                     .font(.system(size: 14))
                     .foregroundStyle(Color.white)
                     .lineLimit(5)
                     .focused($isFocus)
-                    .frame(maxWidth: .infinity)
-//                    .frame(minHeight: 40)
-                    .padding(.horizontal, 10)
                     .padding(.vertical, 10)
-                    .background(isFocus ?  : Color.textFieldGray)
+                    .padding(.horizontal, 10)
+                    .frame(maxWidth: .infinity)
+                    .frame(minHeight: 37)
+                    .background(isFocus ? Color.darkblue2325 : Color.textFieldGray)
                     .cornerRadius(12)
             }
-//            .background(.ultraThinMaterial)
             .animation(.easeInOut(duration: 0.3), value: commentText)
             if isFocus {
                 Image(systemName: "paperplane")
@@ -85,8 +86,8 @@ extension CommentsView {
             }
         }
         .frame(maxWidth: .infinity)
-//        .frame(minHeight: 82)
-        .padding(EdgeInsets(top: 11, leading: 24, bottom: 0, trailing: 24))
+        .frame(minHeight: 82)
+        .padding(EdgeInsets(top: 11, leading: 24, bottom: 34, trailing: 24))
+        .modifier(Keyboard())
     }
-
 }
