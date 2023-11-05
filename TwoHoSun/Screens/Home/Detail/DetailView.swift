@@ -86,9 +86,11 @@ extension DetailView {
     }
 
     private var detailCell: some View {
-        //TODO: 데이터 연결할것
+        // TODO: 데이터 연결할것
         VStack(alignment: .leading) {
-            detailTextView(title: "ACG마운틴 플라이 할인 살말?", price: 1000, description: "어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고")
+            detailTextView(title: "ACG마운틴 플라이 할인 살말?", 
+                           price: 1000,
+                           description: "어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고")
             VoteView()
                 .padding(.all, 24)
             Image("logo")
@@ -157,7 +159,7 @@ extension DetailView {
     }
 
     var commentPreview: some View {
-        //TODO: 뷰모델에서 댓글이 있는지를 체크한담에 있으면 삼항연산자를 통해 할 예정
+        // TODO: 뷰모델에서 댓글이 있는지를 체크한담에 있으면 삼항연산자를 통해 할 예정
         VStack {
             HStack(spacing: 4) {
                 Text("댓글")
@@ -200,7 +202,7 @@ extension DetailView {
                 .font(.system(size: 14))
                 .foregroundStyle(Color.priceGray)
             HStack(spacing: 8) {
-                //TODO: viewModel로 부터 데이터를 받아서 어떤 유형인지 여기에 알려주면 댐.
+                // TODO: viewModel로 부터 데이터를 받아서 어떤 유형인지 여기에 알려주면 댐.
                 SpendTypeLabel(spendType: .saving)
                 SpendTypeLabel(spendType: .ecoWarrior)
 
