@@ -116,7 +116,13 @@ struct CommentCell: View {
     CommentCell(comment: CommentsModel(commentId: 1, 
                                        createDate: "2023-11-04T17:43:48.467Z",
                                        modifiedDate: "2023-11-04T17:43:48.467Z",
-                                       content: " 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어 안먹어?",
+                                       content: """
+                                        이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와
+                                        이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와
+                                        이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와
+                                        이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와
+                                        이걸 안먹어와 이걸 안먹어 안먹어?
+                                        """,
                                        author: Author(id: 2, userNickname: "우왕 ㅋ", userProfileImage: nil),
                                        childComments: nil),
                 onReplyButtonTapped: {})

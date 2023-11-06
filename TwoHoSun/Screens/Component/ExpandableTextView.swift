@@ -75,7 +75,9 @@ struct ExpandableTextView: View {
 
                           /// Line Limit 내에서 문제 없이 보여질 경우 체크
                           let pureAttributedText = NSAttributedString(string: shrinkText, attributes: attributes)
-                          let pureBoundingRect = pureAttributedText.boundingRect(with: size, options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
+                          let pureBoundingRect = pureAttributedText.boundingRect(with: size, 
+                                                                                 options: NSStringDrawingOptions.usesLineFragmentOrigin,
+                                                                                 context: nil)
                           if abs(pureBoundingRect.size.height - visibleTextGeometry.size.height) < 1 {
                             return
                           }

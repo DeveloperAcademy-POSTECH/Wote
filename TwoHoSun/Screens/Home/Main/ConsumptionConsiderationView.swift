@@ -32,7 +32,6 @@ enum UserVoteType {
 struct ConsumptionConsiderationView: View {
     @State private var isVoted = false
     @State private var selectedVoteType = UserVoteType.agree
-    @State private var selectedVoteCategoryType = VoteCategoryType.all
     @State private var currentVote = 0
     let viewModel: ConsumptionConsiderationViewModel
 
