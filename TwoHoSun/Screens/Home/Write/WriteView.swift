@@ -72,9 +72,8 @@ extension WriteView {
                 .padding(.horizontal, 16)
                 .overlay {
                     RoundedRectangle(cornerRadius: 10)
-                        .strokeBorder(Color.darkBlue, lineWidth: 1)
+                        .strokeBorder(!viewModel.isTitleValid && isRegisterButtonDidTap ? .red : Color.darkBlue, lineWidth: 1)
                 }
-                categoryMenu
             }
             if !viewModel.isTitleValid && isRegisterButtonDidTap {
                 HStack(spacing: 8) {
@@ -83,38 +82,6 @@ extension WriteView {
                 }
                 .font(.system(size: 12))
                 .foregroundStyle(.red)
-            }
-        }
-    }
-    
-    private var categoryMenu: some View {
-        Menu {
-            ForEach(PostCategoryType.allCases, id: \.self) { postCategory in
-                Button {
-                    viewModel.postCategoryType = postCategory
-                } label: {
-                    Text(postCategory.title)
-                }
-            }
-        } label: {
-            HStack(spacing: 18) {
-                Text(viewModel.postCategoryType.title)
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundStyle(.white)
-                    .frame(height: 44)
-                Button {
-                    
-                } label: {
-                    Image(systemName: "chevron.down")
-                        .font(.system(size: 16))
-                        .foregroundStyle(Color.placeholderGray)
-                }
-            }
-            .padding(.leading, 16)
-            .padding(.trailing, 12)
-            .background {
-                RoundedRectangle(cornerRadius: 10)
-                    .foregroundStyle(Color.disableGray)
             }
         }
     }
