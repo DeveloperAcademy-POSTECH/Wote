@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ComplaintReasonView: View {
     @Binding var isSheet: Bool
+    @Binding var isComplaintApply: Bool
+
     var body: some View {
         ZStack {
             Color
@@ -44,6 +46,7 @@ struct ComplaintReasonView: View {
                     .padding(.horizontal, 16)
                 Spacer()
             }
+            .padding(.top, 23)
         }
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -57,6 +60,7 @@ struct ComplaintReasonView: View {
 extension ComplaintReasonView {
     var transferComplaintButton: some View {
         Button {
+            isComplaintApply.toggle()
             isSheet.toggle()
         } label: {
             Text("Wote에게 전달하기")

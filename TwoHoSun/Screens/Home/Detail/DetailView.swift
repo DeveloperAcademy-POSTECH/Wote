@@ -14,6 +14,7 @@ struct DetailView : View {
     @State private var showDetailComments = false
     @State private var showconfirm = false
     @State private var backgroundColor: Color = .background
+ 
     var isDone: Bool
 
     init(isDone: Bool) {

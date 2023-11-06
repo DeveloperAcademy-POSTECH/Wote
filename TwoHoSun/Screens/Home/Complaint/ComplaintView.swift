@@ -8,6 +8,7 @@
 import SwiftUI
 struct ComplaintView: View {
     @Binding var isSheet: Bool
+    @Binding var isComplaintApply: Bool
     enum ComplaintReason: CaseIterable {
         case spam, sexual, abuse, copyright, suicide, advertise, abnormal
         var title: String {
@@ -42,7 +43,7 @@ struct ComplaintView: View {
 
                     List {
                         ForEach(ComplaintReason.allCases, id: \.hashValue) { value in
-                            NavigationLink(destination: ComplaintReasonView(isSheet: $isSheet)) {
+                            NavigationLink(destination: ComplaintReasonView(isSheet: $isSheet, isComplaintApply: $isComplaintApply)) {
                                 Text(value.title)
                                     .foregroundStyle(Color.subGray3)
                             }
