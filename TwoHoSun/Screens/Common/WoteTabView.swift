@@ -213,7 +213,7 @@ extension WoteTabView {
                         .foregroundStyle(.white)
                     Image(systemName: "chevron.down")
                         .font(.system(size: 16))
-                        .foregroundStyle(Color.descriptionGray)
+                        .foregroundStyle(Color.subGray1)
                 }
             }
         }

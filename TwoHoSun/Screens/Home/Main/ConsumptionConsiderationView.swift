@@ -110,7 +110,7 @@ extension ConsumptionConsiderationView {
                 Text("얄루")
                     .font(.system(size: 16, weight: .bold))
                     .foregroundStyle(.white)
-                SpendTypeLabel(spendType: .saving)
+                SpendTypeLabel(spendType: .saving, usage: .detailView)
             }
             .padding(.bottom, 10)
             Text("ACG 마운틴 플라이 할인하는데 살까?")

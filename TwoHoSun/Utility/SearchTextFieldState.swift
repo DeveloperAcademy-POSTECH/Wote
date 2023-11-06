@@ -13,7 +13,7 @@ enum SearchTextFieldState {
     var placeholderColor: Color {
         switch self {
         case .submitted:
-            return Color.descriptionGray
+            return Color.subGray1
         default:
             return Color.placeholderGray
         }
@@ -33,7 +33,7 @@ enum SearchTextFieldState {
     var foregroundColor: Color {
         switch self {
         case .submitted:
-            return Color.descriptionGray
+            return Color.subGray1
         default:
             return Color.placeholderGray
         }
