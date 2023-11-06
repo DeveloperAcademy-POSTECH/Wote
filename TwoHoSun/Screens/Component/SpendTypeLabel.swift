@@ -8,6 +8,7 @@
 import SwiftUI
 struct SpendTypeLabel: View {
     let spendType: SpendTItleType
+
     var body: some View {
         Text(spendType.title)
             .font(.system(size: 14))

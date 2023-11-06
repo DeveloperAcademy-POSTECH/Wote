@@ -22,8 +22,10 @@ final class SearchViewModel {
     }
 
     func addRecentSearch(searchWord: String) {
-        // TODO: set recent search storage limit
         searchWords.insert(searchWord, at: 0)
+        if searchWords.count > 12 {
+            searchWords.removeLast()
+        }
         setRecentSearch()
     }
 
