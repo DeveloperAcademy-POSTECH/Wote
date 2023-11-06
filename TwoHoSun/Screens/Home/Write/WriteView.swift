@@ -9,6 +9,10 @@ import PhotosUI
 import SwiftUI
 
 struct WriteView: View {
+    @FocusState private var isTitleFocused: Bool
+    @FocusState private var isPriceFocused: Bool
+    @FocusState private var isLinkFocused: Bool
+    @FocusState private var isContentFocused: Bool
     @State private var placeholderText = "욕설,비방,광고 등 소비 고민과 관련없는 내용은 통보 없이 삭제될 수 있습니다."
     @State private var isRegisterButtonDidTap = false
     @State private var selectedPhoto: PhotosPickerItem?
@@ -109,13 +113,22 @@ extension WriteView {
                     .font(.system(size: 14))
                     .foregroundStyle(Color.placeholderGray)
                 )
+                .font(.system(size: 14))
+                .focused($isTitleFocused)
                 .foregroundStyle(.white)
                 .frame(height: 44)
                 .padding(.horizontal, 16)
-                .overlay {
-                    RoundedRectangle(cornerRadius: 10)
-                        .strokeBorder(!viewModel.isTitleValid && isRegisterButtonDidTap ? .red : Color.darkBlue, lineWidth: 1)
-                }
+                .background(
+                    ZStack {
+                        if isTitleFocused {
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundStyle(Color.activeBlack)
+                                .shadow(color: Color.strokeBlue.opacity(isTitleFocused ? 0.25 : 0), radius: 4)
+                        }
+                        RoundedRectangle(cornerRadius: 10)
+                            .strokeBorder(!viewModel.isTitleValid && isRegisterButtonDidTap ? .red : Color.darkBlue, lineWidth: 1)
+                    }
+                )
             }
             if !viewModel.isTitleValid && isRegisterButtonDidTap {
                 HStack(spacing: 8) {
@@ -138,6 +151,7 @@ extension WriteView {
                     .font(.system(size: 14))
                     .foregroundStyle(Color.placeholderGray)
                 )
+                .focused($isPriceFocused)
                 .font(.system(size: 14))
                 .keyboardType(.numberPad)
                 Text("원")
@@ -146,10 +160,17 @@ extension WriteView {
             .foregroundStyle(.white)
             .frame(height: 44)
             .padding(.horizontal, 16)
-            .overlay {
-                RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(Color.darkBlue, lineWidth: 1)
-            }
+            .background(
+                ZStack {
+                    if isPriceFocused {
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundStyle(Color.activeBlack)
+                            .shadow(color: Color.strokeBlue.opacity(isPriceFocused ? 0.25 : 0), radius: 4)
+                    }
+                    RoundedRectangle(cornerRadius: 10)
+                        .strokeBorder(Color.darkBlue, lineWidth: 1)
+                }
+            )
         }
     }
     
@@ -218,18 +239,27 @@ extension WriteView {
                 .font(.system(size: 14))
                 .foregroundStyle(Color.placeholderGray)
             )
+            .font(.system(size: 14))
+            .focused($isLinkFocused)
             .foregroundStyle(.white)
             .frame(height: 44)
             .padding(.horizontal, 16)
-            .overlay {
-                RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(Color.darkBlue, lineWidth: 1)
-            }
+            .background(
+                ZStack {
+                    if isLinkFocused {
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundStyle(Color.activeBlack)
+                            .shadow(color: Color.strokeBlue.opacity(isLinkFocused ? 0.25 : 0), radius: 4)
+                    }
+                    RoundedRectangle(cornerRadius: 10)
+                        .strokeBorder(Color.darkBlue, lineWidth: 1)
+                }
+            )
         }
     }
     
     private var contentView: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading) {
             headerLabel("고민하는 내용을 작성해 주세요. ", essential: false)
             textEditorView
         }
@@ -245,17 +275,27 @@ extension WriteView {
             TextEditor(text: $viewModel.content)
                 .foregroundStyle(.white)
                 .scrollContentBackground(.hidden)
-                .padding(.bottom, 20)
+                .padding(.bottom, 24)
+                .focused($isContentFocused)
             contentTextCountView
+                .padding(.bottom, 4)
+                .padding(.trailing, 4)
         }
         .font(.system(size: 14, weight: .medium))
         .frame(height: 110)
         .padding(.horizontal, 12)
         .padding(.vertical, 10)
-        .overlay {
-            RoundedRectangle(cornerRadius: 10)
-                .strokeBorder(Color.darkBlue, lineWidth: 1)
-        }
+        .background(
+            ZStack {
+                if isContentFocused {
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundStyle(Color.activeBlack)
+                        .shadow(color: Color.strokeBlue.opacity(isContentFocused ? 0.25 : 0), radius: 4)
+                }
+                RoundedRectangle(cornerRadius: 10)
+                    .strokeBorder(Color.darkBlue, lineWidth: 1)
+            }
+        )
         .onSubmit {
             dismissKeyboard()
         }
