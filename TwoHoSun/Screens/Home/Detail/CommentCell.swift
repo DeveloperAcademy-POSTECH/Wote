@@ -34,7 +34,8 @@ import SwiftUI
 struct CommentCell: View {
     let comment: CommentsModel
     var onReplyButtonTapped: () -> Void
-    @State var isOpenComment: Bool = false
+    @State private var isOpenComment: Bool = false
+    @State private var isExpended = false
 
     var hasChildComments: Bool {
         return !comment.childComments!.isEmpty
@@ -57,7 +58,7 @@ struct CommentCell: View {
                     Text(comment.author.userNickname!)
                         .font(.system(size: 14, weight: .medium))
                         .foregroundStyle(Color.white)
-//                    Text("\(comment.modifiedDate)")
+                    //                    Text("\(comment.modifiedDate)")
                     Text("1시간전")
                         .font(.system(size: 12))
                         .foregroundStyle(Color.subGray1)
@@ -68,10 +69,38 @@ struct CommentCell: View {
                     })
                 }
                 .padding(.bottom, 6)
-                Text("\(comment.content)")
-                    .foregroundStyle(Color.white)
-                    .font(.system(size: 14))
-                    .padding(.bottom, 4)
+                HStack {
+//                    ExpandableTextView(comment.content, lineLimit: 3)
+                    Text("\(comment.content)")
+                        .foregroundStyle(Color.white)
+                        .font(.system(size: 14))
+                        .lineLimit(isExpended ? nil : 3)
+                        .padding(.bottom, 4)
+//                        .overlay(
+//                            GeometryReader { proxy in
+//                                Color.clear.onAppear() {
+//                                    let size = CGSize(width: proxy.size.width, height: .greatestFiniteMagnitude)
+////                                    let attributes: [NSAttributedString.Key:Any] = [NSAttributedString.Key.font: ]
+//                                    var low = 0
+//                                    var high = comment.content.count
+//                                    var mid = high
+//                                    while ((high - low) > 1) {
+//                                        let attributedText = NSAttributedString(string: )
+//                                    }
+//
+//                                }
+//                                Button(action: {
+//                                    isExpended.toggle()
+//                                }) {
+//                                    Text(isExpended ? "" : "자세히보기")
+//                                        .font(.system(size: 12))
+//                                        .foregroundStyle(Color.subGray1)
+//
+//                                }
+//                                .frame(width: proxy.size.width, height: proxy.size.height, alignment: .bottomTrailing)
+//                            }
+//                        )
+                }
                 Button(action: {onReplyButtonTapped()}, label: {
                     Text("답글달기")
                         .font(.system(size: 12))
@@ -82,6 +111,9 @@ struct CommentCell: View {
     }
 }
 
-#Preview {
-    CommentCell(comment: CommentsModel(commentId: 1, createDate: "2023-11-04T17:43:48.467Z", modifiedDate: "2023-11-04T17:43:48.467Z", content: "와 이걸 안먹어?", author: Author(id: 2, userNickname: "우왕 ㅋ", userProfileImage: nil), childComments: nil), onReplyButtonTapped: {})
+#Preview {ZStack {
+    Color.black
+    CommentCell(comment: CommentsModel(commentId: 1, createDate: "2023-11-04T17:43:48.467Z", modifiedDate: "2023-11-04T17:43:48.467Z", content: " 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어 안먹어?", author: Author(id: 2, userNickname: "우왕 ㅋ", userProfileImage: nil), childComments: nil), onReplyButtonTapped: {})
+}
+
 }
