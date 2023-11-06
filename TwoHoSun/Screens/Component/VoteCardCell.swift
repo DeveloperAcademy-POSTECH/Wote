@@ -7,21 +7,29 @@
 
 import SwiftUI
 
+enum VoteCardType {
+    case standard
+    case simple
+}
+
 struct VoteCardCell: View {
+    var cardType: VoteCardType
     var searchFilterType: SearchFilterType
     var isPurchased: Bool?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
-            HStack(spacing: 8) {
-                Circle()
-                    .frame(width: 32, height: 32)
-                    .foregroundStyle(.gray)
-                Text("얄루")
-                    .font(.system(size: 16, weight: .bold))
-                    .foregroundStyle(.white)
-                Spacer()
-                SpendTypeLabel(spendType: .saving, size: .large)
+            if cardType == .standard {
+                HStack(spacing: 8) {
+                    Circle()
+                        .frame(width: 32, height: 32)
+                        .foregroundStyle(.gray)
+                    Text("얄루")
+                        .font(.system(size: 16, weight: .bold))
+                        .foregroundStyle(.white)
+                    Spacer()
+                    SpendTypeLabel(spendType: .saving, size: .large)
+                }
             }
             HStack {
                 VStack(alignment: .leading, spacing: 6) {
@@ -77,8 +85,6 @@ struct VoteCardCell: View {
 
 #Preview {
     Group {
-        VoteCardCell(searchFilterType: .progressing)
-        VoteCardCell(searchFilterType: .end, isPurchased: false)
-        VoteCardCell(searchFilterType: .end, isPurchased: true)
+        VoteCardCell(cardType: .simple, searchFilterType: .progressing)
     }
 }

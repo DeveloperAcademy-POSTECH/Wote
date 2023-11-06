@@ -204,14 +204,17 @@ extension SearchView {
                     .foregroundStyle(.pink)
             case .progressing:
                 ForEach(0..<5) { _ in
-                    VoteCardCell(searchFilterType: .progressing)
+                    VoteCardCell(cardType: .standard, 
+                                 searchFilterType: .progressing)
                 }
                 .listRowBackground(Color.clear)
                 .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
                 .listRowSeparator(.hidden)
             case .end:
                 ForEach(0..<5) { _ in
-                    VoteCardCell(searchFilterType: .end, isPurchased: Bool.random())
+                    VoteCardCell(cardType: .standard, 
+                                 searchFilterType: .end,
+                                 isPurchased: Bool.random())
                 }
                 .listRowBackground(Color.clear)
                 .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))

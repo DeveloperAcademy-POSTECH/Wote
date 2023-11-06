@@ -176,41 +176,10 @@ extension DetailView {
     }
 
     var commentPreview: some View {
-        // TODO: 뷰모델에서 댓글이 있는지를 체크한담에 있으면 삼항연산자를 통해 할 예정
-        VStack {
-            HStack(spacing: 4) {
-                Text("댓글")
-                    .foregroundStyle(Color.priceGray)
-                    .font(.system(size: 14, weight: .medium))
-                //                if data가 있으면 {
-                //                    Text("개")
-                //                }
-                Spacer()
+        CommentPreview()
+            .onTapGesture {
+                showDetailComments.toggle()
             }
-            HStack(spacing: 7) {
-                Image("defaultProfile")
-                    .resizable()
-                    .frame(width: 24, height: 24)
-                HStack {
-                    Text("댓글 추가...")
-                        .font(.system(size: 12))
-                        .foregroundStyle(Color.priceGray)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 4)
-                    Spacer()
-                }
-                .frame(maxWidth: .infinity)
-                .background(Color.textFieldGray)
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-            }
-        }
-        .padding(.vertical, 12)
-        .padding(.horizontal, 14)
-        .background(Color.lightGray)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
-        .onTapGesture {
-            showDetailComments.toggle()
-        }
     }
 
     func voteResultView(_ type: VoteType, _ percent: Double) -> some View {

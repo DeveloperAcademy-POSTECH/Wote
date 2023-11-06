@@ -29,7 +29,7 @@ struct ReviewCardCell: View {
             HStack {
                 VStack(alignment: .leading, spacing: 6) {
                     HStack(spacing: 4) {
-                        purchaseLabel(isPurchased)
+                        PurchaseLabel(isPurchased: isPurchased)
                         Text("ACG 마운틴 플라이 살까 말까?sdffdsfsdfsdasdf")
                             .font(.system(size: 16, weight: .bold))
                             .foregroundStyle(.white)
@@ -65,16 +65,6 @@ struct ReviewCardCell: View {
             .padding(.horizontal, 8)
             .padding(.bottom, 24)
         }
-    }
-
-    private func purchaseLabel(_ isPurchased: Bool) -> some View {
-        Text(isPurchased ? "샀다" : "안샀다")
-            .font(.system(size: 12, weight: .medium))
-            .foregroundStyle(.white)
-            .padding(.vertical, 4)
-            .padding(.horizontal, 5)
-            .background(Color.lightBlue)
-            .clipShape(RoundedRectangle(cornerRadius: 3))
     }
 }
 
