@@ -11,6 +11,11 @@ struct DetailView : View {
     @Environment(\.dismiss) var dismiss
     @State private var alertOn = false
     @State private var showDetailComments = false
+    var isDone: Bool
+
+    init(isDone: Bool) {
+        self.isDone = isDone
+    }
 
     enum VoteType {
         case agree, disagree
@@ -32,6 +37,7 @@ struct DetailView : View {
                 detailHeaderView
                     .padding(.top, 35)
                 Divider()
+                    .background(Color.disableGray)
                     .padding(.horizontal, 12)
                 detailCell
                     .padding(.top, 30)
@@ -66,9 +72,13 @@ struct DetailView : View {
                 })
             }
         }
-        .sheet(isPresented: $showDetailComments, content: {
-
-        })
+        .sheet(isPresented: $showDetailComments) {
+//            NavigationStack{
+                CommentsView()
+                .presentationDetents([.large,.fraction(0.9)])
+                    .presentationContentInteraction(.scrolls)
+//            }
+        }
     }
 }
 extension DetailView {
@@ -87,8 +97,12 @@ extension DetailView {
                 .font(.system(size: 14))
                 .foregroundStyle(Color.whiteGray)
             Spacer()
-            Toggle("", isOn: $alertOn)
-                .toggleStyle(AlertCustomToggle())
+            if isDone {
+                //TODO: 내껀지 남의껀지 보고 버튼놓기
+            } else {
+                Toggle("", isOn: $alertOn)
+                    .toggleStyle(AlertCustomToggle())
+            }
         }
         .padding(.horizontal, 24)
     }
@@ -149,10 +163,13 @@ extension DetailView {
                 .foregroundStyle(Color.white)
                 .font(.system(size: 18, weight: .bold))
                 .padding(.bottom, 4)
-            Text("금액: \(price)원")
-                .foregroundStyle(Color.priceGray)
-                .font(.system(size: 14))
-                .padding(.bottom, 18)
+            HStack(spacing: 9) {
+                SpendTypeLabel(spendType: .beutyLover, usage: .detailView)
+                Text("금액: \(price)원")
+                    .foregroundStyle(Color.priceGray)
+                    .font(.system(size: 14))
+            }
+            .padding(.bottom, 18)
         }
         .padding(.leading, 20)
 
@@ -209,9 +226,8 @@ extension DetailView {
                 .foregroundStyle(Color.priceGray)
             HStack(spacing: 8) {
                 //TODO: viewModel로 부터 데이터를 받아서 어떤 유형인지 여기에 알려주면 댐.
-                SpendTypeLabel(spendType: .saving)
-                SpendTypeLabel(spendType: .ecoWarrior)
-
+                SpendTypeLabel(spendType: .saving, usage: .detailView)
+                SpendTypeLabel(spendType: .ecoWarrior, usage: .detailView)
             }
             Text("투표 후 구매 \(type.title) 의견을 선택한 유형을 확인해봐요!")
                 .font(.system(size: 16, weight: .medium))
@@ -263,6 +279,6 @@ struct AlertCustomToggle: ToggleStyle {
 
 #Preview {
     NavigationStack {
-        DetailView()
+        DetailView(isDone: false)
     }
 }

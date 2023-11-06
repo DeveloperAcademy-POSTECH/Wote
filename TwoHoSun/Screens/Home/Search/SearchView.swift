@@ -227,7 +227,7 @@ extension SearchView {
             Image("imgNoResult")
             Text("검색 결과가 없습니다.")
                 .font(.system(size: 20, weight: .medium))
-                .foregroundStyle(Color.descriptionGray)
+                .foregroundStyle(Color.subGray1)
         }
     }
 }

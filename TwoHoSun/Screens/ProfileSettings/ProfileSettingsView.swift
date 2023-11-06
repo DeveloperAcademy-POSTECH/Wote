@@ -300,7 +300,6 @@ extension ProfileSettingsView {
                 .background(viewModel.isAllInputValid ? Color.lightBlue : Color.disableGray)
                 .cornerRadius(10)
         }
-        
         .disabled(viewModel.isAllInputValid ? false : true)
         .simultaneousGesture(
             TapGesture()
