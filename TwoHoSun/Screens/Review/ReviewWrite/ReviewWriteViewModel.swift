@@ -12,6 +12,7 @@ final class ReviewWriteViewModel {
     var isBuy: Bool = true
     var title: String = ""
     var price: String = ""
+    var content = ""
     var isTitleValid: Bool {
         guard !title.isEmpty else { return false }
         return true

@@ -34,13 +34,27 @@ struct VoteWriteView: View {
                         imageView
                         linkView
                         contentView
+                        Spacer()
                     }
-                    .modifier(Keyboard())
                     .padding(.top, 16)
                 }
                 voteRegisterButton
             }
-            .ignoresSafeArea(.keyboard)
+            .padding(.horizontal, 16)
+            .scrollIndicators(.hidden)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(Color.background, for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("투표만들기")
+                        .foregroundStyle(.white)
+                        .font(.system(size: 18, weight: .medium))
+                }
+            }
+            .onTapGesture {
+                dismissKeyboard()
+            }
             .customConfirmDialog(isPresented: $isEditing) {
                 Button("수정하기") {
                     isEditing = false
@@ -79,21 +93,6 @@ struct VoteWriteView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .frame(height: 42)
-            }
-            .padding(.horizontal, 16)
-            .scrollIndicators(.hidden)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(Color.background, for: .navigationBar)
-            .toolbarBackground(.visible, for: .navigationBar)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("투표만들기")
-                        .foregroundStyle(.white)
-                        .font(.system(size: 18, weight: .medium))
-                }
-            }
-            .onTapGesture {
-                dismissKeyboard()
             }
         }
     }
