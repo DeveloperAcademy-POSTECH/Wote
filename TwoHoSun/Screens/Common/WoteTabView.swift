@@ -198,7 +198,6 @@ extension WoteTabView {
         .background(
             RoundedRectangle(cornerRadius: 10)
                 .fill(Color.disableGray)
-//                .strokeBorder(Color.gray300, lineWidth: 1)
         )
     }
 
