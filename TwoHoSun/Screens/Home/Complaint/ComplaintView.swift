@@ -40,7 +40,7 @@ struct ComplaintView: View {
                 
                 List {
                     ForEach(ComplaintReason.allCases, id: \.hashValue) { value in
-                            NavigationLink(destination: Text("hi")) {
+                            NavigationLink(destination: ComplaintReasonView()) {
                                 Text(value.title)
                                     .foregroundStyle(Color.subGray3)
                             }
@@ -51,8 +51,7 @@ struct ComplaintView: View {
                                         .foregroundStyle(Color.subGray3)
                                 }
                             }
-
-                            .alignmentGuide(.listRowSeparatorLeading){ dimension in
+                            .alignmentGuide(.listRowSeparatorLeading) { dimension in
                                 dimension[.leading] - 12
                             }
                     }
