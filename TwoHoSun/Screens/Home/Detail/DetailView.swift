@@ -12,6 +12,7 @@ struct DetailView : View {
     @State private var alertOn = false
     @State private var showDetailComments = false
     @State private var showconfirm = false
+    @State private var backgroundColor: Color = .background
     var isDone: Bool
 
     init(isDone: Bool) {
@@ -32,7 +33,7 @@ struct DetailView : View {
 
     var body: some View {
         ZStack {
-            Color.background
+            backgroundColor
                 .ignoresSafeArea()
             ScrollView {
                 detailHeaderView
@@ -48,6 +49,9 @@ struct DetailView : View {
                 voteResultView(.agree, 0.47)
                     .padding(EdgeInsets(top: 32, leading: 0, bottom: 48, trailing: 0))
                 voteResultView(.disagree, 0.33)
+            }
+            if showDetailComments {
+                Color.black.opacity(0.7)
             }
 
         }
@@ -76,6 +80,7 @@ struct DetailView : View {
             }
         }
         .customConfirmDialog(isPresented: $showconfirm, actions: {
+            //TODO: 내꺼인지 판별한 후 그 후 종료하기 등 버튼을 구현예정
             Button {
                 
             } label: {
@@ -90,11 +95,9 @@ struct DetailView : View {
             }
         })
         .sheet(isPresented: $showDetailComments) {
-//            NavigationStack{
                 CommentsView()
-                .presentationDetents([.large,.fraction(0.9)])
+                    .presentationDetents([.large,.fraction(0.9)])
                     .presentationContentInteraction(.scrolls)
-//            }
         }
     }
 }

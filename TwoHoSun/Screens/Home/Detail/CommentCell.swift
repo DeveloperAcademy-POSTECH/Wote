@@ -36,7 +36,8 @@ struct CommentCell: View {
     var onReplyButtonTapped: () -> Void
     @State private var isOpenComment: Bool = false
     @State private var isExpended = false
-
+    var onConfirmDiaog: () -> Void
+//    @State private var showConfirm = false
     var hasChildComments: Bool {
         return !comment.childComments!.isEmpty
     }
@@ -63,7 +64,9 @@ struct CommentCell: View {
                         .font(.system(size: 12))
                         .foregroundStyle(Color.subGray1)
                     Spacer()
-                    Button(action: {}, label: {
+                    Button(action: {
+                        onConfirmDiaog()
+                    }, label: {
                         Image(systemName: "ellipsis")
                             .foregroundStyle(Color.subGray1)
                     })
@@ -110,10 +113,10 @@ struct CommentCell: View {
         }
     }
 }
-
-#Preview {ZStack {
-    Color.black
-    CommentCell(comment: CommentsModel(commentId: 1, createDate: "2023-11-04T17:43:48.467Z", modifiedDate: "2023-11-04T17:43:48.467Z", content: " 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어 안먹어?", author: Author(id: 2, userNickname: "우왕 ㅋ", userProfileImage: nil), childComments: nil), onReplyButtonTapped: {})
-}
-
-}
+//
+//#Preview {ZStack {
+//    Color.black
+//    CommentCell(comment: CommentsModel(commentId: 1, createDate: "2023-11-04T17:43:48.467Z", modifiedDate: "2023-11-04T17:43:48.467Z", content: " 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어 안먹어?", author: Author(id: 2, userNickname: "우왕 ㅋ", userProfileImage: nil), childComments: nil), onReplyButtonTapped: {})
+//}
+//
+//}

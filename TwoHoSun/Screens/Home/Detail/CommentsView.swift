@@ -11,6 +11,7 @@ struct CommentsView: View {
     @State private var commentText = ""
     @State private var isReplyButtonTap = false
     @State private var scrollSpot: Int = 0
+    @State private var showConfirm = false
     @FocusState private var isFocus: Bool
     let commentsModel: [CommentsModel] = [CommentsModel(commentId: 1, createDate: "2023-11-04T17:43:48.467Z", modifiedDate: "2023-11-04T17:43:48.467Z", content: "와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어?", author: Author(id: 2, userNickname: "우왕 ㅋ", userProfileImage: nil), childComments: nil),
                                           CommentsModel(commentId: 2, createDate: "2023-11-04T17:43:48.467Z", modifiedDate: "2023-11-04T17:43:48.467Z", content: "와 이?", author: Author(id: 3, userNickname: "ㅓㅓㅗ", userProfileImage: nil), childComments: nil),
@@ -36,6 +37,21 @@ struct CommentsView: View {
                 commentInputView
             }
         }
+        .customConfirmDialog(isPresented: $showConfirm, actions: {
+            //TODO: 내꺼인지 판별한 후 그 후 종료하기 등 버튼을 구현예정
+            Button {
+
+            } label: {
+                Text("신고하기")
+            }
+            Divider()
+                .background(Color.gray300)
+            Button {
+
+            } label: {
+                Text("차단하기")
+            }
+        })
     }
 }
 
@@ -45,10 +61,12 @@ extension CommentsView {
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 28) {
                     ForEach(commentsModel, id: \.commentId) { comment in
-                        CommentCell(comment: comment) {
-                                scrollSpot = comment.commentId
-                                isReplyButtonTap = true
-                                isFocus = true
+                        CommentCell(comment: comment, onReplyButtonTapped: {
+                            scrollSpot = comment.commentId
+                            isReplyButtonTap = true
+                            isFocus = true
+                        }) {
+                            showConfirm = true
                         }
                         //                            .id(comment.commentId)
                         //                            makeChildComments(comment: comment)

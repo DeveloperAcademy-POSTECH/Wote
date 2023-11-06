@@ -25,7 +25,7 @@ struct CustomConfirmModifier<A>: ViewModifier where A: View {
 //                }
 
                 if isPresented {
-                    Color.background.opacity(0.7)
+                    Color.black.opacity(0.7)
                         .ignoresSafeArea()
                         .onTapGesture {
                             isPresented = false
