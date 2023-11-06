@@ -214,7 +214,7 @@ extension WriteView {
             headerLabel("해당 상품의 링크를 등록해 주세요. ", essential: false)
             TextField("",
                       text: $viewModel.externalURL,
-                      prompt: Text("예) https://www.wote.ac.kr/")
+                      prompt: Text("예) 상품 페이지 주소 붙여넣기")
                 .font(.system(size: 14))
                 .foregroundStyle(Color.placeholderGray)
             )
