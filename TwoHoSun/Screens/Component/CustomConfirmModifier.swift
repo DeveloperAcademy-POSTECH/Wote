@@ -25,11 +25,11 @@ struct CustomConfirmModifier<A>: ViewModifier where A: View {
                 }
 
                 if isPresented {
-                    VStack(alignment: .center) {
+                    VStack(alignment: .center, spacing: 16) {
                         GroupBox {
                             actions()
-                                .frame(maxWidth: .infinity,alignment: .center)
-                                .frame(height: 84)
+                                .frame(maxWidth: .infinity, alignment: .center)
+                                .frame(height: 156)
                                 .background(Color.disableGray)
                                 .foregroundStyle(Color.lightBlue)
                         }
@@ -45,7 +45,6 @@ struct CustomConfirmModifier<A>: ViewModifier where A: View {
                         .groupBoxStyle(TransparentGroupBox())
                     }
                     .font(.title3)
-                    .padding(10)
                     .transition(.move(edge: .bottom))
 
                 }
