@@ -85,6 +85,9 @@ struct WoteTabView: View {
                     Color.black
                         .opacity(0.7)
                         .ignoresSafeArea()
+                        .onTapGesture {
+                            isVoteCategoryButtonDidTap = false
+                        }
                     HStack(spacing: 0) {
                         voteCategoryButton
                         Spacer()
@@ -97,9 +100,6 @@ struct WoteTabView: View {
                     voteCategoryMenu
                         .offset(x: 16, y: 40)
                 }
-            }
-            .onTapGesture {
-                isVoteCategoryButtonDidTap = false
             }
             .tint(Color.accentBlue)
             .onAppear {
