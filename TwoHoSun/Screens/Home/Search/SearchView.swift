@@ -187,16 +187,9 @@ extension SearchView {
     private var searchFilterView: some View {
         HStack(spacing: 8) {
             ForEach(SearchFilterType.allCases, id: \.self) { filter in
-                Button {
+                FilterButton(title: filter.filterTitle, 
+                             isSelected: searchFilterType == filter) {
                     searchFilterType = filter
-                } label: {
-                    Text(filter.filterTitle)
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundStyle(searchFilterType == filter ? Color.white : Color.gray100)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 8)
-                        .background(searchFilterType == filter ? Color.lightBlue : Color.disableGray)
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
             }
         }

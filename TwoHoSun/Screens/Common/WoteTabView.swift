@@ -121,7 +121,7 @@ extension WoteTabView {
         case .consider:
             ConsumptionConsiderationView(viewModel: ConsumptionConsiderationViewModel())
         case .review:
-            Text("소비후기")
+            ConsumptionReviewView()
         case .myPage:
             Text("마이페이지")
         }
@@ -135,6 +135,7 @@ extension WoteTabView {
                 .padding(.trailing, 8)
             searchButton
         }
+        .padding(.bottom, 9)
         .padding(.horizontal, 16)
         .background(Color.background)
     }
