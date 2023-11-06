@@ -5,12 +5,16 @@
 //  Created by 관식 on 11/7/23.
 //
 
+import PhotosUI
 import SwiftUI
 
 struct ReviewWriteView: View {
     @FocusState private var isTitleFocused: Bool
     @FocusState private var isPriceFocused: Bool
     @State private var isRegisterButtonDidTap = false
+    @State private var selectedPhoto: PhotosPickerItem?
+    @State private var selectedImageData: Data?
+    @State private var isEditing: Bool = false
     @Bindable private var viewModel: ReviewWriteViewModel = ReviewWriteViewModel()
     
     var body: some View {
@@ -26,6 +30,7 @@ struct ReviewWriteView: View {
                         }
                         titleView
                         priceView
+                        imageView
                     }
                 }
                 .padding(.top, 16)
@@ -173,6 +178,62 @@ extension ReviewWriteView {
                         .strokeBorder(Color.darkBlue, lineWidth: 1)
                 }
             )
+        }
+    }
+    
+    private var imageView: some View {
+        VStack(alignment: .leading) {
+            headerLabel("고민하는 상품의 사진을 등록해 주세요. ", essential: true)
+            if selectedImageData != nil {
+                selectedImageView
+                    .onTapGesture {
+                        isEditing.toggle()
+                    }
+            } else {
+                addImageButton
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private var selectedImageView: some View {
+        if let selectedImageData,
+           let uiImage = UIImage(data: selectedImageData) {
+            Image(uiImage: uiImage)
+                .resizable()
+                .frame(height: 218)
+                .clipShape(.rect(cornerRadius: 16))
+        }
+    }
+    
+    private var addImageButton: some View {
+        PhotosPicker(selection: $selectedPhoto,
+                     matching: .images,
+                     photoLibrary: .shared()) {
+            HStack(spacing: 7) {
+                Image(systemName: "plus")
+                    .font(.system(size: 16))
+                Text("상품 이미지")
+                    .font(.system(size: 14, weight: .medium))
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 44)
+            .foregroundStyle(Color.lightBlue)
+            .overlay {
+                RoundedRectangle(cornerRadius: 10)
+                    .strokeBorder(Color.darkBlue, lineWidth: 1)
+            }
+            .onChange(of: selectedPhoto) { _, newValue in
+                PHPhotoLibrary.requestAuthorization { status in
+                    guard status == .authorized else { return }
+                    
+                    Task {
+                        if let data = try? await newValue?.loadTransferable(type: Data.self) {
+                            selectedImageData = data
+                        }
+                    }
+                }
+            }
         }
     }
     
