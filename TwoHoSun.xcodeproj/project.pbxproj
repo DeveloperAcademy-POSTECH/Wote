@@ -58,6 +58,8 @@
 		FD132BF52ADBE8FB00F31AAF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD132BF42ADBE8FB00F31AAF /* Preview Assets.xcassets */; };
 		FD3205682ADD5C0D00B0D5F6 /* TwoHoSunApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3205672ADD5C0D00B0D5F6 /* TwoHoSunApp.swift */; };
 		FD3646F52ADD8E2D0064DF94 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FD3646F42ADD8E2D0064DF94 /* Alamofire */; };
+		FD39D4992AF964AB00AD13E3 /* ReviewWriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD39D4982AF964AB00AD13E3 /* ReviewWriteView.swift */; };
+		FD39D49B2AF965E100AD13E3 /* ReviewWriteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD39D49A2AF965E100AD13E3 /* ReviewWriteViewModel.swift */; };
 		FD6673372AE071550015007D /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6673362AE071550015007D /* APIManager.swift */; };
 		FD76249C2AF954450079AEEF /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C771136E2AF0E7B600BAB128 /* UIColor+.swift */; };
 		FD76249D2AF9545C0079AEEF /* ProfileSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4E75B52ADE9C20000C2277 /* ProfileSettingViewModel.swift */; };
@@ -130,6 +132,8 @@
 		FD132BF42ADBE8FB00F31AAF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		FD32055D2ADD16AC00B0D5F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FD3205672ADD5C0D00B0D5F6 /* TwoHoSunApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoHoSunApp.swift; sourceTree = "<group>"; };
+		FD39D4982AF964AB00AD13E3 /* ReviewWriteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewWriteView.swift; sourceTree = "<group>"; };
+		FD39D49A2AF965E100AD13E3 /* ReviewWriteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewWriteViewModel.swift; sourceTree = "<group>"; };
 		FD4E75B52ADE9C20000C2277 /* ProfileSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingViewModel.swift; sourceTree = "<group>"; };
 		FD6673362AE071550015007D /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
@@ -431,8 +435,18 @@
 		FD39D4962AF963CB00AD13E3 /* Review */ = {
 			isa = PBXGroup;
 			children = (
+				FD39D4972AF9648B00AD13E3 /* ReviewWrite */,
 			);
 			path = Review;
+			sourceTree = "<group>";
+		};
+		FD39D4972AF9648B00AD13E3 /* ReviewWrite */ = {
+			isa = PBXGroup;
+			children = (
+				FD39D4982AF964AB00AD13E3 /* ReviewWriteView.swift */,
+				FD39D49A2AF965E100AD13E3 /* ReviewWriteViewModel.swift */,
+			);
+			path = ReviewWrite;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -541,6 +555,7 @@
 				FD76249F2AF954980079AEEF /* MainVoteViewModel.swift in Sources */,
 				FD7624A02AF954980079AEEF /* GeneralResponse.swift in Sources */,
 				FD7624A12AF954980079AEEF /* NicknameValidation.swift in Sources */,
+				FD39D4992AF964AB00AD13E3 /* ReviewWriteView.swift in Sources */,
 				FD76249E2AF954670079AEEF /* LinkView.swift in Sources */,
 				FD76249D2AF9545C0079AEEF /* ProfileSettingViewModel.swift in Sources */,
 				FD76249C2AF954450079AEEF /* UIColor+.swift in Sources */,
@@ -583,6 +598,7 @@
 				AB4522532ADDD99500B69F24 /* SchoolSearchView.swift in Sources */,
 				C73F8E812AE54B24001C6B07 /* DetailViewModel.swift in Sources */,
 				C78E7D012AF6AF4C00C2E220 /* CommentsView.swift in Sources */,
+				FD39D49B2AF965E100AD13E3 /* ReviewWriteViewModel.swift in Sources */,
 				C7E30E2B2ADC40E4001AE89B /* LoginViewModel.swift in Sources */,
 				C7719FE62AF2861000A520CB /* SpendTItleType.swift in Sources */,
 				C7DE44C22AE26109001639CB /* View+.swift in Sources */,
