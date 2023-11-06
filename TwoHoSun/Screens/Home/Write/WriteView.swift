@@ -29,6 +29,8 @@ struct WriteView: View {
                         imageView
                         linkView
                         contentView
+                        Spacer()
+                            .frame(height: 60)
                     }
                     .padding(.top, 16)
                 }
@@ -114,8 +116,11 @@ extension WriteView {
     private var imageView: some View {
         VStack(alignment: .leading) {
             headerLabel("고민하는 상품의 사진을 등록해 주세요. ", essential: false)
-            selectedImageView
-            addImageButton
+            if selectedImageData != nil {
+                selectedImageView
+            } else {
+                addImageButton
+            }
         }
     }
     
@@ -123,27 +128,10 @@ extension WriteView {
     private var selectedImageView: some View {
         if let selectedImageData,
            let uiImage = UIImage(data: selectedImageData) {
-            ZStack(alignment: .topTrailing) {
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .frame(width: 165, height: 165)
-                    .clipShape(Rectangle())
-                    .padding(.bottom, 10)
-                removeImageButton
-                    .padding(.top, 8)
-                    .padding(.trailing, 8)
-            }
-        }
-    }
-    
-    private var removeImageButton: some View {
-        Button {
-            selectedPhoto = nil
-            selectedImageData = nil
-        } label: {
-            Image(systemName: "xmark.circle.fill")
-                .font(.system(size: 20))
-                .foregroundStyle(.black)
+            Image(uiImage: uiImage)
+                .resizable()
+                .frame(height: 218)
+                .clipShape(.rect(cornerRadius: 16))
         }
     }
     
@@ -253,7 +241,7 @@ extension WriteView {
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
                 .frame(height: 52)
-                .background(Color.disableGray)
+                .background(viewModel.title != "" ? Color.lightBlue : Color.disableGray)
                 .cornerRadius(10)
         }
     }
