@@ -10,4 +10,9 @@ import Foundation
 @Observable
 final class ReviewWriteViewModel {
     var title: String = ""
+    var isBuy: Bool = true
+    var isTitleValid: Bool {
+        guard !title.isEmpty else { return false }
+        return true
+    }
 }

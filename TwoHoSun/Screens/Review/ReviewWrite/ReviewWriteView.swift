@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct ReviewWriteView: View {
-    @State private var isBuy: Bool = true
+    @FocusState private var isTitleFocused: Bool
+    @State private var isRegisterButtonDidTap = false
     @Bindable private var viewModel: ReviewWriteViewModel = ReviewWriteViewModel()
     
     var body: some View {
@@ -22,6 +23,7 @@ struct ReviewWriteView: View {
                             VoteCardView(cardType: .simple, searchFilterType: .end, isPurchased: true)
                             buySelection
                         }
+                        titleView
                         
                     }
                 }
@@ -52,20 +54,20 @@ extension ReviewWriteView {
                 RoundedRectangle(cornerRadius: 10)
                     .strokeBorder(Color.darkblue, lineWidth: 1)
                 HStack {
-                    if !isBuy {
+                    if !viewModel.isBuy {
                         Spacer()
                     }
                     RoundedRectangle(cornerRadius: 10)
                         .foregroundStyle(Color.lightBlue)
                         .frame(width: geo.size.width / 2)
-                    if isBuy {
+                    if viewModel.isBuy {
                         Spacer()
                     }
                 }
                 HStack(spacing: 0) {
                     Button {
                         withAnimation(.easeInOut(duration: 0.3)) {
-                            isBuy = true
+                            viewModel.isBuy = true
                         }
                     } label: {
                         ZStack {
@@ -73,7 +75,7 @@ extension ReviewWriteView {
                                 .foregroundStyle(.clear)
                                 .frame(width: geo.size.width / 2)
                             Text("샀다")
-                                .font(.system(size: 16, weight: isBuy ? .bold : .medium))
+                                .font(.system(size: 16, weight: viewModel.isBuy ? .bold : .medium))
                                 .foregroundStyle(.white)
                         }
                     }
@@ -81,7 +83,7 @@ extension ReviewWriteView {
                     .contentShape(Rectangle())
                     Button {
                         withAnimation(.easeInOut(duration: 0.3)) {
-                            isBuy = false
+                            viewModel.isBuy = false
                         }
                     } label: {
                         ZStack {
@@ -89,7 +91,7 @@ extension ReviewWriteView {
                                 .foregroundStyle(.clear)
                                 .frame(width: geo.size.width / 2)
                             Text("안샀다")
-                                .font(.system(size: 16, weight: isBuy ? .bold : .medium))
+                                .font(.system(size: 16, weight: viewModel.isBuy ? .bold : .medium))
                                 .foregroundStyle(.white)
                         }
                     }
@@ -100,9 +102,49 @@ extension ReviewWriteView {
         .frame(height: 44)
     }
     
+    private var titleView: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            headerLabel("제목을 입력해주세요. ", essential: true)
+                .padding(.bottom, 4)
+            HStack(spacing: 6) {
+                TextField("",
+                          text: $viewModel.title,
+                          prompt:
+                            Text("예) 아이폰, 맥북 에어 사고싶은데")
+                    .font(.system(size: 14))
+                    .foregroundStyle(Color.placeholderGray)
+                )
+                .font(.system(size: 14))
+                .focused($isTitleFocused)
+                .foregroundStyle(.white)
+                .frame(height: 44)
+                .padding(.horizontal, 16)
+                .background(
+                    ZStack {
+                        if isTitleFocused {
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundStyle(Color.activeBlack)
+                                .shadow(color: Color.strokeBlue.opacity(isTitleFocused ? 0.25 : 0), radius: 4)
+                        }
+                        RoundedRectangle(cornerRadius: 10)
+                            .strokeBorder(!viewModel.isTitleValid && isRegisterButtonDidTap ? .red : Color.darkBlue, lineWidth: 1)
+                    }
+                )
+            }
+            if !viewModel.isTitleValid && isRegisterButtonDidTap {
+                HStack(spacing: 8) {
+                    Image(systemName: "light.beacon.max")
+                    Text("제목을 입력해주세요.")
+                }
+                .font(.system(size: 12))
+                .foregroundStyle(.red)
+            }
+        }
+    }
+    
     private var reviewRegisterButton: some View {
         Button {
-            //            isRegisterButtonDidTap = true
+                        isRegisterButtonDidTap = true
             //            if viewModel.isTitleValid {
             //                viewModel.createPost()
             //                isWriteViewPresented = false
