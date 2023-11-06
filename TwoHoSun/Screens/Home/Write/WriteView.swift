@@ -14,6 +14,7 @@ struct WriteView: View {
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var selectedImageData: Data?
     @State private var isTagTextFieldShowed = false
+    @State private var isEditing: Bool = false
     @Binding var isWriteViewPresented: Bool
     @Bindable var viewModel: WriteViewModel
     
@@ -35,6 +36,45 @@ struct WriteView: View {
                     .padding(.top, 16)
                 }
                 voteRegisterButton
+            }
+            .customConfirmDialog(isPresented: $isEditing) {
+                Button("수정하기") {
+                    isEditing = false
+                }
+                .frame(maxWidth: .infinity)
+                .frame(height: 42)
+                Divider()
+                    .foregroundStyle(Color.gray300)
+                PhotosPicker(selection: $selectedPhoto,
+                             matching: .images,
+                             photoLibrary: .shared()) {
+                    Text("다른 상품사진 선택하기")
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 42)
+                    .onChange(of: selectedPhoto) { _, newValue in
+                        PHPhotoLibrary.requestAuthorization { status in
+                            guard status == .authorized else { return }
+                            
+                            Task {
+                                if let data = try? await newValue?.loadTransferable(type: Data.self) {
+                                    selectedImageData = data
+                                    isEditing = false
+                                }
+                            }
+                        }
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .frame(height: 42)
+                Divider()
+                    .foregroundStyle(Color.gray300)
+                Button("삭제하기") {
+                    selectedPhoto = nil
+                    selectedImageData = nil
+                    isEditing = false
+                }
+                .frame(maxWidth: .infinity)
+                .frame(height: 42)
             }
             .ignoresSafeArea(.keyboard)
             .padding(.horizontal, 16)
@@ -118,6 +158,9 @@ extension WriteView {
             headerLabel("고민하는 상품의 사진을 등록해 주세요. ", essential: false)
             if selectedImageData != nil {
                 selectedImageView
+                    .onTapGesture {
+                        isEditing.toggle()
+                    }
             } else {
                 addImageButton
             }
