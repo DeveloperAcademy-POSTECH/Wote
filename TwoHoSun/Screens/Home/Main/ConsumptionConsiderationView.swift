@@ -145,7 +145,7 @@ extension ConsumptionConsiderationView {
 
     private var detailResultButton: some View {
         NavigationLink {
-            DetailView()
+            DetailView(isDone: false)
         } label: {
             Text("상세보기")
                 .font(.system(size: 16, weight: .semibold))

@@ -24,7 +24,6 @@ struct ExpandableTextView: View {
 
   let font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.body)
 
-
   init(_ text: String, lineLimit: Int) {
     self.text = text
     self.lineLimit = lineLimit

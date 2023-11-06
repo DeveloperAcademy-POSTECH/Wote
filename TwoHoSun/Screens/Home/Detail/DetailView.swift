@@ -62,6 +62,7 @@ struct DetailView : View {
                 })
             }
         }
+        .toolbarBackground(Color.background, for: .navigationBar)
         .sheet(isPresented: $showDetailComments) {
 //            NavigationStack{
                 CommentsView()
@@ -88,7 +89,7 @@ extension DetailView {
                 .foregroundStyle(Color.whiteGray)
             Spacer()
             if isDone {
-                //TODO: 내껀지 남의껀지 보고 버튼놓기
+                // TODO: 내껀지 남의껀지 보고 버튼놓기
             } else {
                 Toggle("", isOn: $alertOn)
                     .toggleStyle(AlertCustomToggle())
@@ -218,7 +219,7 @@ extension DetailView {
                 .font(.system(size: 14))
                 .foregroundStyle(Color.priceGray)
             HStack(spacing: 8) {
-                //TODO: viewModel로 부터 데이터를 받아서 어떤 유형인지 여기에 알려주면 댐.
+                // TODO: viewModel로 부터 데이터를 받아서 어떤 유형인지 여기에 알려주면 댐.
                 SpendTypeLabel(spendType: .saving, usage: .detailView)
                 SpendTypeLabel(spendType: .ecoWarrior, usage: .detailView)
             }
