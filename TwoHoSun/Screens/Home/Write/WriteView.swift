@@ -34,13 +34,13 @@ struct WriteView: View {
                         imageView
                         linkView
                         contentView
-                        Spacer()
-                            .frame(height: 60)
                     }
+                    .modifier(Keyboard())
                     .padding(.top, 16)
                 }
                 voteRegisterButton
             }
+            .ignoresSafeArea(.keyboard)
             .customConfirmDialog(isPresented: $isEditing) {
                 Button("수정하기") {
                     isEditing = false
@@ -80,7 +80,6 @@ struct WriteView: View {
                 .frame(maxWidth: .infinity)
                 .frame(height: 42)
             }
-            .ignoresSafeArea(.keyboard)
             .padding(.horizontal, 16)
             .scrollIndicators(.hidden)
             .navigationBarTitleDisplayMode(.inline)
