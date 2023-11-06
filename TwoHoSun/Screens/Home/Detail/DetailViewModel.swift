@@ -32,7 +32,7 @@ class DetailViewModel {
             case 200:
                 print("상세 조회 성공")
                 guard let data = response.data else { return }
-                self.detailPostData = PostModel(from: data)
+//                self.detailPostData = PostModel(from: data)
             case 401:
                 APIManager.shared.refreshAllTokens()
                 self.fetchVoteDetailPost()

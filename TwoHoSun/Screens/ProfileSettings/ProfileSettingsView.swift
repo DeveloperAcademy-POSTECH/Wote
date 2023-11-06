@@ -286,13 +286,12 @@ extension ProfileSettingsView {
                 }
             }
         }
-        .padding(.bottom, viewModel.isFormValid ? 124: 104)
-    
+        .padding(.bottom, viewModel.isFormValid ? 124 : 104)
     }
     
     private var nextButton: some View {
         NavigationLink {
-            MainTabView()
+            WoteTabView()
         } label: {
             Text("완료")
                 .font(.system(size: 20, weight: .semibold))
