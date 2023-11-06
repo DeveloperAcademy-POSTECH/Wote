@@ -138,19 +138,32 @@ extension ConsumptionReviewView {
 
     @ViewBuilder
     private var reviewTypeView: some View {
+        // TODO: - data fetch
         LazyVStack {
             switch selectedReviewType {
             case .all:
-                ForEach(0..<10) { _ in
-                    ReviewCardCell(isPurchased: Bool.random())
+                ForEach(0..<6) { _ in
+                    NavigationLink {
+                        ReviewDetailView()
+                    } label: {
+                        ReviewCardCell(isPurchased: Bool.random())
+                    }
                 }
             case .purchased:
                 ForEach(0..<10) { _ in
-                    ReviewCardCell(isPurchased: true)
+                    NavigationLink {
+                        ReviewDetailView()
+                    } label: {
+                        ReviewCardCell(isPurchased: true)
+                    }
                 }
             case .notPurchased:
-                ForEach(0..<10) { _ in
-                    ReviewCardCell(isPurchased: false)
+                ForEach(0..<3) { _ in
+                    NavigationLink {
+                        ReviewDetailView()
+                    } label: {
+                        ReviewCardCell(isPurchased: false)
+                    }
                 }
             }
         }

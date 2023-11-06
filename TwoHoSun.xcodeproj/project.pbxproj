@@ -25,6 +25,7 @@
 		AB7317EF2AF9178C008B5E41 /* FilterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7317EE2AF9178C008B5E41 /* FilterButton.swift */; };
 		AB7317F22AF92978008B5E41 /* ConsumptionReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7317F12AF92978008B5E41 /* ConsumptionReviewView.swift */; };
 		AB7317F42AF94F31008B5E41 /* ReviewCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7317F32AF94F31008B5E41 /* ReviewCardCell.swift */; };
+		AB7317F62AF96E80008B5E41 /* ReviewDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7317F52AF96E80008B5E41 /* ReviewDetailView.swift */; };
 		ABB71D642AE26EB100BE0671 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = ABB71D632AE26EB100BE0671 /* Kingfisher */; };
 		ABB71D6E2AE2754300BE0671 /* PostResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D6D2AE2754300BE0671 /* PostResponseModel.swift */; };
 		ABB71D742AE2758200BE0671 /* ImageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D732AE2758200BE0671 /* ImageDetailView.swift */; };
@@ -90,6 +91,7 @@
 		AB7317EE2AF9178C008B5E41 /* FilterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterButton.swift; sourceTree = "<group>"; };
 		AB7317F12AF92978008B5E41 /* ConsumptionReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsumptionReviewView.swift; sourceTree = "<group>"; };
 		AB7317F32AF94F31008B5E41 /* ReviewCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewCardCell.swift; sourceTree = "<group>"; };
+		AB7317F52AF96E80008B5E41 /* ReviewDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewDetailView.swift; sourceTree = "<group>"; };
 		ABB71D6D2AE2754300BE0671 /* PostResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostResponseModel.swift; sourceTree = "<group>"; };
 		ABB71D732AE2758200BE0671 /* ImageDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailView.swift; sourceTree = "<group>"; };
 		ABB71D792AE2A64300BE0671 /* LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkView.swift; sourceTree = "<group>"; };
@@ -183,6 +185,7 @@
 			isa = PBXGroup;
 			children = (
 				AB7317F12AF92978008B5E41 /* ConsumptionReviewView.swift */,
+				AB7317F52AF96E80008B5E41 /* ReviewDetailView.swift */,
 			);
 			path = Review;
 			sourceTree = "<group>";
@@ -554,6 +557,7 @@
 				C768F1A52AE656570020F82C /* Tokens.swift in Sources */,
 				C73F8E922AE58EAD001C6B07 /* CommentPostModel.swift in Sources */,
 				C73F8E902AE562FE001C6B07 /* Date+.swift in Sources */,
+				AB7317F62AF96E80008B5E41 /* ReviewDetailView.swift in Sources */,
 				C7719FE82AF28A7B00A520CB /* SpendTypeLabel.swift in Sources */,
 				FDDEC15B2AE3EABA004509EA /* SearchView.swift in Sources */,
 				5E5099542AED59DE0053E529 /* AppDelegate.swift in Sources */,
