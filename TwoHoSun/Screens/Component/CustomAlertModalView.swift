@@ -37,8 +37,9 @@ enum AlertType {
     }
 }
 struct CustomAlertModalView: View {
-//    let nickName: String
     let alertType: AlertType
+    @Binding var isPresented: Bool
+    var leftButtonAction: () -> Void
     var titleText: String {
         switch alertType {
         case .ban(let nickname):
@@ -47,7 +48,7 @@ struct CustomAlertModalView: View {
             return "댓글을 "
         }
     }
-    
+
     var body: some View {
         ZStack {
             Color.black.opacity(0.7)
@@ -76,24 +77,24 @@ struct CustomAlertModalView: View {
                 }
                 HStack {
                     Button {
-                        print("신고")
+                        leftButtonAction()
                     } label: {
                         Text("\(alertType.title)하기")
                             .foregroundStyle(.white)
                             .font(.system(size: 16, weight: .semibold))
+                            .frame(width: 136, height: 41)
                     }
-                    .frame(width: 136, height: 41)
                     .background(Color.darkGray)
                     .clipShape(.rect(cornerRadius: 10))
 
                     Button {
-                        print("취소")
+                        isPresented.toggle()
                     } label: {
                         Text("취소")
                             .foregroundStyle(.white)
                             .font(.system(size: 16, weight: .semibold))
+                            .frame(width: 136, height: 41)
                     }
-                    .frame(width: 136, height: 41)
                     .background(Color.lightBlue)
                     .clipShape(.rect(cornerRadius: 10))
 
@@ -106,7 +107,7 @@ struct CustomAlertModalView: View {
     }
 }
 
-#Preview {
-    CustomAlertModalView(alertType: .ban(nickname: "선호"))
-//    CustomAlertModalView(alertType: .erase)
-}
+//#Preview {
+////    CustomAlertModalView(alertType: .ban(nickname: "선호"))
+////    CustomAlertModalView(alertType: .erase)
+//}
