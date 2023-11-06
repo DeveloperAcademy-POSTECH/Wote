@@ -11,6 +11,11 @@ struct DetailView : View {
     @Environment(\.dismiss) var dismiss
     @State private var alertOn = false
     @State private var showDetailComments = false
+    var isDone: Bool
+
+    init(isDone: Bool) {
+        self.isDone = isDone
+    }
 
     enum VoteType {
         case agree, disagree
@@ -32,6 +37,7 @@ struct DetailView : View {
                 detailHeaderView
                     .padding(.top, 35)
                 Divider()
+                    .background(Color.disableGray)
                     .padding(.horizontal, 12)
                 detailCell
                     .padding(.top, 30)
@@ -91,8 +97,12 @@ extension DetailView {
                 .font(.system(size: 14))
                 .foregroundStyle(Color.whiteGray)
             Spacer()
-            Toggle("", isOn: $alertOn)
-                .toggleStyle(AlertCustomToggle())
+            if isDone {
+                //TODO: 내껀지 남의껀지 보고 버튼놓기
+            } else {
+                Toggle("", isOn: $alertOn)
+                    .toggleStyle(AlertCustomToggle())
+            }
         }
         .padding(.horizontal, 24)
     }
@@ -153,10 +163,13 @@ extension DetailView {
                 .foregroundStyle(Color.white)
                 .font(.system(size: 18, weight: .bold))
                 .padding(.bottom, 4)
-            Text("금액: \(price)원")
-                .foregroundStyle(Color.priceGray)
-                .font(.system(size: 14))
-                .padding(.bottom, 18)
+            HStack(spacing: 9) {
+                SpendTypeLabel(spendType: .beutyLover, usage: .detailView)
+                Text("금액: \(price)원")
+                    .foregroundStyle(Color.priceGray)
+                    .font(.system(size: 14))
+            }
+            .padding(.bottom, 18)
         }
         .padding(.leading, 20)
 
@@ -266,6 +279,6 @@ struct AlertCustomToggle: ToggleStyle {
 
 #Preview {
     NavigationStack {
-        DetailView()
+        DetailView(isDone: false)
     }
 }
