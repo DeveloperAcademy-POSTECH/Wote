@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 struct CommentsView: View {
     @State private var commentText = ""
     @State private var isReplyButtonTap = false
@@ -14,6 +15,7 @@ struct CommentsView: View {
     @State private var showConfirm = false
     @FocusState private var isFocus: Bool
     @State private var presentAlert = false
+    @State private var showComplaint = false
     let commentsModel: [CommentsModel] = [CommentsModel(commentId: 1, createDate: "2023-11-04T17:43:48.467Z", modifiedDate: "2023-11-04T17:43:48.467Z", content: "와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어?", author: Author(id: 2, userNickname: "우왕 ㅋ", userProfileImage: nil), childComments: nil),
                                           CommentsModel(commentId: 2, createDate: "2023-11-04T17:43:48.467Z", modifiedDate: "2023-11-04T17:43:48.467Z", content: "와 이?", author: Author(id: 3, userNickname: "ㅓㅓㅗ", userProfileImage: nil), childComments: nil),
                                           CommentsModel(commentId: 3, createDate: "2023-11-04T17:43:48.467Z", modifiedDate: "2023-11-04T17:43:48.467Z", content: "먹어?", author: Author(id: 4, userNickname: "ㅎ ㅋ", userProfileImage: nil), childComments: nil),
@@ -21,46 +23,50 @@ struct CommentsView: View {
                                           CommentsModel(commentId: 5, createDate: "2023-11-04T17:43:48.467Z", modifiedDate: "2023-11-04T17:43:48.467Z", content: "와 이?", author: Author(id: 3, userNickname: "ㅓㅓㅗ", userProfileImage: nil), childComments: nil),
                                           CommentsModel(commentId: 6, createDate: "2023-11-04T17:43:48.467Z", modifiedDate: "2023-11-04T17:43:48.467Z", content: "먹어?", author: Author(id: 4, userNickname: "ㅎ ㅋ", userProfileImage: nil), childComments: nil)]
     var body: some View {
-        ZStack {
-            Color.lightGray
-                .ignoresSafeArea()
-            VStack(spacing: 0) {
-                Text("댓글")
-                    .foregroundStyle(.white)
-                    .font(.system(size: 15, weight: .medium))
-                    .frame(maxWidth: .infinity)
-                    .padding(.bottom, 13)
-                    .padding(.top, 38)
-                    .overlay(Divider().background(Color.subGray1), alignment: .bottom)
-                    .padding(.bottom, 13)
-                comments
-                forReplyLabel
-                commentInputView
-            }
-            if presentAlert {
-                CustomAlertModalView(alertType: .ban(nickname: "선호"), isPresented: $presentAlert) {
-                    print("신고접수됐습니다.")
+            ZStack {
+                Color.lightGray
+                    .ignoresSafeArea()
+                VStack(spacing: 0) {
+                    Text("댓글")
+                        .foregroundStyle(.white)
+                        .font(.system(size: 15, weight: .medium))
+                        .frame(maxWidth: .infinity)
+                        .padding(.bottom, 13)
+                        .padding(.top, 38)
+                        .overlay(Divider().background(Color.subGray1), alignment: .bottom)
+                        .padding(.bottom, 13)
+                    comments
+                    forReplyLabel
+                    commentInputView
+                }
+                if presentAlert {
+                    CustomAlertModalView(alertType: .ban(nickname: "선호"), isPresented: $presentAlert) {
+                        print("신고접수됐습니다.")
+                    }
                 }
             }
-        }
-        .customConfirmDialog(isPresented: $showConfirm, actions: {
-            //TODO: 내꺼인지 판별한 후 그 후 종료하기 등 버튼을 구현예정
-            NavigationLink {
-                
-            } label: {
-                Text("신고하기")
-                    .frame(maxWidth: .infinity)
-            }
-            Divider()
-                .background(Color.gray300)
-            Button {
-                showConfirm.toggle()
-                presentAlert.toggle()
-            } label: {
-                Text("차단하기")
-                    .frame(maxWidth: .infinity)
-            }
-        })
+            .fullScreenCover(isPresented: $showComplaint, content: {
+                ComplaintView(isSheet: $showComplaint)
+            })
+            .customConfirmDialog(isPresented: $showConfirm, actions: {
+                //TODO: 내꺼인지 판별한 후 그 후 종료하기 등 버튼을 구현예정
+                Button {
+                    showComplaint.toggle()
+                    showConfirm.toggle()
+                } label: {
+                    Text("신고하기")
+                        .frame(maxWidth: .infinity)
+                }
+                Divider()
+                    .background(Color.gray300)
+                Button {
+                    showConfirm.toggle()
+                    presentAlert.toggle()
+                } label: {
+                    Text("차단하기")
+                        .frame(maxWidth: .infinity)
+                }
+            })
     }
 }
 
@@ -74,7 +80,7 @@ extension CommentsView {
                             scrollSpot = comment.commentId
                             isReplyButtonTap = true
                             isFocus = true
-                        }) {
+                        }){
                             showConfirm = true
                         }
                         //                            .id(comment.commentId)

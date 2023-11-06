@@ -7,6 +7,7 @@
 
 import SwiftUI
 // TODO: 후에 모델작업은 수정 예정 여기서 사용하기 위해 임의로 제작
+
 struct DetailView : View {
     @Environment(\.dismiss) var dismiss
     @State private var alertOn = false
@@ -53,7 +54,6 @@ struct DetailView : View {
             if showDetailComments {
                 Color.black.opacity(0.7)
             }
-
         }
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
@@ -82,7 +82,7 @@ struct DetailView : View {
         .customConfirmDialog(isPresented: $showconfirm, actions: {
             //TODO: 내꺼인지 판별한 후 그 후 종료하기 등 버튼을 구현예정
             Button {
-                
+
             } label: {
                 Text("신고하기")
             }
@@ -95,9 +95,9 @@ struct DetailView : View {
             }
         })
         .sheet(isPresented: $showDetailComments) {
-                CommentsView()
-                    .presentationDetents([.large,.fraction(0.9)])
-                    .presentationContentInteraction(.scrolls)
+            CommentsView()
+                .presentationDetents([.large,.fraction(0.9)])
+                .presentationContentInteraction(.scrolls)
         }
     }
 }

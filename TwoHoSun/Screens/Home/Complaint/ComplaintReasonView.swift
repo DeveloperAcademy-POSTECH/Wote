@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ComplaintReasonView: View {
+    @Binding var isSheet: Bool
     var body: some View {
         ZStack {
             Color
@@ -56,7 +57,7 @@ struct ComplaintReasonView: View {
 extension ComplaintReasonView {
     var transferComplaintButton: some View {
         Button {
-            print("cloi")
+            isSheet.toggle()
         } label: {
             Text("Wote에게 전달하기")
                 .foregroundStyle(.white)
@@ -69,8 +70,8 @@ extension ComplaintReasonView {
     }
 }
 
-#Preview {
-    NavigationStack {
-        ComplaintReasonView()
-    }
-}
+//#Preview {
+//    NavigationStack {
+//        ComplaintReasonView()
+//    }
+//}

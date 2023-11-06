@@ -7,6 +7,7 @@
 
 import SwiftUI
 struct ComplaintView: View {
+    @Binding var isSheet: Bool
     enum ComplaintReason: CaseIterable {
         case spam, sexual, abuse, copyright, suicide, advertise, abnormal
         var title: String {
@@ -29,18 +30,19 @@ struct ComplaintView: View {
         }
     }
     var body: some View {
-        ZStack {
-            Color.background
-                .ignoresSafeArea()
-            VStack(alignment: .leading) {
-                Text("신고 사유를 선택해주세요.")
-                    .foregroundStyle(Color.white)
-                    .font(.system(size: 24,weight: .semibold))
-                    .padding(.leading, 12)
-                
-                List {
-                    ForEach(ComplaintReason.allCases, id: \.hashValue) { value in
-                            NavigationLink(destination: ComplaintReasonView()) {
+        NavigationStack {
+            ZStack {
+                Color.background
+                    .ignoresSafeArea()
+                VStack(alignment: .leading) {
+                    Text("신고 사유를 선택해주세요.")
+                        .foregroundStyle(Color.white)
+                        .font(.system(size: 24,weight: .semibold))
+                        .padding(.leading, 12)
+
+                    List {
+                        ForEach(ComplaintReason.allCases, id: \.hashValue) { value in
+                            NavigationLink(destination: ComplaintReasonView(isSheet: $isSheet)) {
                                 Text(value.title)
                                     .foregroundStyle(Color.subGray3)
                             }
@@ -54,19 +56,20 @@ struct ComplaintView: View {
                             .alignmentGuide(.listRowSeparatorLeading) { dimension in
                                 dimension[.leading] - 12
                             }
-                    }
+                        }
 
-                    .listRowInsets(EdgeInsets(top: 16, leading: 12, bottom: 16, trailing: 12))
-                    .listRowSeparatorTint(Color.red)
-                    .listRowBackground(Color.background)
-                    .listSectionSeparator(.hidden, edges: .top)
-                    .listSectionSeparator(.hidden, edges: .bottom)
+                        .listRowInsets(EdgeInsets(top: 16, leading: 12, bottom: 16, trailing: 12))
+                        .listRowSeparatorTint(Color.red)
+                        .listRowBackground(Color.background)
+                        .listSectionSeparator(.hidden, edges: .top)
+                        .listSectionSeparator(.hidden, edges: .bottom)
+
+                    }
+                    .listStyle(.plain)
 
                 }
-                .listStyle(.plain)
-
+                .padding(.horizontal,12)
             }
-            .padding(.horizontal,12)
         }
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -74,12 +77,20 @@ struct ComplaintView: View {
                     .foregroundStyle(Color.white)
                     .font(.system(size: 18))
             }
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                } label: {
+                    Image(systemName: "chevron.backward")
+                        .font(.system(size: 20))
+                        .foregroundStyle(.gray)
+                }
+            }
         }
     }
 }
 
-#Preview {
-    NavigationStack {
-        ComplaintView()
-    }
-}
+//#Preview {
+//    NavigationStack {
+//        ComplaintView()
+//    }
+//}
