@@ -303,7 +303,7 @@ extension WriteView {
     private var contentTextCountView: some View {
         Text("\(viewModel.content.count) ")
             .font(.system(size: 12, weight: .semibold))
-            .foregroundStyle(Color.descriptionGray)
+            .foregroundStyle(Color.subGray1)
         + Text("/ 150")
             .font(.system(size: 12, weight: .semibold))
             .foregroundStyle(.white)
