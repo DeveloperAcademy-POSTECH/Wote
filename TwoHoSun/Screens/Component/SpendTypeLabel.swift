@@ -6,42 +6,48 @@
 //
 
 import SwiftUI
-enum LabelTypeUsage {
-    case comments, detailView
+
+enum LabelTypeSize {
+    case small, large
+
     var horizontalPadding: CGFloat {
         switch self {
-        case .comments:
+        case .small:
             return 8
-        case .detailView:
+        case .large:
             return 12
         }
     }
+
     var verticalPadding: Double {
         switch self {
-        case .comments:
+        case .small:
             return 3
-        case .detailView:
-            return 5.5
+        case .large:
+            return 6
         }
     }
+
     var fontSize: CGFloat {
         switch self {
-        case .comments:
+        case .small:
             return 12
-        case .detailView:
+        case .large:
             return 14
         }
     }
 }
+
 struct SpendTypeLabel: View {
     let spendType: SpendTItleType
-    let usage: LabelTypeUsage
+    let size: LabelTypeSize
+
     var body: some View {
         Text(spendType.title)
-            .font(.system(size: usage.fontSize))
+            .font(.system(size: size.fontSize))
             .foregroundStyle(spendType.textColor)
-            .padding(.horizontal, usage.horizontalPadding)
-            .padding(.vertical, usage.verticalPadding)
+            .padding(.horizontal, size.horizontalPadding)
+            .padding(.vertical, size.verticalPadding)
             .background(spendType.backgroundColor)
             .clipShape(RoundedRectangle(cornerRadius: 35))
     }
