@@ -27,7 +27,8 @@ struct ConsumptionReviewView: View {
 
     var body: some View {
         ScrollView {
-            sameSpendTypeReviews
+            // TODO: - 후기가 존재할 시에만 나타나도록 처리하기
+            sameSpendTypeReviewView
                 .padding(.top, 24)
                 .padding(.leading, 24)
             reviewFilterView
@@ -41,13 +42,53 @@ struct ConsumptionReviewView: View {
 
 extension ConsumptionReviewView {
 
-    private var sameSpendTypeReviews: some View {
-        HStack(spacing: 6) {
-            SpendTypeLabel(spendType: .saving, size: .large)
-            Text("나와 같은 성향의 소비 후기")
-                .font(.system(size: 16, weight: .bold))
-                .foregroundStyle(.white)
+    private var sameSpendTypeReviewView: some View {
+        VStack(spacing: 18) {
+            HStack(spacing: 6) {
+                SpendTypeLabel(spendType: .saving, size: .large)
+                Text("나와 같은 성향의 소비 후기")
+                    .font(.system(size: 16, weight: .bold))
+                    .foregroundStyle(.white)
+                Spacer()
+            }
+            ScrollView(.horizontal) {
+                HStack(spacing: 10) {
+                    ForEach(0..<3) { _ in
+                        simpleReviewCell("ACG 마운틴 플라이 살까 말까?", "어쩌고저쩌고저쩌고??????????????????????????")
+                    }
+                }
+            }
+            .scrollIndicators(.hidden)
         }
+    }
+
+    // TODO: - model 제작 필요 / 임의로 제목과 내용만
+    private func simpleReviewCell(_ title: String, _ content: String) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(spacing: 4) {
+                Text("종료")
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundStyle(.white)
+                    .padding(.vertical, 4)
+                    .padding(.horizontal, 5)
+                    .background(Color.black200)
+                    .clipShape(RoundedRectangle(cornerRadius: 3))
+                Text(title)
+                    .font(.system(size: 16, weight: .bold))
+                    .foregroundStyle(.white)
+                    .lineLimit(1)
+            }
+            .padding(.horizontal, 20)
+            Text(content)
+                .font(.system(size: 14, weight: .medium))
+                .foregroundStyle(.white)
+                .lineLimit(1)
+                .padding(.horizontal, 20)
+        }
+        .frame(width: 268)
+        .padding(.vertical, 20)
+        .background(Color.disableGray)
+        .clipShape(.rect(cornerRadius: 12))
     }
 
     private var reviewFilterView: some View {
