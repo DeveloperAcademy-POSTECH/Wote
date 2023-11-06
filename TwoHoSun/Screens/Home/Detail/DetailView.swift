@@ -69,7 +69,7 @@ struct DetailView : View {
         .sheet(isPresented: $showDetailComments) {
 //            NavigationStack{
                 CommentsView()
-                .presentationDetents([.large,.fraction(0.8)])
+                .presentationDetents([.large,.fraction(0.9)])
                     .presentationContentInteraction(.scrolls)
 //            }
         }
