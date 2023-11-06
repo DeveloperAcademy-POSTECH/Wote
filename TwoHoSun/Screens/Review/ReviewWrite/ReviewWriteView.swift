@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ReviewWriteView: View {
     @FocusState private var isTitleFocused: Bool
+    @FocusState private var isPriceFocused: Bool
     @State private var isRegisterButtonDidTap = false
     @Bindable private var viewModel: ReviewWriteViewModel = ReviewWriteViewModel()
     
@@ -24,7 +25,7 @@ struct ReviewWriteView: View {
                             buySelection
                         }
                         titleView
-                        
+                        priceView
                     }
                 }
                 .padding(.top, 16)
@@ -139,6 +140,39 @@ extension ReviewWriteView {
                 .font(.system(size: 12))
                 .foregroundStyle(.red)
             }
+        }
+    }
+    
+    private var priceView: some View {
+        VStack(alignment: .leading) {
+            headerLabel("해당 상품의 가격을 알려주세요.", essential: false)
+            HStack {
+                TextField("",
+                          text: $viewModel.price,
+                          prompt: Text("예) 200,000")
+                    .font(.system(size: 14))
+                    .foregroundStyle(Color.placeholderGray)
+                )
+                .focused($isPriceFocused)
+                .font(.system(size: 14))
+                .keyboardType(.numberPad)
+                Text("원")
+                    .font(.system(size: 14, weight: .semibold))
+            }
+            .foregroundStyle(.white)
+            .frame(height: 44)
+            .padding(.horizontal, 16)
+            .background(
+                ZStack {
+                    if isPriceFocused {
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundStyle(Color.activeBlack)
+                            .shadow(color: Color.strokeBlue.opacity(isPriceFocused ? 0.25 : 0), radius: 4)
+                    }
+                    RoundedRectangle(cornerRadius: 10)
+                        .strokeBorder(Color.darkBlue, lineWidth: 1)
+                }
+            )
         }
     }
     
