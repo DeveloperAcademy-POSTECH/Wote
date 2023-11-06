@@ -10,7 +10,7 @@ import Foundation
 import Alamofire
 
 @Observable
-final class WriteViewModel {
+final class VoteWriteViewModel {
     var title = ""
     var price = ""
     var externalURL = ""

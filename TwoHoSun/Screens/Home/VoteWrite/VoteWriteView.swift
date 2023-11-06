@@ -8,7 +8,7 @@
 import PhotosUI
 import SwiftUI
 
-struct WriteView: View {
+struct VoteWriteView: View {
     @FocusState private var isTitleFocused: Bool
     @FocusState private var isPriceFocused: Bool
     @FocusState private var isLinkFocused: Bool
@@ -20,7 +20,7 @@ struct WriteView: View {
     @State private var isTagTextFieldShowed = false
     @State private var isEditing: Bool = false
     @Binding var isWriteViewPresented: Bool
-    @Bindable var viewModel: WriteViewModel
+    @Bindable var viewModel: VoteWriteViewModel
     
     var body: some View {
         ZStack {
@@ -99,7 +99,7 @@ struct WriteView: View {
     }
 }
 
-extension WriteView {
+extension VoteWriteView {
     private var titleView: some View {
         VStack(alignment: .leading, spacing: 4) {
             headerLabel("제목을 입력해주세요. ", essential: true)
@@ -344,6 +344,6 @@ extension WriteView {
 
 #Preview {
     NavigationStack {
-        WriteView(isWriteViewPresented: .constant(true), viewModel: WriteViewModel())
+        VoteWriteView(isWriteViewPresented: .constant(true), viewModel: VoteWriteViewModel())
     }
 }
