@@ -39,8 +39,8 @@ struct CommentsView: View {
         }
         .customConfirmDialog(isPresented: $showConfirm, actions: {
             //TODO: 내꺼인지 판별한 후 그 후 종료하기 등 버튼을 구현예정
-            Button {
-
+            NavigationLink {
+                
             } label: {
                 Text("신고하기")
             }
