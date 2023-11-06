@@ -18,7 +18,7 @@ struct ReviewWriteView: View {
             VStack {
                 ScrollView {
                     VStack {
-                        
+                        VoteCardView(cardType: .simple, searchFilterType: .end, isPurchased: true)
                     }
                 }
                 .padding(.top, 16)

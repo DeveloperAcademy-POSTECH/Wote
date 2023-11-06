@@ -211,7 +211,7 @@ extension SearchView {
                     .foregroundStyle(.pink)
             default:
                 ForEach(0..<5) { _ in
-                    VoteCardView(searchFilterType: searchFilterType, isPurchased: true)
+                    VoteCardView(cardType: .standard, searchFilterType: searchFilterType, isPurchased: true)
                 }
                 .listRowBackground(Color.clear)
                 .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
