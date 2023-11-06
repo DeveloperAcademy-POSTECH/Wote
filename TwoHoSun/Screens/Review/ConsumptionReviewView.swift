@@ -27,15 +27,21 @@ struct ConsumptionReviewView: View {
 
     var body: some View {
         ScrollView {
-            // TODO: - 후기가 존재할 시에만 나타나도록 처리하기
-            sameSpendTypeReviewView
-                .padding(.top, 24)
-                .padding(.leading, 24)
-            reviewFilterView
-                .padding(.top, 23)
-                .padding(.leading, 24)
+            VStack(spacing: 0) {
+                // TODO: - 후기가 존재할 시에만 나타나도록 처리하기
+                sameSpendTypeReviewView
+                    .padding(.top, 24)
+                    .padding(.leading, 24)
+                reviewFilterView
+                    .padding(.top, 23)
+                    .padding(.leading, 24)
+                reviewTypeView
+                    .padding(.top, 12)
+                    .padding(.horizontal, 16)
+            }
         }
         .background(Color.background)
+        .toolbarBackground(Color.background, for: .tabBar)
         .scrollIndicators(.hidden)
     }
 }
@@ -126,6 +132,26 @@ extension ConsumptionReviewView {
                         RoundedRectangle(cornerRadius: 10)
                             .strokeBorder(Color.lightBlue, lineWidth: 1)
                     }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var reviewTypeView: some View {
+        LazyVStack {
+            switch selectedReviewType {
+            case .all:
+                ForEach(0..<10) { _ in
+                    ReviewCardCell(isPurchased: Bool.random())
+                }
+            case .purchased:
+                ForEach(0..<10) { _ in
+                    ReviewCardCell(isPurchased: true)
+                }
+            case .notPurchased:
+                ForEach(0..<10) { _ in
+                    ReviewCardCell(isPurchased: false)
+                }
             }
         }
     }
