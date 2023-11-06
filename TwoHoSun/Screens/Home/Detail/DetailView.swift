@@ -91,7 +91,6 @@ extension DetailView {
                            price: 1000,
                            description: "어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고")
             VoteView()
-                .frame(height: 104)
                 .padding(.all, 24)
             Image("logo")
                 .resizable()

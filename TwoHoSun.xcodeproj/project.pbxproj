@@ -24,7 +24,7 @@
 		ABBBC6782AE471B700B1E614 /* WriteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBBC6772AE471B700B1E614 /* WriteViewModel.swift */; };
 		ABBBC67C2AE49CC800B1E614 /* PostCreateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBBC67B2AE49CC800B1E614 /* PostCreateModel.swift */; };
 		ABBEEAF52AE64F7900F6D918 /* SeachViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBEEAF42AE64F7900F6D918 /* SeachViewModel.swift */; };
-		ABBFB6302AE3EA2F006CE8CA /* MainVoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBFB62F2AE3EA2F006CE8CA /* MainVoteViewModel.swift */; };
+		ABBFB6302AE3EA2F006CE8CA /* ConsumptionConsiderationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBFB62F2AE3EA2F006CE8CA /* ConsumptionConsiderationViewModel.swift */; };
 		ABBFB6322AE3EABD006CE8CA /* VoteCreateRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBFB6312AE3EABD006CE8CA /* VoteCreateRequestModel.swift */; };
 		ABFE07792AF26D5A006CA743 /* ConsumptionConsiderationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFE07782AF26D5A006CA743 /* ConsumptionConsiderationView.swift */; };
 		ABFE077C2AF37C98006CA743 /* VoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFE077B2AF37C98006CA743 /* VoteView.swift */; };
@@ -87,7 +87,7 @@
 		ABBBC6772AE471B700B1E614 /* WriteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteViewModel.swift; sourceTree = "<group>"; };
 		ABBBC67B2AE49CC800B1E614 /* PostCreateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCreateModel.swift; sourceTree = "<group>"; };
 		ABBEEAF42AE64F7900F6D918 /* SeachViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeachViewModel.swift; sourceTree = "<group>"; };
-		ABBFB62F2AE3EA2F006CE8CA /* MainVoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVoteViewModel.swift; sourceTree = "<group>"; };
+		ABBFB62F2AE3EA2F006CE8CA /* ConsumptionConsiderationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsumptionConsiderationViewModel.swift; sourceTree = "<group>"; };
 		ABBFB6312AE3EABD006CE8CA /* VoteCreateRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteCreateRequestModel.swift; sourceTree = "<group>"; };
 		ABFE07782AF26D5A006CA743 /* ConsumptionConsiderationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsumptionConsiderationView.swift; sourceTree = "<group>"; };
 		ABFE077B2AF37C98006CA743 /* VoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteView.swift; sourceTree = "<group>"; };
@@ -273,7 +273,7 @@
 				ABB71D732AE2758200BE0671 /* ImageDetailView.swift */,
 				ABB71D792AE2A64300BE0671 /* LinkView.swift */,
 				ABFE07782AF26D5A006CA743 /* ConsumptionConsiderationView.swift */,
-				ABBFB62F2AE3EA2F006CE8CA /* MainVoteViewModel.swift */,
+				ABBFB62F2AE3EA2F006CE8CA /* ConsumptionConsiderationViewModel.swift */,
 				ABFE077B2AF37C98006CA743 /* VoteView.swift */,
 			);
 			path = Main;
@@ -555,8 +555,8 @@
 				C73F8E812AE54B24001C6B07 /* DetailViewModel.swift in Sources */,
 				C768F1A62AE656570020F82C /* NicknameValidation.swift in Sources */,
 				C768F19E2AE656430020F82C /* GeneralResponse.swift in Sources */,
-				ABBFB6302AE3EA2F006CE8CA /* MainVoteViewModel.swift in Sources */,
-				ABBFB6302AE3EA2F006CE8CA /* MainVoteViewModel.swift in Sources */,
+				ABBFB6302AE3EA2F006CE8CA /* ConsumptionConsiderationViewModel.swift in Sources */,
+				ABBFB6302AE3EA2F006CE8CA /* ConsumptionConsiderationViewModel.swift in Sources */,
 				C7E30E2B2ADC40E4001AE89B /* LoginViewModel.swift in Sources */,
 				C7719FE62AF2861000A520CB /* SpendTItleType.swift in Sources */,
 				C7DE44C22AE26109001639CB /* View+.swift in Sources */,

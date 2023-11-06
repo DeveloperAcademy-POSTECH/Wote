@@ -33,9 +33,9 @@ struct ConsumptionConsiderationView: View {
     @State private var isVoted = false
     @State private var selectedVoteType = UserVoteType.agree
     @State private var selectedVoteCategoryType = VoteCategoryType.all
-    @State private var isVoteCategoryButtonDidTap = false
+//    @Binding var isVoteCategoryButtonDidTap: Bool
     @State private var currentVote = 0
-    let viewModel: MainVoteViewModel
+    let viewModel: ConsumptionConsiderationViewModel
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
@@ -43,24 +43,23 @@ struct ConsumptionConsiderationView: View {
                 .ignoresSafeArea()
             ZStack(alignment: .topLeading) {
                 VStack(spacing: 0) {
-                    navigationBar
                     Spacer()
                     votePagingView
                     Spacer()
                 }
 
-                if isVoteCategoryButtonDidTap {
-                    voteCategoryMenu
-                        .offset(x: 16, y: 40)
-                }
+//                if isVoteCategoryButtonDidTap {
+//                    voteCategoryMenu
+//                        .offset(x: 16, y: 40)
+//                }
             }
             createVoteButton
                 .padding(.bottom, 21)
                 .padding(.trailing, 24)
         }
-        .onTapGesture {
-            isVoteCategoryButtonDidTap = false
-        }
+//        .onTapGesture {
+//            isVoteCategoryButtonDidTap = false
+//        }
     }
 
 }
@@ -112,7 +111,7 @@ extension ConsumptionConsiderationView {
         VStack(alignment: .leading, spacing: 0) {
             Button {
                 selectedVoteCategoryType = .all
-                isVoteCategoryButtonDidTap = false
+//                isVoteCategoryButtonDidTap = false
                 // TODO: - fetch new data
             } label: {
                 Text("전국 투표")
@@ -124,7 +123,7 @@ extension ConsumptionConsiderationView {
                 .background(Color.gray300)
             Button {
                 selectedVoteCategoryType = .mySchool
-                isVoteCategoryButtonDidTap = false
+//                isVoteCategoryButtonDidTap = false
                 // TODO: - fetch new data
             } label: {
                 Text("우리 학교 투표")
@@ -146,7 +145,7 @@ extension ConsumptionConsiderationView {
     private var voteCategoryButton: some View {
         ZStack(alignment: .topLeading) {
             Button {
-                isVoteCategoryButtonDidTap.toggle()
+//                isVoteCategoryButtonDidTap.toggle()
             } label: {
                 HStack(spacing: 5) {
                     Text(selectedVoteCategoryType.title)
@@ -203,17 +202,18 @@ extension ConsumptionConsiderationView {
             }
             .font(.system(size: 14))
             .foregroundStyle(Color.gray100)
-            .padding(.bottom, 14)
+            .padding(.bottom, 10)
             RoundedRectangle(cornerRadius: 16)
                 .strokeBorder(Color.disableGray, lineWidth: 1)
                 .frame(maxHeight: 218)
-            VStack(spacing: 16) {
+            VStack(spacing: 10) {
                 VoteView(isVoted: isVoted,
                          selectedVoteType: selectedVoteType)
                 detailResultButton
             }
-            .padding(.top, 8)
+            .padding(.top, 10)
             nextVoteButton
+                .padding(.top, 16)
         }
         .padding(.horizontal, 24)
     }
@@ -225,7 +225,9 @@ extension ConsumptionConsiderationView {
             Text("상세보기")
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundStyle(.white)
-                .frame(maxWidth: .infinity, minHeight: 43, maxHeight: 48)
+//                .frame(maxWidth: .infinity, minHeight: 43, maxHeight: 48)
+                .frame(maxWidth: .infinity)
+                .frame(height: 48)
                 .background(Color.blue100)
                 .clipShape(Capsule())
         }
