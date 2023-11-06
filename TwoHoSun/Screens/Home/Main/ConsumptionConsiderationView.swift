@@ -77,7 +77,6 @@ extension ConsumptionConsiderationView {
                                 .strokeBorder(Color.lightBlue, lineWidth: 1)
                         }
                 }
-
             }
             Spacer()
         }
