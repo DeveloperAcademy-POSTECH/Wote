@@ -15,6 +15,15 @@ struct CustomConfirmModifier<A>: ViewModifier where A: View {
             content
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             ZStack(alignment: .bottom) {
+//                if isPresented {
+//                    Color.background.opacity(0.7)
+//                        .ignoresSafeArea()
+//                        .onTapGesture {
+//                            isPresented = false
+//                        }
+//                        .transition(.opacity)
+//                }
+
                 if isPresented {
                     Color.background.opacity(0.7)
                         .ignoresSafeArea()
@@ -22,16 +31,14 @@ struct CustomConfirmModifier<A>: ViewModifier where A: View {
                             isPresented = false
                         }
                         .transition(.opacity)
-                }
-
-                if isPresented {
                     VStack(alignment: .center) {
                         GroupBox {
                             actions()
+                                .padding(.vertical, 15)
                                 .frame(maxWidth: .infinity,alignment: .center)
-                                .frame(height: 84)
                                 .background(Color.disableGray)
                                 .foregroundStyle(Color.lightBlue)
+                                .clipShape(.rect(cornerRadius: 10))
                         }
                         .groupBoxStyle(TransparentGroupBox())
                         GroupBox {
@@ -40,14 +47,14 @@ struct CustomConfirmModifier<A>: ViewModifier where A: View {
                             }
                             .bold()
                             .foregroundStyle(Color.white)
+                            .padding(.vertical, 18)
                             .frame(maxWidth: .infinity, alignment: .center)
                         }
                         .groupBoxStyle(TransparentGroupBox())
                     }
                     .font(.title3)
-                    .padding(10)
+                    .padding(.horizontal, 16)
                     .transition(.move(edge: .bottom))
-
                 }
             }
             .onTapGesture {
@@ -61,7 +68,7 @@ struct TransparentGroupBox: GroupBoxStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.content
             .frame(maxWidth: .infinity)
-            .padding()
-            .background(RoundedRectangle(cornerRadius: 10).fill(Color.disableGray))
+            .background(RoundedRectangle(cornerRadius:  10)
+                    .fill(Color.disableGray))
     }
 }

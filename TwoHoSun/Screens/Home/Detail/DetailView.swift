@@ -11,6 +11,7 @@ struct DetailView : View {
     @Environment(\.dismiss) var dismiss
     @State private var alertOn = false
     @State private var showDetailComments = false
+    @State private var showconfirm = false
     var isDone: Bool
 
     init(isDone: Bool) {
@@ -66,12 +67,28 @@ struct DetailView : View {
                     .foregroundStyle(Color.white)
             }
             ToolbarItem(placement: .topBarTrailing) {
-                Button(action: {}, label: {
+                Button(action: {
+                    showconfirm.toggle()
+                }, label: {
                     Image(systemName: "ellipsis")
                         .foregroundStyle(Color.subGray1)
                 })
             }
         }
+        .customConfirmDialog(isPresented: $showconfirm, actions: {
+            Button {
+                
+            } label: {
+                Text("신고하기")
+            }
+            Divider()
+                .background(Color.gray300)
+            Button {
+
+            } label: {
+                Text("차단하기")
+            }
+        })
         .sheet(isPresented: $showDetailComments) {
 //            NavigationStack{
                 CommentsView()
