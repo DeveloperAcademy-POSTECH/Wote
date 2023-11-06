@@ -202,9 +202,16 @@ extension SearchView {
                 // TODO: - create review search result layout
                 Text("review cell")
                     .foregroundStyle(.pink)
-            default:
+            case .progressing:
                 ForEach(0..<5) { _ in
-                    VoteCardView(searchFilterType: searchFilterType, isPurchased: true)
+                    VoteCardCell(searchFilterType: .progressing)
+                }
+                .listRowBackground(Color.clear)
+                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
+                .listRowSeparator(.hidden)
+            case .end:
+                ForEach(0..<5) { _ in
+                    VoteCardCell(searchFilterType: .end, isPurchased: Bool.random())
                 }
                 .listRowBackground(Color.clear)
                 .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))

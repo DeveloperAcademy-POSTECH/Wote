@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct VoteCardView: View {
+struct VoteCardCell: View {
     var searchFilterType: SearchFilterType
-    var isPurchased: Bool
+    var isPurchased: Bool?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
@@ -61,7 +61,7 @@ struct VoteCardView: View {
                         .foregroundStyle(.gray)
                         .clipShape(RoundedRectangle(cornerRadius: 8))
                         .opacity(searchFilterType == .end ? 0.5 : 1.0)
-                    if searchFilterType == .end {
+                    if let isPurchased = isPurchased, searchFilterType == .end {
                         Image(isPurchased ? "imgBuy" : "imgNotBuy")
                             .offset(x: -10, y: 10)
                     }
@@ -76,5 +76,9 @@ struct VoteCardView: View {
 }
 
 #Preview {
-    VoteCardView(searchFilterType: .end, isPurchased: false)
+    Group {
+        VoteCardCell(searchFilterType: .progressing)
+        VoteCardCell(searchFilterType: .end, isPurchased: false)
+        VoteCardCell(searchFilterType: .end, isPurchased: true)
+    }
 }

@@ -15,7 +15,7 @@
 		AB45225C2ADE665100B69F24 /* URLConst.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB45225B2ADE665100B69F24 /* URLConst.swift */; };
 		AB4D82692ADD7F4D00F35CCB /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4D82682ADD7F4D00F35CCB /* ProfileSettingsView.swift */; };
 		AB53CA6D2AF7AC4100FD850A /* UINavigationController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB53CA6C2AF7AC4100FD850A /* UINavigationController+.swift */; };
-		AB7317E22AF835DF008B5E41 /* VoteCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7317E12AF835DF008B5E41 /* VoteCardView.swift */; };
+		AB7317E22AF835DF008B5E41 /* VoteCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7317E12AF835DF008B5E41 /* VoteCardCell.swift */; };
 		AB7317E62AF90CCC008B5E41 /* ConsumptionConsiderationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7317E52AF90CCC008B5E41 /* ConsumptionConsiderationView.swift */; };
 		AB7317E82AF90DBF008B5E41 /* Secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = AB7317E72AF90DBF008B5E41 /* Secret.plist */; };
 		AB7317EA2AF90F00008B5E41 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C771136E2AF0E7B600BAB128 /* UIColor+.swift */; };
@@ -83,7 +83,7 @@
 		AB45225B2ADE665100B69F24 /* URLConst.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLConst.swift; sourceTree = "<group>"; };
 		AB4D82682ADD7F4D00F35CCB /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
 		AB53CA6C2AF7AC4100FD850A /* UINavigationController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+.swift"; sourceTree = "<group>"; };
-		AB7317E12AF835DF008B5E41 /* VoteCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteCardView.swift; sourceTree = "<group>"; };
+		AB7317E12AF835DF008B5E41 /* VoteCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteCardCell.swift; sourceTree = "<group>"; };
 		AB7317E52AF90CCC008B5E41 /* ConsumptionConsiderationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsumptionConsiderationView.swift; sourceTree = "<group>"; };
 		AB7317E72AF90DBF008B5E41 /* Secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Secret.plist; sourceTree = "<group>"; };
 		AB7317EE2AF9178C008B5E41 /* FilterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterButton.swift; sourceTree = "<group>"; };
@@ -395,7 +395,7 @@
 				C77113722AF2114800BAB128 /* CustomConfirmModifier.swift */,
 				C7719FE72AF28A7B00A520CB /* SpendTypeLabel.swift */,
 				C78E7D092AF8C53000C2E220 /* ExpandableTextView.swift */,
-				AB7317E12AF835DF008B5E41 /* VoteCardView.swift */,
+				AB7317E12AF835DF008B5E41 /* VoteCardCell.swift */,
 				AB7317EE2AF9178C008B5E41 /* FilterButton.swift */,
 			);
 			path = Component;
@@ -567,7 +567,7 @@
 				C77113732AF2114800BAB128 /* CustomConfirmModifier.swift in Sources */,
 				FDB4B1502AE68FC000720328 /* DetailView.swift in Sources */,
 				C7F1FD842ADDA2F000C5A2A1 /* OnBoardingView.swift in Sources */,
-				AB7317E22AF835DF008B5E41 /* VoteCardView.swift in Sources */,
+				AB7317E22AF835DF008B5E41 /* VoteCardCell.swift in Sources */,
 				AB7317F22AF92978008B5E41 /* ConsumptionReviewView.swift in Sources */,
 				C7DE44BD2AE0DCE7001639CB /* CommentCell.swift in Sources */,
 				ABB71D7C2AE2B3F100BE0671 /* NotificationView.swift in Sources */,
