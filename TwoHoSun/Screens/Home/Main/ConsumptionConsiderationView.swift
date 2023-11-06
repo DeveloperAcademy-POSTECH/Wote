@@ -33,7 +33,6 @@ struct ConsumptionConsiderationView: View {
     @State private var isVoted = false
     @State private var selectedVoteType = UserVoteType.agree
     @State private var selectedVoteCategoryType = VoteCategoryType.all
-//    @Binding var isVoteCategoryButtonDidTap: Bool
     @State private var currentVote = 0
     let viewModel: ConsumptionConsiderationViewModel
 
@@ -41,121 +40,47 @@ struct ConsumptionConsiderationView: View {
         ZStack(alignment: .bottomTrailing) {
             Color.background
                 .ignoresSafeArea()
-            ZStack(alignment: .topLeading) {
-                VStack(spacing: 0) {
-                    Spacer()
-                    votePagingView
-                    Spacer()
-                }
-
-//                if isVoteCategoryButtonDidTap {
-//                    voteCategoryMenu
-//                        .offset(x: 16, y: 40)
-//                }
+            VStack(spacing: 0) {
+                Spacer()
+                votePagingView
+                Spacer()
             }
             createVoteButton
                 .padding(.bottom, 21)
                 .padding(.trailing, 24)
         }
-//        .onTapGesture {
-//            isVoteCategoryButtonDidTap = false
-//        }
     }
 
 }
 
 extension ConsumptionConsiderationView {
 
-    private var navigationBar: some View {
-        HStack(spacing: 0) {
-            voteCategoryButton
+    // TODO: - 투표 없을 시에 noVoteView 보여주기
+    private var noVoteView: some View {
+        HStack {
             Spacer()
-            notificationButton
-                .padding(.trailing, 8)
-            searchButton
-        }
-        .padding(.horizontal, 16)
-    }
-
-    private var notificationButton: some View {
-        NavigationLink {
-            NotificationView()
-        } label: {
-            ZStack {
-                RoundedRectangle(cornerRadius: 6)
-                    .frame(width: 39, height: 39)
-                    .foregroundStyle(Color.disableGray)
-                Image(systemName: "bell.fill")
-                    .font(.system(size: 16))
-                    .foregroundStyle(Color.woteWhite)
-            }
-        }
-    }
-
-    private var searchButton: some View {
-        NavigationLink {
-            SearchView()
-        } label: {
-            ZStack {
-                RoundedRectangle(cornerRadius: 6)
-                    .frame(width: 39, height: 39)
-                    .foregroundStyle(Color.disableGray)
-                Image(systemName: "magnifyingglass")
-                    .font(.system(size: 16))
-                    .foregroundStyle(Color.woteWhite)
-            }
-        }
-    }
-
-    private var voteCategoryMenu: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Button {
-                selectedVoteCategoryType = .all
-//                isVoteCategoryButtonDidTap = false
-                // TODO: - fetch new data
-            } label: {
-                Text("전국 투표")
-                    .padding(.leading, 15)
-                    .padding(.top, 14)
-                    .padding(.bottom, 12)
-            }
-            Divider()
-                .background(Color.gray300)
-            Button {
-                selectedVoteCategoryType = .mySchool
-//                isVoteCategoryButtonDidTap = false
-                // TODO: - fetch new data
-            } label: {
-                Text("우리 학교 투표")
-                    .padding(.leading, 15)
-                    .padding(.top, 12)
-                    .padding(.bottom, 14)
-            }
-        }
-        .frame(width: 131, height: 88)
-        .font(.system(size: 14))
-        .foregroundStyle(Color.woteWhite)
-        .background(
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color.disableGray)
-                .strokeBorder(Color.gray300, lineWidth: 1)
-        )
-    }
-
-    private var voteCategoryButton: some View {
-        ZStack(alignment: .topLeading) {
-            Button {
-//                isVoteCategoryButtonDidTap.toggle()
-            } label: {
-                HStack(spacing: 5) {
-                    Text(selectedVoteCategoryType.title)
-                        .font(.system(size: 20, weight: .bold))
-                        .foregroundStyle(.white)
-                    Image(systemName: "chevron.down")
-                        .font(.system(size: 16))
-                        .foregroundStyle(Color.descriptionGray)
+            VStack(spacing: 16) {
+                Image("imgNoVote")
+                Text("아직 소비고민이 없어요.\n투표 만들기를 통해 소비고민을 등록해보세요.")
+                    .foregroundStyle(Color.subGray1)
+                    .multilineTextAlignment(.center)
+                    .padding(.top, 8)
+                NavigationLink {
+                    WriteView(viewModel: WriteViewModel())
+                } label: {
+                    Text("고민 등록하러 가기")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundStyle(Color.lightBlue)
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 12)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 10)
+                                .strokeBorder(Color.lightBlue, lineWidth: 1)
+                        }
                 }
+
             }
+            Spacer()
         }
     }
 
@@ -225,7 +150,6 @@ extension ConsumptionConsiderationView {
             Text("상세보기")
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundStyle(.white)
-//                .frame(maxWidth: .infinity, minHeight: 43, maxHeight: 48)
                 .frame(maxWidth: .infinity)
                 .frame(height: 48)
                 .background(Color.blue100)
