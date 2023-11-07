@@ -7,6 +7,7 @@
 
 import SwiftUI
 struct ComplaintView: View {
+    @Environment(\.dismiss) var dismiss
     @Binding var isSheet: Bool
     @Binding var isComplaintApply: Bool
     enum ComplaintReason: CaseIterable {
@@ -31,7 +32,6 @@ struct ComplaintView: View {
         }
     }
     var body: some View {
-        NavigationStack {
             ZStack {
                 Color.background
                     .ignoresSafeArea()
@@ -58,40 +58,32 @@ struct ComplaintView: View {
                                 dimension[.leading] - 12
                             }
                         }
-
                         .listRowInsets(EdgeInsets(top: 16, leading: 12, bottom: 16, trailing: 12))
-                        .listRowSeparatorTint(Color.red)
+                        .listRowSeparatorTint(Color.dividerGray)
                         .listRowBackground(Color.background)
                         .listSectionSeparator(.hidden, edges: .top)
                         .listSectionSeparator(.hidden, edges: .bottom)
-
                     }
                     .listStyle(.plain)
-
                 }
                 .padding(.horizontal,12)
             }
-        }
+
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text("신고하기")
                     .foregroundStyle(Color.white)
-                    .font(.system(size: 18))
+                    .font(.system(size: 18, weight: .medium))
             }
-            ToolbarItem(placement: .topBarLeading) {
+            ToolbarItem(placement: .topBarTrailing) {
                 Button {
+                    dismiss()
                 } label: {
-                    Image(systemName: "chevron.backward")
-                        .font(.system(size: 20))
-                        .foregroundStyle(.gray)
+                    Image(systemName: "xmark")
+                        .font(.system(size: 20, weight: .medium))
+                        .foregroundStyle(Color.lightBlue)
                 }
             }
         }
     }
 }
-
-//#Preview {
-//    NavigationStack {
-//        ComplaintView()
-//    }
-//}

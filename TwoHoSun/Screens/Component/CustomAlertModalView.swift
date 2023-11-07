@@ -100,6 +100,7 @@ struct CustomAlertModalView: View {
 
                 }
             }
+
             .padding(EdgeInsets(top: 32, leading: 28, bottom: 28, trailing: 28))
             .background(Color.disableGray)
             .clipShape(.rect(cornerRadius: 10))

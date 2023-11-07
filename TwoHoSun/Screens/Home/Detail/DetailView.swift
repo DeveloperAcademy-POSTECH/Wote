@@ -10,11 +10,12 @@ import SwiftUI
 
 struct DetailView : View {
     @Environment(\.dismiss) var dismiss
-    @State private var alertOn = false
     @State private var showDetailComments = false
     @State private var showconfirm = false
     @State private var backgroundColor: Color = .background
- 
+    @State private var showCustomAlert = false
+    @State private var applyComplaint = false
+    @State private var alertOn = false
     var isDone: Bool
 
     init(isDone: Bool) {
@@ -54,6 +55,35 @@ struct DetailView : View {
             }
             if showDetailComments {
                 Color.black.opacity(0.7)
+            }
+            if showCustomAlert {
+                ZStack {
+                    Color.black.opacity(0.7)
+                        .ignoresSafeArea()
+                    CustomAlertModalView(alertType: .ban(nickname: "선호"), isPresented: $showCustomAlert) {
+                        print("신고접수됐습니다.")
+                    }
+                }
+            }
+
+            if applyComplaint {
+//                    GeometryReader { geo in
+                    Color.black.opacity(0.7)
+                        .ignoresSafeArea()
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.lightBlue)
+                            .frame(width: 283, height: 36)
+
+                        Text("신고해주셔서 감사합니다.")
+                            .foregroundStyle(.white)
+                            .font(.system(size: 16, weight: .semibold))
+                    }
+//                        .position(x: geo.size.width / 2, y: geo.size.height / 2 - (UIScreen.main.bounds.height - geo.size.height) / 2 + 18)
+                    .onTapGesture {
+                        applyComplaint.toggle()
+                    }
+//                    }
             }
         }
         .navigationBarTitleDisplayMode(.inline)
@@ -96,10 +126,23 @@ struct DetailView : View {
             }
         })
         .sheet(isPresented: $showDetailComments) {
-            CommentsView()
-                .presentationDetents([.large,.fraction(0.9)])
-                .presentationContentInteraction(.scrolls)
+                CommentsView(showComplaint: $showCustomAlert, applyComplaint: $applyComplaint)
+                    .presentationDetents([.large,.fraction(0.9)])
+                    .presentationContentInteraction(.scrolls)
+
+//                .overlay {
+//        //            if alertOn {
+//        //                ZStack {
+//        //                    Color.pink
+//        //                    Text("왜안보이지")
+//        //                        .frame(width: 500, height: 500)
+//        //                }
+//        //                .zIndex(1)
+//        //            }
+//
+//                }
         }
+
     }
 }
 extension DetailView {
@@ -119,7 +162,7 @@ extension DetailView {
                 .foregroundStyle(Color.whiteGray)
             Spacer()
             if isDone {
-                //TODO: 내껀지 남의껀지 보고 버튼놓기
+                // TODO: 내껀지 남의껀지 보고 버튼놓기
             } else {
                 Toggle("", isOn: $alertOn)
                     .toggleStyle(AlertCustomToggle())
@@ -203,7 +246,7 @@ extension DetailView {
     }
 
     var commentPreview: some View {
-        //TODO: 뷰모델에서 댓글이 있는지를 체크한담에 있으면 삼항연산자를 통해 할 예정
+        // TODO: 뷰모델에서 댓글이 있는지를 체크한담에 있으면 삼항연산자를 통해 할 예정
         VStack {
             HStack(spacing: 4) {
                 Text("댓글")
