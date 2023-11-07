@@ -10,16 +10,7 @@ import SwiftUI
 struct TypeTestView: View {
     @State private var testProgress = 1.0
     @State private var typeScores: [SpendTitleType: Int] = [:]
-//    var typeScores: [SpendTitleType: Int] = [
-//        .ecoWarrior: 0,
-//        .saving: 0,
-//        .flexer: 0,
-//        .trendy: 0,
-//        .beautyLover: 0,
-//        .impulseBuyer: 0,
-//        .adventurer: 0,
-//        .safetyShopper: 0
-//    ]
+    @State private var isTypeTestResultViewShown = false
 
     var body: some View {
         ZStack {
@@ -49,6 +40,9 @@ struct TypeTestView: View {
         }
         .toolbarBackground(Color.background, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
+        .fullScreenCover(isPresented: $isTypeTestResultViewShown) {
+            TypeTestResultView()
+        }
     }
 }
 
@@ -100,6 +94,10 @@ extension TypeTestView {
                 testProgress += 1.0
                 for type in choiceModel.types {
                     typeScores[type, default: 0] += 1
+                }
+
+                if testProgress == 7.0 {
+                    isTypeTestResultViewShown = true
                 }
             }
         } label: {
