@@ -9,6 +9,17 @@ import SwiftUI
 
 struct TypeTestView: View {
     @State private var testProgress = 1.0
+    @State private var typeScores: [SpendTitleType: Int] = [:]
+//    var typeScores: [SpendTitleType: Int] = [
+//        .ecoWarrior: 0,
+//        .saving: 0,
+//        .flexer: 0,
+//        .trendy: 0,
+//        .beautyLover: 0,
+//        .impulseBuyer: 0,
+//        .adventurer: 0,
+//        .safetyShopper: 0
+//    ]
 
     var body: some View {
         ZStack {
@@ -29,7 +40,7 @@ struct TypeTestView: View {
                 VStack(spacing: 16) {
                     ForEach(0..<4) { index in
                         choiceButton(order: index,
-                                     content: typeTests[Int(testProgress)-1].choices[index].choice)
+                                     choiceModel: typeTests[Int(testProgress)-1].choices[index])
                     }
                 }
                 Spacer(minLength: 30)
@@ -83,14 +94,17 @@ extension TypeTestView {
             )
     }
 
-    private func choiceButton(order: Int, content: String) -> some View {
+    private func choiceButton(order: Int, choiceModel: ChoiceModel) -> some View {
         Button {
             if testProgress < 7.0 {
                 testProgress += 1.0
+                for type in choiceModel.types {
+                    typeScores[type, default: 0] += 1
+                }
             }
         } label: {
             HStack {
-                Text(String(UnicodeScalar(order + 65)!) + ". " + content)
+                Text(String(UnicodeScalar(order + 65)!) + ". " + choiceModel.choice)
                 Spacer()
             }
         }
