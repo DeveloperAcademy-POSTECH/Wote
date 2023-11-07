@@ -38,12 +38,10 @@ struct ConsumptionReviewView: View {
                         Section {
                             reviewTypeView
                                 .padding(.horizontal, 16)
-
                         } header: {
                             reviewFilterView
                         }
                         .id("reviewTypeSection")
-                        Spacer()
                     }
                     .onChange(of: selectedReviewType) { _, _ in
                         proxy.scrollTo("reviewTypeSection", anchor: .top)
@@ -71,7 +69,8 @@ extension ConsumptionReviewView {
             ScrollView(.horizontal) {
                 HStack(spacing: 10) {
                     ForEach(0..<3) { _ in
-                        simpleReviewCell("ACG 마운틴 플라이 살까 말까?", "어쩌고저쩌고저쩌고??????????????????????????")
+                        simpleReviewCell(title: "ACG 마운틴 플라이 살까 말까?",
+                                         content: "어쩌고저쩌고저쩌고??????????????????????????")
                     }
                 }
             }
@@ -79,8 +78,7 @@ extension ConsumptionReviewView {
         }
     }
 
-    // TODO: - model 제작 필요 / 임의로 제목과 내용만
-    private func simpleReviewCell(_ title: String, _ content: String) -> some View {
+    private func simpleReviewCell(title: String, content: String) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 4) {
                 Text("종료")

@@ -157,18 +157,19 @@ extension ConsumptionConsiderationView {
 
     @ViewBuilder
     private var nextVoteButton: some View {
-        if currentVote != 4 {
-            HStack {
-                Spacer()
-                Button {
-                    withAnimation {
+        HStack {
+            Spacer()
+            Button {
+                withAnimation {
+                    if currentVote != 4 {
                         currentVote += 1
                     }
-                } label: {
-                    Image("icnCaretDown")
                 }
-                Spacer()
+            } label: {
+                Image("icnCaretDown")
+                    .opacity(currentVote != 4 ? 1 : 0)
             }
+            Spacer()
         }
     }
 
