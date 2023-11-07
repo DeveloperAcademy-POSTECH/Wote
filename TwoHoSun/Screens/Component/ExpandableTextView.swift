@@ -21,10 +21,7 @@ struct ExpandableTextView: View {
       return self.expanded ? "" : "자세히보기"
     }
   }
-
   let font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.body)
-
-
   init(_ text: String, lineLimit: Int) {
     self.text = text
     self.lineLimit = lineLimit

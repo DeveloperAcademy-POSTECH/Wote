@@ -10,6 +10,7 @@ import SwiftUI
 struct ComplaintReasonView: View {
     @Binding var isSheet: Bool
     @Binding var isComplaintApply: Bool
+    var complaint : ComplaintReason
     @State var isuserBlock = false
 
     var body: some View {
@@ -19,11 +20,11 @@ struct ComplaintReasonView: View {
                 .ignoresSafeArea()
             VStack {
                 VStack(alignment: .leading) {
-                    Text("신고 사유")
+                    Text("신고 사유:")
                         .foregroundStyle(Color.white)
                         .font(.system(size: 24, weight: .semibold))
                         .padding(.bottom, 26)
-                    Text("이전에 눌렀던거")
+                    Text(complaint.title)
                         .foregroundStyle(Color.lightBlue)
                         .font(.system(size: 16, weight: .medium))
                         .padding(.bottom, 24)
@@ -76,8 +77,4 @@ extension ComplaintReasonView {
         .background(Color.disableGray)
         .clipShape(.rect(cornerRadius: 10))
     }
-}
-
-#Preview {
-    ComplaintReasonView(isSheet: .constant(true), isComplaintApply: .constant(true))
 }

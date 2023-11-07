@@ -6,31 +6,32 @@
 //
 
 import SwiftUI
+enum ComplaintReason: CaseIterable {
+    case spam, sexual, abuse, copyright, suicide, advertise, abnormal
+    var title: String {
+        switch self {
+        case .spam:
+            return "스팸"
+        case .sexual:
+            return "음란 · 성적 행위"
+        case .abuse:
+            return "욕설 · 폭력 · 혐오"
+        case .copyright:
+            return "명예훼손 · 저작권 등 권리침해"
+        case .suicide:
+            return "자살 · 자해"
+        case .advertise:
+            return "광고 · 사행성"
+        case .abnormal:
+            return "비정상적인 서비스 이용"
+        }
+    }
+}
 struct ComplaintView: View {
     @Environment(\.dismiss) var dismiss
     @Binding var isSheet: Bool
     @Binding var isComplaintApply: Bool
-    enum ComplaintReason: CaseIterable {
-        case spam, sexual, abuse, copyright, suicide, advertise, abnormal
-        var title: String {
-            switch self {
-            case .spam:
-                return "스팸"
-            case .sexual:
-                return "음란 · 성적 행위"
-            case .abuse:
-                return "욕설 · 폭력 · 혐오"
-            case .copyright:
-                return "명예훼손 · 저작권 등 권리침해"
-            case .suicide:
-                return "자살 · 자해"
-            case .advertise:
-                return "광고 · 사행성"
-            case .abnormal:
-                return "비정상적인 서비스 이용"
-            }
-        }
-    }
+
     var body: some View {
             ZStack {
                 Color.background
@@ -43,7 +44,7 @@ struct ComplaintView: View {
 
                     List {
                         ForEach(ComplaintReason.allCases, id: \.hashValue) { value in
-                            NavigationLink(destination: ComplaintReasonView(isSheet: $isSheet, isComplaintApply: $isComplaintApply)) {
+                            NavigationLink(destination: ComplaintReasonView(isSheet: $isSheet, isComplaintApply: $isComplaintApply, complaint: value)) {
                                 Text(value.title)
                                     .foregroundStyle(Color.subGray3)
                             }
