@@ -66,6 +66,7 @@
 		FD7624A02AF954980079AEEF /* GeneralResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C768F19D2AE656430020F82C /* GeneralResponse.swift */; };
 		FD7624A12AF954980079AEEF /* NicknameValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C768F1A22AE656570020F82C /* NicknameValidation.swift */; };
 		FD8D9F812ADC5FAD0072F4BA /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */; };
+		FD9C277E2AFA27E900702ACD /* ImageCropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9C277D2AFA27E900702ACD /* ImageCropView.swift */; };
 		FDB4B1502AE68FC000720328 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB4B14F2AE68FC000720328 /* DetailView.swift */; };
 		FDDB990C2ADC1BEC00B1163F /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = FDDB990B2ADC1BEC00B1163F /* .swiftlint.yml */; };
 		FDDEC15B2AE3EABA004509EA /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDEC15A2AE3EABA004509EA /* SearchView.swift */; };
@@ -134,6 +135,7 @@
 		FD6673362AE071550015007D /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		FD92803A2ADD8A4C007285BA /* File */ = {isa = PBXFileReference; lastKnownFileType = text; path = File; sourceTree = "<group>"; };
+		FD9C277D2AFA27E900702ACD /* ImageCropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropView.swift; sourceTree = "<group>"; };
 		FDB4B14F2AE68FC000720328 /* DetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		FDDB99042ADBF37100B1163F /* TwoHoSun.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TwoHoSun.entitlements; sourceTree = "<group>"; };
 		FDDB990B2ADC1BEC00B1163F /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
@@ -394,6 +396,7 @@
 				C7719FE72AF28A7B00A520CB /* SpendTypeLabel.swift */,
 				C78E7D092AF8C53000C2E220 /* ExpandableTextView.swift */,
 				AB7317E12AF835DF008B5E41 /* VoteCardView.swift */,
+				FD9C277D2AFA27E900702ACD /* ImageCropView.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -550,6 +553,7 @@
 				AB45225C2ADE665100B69F24 /* URLConst.swift in Sources */,
 				C768F1A52AE656570020F82C /* Tokens.swift in Sources */,
 				C73F8E922AE58EAD001C6B07 /* CommentPostModel.swift in Sources */,
+				FD9C277E2AFA27E900702ACD /* ImageCropView.swift in Sources */,
 				C73F8E902AE562FE001C6B07 /* Date+.swift in Sources */,
 				C7719FE82AF28A7B00A520CB /* SpendTypeLabel.swift in Sources */,
 				FDDEC15B2AE3EABA004509EA /* SearchView.swift in Sources */,
