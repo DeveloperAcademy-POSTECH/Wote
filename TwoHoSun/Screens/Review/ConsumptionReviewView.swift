@@ -31,13 +31,24 @@ struct ConsumptionReviewView: View {
                 // TODO: - 후기가 존재할 시에만 나타나도록 처리하기
                 sameSpendTypeReviewView
                     .padding(.top, 24)
+                    .padding(.bottom, 20)
                     .padding(.leading, 24)
-                reviewFilterView
-                    .padding(.top, 23)
-                    .padding(.leading, 24)
-                reviewTypeView
-                    .padding(.top, 12)
-                    .padding(.horizontal, 16)
+                ScrollViewReader { proxy in
+                    LazyVStack(pinnedViews: .sectionHeaders) {
+                        Section {
+                            reviewTypeView
+                                .id("reviewTypeSection")
+                                .padding(.horizontal, 16)
+
+                        } header: {
+                            reviewFilterView
+                        }
+                        Spacer()
+                    }
+                    .onChange(of: selectedReviewType) { _ in
+                        proxy.scrollTo("reviewTypeSection", anchor: .top)
+                    }
+                }
             }
         }
         .background(Color.background)
@@ -109,6 +120,9 @@ extension ConsumptionReviewView {
             }
             Spacer()
         }
+        .padding(.vertical, 12)
+        .padding(.leading, 24)
+        .background(Color.background)
     }
 
     // TODO: - 데이터가 없을 때는 noReviewView를 보여주도록 처리
