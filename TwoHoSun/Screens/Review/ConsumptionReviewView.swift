@@ -37,15 +37,15 @@ struct ConsumptionReviewView: View {
                     LazyVStack(pinnedViews: .sectionHeaders) {
                         Section {
                             reviewTypeView
-                                .id("reviewTypeSection")
                                 .padding(.horizontal, 16)
 
                         } header: {
                             reviewFilterView
                         }
+                        .id("reviewTypeSection")
                         Spacer()
                     }
-                    .onChange(of: selectedReviewType) { _ in
+                    .onChange(of: selectedReviewType) { _, _ in
                         proxy.scrollTo("reviewTypeSection", anchor: .top)
                     }
                 }
