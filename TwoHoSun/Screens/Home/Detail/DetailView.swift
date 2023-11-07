@@ -84,16 +84,7 @@ struct DetailView : View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden()
         .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    dismiss()
-                } label: {
-                    Label("소비고민", systemImage: "chevron.backward")
-                        .foregroundStyle(Color.accentBlue)
-                }
-            }
             ToolbarItem(placement: .principal) {
                 Text("상세보기")
                     .foregroundStyle(Color.white)
@@ -107,21 +98,7 @@ struct DetailView : View {
                 })
             }
         }
-        .customConfirmDialog(isPresented: $showconfirm, actions: {
-            //TODO: 내꺼인지 판별한 후 그 후 종료하기 등 버튼을 구현예정
-            Button {
-
-            } label: {
-                Text("신고하기")
-            }
-            Divider()
-                .background(Color.gray300)
-            Button {
-
-            } label: {
-                Text("차단하기")
-            }
-        })
+        .toolbarBackground(Color.background, for: .navigationBar)
         .sheet(isPresented: $showDetailComments) {
                 CommentsView(showComplaint: $showCustomAlert, applyComplaint: $applyComplaint)
                     .presentationDetents([.large,.fraction(0.9)])
@@ -157,9 +134,11 @@ extension DetailView {
     }
 
     private var detailCell: some View {
-        //TODO: 데이터 연결할것
+        // TODO: 데이터 연결할것
         VStack(alignment: .leading) {
-            detailTextView(title: "ACG마운틴 플라이 할인 살말?", price: 1000, description: "어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고")
+            detailTextView(title: "ACG마운틴 플라이 할인 살말?",
+                           price: 1000,
+                           description: "어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고")
             VoteView()
                 .padding(.all, 24)
             Image("logo")
@@ -220,6 +199,7 @@ extension DetailView {
             }
             .padding(.bottom, 18)
         }
+        .padding(.bottom, 18)
         .padding(.leading, 20)
 
         Text(description)
@@ -274,7 +254,7 @@ extension DetailView {
                 .font(.system(size: 14))
                 .foregroundStyle(Color.priceGray)
             HStack(spacing: 8) {
-                //TODO: viewModel로 부터 데이터를 받아서 어떤 유형인지 여기에 알려주면 댐.
+                // TODO: viewModel로 부터 데이터를 받아서 어떤 유형인지 여기에 알려주면 댐.
                 SpendTypeLabel(spendType: .saving, usage: .detailView)
                 SpendTypeLabel(spendType: .ecoWarrior, usage: .detailView)
             }
