@@ -58,7 +58,7 @@ extension VoteView {
                 .overlay(alignment: .leading) {
                     let voteButtonWidth = UIScreen.main.bounds.width - 48
                     Rectangle()
-                        .frame(width: voteButtonWidth * voteRatio * 0.01, height: 48)
+                        .frame(width: voteButtonWidth * voteRatio * 0.01)
                         .foregroundStyle(voteType == selectedType ? Color.lightBlue : Color.gray200)
                 }
                 .clipShape(Capsule())

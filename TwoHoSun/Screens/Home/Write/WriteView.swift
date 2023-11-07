@@ -19,7 +19,6 @@ struct WriteView: View {
     @State private var selectedImageData: Data?
     @State private var isTagTextFieldShowed = false
     @State private var isEditing: Bool = false
-    @Binding var isWriteViewPresented: Bool
     @Bindable var viewModel: WriteViewModel
     
     var body: some View {
@@ -314,7 +313,6 @@ extension WriteView {
             isRegisterButtonDidTap = true
             if viewModel.isTitleValid {
                 viewModel.createPost()
-                isWriteViewPresented = false
             }
             print("complete button did tap!")
         } label: {
@@ -344,6 +342,6 @@ extension WriteView {
 
 #Preview {
     NavigationStack {
-        WriteView(isWriteViewPresented: .constant(true), viewModel: WriteViewModel())
+        WriteView(viewModel: WriteViewModel())
     }
 }

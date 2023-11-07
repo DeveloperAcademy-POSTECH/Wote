@@ -48,19 +48,9 @@ struct DetailView : View {
                     .padding(EdgeInsets(top: 32, leading: 0, bottom: 48, trailing: 0))
                 voteResultView(.disagree, 0.33)
             }
-
         }
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden()
         .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    dismiss()
-                } label: {
-                    Label("소비고민", systemImage: "chevron.backward")
-                        .foregroundStyle(Color.accentBlue)
-                }
-            }
             ToolbarItem(placement: .principal) {
                 Text("상세보기")
                     .foregroundStyle(Color.white)
@@ -72,6 +62,7 @@ struct DetailView : View {
                 })
             }
         }
+        .toolbarBackground(Color.background, for: .navigationBar)
         .sheet(isPresented: $showDetailComments) {
 //            NavigationStack{
                 CommentsView()
@@ -98,7 +89,7 @@ extension DetailView {
                 .foregroundStyle(Color.whiteGray)
             Spacer()
             if isDone {
-                //TODO: 내껀지 남의껀지 보고 버튼놓기
+                // TODO: 내껀지 남의껀지 보고 버튼놓기
             } else {
                 Toggle("", isOn: $alertOn)
                     .toggleStyle(AlertCustomToggle())
@@ -108,9 +99,11 @@ extension DetailView {
     }
 
     private var detailCell: some View {
-        //TODO: 데이터 연결할것
+        // TODO: 데이터 연결할것
         VStack(alignment: .leading) {
-            detailTextView(title: "ACG마운틴 플라이 할인 살말?", price: 1000, description: "어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고")
+            detailTextView(title: "ACG마운틴 플라이 할인 살말?",
+                           price: 1000,
+                           description: "어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고")
             VoteView()
                 .padding(.all, 24)
             Image("logo")
@@ -171,6 +164,7 @@ extension DetailView {
             }
             .padding(.bottom, 18)
         }
+        .padding(.bottom, 18)
         .padding(.leading, 20)
 
         Text(description)
@@ -182,7 +176,7 @@ extension DetailView {
     }
 
     var commentPreview: some View {
-        //TODO: 뷰모델에서 댓글이 있는지를 체크한담에 있으면 삼항연산자를 통해 할 예정
+        // TODO: 뷰모델에서 댓글이 있는지를 체크한담에 있으면 삼항연산자를 통해 할 예정
         VStack {
             HStack(spacing: 4) {
                 Text("댓글")
@@ -225,7 +219,7 @@ extension DetailView {
                 .font(.system(size: 14))
                 .foregroundStyle(Color.priceGray)
             HStack(spacing: 8) {
-                //TODO: viewModel로 부터 데이터를 받아서 어떤 유형인지 여기에 알려주면 댐.
+                // TODO: viewModel로 부터 데이터를 받아서 어떤 유형인지 여기에 알려주면 댐.
                 SpendTypeLabel(spendType: .saving, usage: .detailView)
                 SpendTypeLabel(spendType: .ecoWarrior, usage: .detailView)
             }
