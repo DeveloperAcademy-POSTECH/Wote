@@ -12,6 +12,7 @@ struct TypeTestIntroView: View {
         NavigationStack {
             ZStack {
                 Color.background
+                    .ignoresSafeArea()
                 VStack(spacing: 20) {
                     Spacer()
                     Image("imgTypeTest")
@@ -19,11 +20,14 @@ struct TypeTestIntroView: View {
                     Text("나의 소비 성향은 뭘까?")
                         .font(.system(size: 20, weight: .bold))
                         .foregroundStyle(Color.white)
-                    Text("테스트를 진행하지 않으면 Wote에서\n투표와 관련된 서비스를 이용할 수 없어요")
-                        .font(.system(size: 16))
-                        .foregroundStyle(Color.subGray1)
-                        .multilineTextAlignment(.center)
-                        .padding(.bottom, 20)
+                    VStack(spacing: 0) {
+                        Text("테스트를 진행하지 않으면 Wote에서")
+                        Text("투표와 관련된 서비스를 이용할 수 없어요")
+                    }
+                    .font(.system(size: 16))
+                    .foregroundStyle(Color.subGray1)
+                    .multilineTextAlignment(.center)
+                    .padding(.bottom, 20)
                     goToTestButton
                     Spacer()
                     dismissButton
@@ -31,7 +35,6 @@ struct TypeTestIntroView: View {
                 }
                 .padding(.horizontal, 24)
             }
-            .ignoresSafeArea()
         }
     }
 }
