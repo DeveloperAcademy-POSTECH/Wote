@@ -7,10 +7,15 @@
 
 import SwiftUI
 // TODO: 후에 모델작업은 수정 예정 여기서 사용하기 위해 임의로 제작
+
 struct DetailView : View {
     @Environment(\.dismiss) var dismiss
-    @State private var alertOn = false
     @State private var showDetailComments = false
+    @State private var showconfirm = false
+    @State private var backgroundColor: Color = .background
+    @State private var showCustomAlert = false
+    @State private var applyComplaint = false
+    @State private var alertOn = false
     var isDone: Bool
 
     init(isDone: Bool) {
@@ -31,7 +36,7 @@ struct DetailView : View {
 
     var body: some View {
         ZStack {
-            Color.background
+            backgroundColor
                 .ignoresSafeArea()
             ScrollView {
                 detailHeaderView
@@ -48,6 +53,35 @@ struct DetailView : View {
                     .padding(EdgeInsets(top: 32, leading: 0, bottom: 48, trailing: 0))
                 voteResultView(.disagree, 0.33)
             }
+            if showDetailComments {
+                Color.black.opacity(0.7)
+            }
+            if showCustomAlert {
+                ZStack {
+                    Color.black.opacity(0.7)
+                        .ignoresSafeArea()
+                    CustomAlertModalView(alertType: .ban(nickname: "선호"), isPresented: $showCustomAlert) {
+                        print("신고접수됐습니다.")
+                    }
+                }
+            }
+
+            if applyComplaint {
+                    Color.black.opacity(0.7)
+                        .ignoresSafeArea()
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.lightBlue)
+                            .frame(width: 283, height: 36)
+
+                        Text("신고해주셔서 감사합니다.")
+                            .foregroundStyle(.white)
+                            .font(.system(size: 16, weight: .semibold))
+                    }
+                    .onTapGesture {
+                        applyComplaint.toggle()
+                    }
+            }
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -56,7 +90,9 @@ struct DetailView : View {
                     .foregroundStyle(Color.white)
             }
             ToolbarItem(placement: .topBarTrailing) {
-                Button(action: {}, label: {
+                Button(action: {
+                    showconfirm.toggle()
+                }, label: {
                     Image(systemName: "ellipsis")
                         .foregroundStyle(Color.subGray1)
                 })
@@ -64,12 +100,11 @@ struct DetailView : View {
         }
         .toolbarBackground(Color.background, for: .navigationBar)
         .sheet(isPresented: $showDetailComments) {
-//            NavigationStack{
-                CommentsView()
-                .presentationDetents([.large,.fraction(0.9)])
+                CommentsView(showComplaint: $showCustomAlert, applyComplaint: $applyComplaint)
+                    .presentationDetents([.large,.fraction(0.9)])
                     .presentationContentInteraction(.scrolls)
-//            }
         }
+
     }
 }
 extension DetailView {
