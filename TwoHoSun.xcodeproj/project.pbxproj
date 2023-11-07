@@ -29,6 +29,7 @@
 		ABAFB6412AF978790070512F /* PurchaseLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAFB6402AF978790070512F /* PurchaseLabel.swift */; };
 		ABAFB6432AF979C80070512F /* CommentPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAFB6422AF979C80070512F /* CommentPreview.swift */; };
 		ABAFB64E2AFAAE860070512F /* TypeTestIntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAFB64D2AFAAE860070512F /* TypeTestIntroView.swift */; };
+		ABAFB6502AFAB3A70070512F /* TypeTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAFB64F2AFAB3A70070512F /* TypeTestView.swift */; };
 		ABB71D642AE26EB100BE0671 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = ABB71D632AE26EB100BE0671 /* Kingfisher */; };
 		ABB71D6E2AE2754300BE0671 /* PostResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D6D2AE2754300BE0671 /* PostResponseModel.swift */; };
 		ABB71D742AE2758200BE0671 /* ImageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D732AE2758200BE0671 /* ImageDetailView.swift */; };
@@ -98,6 +99,7 @@
 		ABAFB6402AF978790070512F /* PurchaseLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseLabel.swift; sourceTree = "<group>"; };
 		ABAFB6422AF979C80070512F /* CommentPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentPreview.swift; sourceTree = "<group>"; };
 		ABAFB64D2AFAAE860070512F /* TypeTestIntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeTestIntroView.swift; sourceTree = "<group>"; };
+		ABAFB64F2AFAB3A70070512F /* TypeTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeTestView.swift; sourceTree = "<group>"; };
 		ABB71D6D2AE2754300BE0671 /* PostResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostResponseModel.swift; sourceTree = "<group>"; };
 		ABB71D732AE2758200BE0671 /* ImageDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailView.swift; sourceTree = "<group>"; };
 		ABB71D792AE2A64300BE0671 /* LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkView.swift; sourceTree = "<group>"; };
@@ -199,6 +201,7 @@
 			isa = PBXGroup;
 			children = (
 				ABAFB64D2AFAAE860070512F /* TypeTestIntroView.swift */,
+				ABAFB64F2AFAB3A70070512F /* TypeTestView.swift */,
 			);
 			path = TypeTest;
 			sourceTree = "<group>";
@@ -618,6 +621,7 @@
 				C77113712AF0E7D500BAB128 /* Color+.swift in Sources */,
 				C73F8E8E2AE56168001C6B07 /* String+.swift in Sources */,
 				C73F8E832AE54DD8001C6B07 /* CommentsModel.swift in Sources */,
+				ABAFB6502AFAB3A70070512F /* TypeTestView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

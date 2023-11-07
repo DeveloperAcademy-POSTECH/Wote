@@ -9,36 +9,38 @@ import SwiftUI
 
 struct TypeTestIntroView: View {
     var body: some View {
-        ZStack {
-            Color.background
-            VStack(spacing: 20) {
-                Spacer()
-                Image("imgTypeTest")
-                    .padding(.bottom, 7)
-                Text("나의 소비 성향은 뭘까?")
-                    .font(.system(size: 20, weight: .bold))
-                    .foregroundStyle(Color.white)
-                Text("테스트를 진행하지 않으면 Wote에서\n투표와 관련된 서비스를 이용할 수 없어요")
-                    .font(.system(size: 16))
-                    .foregroundStyle(Color.subGray1)
-                    .multilineTextAlignment(.center)
-                    .padding(.bottom, 20)
-                goToTestButton
-                Spacer()
-                dismissButton
-                    .padding(.bottom, 35)
+        NavigationStack {
+            ZStack {
+                Color.background
+                VStack(spacing: 20) {
+                    Spacer()
+                    Image("imgTypeTest")
+                        .padding(.bottom, 7)
+                    Text("나의 소비 성향은 뭘까?")
+                        .font(.system(size: 20, weight: .bold))
+                        .foregroundStyle(Color.white)
+                    Text("테스트를 진행하지 않으면 Wote에서\n투표와 관련된 서비스를 이용할 수 없어요")
+                        .font(.system(size: 16))
+                        .foregroundStyle(Color.subGray1)
+                        .multilineTextAlignment(.center)
+                        .padding(.bottom, 20)
+                    goToTestButton
+                    Spacer()
+                    dismissButton
+                        .padding(.bottom, 35)
+                }
+                .padding(.horizontal, 24)
             }
-            .padding(.horizontal, 24)
+            .ignoresSafeArea()
         }
-        .ignoresSafeArea()
     }
 }
 
 extension TypeTestIntroView {
 
     private var goToTestButton: some View {
-        Button {
-            print("screen transition to type test")
+        NavigationLink {
+            TypeTestView()
         } label: {
             Text("소비 성향 테스트하러가기")
                 .font(.system(size: 16, weight: .semibold))
