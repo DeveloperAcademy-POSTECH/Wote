@@ -45,9 +45,9 @@ extension Color {
     static let gray300 = Color(UIColor(hexCode: "363636"))
     static let blue100 = Color(UIColor(hexCode: "293351"))
     static let black100 = Color(UIColor(hexCode: "1B1D22"))
+    static let black200 = Color(UIColor(hexCode: "1A1B20"))
     static let textFieldGray = Color(UIColor(hexCode: "474D52"))
     static let darkblue2325 = Color(UIColor(hexCode: "23252C"))
     static let grayC4C4 = Color(UIColor(hexCode: "C4C4C4"))
     static let gray9595 = Color(UIColor(hexCode: "959595"))
 }
-

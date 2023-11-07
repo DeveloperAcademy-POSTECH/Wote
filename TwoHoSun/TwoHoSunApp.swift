@@ -30,9 +30,7 @@ struct TwoHoSunApp: App {
 //                }
 //                .tint(Color.accentBlue)
 //            }
-            NavigationStack {
-                DetailView(isDone: false)
-            }
+            WoteTabView()
         }
     }
 }

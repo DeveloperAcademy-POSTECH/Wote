@@ -16,8 +16,12 @@ final class SchoolSearchViewModel {
     private let baseURL = "http://www.career.go.kr/cnet/openapi/getOpenApi"
 
     var apiKey: String {
-        guard let file = Bundle.main.path(forResource: "Secret", ofType: "plist") else { return "" }
-        guard let resource = NSDictionary(contentsOfFile: file) else { return "" }
+        guard let file = Bundle.main.path(forResource: "Secret", ofType: "plist") else {
+            fatalError("can't read file")
+        }
+        guard let resource = NSDictionary(contentsOfFile: file) else {
+            fatalError("can't load resource")
+        }
         guard let key = resource["SCHOOL_API_KEY"] as? String else {
             fatalError("SCHOOL_API_KEY error")
         }
@@ -47,6 +51,8 @@ final class SchoolSearchViewModel {
             """
             ?apiKey=\(apiKey)&svcType=api&svcCode=SCHOOL&contentType=json&gubun=\(schoolType.schoolParam)&searchSchulNm=\(encodedSearchWord)
             """
+
+        print("api_key", apiKey)
 
         return try await AF.request(url, method: .get)
                         .validate()
