@@ -67,7 +67,6 @@ struct DetailView : View {
             }
 
             if applyComplaint {
-//                    GeometryReader { geo in
                     Color.black.opacity(0.7)
                         .ignoresSafeArea()
                     ZStack {
@@ -79,11 +78,9 @@ struct DetailView : View {
                             .foregroundStyle(.white)
                             .font(.system(size: 16, weight: .semibold))
                     }
-//                        .position(x: geo.size.width / 2, y: geo.size.height / 2 - (UIScreen.main.bounds.height - geo.size.height) / 2 + 18)
                     .onTapGesture {
                         applyComplaint.toggle()
                     }
-//                    }
             }
         }
         .navigationBarTitleDisplayMode(.inline)
@@ -129,18 +126,6 @@ struct DetailView : View {
                 CommentsView(showComplaint: $showCustomAlert, applyComplaint: $applyComplaint)
                     .presentationDetents([.large,.fraction(0.9)])
                     .presentationContentInteraction(.scrolls)
-
-//                .overlay {
-//        //            if alertOn {
-//        //                ZStack {
-//        //                    Color.pink
-//        //                    Text("왜안보이지")
-//        //                        .frame(width: 500, height: 500)
-//        //                }
-//        //                .zIndex(1)
-//        //            }
-//
-//                }
         }
 
     }
