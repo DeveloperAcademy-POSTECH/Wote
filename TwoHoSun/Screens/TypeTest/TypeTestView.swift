@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TypeTestView: View {
-    @State private var testProgress = 3.0
+    @State private var testProgress = 1.0
 
     var body: some View {
         ZStack {
@@ -17,21 +17,22 @@ struct TypeTestView: View {
             VStack(alignment: .leading, spacing: 0) {
                 testProgressView
                     .padding(.top, 20)
-                Spacer(minLength: 50)
-                Text("Q1.")
+                Spacer()
+                    .frame(height: 50)
+                Text("Q\(Int(testProgress)).")
                     .font(.system(size: 40, weight: .bold))
                     .foregroundStyle(Color.accentBlue)
                     .padding(.bottom, 10)
-                questionLabel(question: "친구들과 쇼핑몰에 갔을 때 나는 주로···",
-                              highlightWord: "쇼핑몰에 갔을 때")
+                questionLabel(question: typeTests[Int(testProgress)-1].question,
+                              highlightWord: typeTests[Int(testProgress)-1].highlight)
                 Spacer()
                 VStack(spacing: 16) {
                     ForEach(0..<4) { index in
                         choiceButton(order: index,
-                                     content: "이벤트홀에 가면 새로운 세일 제품들이 업데이트 되었대. 거기부터 가보자!")
+                                     content: typeTests[Int(testProgress)-1].choices[index].choice)
                     }
                 }
-                Spacer(minLength: 50)
+                Spacer(minLength: 30)
             }
             .padding(.horizontal, 16)
         }
@@ -46,7 +47,7 @@ extension TypeTestView {
         VStack(alignment: .trailing, spacing: 4) {
             ProgressView(value: testProgress, total: 7.0)
                 .tint(Color.accentBlue)
-            Text("01")
+            Text("0\(Int(testProgress))")
                 .font(.system(size: 14, weight: .medium))
                 .foregroundStyle(Color.accentBlue)
             + Text("/07")
@@ -83,17 +84,30 @@ extension TypeTestView {
     }
 
     private func choiceButton(order: Int, content: String) -> some View {
-        HStack {
-            Text(String(UnicodeScalar(order + 65)!) + ". " + content)
-            Spacer()
+        Button {
+            if testProgress < 7.0 {
+                testProgress += 1.0
+            }
+        } label: {
+            HStack {
+                Text(String(UnicodeScalar(order + 65)!) + ". " + content)
+                Spacer()
+            }
         }
-        .font(.system(size: 16, weight: .semibold))
-        .foregroundStyle(.white)
-        .padding(.vertical, 12)
-        .padding(.horizontal, 24)
-        .frame(maxWidth: .infinity)
-        .background(Color.fixedGray)
-        .clipShape(.rect(cornerRadius: 10))
+        .buttonStyle(CustomButtonStyle())
+    }
+}
+
+struct CustomButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(.system(size: 16, weight: .semibold))
+            .foregroundStyle(.white)
+            .padding(.vertical, 17)
+            .padding(.horizontal, 24)
+            .frame(maxWidth: .infinity)
+            .background(configuration.isPressed ? Color.accentBlue : Color.fixedGray)
+            .clipShape(.rect(cornerRadius: 10))
     }
 }
 

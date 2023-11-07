@@ -6,8 +6,9 @@
 //
 
 import SwiftUI
-enum SpendTItleType {
-    case ecoWarrior, saving, flexer, trendy, beutyLover, impulseBuyer, adventurer, safetyShopper
+
+enum SpendTitleType {
+    case ecoWarrior, saving, flexer, trendy, beautyLover, impulseBuyer, adventurer, safetyShopper
     var title: String {
         switch self {
         case .ecoWarrior:
@@ -18,7 +19,7 @@ enum SpendTItleType {
             return "👑 Flexer킹"
         case .trendy:
             return "🥇 유행선도자"
-        case .beutyLover:
+        case .beautyLover:
             return "💎 예쁜게최고야짜릿해"
         case .impulseBuyer:
             return "💸 지름신강림러"
