@@ -8,38 +8,38 @@
 import SwiftUI
 
 struct TypeTestResultView: View {
+    var spendType: SpendTitleType
+
     var body: some View {
         ZStack {
             Color.background
                 .ignoresSafeArea()
             VStack(spacing: 0) {
                 Spacer()
+                    .frame(height: 50)
                 HStack {
-                    Text("가성비보다 가심비 중심의 소비를 하는")
+                    Text(spendType.description)
                         .font(.system(size: 20, weight: .medium))
                         .foregroundStyle(Color.lightBlue)
-                        .padding(.bottom, 24)
                     Spacer()
                 }
+                .padding(.bottom, 24)
                 HStack {
-                    Text("플렉스킹")
+                    Text(spendType.title)
                         .font(.system(size: 36, weight: .bold))
                         .foregroundStyle(.white)
                     Spacer()
                 }
                 Spacer()
-                Rectangle()
-                    .frame(width: 225, height: 209)
-                    .foregroundStyle(.pink)
+                spendType.icon
                 Spacer()
-                retryButton
-                    .padding(.bottom, 12)
                 pushToHomeButton
                 dismissButton
                     .padding(.vertical, 35)
             }
             .padding(.horizontal, 24)
         }
+        .toolbar(.hidden, for: .navigationBar)
     }
 }
 
@@ -93,5 +93,5 @@ extension TypeTestResultView {
 }
 
 #Preview {
-    TypeTestResultView()
+    TypeTestResultView(spendType: .adventurer)
 }

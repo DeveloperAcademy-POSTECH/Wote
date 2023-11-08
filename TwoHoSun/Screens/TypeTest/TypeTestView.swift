@@ -9,7 +9,6 @@ import SwiftUI
 
 struct TypeTestView: View {
     @State private var testProgress = 1.0
-    @State private var selectedChoice = -1
     @State private var typeScores = [SpendTitleType: Int]()
     @State private var isTypeTestResultViewShown = false
     @State private var testChoices = [-1, -1, -1, -1, -1, -1, -1]
@@ -44,13 +43,14 @@ struct TypeTestView: View {
         .navigationBarBackButtonHidden()
         .toolbarBackground(Color.background, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
-        .fullScreenCover(isPresented: $isTypeTestResultViewShown) {
-            TypeTestResultView()
-        }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 backButton
             }
+        }
+        .navigationDestination(isPresented: $isTypeTestResultViewShown) {
+            // TODO: - change spendType
+            TypeTestResultView(spendType: .adventurer)
         }
     }
 }
@@ -117,7 +117,6 @@ extension TypeTestView {
     }
 
     private func choiceButton(order: Int, choiceModel: ChoiceModel) -> some View {
-//                        testChoices[Int(testProgress) - 1] == order ? Color.accentBlue : Color.fixedGray
         Button {
             withAnimation(nil) {
                 testChoices[Int(testProgress) - 1] = order
@@ -133,11 +132,16 @@ extension TypeTestView {
                 Spacer()
             }
         }
-        .buttonStyle(ChoiceButtonStyle())
+        .buttonStyle(ChoiceButtonStyle(testChoices: $testChoices,
+                                       testProgress: $testProgress,
+                                       order: order))
     }
 }
 
 struct ChoiceButtonStyle: ButtonStyle {
+    @Binding var testChoices: [Int]
+    @Binding var testProgress: Double
+    var order: Int
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -147,7 +151,15 @@ struct ChoiceButtonStyle: ButtonStyle {
             .padding(.vertical, 17)
             .padding(.horizontal, 24)
             .frame(maxWidth: .infinity)
-            .background(configuration.isPressed ? Color.accentBlue : Color.fixedGray)
+            .background(
+                Group {
+                    if configuration.isPressed || testChoices[Int(testProgress) - 1] == order {
+                        Color.accentBlue
+                    } else {
+                        Color.fixedGray
+                    }
+                }
+            )
             .clipShape(.rect(cornerRadius: 10))
     }
 }
