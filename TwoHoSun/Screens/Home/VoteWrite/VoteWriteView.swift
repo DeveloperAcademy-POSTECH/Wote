@@ -19,8 +19,7 @@ struct VoteWriteView: View {
     @State private var selectedImageData: Data?
     @State private var isTagTextFieldShowed = false
     @State private var isEditing: Bool = false
-    @Binding var isWriteViewPresented: Bool
-    @Bindable var viewModel: VoteWriteViewModel
+    @Bindable var viewModel: WriteViewModel
     
     var body: some View {
         ZStack {
@@ -313,7 +312,6 @@ extension VoteWriteView {
             isRegisterButtonDidTap = true
             if viewModel.isTitleValid {
                 viewModel.createPost()
-                isWriteViewPresented = false
             }
             print("complete button did tap!")
         } label: {
@@ -343,6 +341,6 @@ extension VoteWriteView {
 
 #Preview {
     NavigationStack {
-        VoteWriteView(isWriteViewPresented: .constant(true), viewModel: VoteWriteViewModel())
+        WriteView(viewModel: WriteViewModel())
     }
 }

@@ -7,10 +7,15 @@
 
 import SwiftUI
 // TODO: 후에 모델작업은 수정 예정 여기서 사용하기 위해 임의로 제작
+
 struct DetailView : View {
     @Environment(\.dismiss) var dismiss
-    @State private var alertOn = false
     @State private var showDetailComments = false
+    @State private var showconfirm = false
+    @State private var backgroundColor: Color = .background
+    @State private var showCustomAlert = false
+    @State private var applyComplaint = false
+    @State private var alertOn = false
     var isDone: Bool
 
     init(isDone: Bool) {
@@ -31,7 +36,7 @@ struct DetailView : View {
 
     var body: some View {
         ZStack {
-            Color.background
+            backgroundColor
                 .ignoresSafeArea()
             ScrollView {
                 detailHeaderView
@@ -48,37 +53,58 @@ struct DetailView : View {
                     .padding(EdgeInsets(top: 32, leading: 0, bottom: 48, trailing: 0))
                 voteResultView(.disagree, 0.33)
             }
-
-        }
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden()
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    dismiss()
-                } label: {
-                    Label("소비고민", systemImage: "chevron.backward")
-                        .foregroundStyle(Color.accentBlue)
+            if showDetailComments {
+                Color.black.opacity(0.7)
+            }
+            if showCustomAlert {
+                ZStack {
+                    Color.black.opacity(0.7)
+                        .ignoresSafeArea()
+                    CustomAlertModalView(alertType: .ban(nickname: "선호"), isPresented: $showCustomAlert) {
+                        print("신고접수됐습니다.")
+                    }
                 }
             }
+
+            if applyComplaint {
+                    Color.black.opacity(0.7)
+                        .ignoresSafeArea()
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.lightBlue)
+                            .frame(width: 283, height: 36)
+
+                        Text("신고해주셔서 감사합니다.")
+                            .foregroundStyle(.white)
+                            .font(.system(size: 16, weight: .semibold))
+                    }
+                    .onTapGesture {
+                        applyComplaint.toggle()
+                    }
+            }
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
             ToolbarItem(placement: .principal) {
                 Text("상세보기")
                     .foregroundStyle(Color.white)
             }
             ToolbarItem(placement: .topBarTrailing) {
-                Button(action: {}, label: {
+                Button(action: {
+                    showconfirm.toggle()
+                }, label: {
                     Image(systemName: "ellipsis")
                         .foregroundStyle(Color.subGray1)
                 })
             }
         }
+        .toolbarBackground(Color.background, for: .navigationBar)
         .sheet(isPresented: $showDetailComments) {
-//            NavigationStack{
-                CommentsView()
-                .presentationDetents([.large,.fraction(0.9)])
+                CommentsView(showComplaint: $showCustomAlert, applyComplaint: $applyComplaint)
+                    .presentationDetents([.large,.fraction(0.9)])
                     .presentationContentInteraction(.scrolls)
-//            }
         }
+
     }
 }
 extension DetailView {
@@ -98,7 +124,7 @@ extension DetailView {
                 .foregroundStyle(Color.whiteGray)
             Spacer()
             if isDone {
-                //TODO: 내껀지 남의껀지 보고 버튼놓기
+                // TODO: 내껀지 남의껀지 보고 버튼놓기
             } else {
                 Toggle("", isOn: $alertOn)
                     .toggleStyle(AlertCustomToggle())
@@ -108,9 +134,11 @@ extension DetailView {
     }
 
     private var detailCell: some View {
-        //TODO: 데이터 연결할것
+        // TODO: 데이터 연결할것
         VStack(alignment: .leading) {
-            detailTextView(title: "ACG마운틴 플라이 할인 살말?", price: 1000, description: "어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고")
+            detailTextView(title: "ACG마운틴 플라이 할인 살말?",
+                           price: 1000,
+                           description: "어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고")
             VoteView()
                 .padding(.all, 24)
             Image("logo")
@@ -171,6 +199,7 @@ extension DetailView {
             }
             .padding(.bottom, 18)
         }
+        .padding(.bottom, 18)
         .padding(.leading, 20)
 
         Text(description)
@@ -182,7 +211,7 @@ extension DetailView {
     }
 
     var commentPreview: some View {
-        //TODO: 뷰모델에서 댓글이 있는지를 체크한담에 있으면 삼항연산자를 통해 할 예정
+        // TODO: 뷰모델에서 댓글이 있는지를 체크한담에 있으면 삼항연산자를 통해 할 예정
         VStack {
             HStack(spacing: 4) {
                 Text("댓글")
@@ -225,7 +254,7 @@ extension DetailView {
                 .font(.system(size: 14))
                 .foregroundStyle(Color.priceGray)
             HStack(spacing: 8) {
-                //TODO: viewModel로 부터 데이터를 받아서 어떤 유형인지 여기에 알려주면 댐.
+                // TODO: viewModel로 부터 데이터를 받아서 어떤 유형인지 여기에 알려주면 댐.
                 SpendTypeLabel(spendType: .saving, usage: .detailView)
                 SpendTypeLabel(spendType: .ecoWarrior, usage: .detailView)
             }

@@ -59,19 +59,46 @@ enum VoteCategoryType {
 
 struct WoteTabView: View {
     @State private var selection = WoteTabType.consider
-    @State private var isVoteCategoryButtonDidTap = false
     @State private var selectedVoteCategoryType = VoteCategoryType.all
+    @State private var isVoteCategoryButtonDidTap = false
 
     var body: some View {
         NavigationStack {
-            TabView(selection: $selection) {
-                ForEach(WoteTabType.allCases, id: \.self) { tab in
-                    tabDestinationView(for: tab)
-                        .tabItem {
-                            Image(selection == tab ?
-                                  tab.selectedTabIcon : tab.unselectedTabIcon)
-                            Text(tab.tabTitle)
+            ZStack(alignment: .topLeading) {
+                VStack(spacing: 0) {
+                    if selection == .consider || selection == .review {
+                        navigationBar
+                    }
+                    TabView(selection: $selection) {
+                        ForEach(WoteTabType.allCases, id: \.self) { tab in
+                            tabDestinationView(for: tab)
+                                .tabItem {
+                                    Image(selection == tab ?
+                                          tab.selectedTabIcon : tab.unselectedTabIcon)
+                                    Text(tab.tabTitle)
+                                }
                         }
+                    }
+                }
+
+                if isVoteCategoryButtonDidTap {
+                    Color.black
+                        .opacity(0.7)
+                        .ignoresSafeArea()
+                        .onTapGesture {
+                            isVoteCategoryButtonDidTap = false
+                        }
+                    HStack(spacing: 0) {
+                        voteCategoryButton
+                        Spacer()
+                        notificationButton
+                            .hidden()
+                        searchButton
+                            .hidden()
+                    }
+                    .padding(.horizontal, 16)
+                    voteCategoryMenu
+                        .offset(x: 16, y: 40)
                 }
             }
             .tint(Color.accentBlue)
@@ -92,7 +119,7 @@ extension WoteTabView {
     private func tabDestinationView(for tab: WoteTabType) -> some View {
         switch tab {
         case .consider:
-            MainVoteView(viewModel: MainVoteViewModel())
+            ConsumptionConsiderationView(viewModel: ConsumptionConsiderationViewModel())
         case .review:
             Text("소비후기")
         case .myPage:
@@ -100,8 +127,82 @@ extension WoteTabView {
         }
     }
 
+    private var navigationBar: some View {
+        HStack(spacing: 0) {
+            voteCategoryButton
+            Spacer()
+            notificationButton
+                .padding(.trailing, 8)
+            searchButton
+        }
+        .padding(.horizontal, 16)
+        .background(Color.background)
+    }
+
+    private var notificationButton: some View {
+        NavigationLink {
+            NotificationView()
+        } label: {
+            ZStack {
+                RoundedRectangle(cornerRadius: 6)
+                    .frame(width: 39, height: 39)
+                    .foregroundStyle(Color.disableGray)
+                Image(systemName: "bell.fill")
+                    .font(.system(size: 16))
+                    .foregroundStyle(Color.woteWhite)
+            }
+        }
+    }
+
+    private var searchButton: some View {
+        NavigationLink {
+            SearchView()
+        } label: {
+            ZStack {
+                RoundedRectangle(cornerRadius: 6)
+                    .frame(width: 39, height: 39)
+                    .foregroundStyle(Color.disableGray)
+                Image(systemName: "magnifyingglass")
+                    .font(.system(size: 16))
+                    .foregroundStyle(Color.woteWhite)
+            }
+        }
+    }
+
+    private var voteCategoryMenu: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Button {
+                selectedVoteCategoryType = .all
+                isVoteCategoryButtonDidTap = false
+            } label: {
+                Text("전국 투표")
+                    .padding(.leading, 15)
+                    .padding(.top, 14)
+                    .padding(.bottom, 12)
+            }
+            Divider()
+                .background(Color.gray300)
+            Button {
+                selectedVoteCategoryType = .mySchool
+                isVoteCategoryButtonDidTap = false
+            } label: {
+                Text("우리 학교 투표")
+                    .padding(.leading, 15)
+                    .padding(.top, 12)
+                    .padding(.bottom, 14)
+            }
+        }
+        .frame(width: 131, height: 88)
+        .font(.system(size: 14))
+        .foregroundStyle(Color.woteWhite)
+        .background(
+            RoundedRectangle(cornerRadius: 10)
+                .fill(Color.disableGray)
+        )
+    }
+
     private var voteCategoryButton: some View {
-        ZStack(alignment: .bottom) {
+        ZStack(alignment: .topLeading) {
             Button {
                 isVoteCategoryButtonDidTap.toggle()
             } label: {
@@ -113,39 +214,6 @@ extension WoteTabView {
                         .font(.system(size: 16))
                         .foregroundStyle(Color.subGray1)
                 }
-            }
-
-            if isVoteCategoryButtonDidTap {
-                VStack(alignment: .leading, spacing: 0) {
-                    Button {
-                        selectedVoteCategoryType = .all
-                        isVoteCategoryButtonDidTap = false
-                    } label: {
-                        Text("전국 투표")
-                            .padding(.leading, 15)
-                            .padding(.top, 14)
-                            .padding(.bottom, 12)
-                    }
-                    Divider()
-                        .background(Color.gray300)
-                    Button {
-                        selectedVoteCategoryType = .mySchool
-                        isVoteCategoryButtonDidTap = false
-                    } label: {
-                        Text("우리 학교 투표")
-                            .padding(.leading, 15)
-                            .padding(.top, 12)
-                            .padding(.bottom, 14)
-                    }
-                }
-                .font(.system(size: 14))
-                .foregroundStyle(Color.woteWhite)
-                .background(
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(Color.disableGray)
-                        .strokeBorder(Color.gray300, lineWidth: 1)
-                )
-                .offset(y: 70)
             }
         }
     }
