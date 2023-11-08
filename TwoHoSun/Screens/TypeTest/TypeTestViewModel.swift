@@ -41,8 +41,6 @@ final class TypeTestViewModel {
     func setUserSpendType() -> SpendTitleType {
         let maxScore = typeScores.values.max()!
         let maxScoreTypes = typeScores.filter { $0.value == maxScore }.map { $0.key }
-        let result = maxScoreTypes.randomElement()!
-        print(result)
-        return result
+        return maxScoreTypes.randomElement()!
     }
 }
