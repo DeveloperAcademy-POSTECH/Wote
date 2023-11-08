@@ -139,7 +139,9 @@ struct CustomImagePicker<Content: View>: View {
                 selectedImage = nil
             } content: {
                 CropView(crop: selectedCropType, image: selectedImage) { croppedImage, status in
-                     
+                    if let croppedImage {
+                        self.croppedImage = croppedImage
+                    }
                 }
             }
     }
@@ -150,6 +152,7 @@ struct CropView: View {
     var image: UIImage?
     var onCrop: (UIImage?, Bool) -> ()
     
+    @Environment(\.dismiss) private var dismiss
     @State private var scale: CGFloat = 1
     @State private var lastScale: CGFloat = 0
     @State private var offset: CGSize = .zero
@@ -175,9 +178,16 @@ struct CropView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        
+                        let renderer = ImageRenderer(content: imageView())
+                        renderer.proposedSize = .init(crop.size)
+                        if let image = renderer.uiImage {
+                            onCrop(image, true)
+                        } else {
+                            onCrop(nil, false)
+                        }
+                        dismiss()
                     } label: {
-                        Text("이미지 선택")
+                        Text("완료")
                             .foregroundStyle(Color.lightBlue)
                     }
                 }
@@ -247,7 +257,7 @@ struct CropView: View {
                     let updatedScale = value.magnification + lastScale
                     scale = updatedScale
                 })
-                .onEnded({ value in
+                .onEnded({ _ in
                     withAnimation(.easeInOut(duration: 0.3)) {
                         if scale < 1 {
                             scale = 1
@@ -265,9 +275,9 @@ struct CropView: View {
 
 #Preview {
     NavigationStack {
-//        ImageCropView()
-        CropView(crop: .circle, image: UIImage(named: "sample")) { _, _ in
-            
-        }
+        ImageCropView()
+//        CropView(crop: .circle, image: UIImage(named: "sample")) { _, _ in
+//            
+//        }
     }
 }
