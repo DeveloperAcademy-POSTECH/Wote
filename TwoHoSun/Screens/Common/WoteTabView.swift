@@ -101,10 +101,12 @@ struct WoteTabView: View {
                         .offset(x: 16, y: 40)
                 }
             }
-            .tint(Color.accentBlue)
             .onAppear {
-                UITabBar.appearance().unselectedItemTintColor = .gray100
+                let appearance = UITabBarAppearance()
+                appearance.configureWithOpaqueBackground()
                 UITabBar.appearance().backgroundColor = .background
+                UITabBar.appearance().unselectedItemTintColor = .gray400
+                UITabBar.appearance().standardAppearance = appearance
             }
             .navigationTitle(selection.tabTitle)
             .toolbar(.hidden, for: .navigationBar)

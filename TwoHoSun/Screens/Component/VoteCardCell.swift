@@ -54,9 +54,9 @@ struct VoteCardCell: View {
                         .lineLimit(1)
                         .padding(.bottom, 9)
                     HStack(spacing: 0) {
-                        Text("161,100원 · 64명 투표 · ")
-                        Image(systemName: "message")
-                        Text("245개")
+                        Text("가격: 120,000원")
+                        Text(" · ")
+                        Text("2020년 3월 12일")
                     }
                     .font(.system(size: 14))
                     .foregroundStyle(Color.gray100)

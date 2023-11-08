@@ -81,13 +81,7 @@ extension ConsumptionReviewView {
     private func simpleReviewCell(title: String, content: String) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 4) {
-                Text("종료")
-                    .font(.system(size: 12, weight: .medium))
-                    .foregroundStyle(.white)
-                    .padding(.vertical, 4)
-                    .padding(.horizontal, 5)
-                    .background(Color.black200)
-                    .clipShape(RoundedRectangle(cornerRadius: 3))
+                PurchaseLabel(isPurchased: Bool.random())
                 Text(title)
                     .font(.system(size: 16, weight: .bold))
                     .foregroundStyle(.white)

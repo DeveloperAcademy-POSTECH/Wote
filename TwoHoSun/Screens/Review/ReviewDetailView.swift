@@ -99,32 +99,34 @@ extension ReviewDetailView {
 
     private var detailReviewCell: some View {
         VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 6) {
+            SpendTypeLabel(spendType: .saving, size: .large)
+                .padding(.bottom, 12)
+            HStack(spacing: 4) {
                 PurchaseLabel(isPurchased: isPurchased)
                 Text("ACG 마운틴 플라이 결국 샀다 ㅋ")
                     .font(.system(size: 18, weight: .bold))
                     .foregroundStyle(Color.white)
             }
-            .padding(.bottom, 7)
-            HStack(spacing: 9) {
-                SpendTypeLabel(spendType: .saving, size: .large)
-                if isPurchased {
-                    Text("결제 금액: 161,100원")
-                        .font(.system(size: 14))
-                        .foregroundStyle(Color.priceGray)
-                }
-                Spacer()
-            }
-            .padding(.bottom, 4)
+            .padding(.bottom, 5)
             Text("안뇽안뇽내용임내용임")
                 .lineLimit(3)
                 .multilineTextAlignment(.leading)
+                .font(.system(size: 16, weight: .medium))
                 .foregroundStyle(Color.whiteGray)
-                .padding(.bottom, 10)
+                .padding(.bottom, 8)
+            HStack(spacing: 0) {
+                Text("가격: 120,000원")
+                Text(" · ")
+                Text("2020년 3월 12일")
+            }
+            .font(.system(size: 14))
+            .foregroundStyle(Color.gray100)
+            .padding(.bottom, 24)
             RoundedRectangle(cornerRadius: 16)
                 .strokeBorder(Color.disableGray, lineWidth: 1)
-                .frame(height: 218)
-                .padding(.bottom, 10)
+                .frame(maxWidth: .infinity)
+                .aspectRatio(1.5, contentMode: .fill)
+                .padding(.bottom, 28)
             HStack {
                 Label("256명 조회", systemImage: "person.2.fill")
                     .font(.system(size: 14))
@@ -146,7 +148,7 @@ extension ReviewDetailView {
                         .clipShape(RoundedRectangle(cornerRadius: 34))
                 }
             }
-            .padding(.bottom, 16)
+            .padding(.bottom, 4)
             CommentPreview()
                 .onTapGesture {
                     isDetailCommentShown.toggle()
