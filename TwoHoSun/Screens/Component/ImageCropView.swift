@@ -8,39 +8,6 @@
 import SwiftUI
 import PhotosUI
 
-enum Crop: Equatable {
-    case circle
-    case rectangle
-    case square
-    case custom(CGSize)
-    
-    var name: String {
-        switch self {
-        case .circle:
-            return "Circle"
-        case .rectangle:
-            return "Rectangle"
-        case .square:
-            return "Square"
-        case .custom(let cGSize):
-            return "Custom \(Int(cGSize.width))X\(Int(cGSize.height))"
-        }
-    }
-    
-    var size: CGSize {
-        switch self {
-        case .circle:
-            return CGSize(width: 300, height: 300)
-        case .rectangle:
-            return CGSize(width: 300, height: 300)
-        case .square:
-            return CGSize(width: 300, height: 300)
-        case .custom(let cGSize):
-            return cGSize
-        }
-    }
-}
-
 struct ImageCropView: View {
     
     @State private var showPicker: Bool = false
@@ -71,14 +38,14 @@ struct ImageCropView: View {
                 }
             }
         }
-        .cropImagePicker(options: [.circle, .square, .rectangle], show: $showPicker, croppedImage: $croppedImage)
+        .cropImagePicker(show: $showPicker, croppedImage: $croppedImage)
     }
 }
 
 extension View {
     @ViewBuilder
-    func cropImagePicker(options: [Crop], show: Binding<Bool>, croppedImage: Binding<UIImage?>) -> some View {
-        CustomImagePicker(options: options, show: show, croppedImage: croppedImage) {
+    func cropImagePicker(show: Binding<Bool>, croppedImage: Binding<UIImage?>) -> some View {
+        CustomImagePicker(show: show, croppedImage: croppedImage) {
             self
         }
     }
@@ -88,20 +55,14 @@ extension View {
         self
             .frame(width: size.width, height: size.height)
     }
-    
-    func haptics(_ style: UIImpactFeedbackGenerator.FeedbackStyle) {
-        UIImpactFeedbackGenerator(style: style).impactOccurred()
-    }
 }
 
 struct CustomImagePicker<Content: View>: View {
     var content: Content
-    var options: [Crop]
     @Binding var show: Bool
     @Binding var croppedImage: UIImage?
-    init(options: [Crop], show: Binding<Bool>, croppedImage: Binding<UIImage?>, @ViewBuilder content: @escaping () -> Content) {
+    init(show: Binding<Bool>, croppedImage: Binding<UIImage?>, @ViewBuilder content: @escaping () -> Content) {
         self.content = content()
-        self.options = options
         self._show = show
         self._croppedImage = croppedImage
     }
@@ -109,7 +70,6 @@ struct CustomImagePicker<Content: View>: View {
     @State private var photosItem: PhotosPickerItem?
     @State private var selectedImage: UIImage?
     @State private var showDialog: Bool = false
-    @State private var selectedCropType: Crop = .circle
     @State private var showCropView: Bool = false
     
     var body: some View {
@@ -121,24 +81,16 @@ struct CustomImagePicker<Content: View>: View {
                         if let imageData = try? await photosItem.loadTransferable(type: Data.self), let image = UIImage(data: imageData) {
                             await MainActor.run {
                                 selectedImage = image
-                                showDialog.toggle()
                             }
                         }
                     }
                 }
-            }
-            .confirmationDialog("", isPresented: $showDialog) {
-                ForEach(options.indices, id: \.self) { index in
-                    Button(options[index].name) {
-                        selectedCropType = options[index]
-                        showCropView.toggle()
-                    }
-                }
+                showCropView.toggle()
             }
             .fullScreenCover(isPresented: $showCropView) {
                 selectedImage = nil
             } content: {
-                CropView(crop: selectedCropType, image: selectedImage) { croppedImage, status in
+                CropView(image: selectedImage) { croppedImage, _ in
                     if let croppedImage {
                         self.croppedImage = croppedImage
                     }
@@ -148,9 +100,8 @@ struct CustomImagePicker<Content: View>: View {
 }
 
 struct CropView: View {
-    var crop: Crop
     var image: UIImage?
-    var onCrop: (UIImage?, Bool) -> ()
+    var onCrop: (UIImage?, Bool) -> Void
     
     @Environment(\.dismiss) private var dismiss
     @State private var scale: CGFloat = 1
@@ -179,7 +130,7 @@ struct CropView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         let renderer = ImageRenderer(content: imageView())
-                        renderer.proposedSize = .init(crop.size)
+                        renderer.proposedSize = .init(CGSize(width: 358, height: 240))
                         if let image = renderer.uiImage {
                             onCrop(image, true)
                         } else {
@@ -197,10 +148,8 @@ struct CropView: View {
     
     @ViewBuilder
     func imageView() -> some View {
-        let cropSize = crop.size
-        GeometryReader {
-            let size = $0.size
-            
+        GeometryReader { geo in
+            let size = geo.size
             if let image {
                 Image(uiImage: image)
                     .resizable()
@@ -213,19 +162,15 @@ struct CropView: View {
                                     withAnimation(.easeInOut(duration: 0.3)) {
                                         if rect.minX > 0 {
                                             offset.width = (offset.width - rect.minX)
-                                            haptics(.medium)
                                         }
                                         if rect.minY > 0 {
                                             offset.height = (offset.height - rect.minY)
-                                            haptics(.medium)
                                         }
                                         if rect.maxX < size.width {
                                             offset.width = (rect.minX - offset.width)
-                                            haptics(.medium)
                                         }
                                         if rect.maxY < size.height {
                                             offset.height = (rect.minY - offset.height)
-                                            haptics(.medium)
                                         }
                                     }
                                     lastStoredOffset = offset
@@ -255,7 +200,7 @@ struct CropView: View {
                 })
                 .onChanged({ value in
                     let updatedScale = value.magnification + lastScale
-                    scale = updatedScale
+                    scale = (updatedScale < 1 ? 1 : updatedScale)
                 })
                 .onEnded({ _ in
                     withAnimation(.easeInOut(duration: 0.3)) {
@@ -268,8 +213,8 @@ struct CropView: View {
                     }
                 })
         )
-        .frame(cropSize)
-        .clipShape(.rect(cornerRadius: crop == .circle ? cropSize.height / 2 : 0))
+        .frame(CGSize(width: 358, height: 240))
+        .clipShape(.rect(cornerRadius: 0))
     }
 }
 

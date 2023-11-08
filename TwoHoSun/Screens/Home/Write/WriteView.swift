@@ -161,6 +161,10 @@ extension WriteView {
             headerLabel("고민하는 상품의 사진을 등록해 주세요. ", essential: false)
             if let croppedImage {
                 Image(uiImage: croppedImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: .infinity)
+                    .clipShape(.rect(cornerRadius: 16))
                     .onTapGesture {
                         isEditing.toggle()
                     }
@@ -184,7 +188,7 @@ extension WriteView {
                 }
             }
         }
-        .cropImagePicker(options: [.circle, .square, .rectangle], show: $showPicker, croppedImage: $croppedImage)
+        .cropImagePicker(show: $showPicker, croppedImage: $croppedImage)
     }
     
     private var linkView: some View {
