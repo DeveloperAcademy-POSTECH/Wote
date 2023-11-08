@@ -12,6 +12,7 @@ import Alamofire
 @Observable
 final class WriteViewModel {
     var title = ""
+    var price = ""
     var externalURL = ""
     var content = ""
     var postCategoryType = PostCategoryType.purchaseConsideration

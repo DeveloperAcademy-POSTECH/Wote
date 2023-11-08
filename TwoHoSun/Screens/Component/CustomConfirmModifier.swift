@@ -16,22 +16,20 @@ struct CustomConfirmModifier<A>: ViewModifier where A: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             ZStack(alignment: .bottom) {
                 if isPresented {
-                    Color.background.opacity(0.7)
+                    Color.black.opacity(0.7)
                         .ignoresSafeArea()
                         .onTapGesture {
                             isPresented = false
                         }
                         .transition(.opacity)
-                }
-
-                if isPresented {
                     VStack(alignment: .center) {
                         GroupBox {
                             actions()
+                                .padding(.vertical, 15)
                                 .frame(maxWidth: .infinity,alignment: .center)
-                                .frame(height: 84)
                                 .background(Color.disableGray)
                                 .foregroundStyle(Color.lightBlue)
+                                .clipShape(.rect(cornerRadius: 10))
                         }
                         .groupBoxStyle(TransparentGroupBox())
                         GroupBox {
@@ -39,29 +37,30 @@ struct CustomConfirmModifier<A>: ViewModifier where A: View {
                                 isPresented = false
                             }
                             .bold()
+                            .font(.system(size: 20))
                             .foregroundStyle(Color.white)
+                            .padding(.vertical, 17)
                             .frame(maxWidth: .infinity, alignment: .center)
                         }
                         .groupBoxStyle(TransparentGroupBox())
                     }
-                    .font(.title3)
-                    .padding(10)
+                    .font(.system(size: 18, weight: .medium))
+                    .padding(.horizontal, 16)
                     .transition(.move(edge: .bottom))
-
                 }
             }
             .onTapGesture {
                 isPresented = false
             }
+            .animation(.easeInOut, value: isPresented)
         }
-        .animation(.easeInOut, value: isPresented)
     }
 }
 struct TransparentGroupBox: GroupBoxStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.content
             .frame(maxWidth: .infinity)
-            .padding()
-            .background(RoundedRectangle(cornerRadius: 10).fill(Color.disableGray))
+            .background(RoundedRectangle(cornerRadius:  10)
+                    .fill(Color.disableGray))
     }
 }
