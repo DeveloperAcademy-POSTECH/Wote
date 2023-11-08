@@ -73,6 +73,6 @@ let typeTests = [
                     ChoiceModel(choice: "이 브랜드 진짜 좋아, 비싸지만 한 번 사봐!", types: [.flexer, .safetyShopper]),
                     ChoiceModel(choice: "제품을 고를 때는 디자인이 예쁜 걸 사야 해", types: [.beautyLover]),
                     ChoiceModel(choice: "일단 직접 가서 사고 싶은거 사!", types: [.impulseBuyer]),
-                    ChoiceModel(choice: "다양한 제품을 둘러보고 네 스타일에맞는 걸 찾아보는건 어때?", types: [.adventurer])
+                    ChoiceModel(choice: "다양한 제품을 둘러보고 네 스타일에 맞는 걸 찾아보는건 어때?", types: [.adventurer])
                   ])
 ]

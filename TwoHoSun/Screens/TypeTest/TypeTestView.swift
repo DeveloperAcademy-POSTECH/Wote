@@ -104,12 +104,13 @@ extension TypeTestView {
 
     private func standarWordLabel(_ word: String) -> some View {
         Text(word)
-            .font(.system(size: 24, weight: .bold))
+            .font(.system(size: 23, weight: .bold))
             .foregroundStyle(.white)
     }
 
     private func highLightedWordLabel(_ word: String) -> some View {
         standarWordLabel(word)
+            .lineLimit(1)
             .background(
                 Color.accentBlue
                     .padding(.top, 12)
