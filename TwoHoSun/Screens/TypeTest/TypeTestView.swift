@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct TypeTestView: View {
-    @State private var testProgress = 1.0
-    @State private var typeScores = [SpendTitleType: Int]()
     @State private var isTypeTestResultViewShown = false
-    @State private var testChoices = [-1, -1, -1, -1, -1, -1, -1]
     @Environment(\.dismiss) private var dismiss
+    @Bindable var viewModel: TypeTestViewModel
+    @State var userSpendType: SpendTitleType?
 
     var body: some View {
         ZStack {
@@ -23,17 +22,17 @@ struct TypeTestView: View {
                     .padding(.top, 20)
                 Spacer()
                     .frame(height: 50)
-                Text("Q\(Int(testProgress)).")
+                Text("Q\(viewModel.questionNumber).")
                     .font(.system(size: 40, weight: .bold))
                     .foregroundStyle(Color.accentBlue)
                     .padding(.bottom, 10)
-                questionLabel(question: typeTests[Int(testProgress)-1].question,
-                              highlightWord: typeTests[Int(testProgress)-1].highlight)
+                questionLabel(question: typeTests[viewModel.questionNumber-1].question,
+                              highlightWord: typeTests[viewModel.questionNumber-1].highlight)
                 Spacer()
                 VStack(spacing: 16) {
                     ForEach(0..<4) { index in
                         choiceButton(order: index,
-                                     choiceModel: typeTests[Int(testProgress)-1].choices[index])
+                                     choiceModel: typeTests[viewModel.questionNumber-1].choices[index])
                     }
                 }
                 Spacer(minLength: 30)
@@ -49,8 +48,9 @@ struct TypeTestView: View {
             }
         }
         .navigationDestination(isPresented: $isTypeTestResultViewShown) {
-            // TODO: - change spendType
-            TypeTestResultView(spendType: .adventurer)
+            if let userSpendType = userSpendType {
+                TypeTestResultView(spendType: userSpendType)
+            }
         }
     }
 }
@@ -59,8 +59,8 @@ extension TypeTestView {
 
     private var backButton: some View {
         Button {
-            if testProgress > 1.0 {
-                testProgress -= 1
+            if viewModel.questionNumber > 1 {
+                viewModel.moveToPreviousQuestion()
             } else {
                 dismiss()
             }
@@ -68,7 +68,7 @@ extension TypeTestView {
             HStack(spacing: 5) {
                 Image(systemName: "chevron.left")
                     .font(.system(size: 16, weight: .medium))
-                Text(testProgress > 1.0 ? "이전" : "소비성향 테스트")
+                Text(viewModel.questionNumber > 1 ? "이전" : "소비성향 테스트")
                     .font(.system(size: 16))
             }
             .foregroundStyle(Color.accentBlue)
@@ -77,10 +77,10 @@ extension TypeTestView {
 
     private var testProgressView: some View {
         VStack(alignment: .trailing, spacing: 4) {
-            ProgressView(value: testProgress, total: 7.0)
+            ProgressView(value: viewModel.testProgressValue, total: 7.0)
                 .tint(Color.accentBlue)
-                .animation(.easeIn, value: testProgress)
-            Text("0\(Int(testProgress))")
+                .animation(.easeIn, value: viewModel.testProgressValue)
+            Text("0\(viewModel.questionNumber)")
                 .font(.system(size: 14, weight: .medium))
                 .foregroundStyle(Color.accentBlue)
             + Text("/07")
@@ -119,12 +119,15 @@ extension TypeTestView {
     private func choiceButton(order: Int, choiceModel: ChoiceModel) -> some View {
         Button {
             withAnimation(nil) {
-                testChoices[Int(testProgress) - 1] = order
-                if testProgress < 7.0 {
-                    testProgress += 1.0
-                } else if testProgress == 7.0 {
-                    isTypeTestResultViewShown = true
+                viewModel.setChoice(order: order, types: choiceModel.types)
+
+                guard viewModel.isLastQuestion else {
+                    viewModel.moveToNextQuestion()
+                    return
                 }
+
+                isTypeTestResultViewShown = true
+                userSpendType = viewModel.setUserSpendType()
             }
         } label: {
             HStack {
@@ -132,8 +135,8 @@ extension TypeTestView {
                 Spacer()
             }
         }
-        .buttonStyle(ChoiceButtonStyle(testChoices: $testChoices,
-                                       testProgress: $testProgress,
+        .buttonStyle(ChoiceButtonStyle(testChoices: $viewModel.testChoices,
+                                       testProgress: $viewModel.testProgressValue,
                                        order: order))
     }
 }
@@ -166,7 +169,7 @@ struct ChoiceButtonStyle: ButtonStyle {
 
 #Preview {
     NavigationStack {
-        TypeTestView()
+        TypeTestView(viewModel: TypeTestViewModel())
             .toolbar(.visible, for: .navigationBar)
     }
 }

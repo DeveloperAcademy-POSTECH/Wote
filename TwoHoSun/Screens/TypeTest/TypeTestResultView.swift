@@ -21,6 +21,7 @@ struct TypeTestResultView: View {
                     Text(spendType.description)
                         .font(.system(size: 20, weight: .medium))
                         .foregroundStyle(Color.lightBlue)
+                        .kerning(-1)
                     Spacer()
                 }
                 .padding(.bottom, 24)
@@ -93,5 +94,5 @@ extension TypeTestResultView {
 }
 
 #Preview {
-    TypeTestResultView(spendType: .adventurer)
+    TypeTestResultView(spendType: .safetyShopper)
 }

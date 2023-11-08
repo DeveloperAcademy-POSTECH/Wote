@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TypeTestIntroView: View {
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -43,7 +44,7 @@ extension TypeTestIntroView {
 
     private var goToTestButton: some View {
         NavigationLink {
-            TypeTestView()
+            TypeTestView(viewModel: TypeTestViewModel())
         } label: {
             Text("소비 성향 테스트하러가기")
                 .font(.system(size: 16, weight: .semibold))
