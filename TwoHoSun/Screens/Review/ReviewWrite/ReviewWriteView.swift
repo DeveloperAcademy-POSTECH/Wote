@@ -31,8 +31,8 @@ struct ReviewWriteView: View {
                             buySelection
                         }
                         titleView
-                        priceView
                         if viewModel.isBuy {
+                            priceView
                             imageView
                         }
                         contentView
