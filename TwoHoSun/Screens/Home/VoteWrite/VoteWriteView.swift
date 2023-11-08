@@ -19,7 +19,7 @@ struct VoteWriteView: View {
     @State private var selectedImageData: Data?
     @State private var isTagTextFieldShowed = false
     @State private var isEditing: Bool = false
-    @Bindable var viewModel: WriteViewModel
+    @Bindable var viewModel: VoteWriteViewModel
     
     var body: some View {
         ZStack {
@@ -341,6 +341,6 @@ extension VoteWriteView {
 
 #Preview {
     NavigationStack {
-        WriteView(viewModel: WriteViewModel())
+        VoteWriteView(viewModel: VoteWriteViewModel())
     }
 }
