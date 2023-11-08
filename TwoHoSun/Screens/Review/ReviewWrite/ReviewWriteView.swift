@@ -104,20 +104,8 @@ extension ReviewWriteView {
     
     private var buySelection: some View {
         ZStack {
-            GeometryReader { geo in
                 RoundedRectangle(cornerRadius: 10)
                     .strokeBorder(Color.darkblue, lineWidth: 1)
-                HStack {
-                    if !viewModel.isBuy {
-                        Spacer()
-                    }
-                    RoundedRectangle(cornerRadius: 10)
-                        .foregroundStyle(Color.lightBlue)
-                        .frame(width: geo.size.width / 2)
-                    if viewModel.isBuy {
-                        Spacer()
-                    }
-                }
                 HStack(spacing: 0) {
                     Button {
                         withAnimation(.easeInOut(duration: 0.3)) {
@@ -126,14 +114,13 @@ extension ReviewWriteView {
                     } label: {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(.clear)
-                                .frame(width: geo.size.width / 2)
+                                .foregroundStyle(viewModel.isBuy ? Color.lightBlue : .clear)
                             Text("샀다")
                                 .font(.system(size: 16, weight: viewModel.isBuy ? .bold : .medium))
                                 .foregroundStyle(.white)
                         }
                     }
-                    .frame(width: geo.size.width / 2, height: 44)
+                    .frame(height: 44)
                     .contentShape(Rectangle())
                     Button {
                         withAnimation(.easeInOut(duration: 0.3)) {
@@ -142,16 +129,14 @@ extension ReviewWriteView {
                     } label: {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(.clear)
-                                .frame(width: geo.size.width / 2)
+                                .foregroundStyle(viewModel.isBuy ? .clear : Color.lightBlue)
                             Text("안샀다")
                                 .font(.system(size: 16, weight: viewModel.isBuy ? .bold : .medium))
                                 .foregroundStyle(.white)
                         }
                     }
-                    .frame(width: geo.size.width / 2)
                 }
-            }
+            
         }
         .frame(height: 44)
     }
