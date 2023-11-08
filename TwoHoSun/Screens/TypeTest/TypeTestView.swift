@@ -26,8 +26,8 @@ struct TypeTestView: View {
                     .font(.system(size: 40, weight: .bold))
                     .foregroundStyle(Color.accentBlue)
                     .padding(.bottom, 10)
-                questionLabel(question: typeTests[viewModel.questionNumber-1].question,
-                              highlightWord: typeTests[viewModel.questionNumber-1].highlight)
+                questionView(question: typeTests[viewModel.questionNumber-1].question,
+                             highlightWord: typeTests[viewModel.questionNumber-1].highlight)
                 Spacer()
                 VStack(spacing: 16) {
                     ForEach(0..<4) { index in
@@ -89,16 +89,27 @@ extension TypeTestView {
         }
     }
 
-    private func questionLabel(question: String, highlightWord: String) -> some View {
+    @ViewBuilder
+    private func questionView(question: String, highlightWord: String) -> some View {
         let range = question.range(of: highlightWord)!
         let before = question[..<range.lowerBound]
         let highlighted = question[range]
         let after = question[range.upperBound...]
 
-        return HStack(spacing: 0) {
-            standarWordLabel(String(before))
-            highLightedWordLabel(String(highlighted))
-            standarWordLabel(String(after))
+        if viewModel.questionNumber == 1 {
+            VStack(alignment: .leading, spacing: 0) {
+                HStack(spacing: 0) {
+                    standarWordLabel(String(before))
+                    highLightedWordLabel(String(highlighted))
+                }
+                standarWordLabel(String(after))
+            }
+        } else {
+            HStack(spacing: 0) {
+                standarWordLabel(String(before))
+                highLightedWordLabel(String(highlighted))
+                standarWordLabel(String(after))
+            }
         }
     }
 

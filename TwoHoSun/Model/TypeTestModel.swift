@@ -19,7 +19,7 @@ struct ChoiceModel {
 }
 
 let typeTests = [
-    TypeTestModel(question: "친구들과 쇼핑몰에 갔을 때 나는 주로···",
+    TypeTestModel(question: "친구들과 쇼핑몰에 갔을 때나는 주로···",
                   highlight: "쇼핑몰에 갔을 때",
                   choices: [
                     ChoiceModel(choice: "이런게 요즘 유행인가보네, 너무 예쁘다!", types: [.trendy]),
