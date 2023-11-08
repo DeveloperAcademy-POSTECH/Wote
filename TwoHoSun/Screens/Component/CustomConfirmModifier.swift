@@ -47,7 +47,6 @@ struct CustomConfirmModifier<A>: ViewModifier where A: View {
                     .font(.system(size: 18, weight: .medium))
                     .padding(.horizontal, 16)
                     .transition(.move(edge: .bottom))
-                    .padding(.horizontal, 16)
                 }
             }
             .onTapGesture {

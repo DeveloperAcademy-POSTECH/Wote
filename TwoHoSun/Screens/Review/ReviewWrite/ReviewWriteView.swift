@@ -61,16 +61,12 @@ struct ReviewWriteView: View {
                 Button("수정하기") {
                     isEditing = false
                 }
-                .frame(maxWidth: .infinity)
-                .frame(height: 42)
                 Divider()
                     .foregroundStyle(Color.gray300)
                 PhotosPicker(selection: $selectedPhoto,
                              matching: .images,
                              photoLibrary: .shared()) {
                     Text("다른 상품사진 선택하기")
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 42)
                     .onChange(of: selectedPhoto) { _, newValue in
                         PHPhotoLibrary.requestAuthorization { status in
                             guard status == .authorized else { return }
@@ -84,8 +80,6 @@ struct ReviewWriteView: View {
                         }
                     }
                 }
-                .frame(maxWidth: .infinity)
-                .frame(height: 42)
                 Divider()
                     .foregroundStyle(Color.gray300)
                 Button("삭제하기") {
@@ -93,8 +87,6 @@ struct ReviewWriteView: View {
                     selectedImageData = nil
                     isEditing = false
                 }
-                .frame(maxWidth: .infinity)
-                .frame(height: 42)
             }
         }
     }
