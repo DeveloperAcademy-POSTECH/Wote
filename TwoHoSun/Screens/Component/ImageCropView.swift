@@ -108,14 +108,19 @@ struct CropView: View {
     @State private var lastScale: CGFloat = 0
     @State private var offset: CGSize = .zero
     @State private var lastStoredOffset: CGSize = .zero
+    @State private var rotation: Double = 0
     @GestureState private var isInteracting: Bool = false
     
     var body: some View {
         NavigationStack {
             ZStack {
-                Color.background
+                Color.black
                 imageView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                VStack {
+                    Spacer()
+                    imageToolbar
+                }
             }
             .ignoresSafeArea()
             .navigationBarTitleDisplayMode(.inline)
@@ -145,7 +150,9 @@ struct CropView: View {
             }
         }
     }
-    
+}
+
+extension CropView {
     @ViewBuilder
     func imageView() -> some View {
         GeometryReader { geo in
@@ -181,6 +188,7 @@ struct CropView: View {
             }
         }
         .scaleEffect(scale)
+        .rotationEffect(.degrees(rotation))
         .offset(offset)
         .coordinateSpace(name: "CROPVIEW")
         .gesture(
@@ -216,13 +224,54 @@ struct CropView: View {
         .frame(CGSize(width: 358, height: 240))
         .clipShape(.rect(cornerRadius: 0))
     }
+    
+    private var imageToolbar: some View {
+        ZStack(alignment: .top) {
+            Color.background
+            HStack(spacing: 32) {
+                toolbarButton("rotate.left.fill") {
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        rotation -= 90
+                    }
+                }
+                toolbarButton("arrow.clockwise") {
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        scale = 1
+                        offset = .zero
+                    }
+                }
+                toolbarButton("rotate.right.fill") {
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        rotation += 90
+                    }
+                }
+            }
+            .padding(.top, 8)
+        }
+        .frame(height: 80)
+    }
+    
+    private func toolbarButton(_ label: String, action: @escaping () -> Void) -> some View {
+        Button {
+            action()
+        } label: {
+            ZStack {
+                RoundedRectangle(cornerRadius: 6)
+                    .frame(width: 40, height: 40)
+                    .foregroundStyle(Color.disableGray)
+                Image(systemName: label)
+                    .font(.system(size: 16))
+                    .foregroundStyle(.white)
+            }
+        }
+    }
 }
 
 #Preview {
     NavigationStack {
-        ImageCropView()
-//        CropView(crop: .circle, image: UIImage(named: "sample")) { _, _ in
-//            
-//        }
+//        ImageCropView()
+        CropView(image: UIImage(named: "sample")) { _, _ in
+            
+        }
     }
 }
