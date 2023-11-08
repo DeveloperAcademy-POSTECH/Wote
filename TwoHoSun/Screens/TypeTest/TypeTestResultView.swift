@@ -32,7 +32,10 @@ struct TypeTestResultView: View {
                     Spacer()
                 }
                 Spacer()
-                spendType.icon
+                ZStack {
+                    ParticleView()
+                    spendType.icon
+                }
                 Spacer()
                 pushToHomeButton
                 dismissButton
