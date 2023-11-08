@@ -9,8 +9,11 @@ import SwiftUI
 
 struct TypeTestView: View {
     @State private var testProgress = 1.0
-    @State private var typeScores: [SpendTitleType: Int] = [:]
+    @State private var selectedChoice = -1
+    @State private var typeScores = [SpendTitleType: Int]()
     @State private var isTypeTestResultViewShown = false
+    @State private var testChoices = [-1, -1, -1, -1, -1, -1, -1]
+    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         ZStack {
@@ -38,20 +41,45 @@ struct TypeTestView: View {
             }
             .padding(.horizontal, 16)
         }
+        .navigationBarBackButtonHidden()
         .toolbarBackground(Color.background, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .fullScreenCover(isPresented: $isTypeTestResultViewShown) {
             TypeTestResultView()
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                backButton
+            }
         }
     }
 }
 
 extension TypeTestView {
 
+    private var backButton: some View {
+        Button {
+            if testProgress > 1.0 {
+                testProgress -= 1
+            } else {
+                dismiss()
+            }
+        } label: {
+            HStack(spacing: 5) {
+                Image(systemName: "chevron.left")
+                    .font(.system(size: 16, weight: .medium))
+                Text(testProgress > 1.0 ? "이전" : "소비성향 테스트")
+                    .font(.system(size: 16))
+            }
+            .foregroundStyle(Color.accentBlue)
+        }
+    }
+
     private var testProgressView: some View {
         VStack(alignment: .trailing, spacing: 4) {
             ProgressView(value: testProgress, total: 7.0)
                 .tint(Color.accentBlue)
+                .animation(.easeIn, value: testProgress)
             Text("0\(Int(testProgress))")
                 .font(.system(size: 14, weight: .medium))
                 .foregroundStyle(Color.accentBlue)
@@ -89,14 +117,13 @@ extension TypeTestView {
     }
 
     private func choiceButton(order: Int, choiceModel: ChoiceModel) -> some View {
+//                        testChoices[Int(testProgress) - 1] == order ? Color.accentBlue : Color.fixedGray
         Button {
-            if testProgress < 7.0 {
-                testProgress += 1.0
-                for type in choiceModel.types {
-                    typeScores[type, default: 0] += 1
-                }
-
-                if testProgress == 7.0 {
+            withAnimation(nil) {
+                testChoices[Int(testProgress) - 1] = order
+                if testProgress < 7.0 {
+                    testProgress += 1.0
+                } else if testProgress == 7.0 {
                     isTypeTestResultViewShown = true
                 }
             }
@@ -106,15 +133,17 @@ extension TypeTestView {
                 Spacer()
             }
         }
-        .buttonStyle(CustomButtonStyle())
+        .buttonStyle(ChoiceButtonStyle())
     }
 }
 
-struct CustomButtonStyle: ButtonStyle {
+struct ChoiceButtonStyle: ButtonStyle {
+
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.system(size: 16, weight: .semibold))
             .foregroundStyle(.white)
+            .multilineTextAlignment(.leading)
             .padding(.vertical, 17)
             .padding(.horizontal, 24)
             .frame(maxWidth: .infinity)
