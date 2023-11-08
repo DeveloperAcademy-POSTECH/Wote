@@ -83,6 +83,7 @@ enum SpendTitleType {
             return Color.blue
         }
     }
+    
     var backgroundColor: Color {
         switch self {
         case .ecoWarrior:
