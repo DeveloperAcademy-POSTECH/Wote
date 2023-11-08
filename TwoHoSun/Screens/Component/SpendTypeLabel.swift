@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+
 enum LabelTypeUsage {
     case comments, detailView
+
     var horizontalPadding: CGFloat {
         switch self {
         case .comments:
@@ -34,8 +36,9 @@ enum LabelTypeUsage {
     }
 }
 struct SpendTypeLabel: View {
-    let spendType: SpendTItleType
+    let spendType: SpendTitleType
     let usage: LabelTypeUsage
+
     var body: some View {
         Text(spendType.title)
             .font(.system(size: usage.fontSize))

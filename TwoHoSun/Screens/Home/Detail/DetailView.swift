@@ -192,7 +192,7 @@ extension DetailView {
                 .font(.system(size: 18, weight: .bold))
                 .padding(.bottom, 4)
             HStack(spacing: 9) {
-                SpendTypeLabel(spendType: .beutyLover, usage: .detailView)
+                SpendTypeLabel(spendType: .beautyLover, usage: .detailView)
                 Text("금액: \(price)원")
                     .foregroundStyle(Color.priceGray)
                     .font(.system(size: 14))

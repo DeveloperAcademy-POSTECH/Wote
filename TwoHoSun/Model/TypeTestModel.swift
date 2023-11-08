@@ -76,4 +76,3 @@ let typeTests = [
                     ChoiceModel(choice: "다양한 제품을 둘러보고 네 스타일에 맞는 걸 찾아보는건 어때?", types: [.adventurer])
                   ])
 ]
-
