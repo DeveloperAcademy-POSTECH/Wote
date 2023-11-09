@@ -188,7 +188,7 @@ extension DetailView {
     @ViewBuilder
     func detailTextView(title: String, price: Int, description: String) -> some View {
         VStack(alignment: .leading, spacing: 13) {
-            SpendTypeLabel(spendType: .beutyLover, usage: .detailView)
+            SpendTypeLabel(spendType: .beautyLover, usage: .standard)
             Text(title)
                 .foregroundStyle(Color.white)
                 .font(.system(size: 18, weight: .bold))
