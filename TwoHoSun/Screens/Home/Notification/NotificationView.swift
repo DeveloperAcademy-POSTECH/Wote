@@ -16,6 +16,7 @@ struct NotificationView: View {
                 .ignoresSafeArea()
             notificationList
         }
+        .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.background, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbar {

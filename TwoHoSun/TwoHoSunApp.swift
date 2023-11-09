@@ -31,6 +31,7 @@ struct TwoHoSunApp: App {
 //                .tint(Color.accentBlue)
 //            }
             WoteTabView()
+//            TypeTestIntroView()
         }
     }
 }

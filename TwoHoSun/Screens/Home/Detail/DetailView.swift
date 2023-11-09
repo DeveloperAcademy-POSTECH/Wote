@@ -188,7 +188,7 @@ extension DetailView {
     @ViewBuilder
     func detailTextView(title: String, price: Int, description: String) -> some View {
         VStack(alignment: .leading, spacing: 13) {
-            SpendTypeLabel(spendType: .beutyLover, usage: .detailView)
+            SpendTypeLabel(spendType: .beautyLover, usage: .standard)
             Text(title)
                 .foregroundStyle(Color.white)
                 .font(.system(size: 18, weight: .bold))
@@ -252,8 +252,8 @@ extension DetailView {
                 .foregroundStyle(Color.priceGray)
             HStack(spacing: 8) {
                 // TODO: viewModel로 부터 데이터를 받아서 어떤 유형인지 여기에 알려주면 댐.
-                SpendTypeLabel(spendType: .saving, usage: .detailView)
-                SpendTypeLabel(spendType: .ecoWarrior, usage: .detailView)
+                SpendTypeLabel(spendType: .saving, usage: .standard)
+                SpendTypeLabel(spendType: .ecoWarrior, usage: .standard)
             }
             Text("투표 후 구매 \(type.title) 의견을 선택한 유형을 확인해봐요!")
                 .font(.system(size: 16, weight: .medium))
