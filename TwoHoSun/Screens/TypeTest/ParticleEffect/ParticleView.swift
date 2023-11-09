@@ -17,11 +17,10 @@ struct ParticleView: View {
 
     var body: some View {
         SpriteView(scene: scene)
-            .frame(width: 300, height: 300)
+            .frame(maxWidth: 300, maxHeight:300)
     }
 }
 
 #Preview {
     ParticleView()
 }
-
