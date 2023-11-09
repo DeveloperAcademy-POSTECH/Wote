@@ -55,6 +55,8 @@
 		C77113732AF2114800BAB128 /* CustomConfirmModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77113722AF2114800BAB128 /* CustomConfirmModifier.swift */; };
 		C7719FE62AF2861000A520CB /* SpendTitleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7719FE52AF2861000A520CB /* SpendTitleType.swift */; };
 		C7719FE82AF28A7B00A520CB /* SpendTypeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7719FE72AF28A7B00A520CB /* SpendTypeLabel.swift */; };
+		C782E7122AFCCA57006BCE59 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = C782E7112AFCCA57006BCE59 /* CombineMoya */; };
+		C782E7142AFCCA57006BCE59 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = C782E7132AFCCA57006BCE59 /* Moya */; };
 		C78E7D012AF6AF4C00C2E220 /* CommentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78E7D002AF6AF4C00C2E220 /* CommentsView.swift */; };
 		C78E7D0A2AF8C53000C2E220 /* ExpandableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78E7D092AF8C53000C2E220 /* ExpandableTextView.swift */; };
 		C7DE44BD2AE0DCE7001639CB /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DE44BC2AE0DCE7001639CB /* CommentCell.swift */; };
@@ -109,7 +111,6 @@
 		AB6845B72AFCC97500C3F7C2 /* Secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Secret.plist; path = ../../../Secret.plist; sourceTree = "<group>"; };
 		AB7317E12AF835DF008B5E41 /* VoteCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteCardView.swift; sourceTree = "<group>"; };
 		AB7317E52AF90CCC008B5E41 /* ConsumptionConsiderationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsumptionConsiderationView.swift; sourceTree = "<group>"; };
-		ABAFB6462AFA09C40070512F /* Secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Secret.plist; sourceTree = "<group>"; };
 		ABB71D6D2AE2754300BE0671 /* PostResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostResponseModel.swift; sourceTree = "<group>"; };
 		ABB71D732AE2758200BE0671 /* ImageDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailView.swift; sourceTree = "<group>"; };
 		ABB71D792AE2A64300BE0671 /* LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkView.swift; sourceTree = "<group>"; };
@@ -177,6 +178,8 @@
 			files = (
 				ABB71D642AE26EB100BE0671 /* Kingfisher in Frameworks */,
 				FD3646F52ADD8E2D0064DF94 /* Alamofire in Frameworks */,
+				C782E7142AFCCA57006BCE59 /* Moya in Frameworks */,
+				C782E7122AFCCA57006BCE59 /* CombineMoya in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -519,6 +522,8 @@
 			packageProductDependencies = (
 				FD3646F42ADD8E2D0064DF94 /* Alamofire */,
 				ABB71D632AE26EB100BE0671 /* Kingfisher */,
+				C782E7112AFCCA57006BCE59 /* CombineMoya */,
+				C782E7132AFCCA57006BCE59 /* Moya */,
 			);
 			productName = TwoHoSun;
 			productReference = FD132BEA2ADBE8FA00F31AAF /* TwoHoSun.app */;
@@ -552,6 +557,7 @@
 			packageReferences = (
 				FD3646F32ADD8E2D0064DF94 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				ABB71D622AE26EB100BE0671 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				C782E7102AFCCA57006BCE59 /* XCRemoteSwiftPackageReference "Moya" */,
 			);
 			productRefGroup = FD132BEB2ADBE8FA00F31AAF /* Products */;
 			projectDirPath = "";
@@ -904,6 +910,14 @@
 				minimumVersion = 7.9.1;
 			};
 		};
+		C782E7102AFCCA57006BCE59 /* XCRemoteSwiftPackageReference "Moya" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Moya/Moya.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 15.0.3;
+			};
+		};
 		FD3646F32ADD8E2D0064DF94 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -919,6 +933,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = ABB71D622AE26EB100BE0671 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		C782E7112AFCCA57006BCE59 /* CombineMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C782E7102AFCCA57006BCE59 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = CombineMoya;
+		};
+		C782E7132AFCCA57006BCE59 /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C782E7102AFCCA57006BCE59 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
 		};
 		FD3646F42ADD8E2D0064DF94 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
