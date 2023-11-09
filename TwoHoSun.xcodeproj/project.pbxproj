@@ -21,7 +21,6 @@
 		AB7317EB2AF90F1D008B5E41 /* LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D792AE2A64300BE0671 /* LinkView.swift */; };
 		AB7317EC2AF90F40008B5E41 /* ProfileSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4E75B52ADE9C20000C2277 /* ProfileSettingViewModel.swift */; };
 		AB7317ED2AF90F45008B5E41 /* ConsumptionConsiderationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBFB62F2AE3EA2F006CE8CA /* ConsumptionConsiderationViewModel.swift */; };
-		ABAFB6472AFA09C40070512F /* Secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = ABAFB6462AFA09C40070512F /* Secret.plist */; };
 		ABB71D642AE26EB100BE0671 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = ABB71D632AE26EB100BE0671 /* Kingfisher */; };
 		ABB71D6E2AE2754300BE0671 /* PostResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D6D2AE2754300BE0671 /* PostResponseModel.swift */; };
 		ABB71D742AE2758200BE0671 /* ImageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D732AE2758200BE0671 /* ImageDetailView.swift */; };
@@ -47,8 +46,9 @@
 		C77113732AF2114800BAB128 /* CustomConfirmModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77113722AF2114800BAB128 /* CustomConfirmModifier.swift */; };
 		C7719FE62AF2861000A520CB /* SpendTItleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7719FE52AF2861000A520CB /* SpendTItleType.swift */; };
 		C7719FE82AF28A7B00A520CB /* SpendTypeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7719FE72AF28A7B00A520CB /* SpendTypeLabel.swift */; };
+		C782E7122AFCCA57006BCE59 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = C782E7112AFCCA57006BCE59 /* CombineMoya */; };
+		C782E7142AFCCA57006BCE59 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = C782E7132AFCCA57006BCE59 /* Moya */; };
 		C78E7D012AF6AF4C00C2E220 /* CommentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78E7D002AF6AF4C00C2E220 /* CommentsView.swift */; };
-		C78E7D032AF6B06500C2E220 /* Secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = C78E7D022AF6B06500C2E220 /* Secret.plist */; };
 		C78E7D0A2AF8C53000C2E220 /* ExpandableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78E7D092AF8C53000C2E220 /* ExpandableTextView.swift */; };
 		C7DE44BD2AE0DCE7001639CB /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DE44BC2AE0DCE7001639CB /* CommentCell.swift */; };
 		C7DE44C22AE26109001639CB /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DE44C12AE26109001639CB /* View+.swift */; };
@@ -94,7 +94,6 @@
 		AB53CA6C2AF7AC4100FD850A /* UINavigationController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+.swift"; sourceTree = "<group>"; };
 		AB7317E12AF835DF008B5E41 /* VoteCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteCardView.swift; sourceTree = "<group>"; };
 		AB7317E52AF90CCC008B5E41 /* ConsumptionConsiderationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsumptionConsiderationView.swift; sourceTree = "<group>"; };
-		ABAFB6462AFA09C40070512F /* Secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Secret.plist; sourceTree = "<group>"; };
 		ABB71D6D2AE2754300BE0671 /* PostResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostResponseModel.swift; sourceTree = "<group>"; };
 		ABB71D732AE2758200BE0671 /* ImageDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailView.swift; sourceTree = "<group>"; };
 		ABB71D792AE2A64300BE0671 /* LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkView.swift; sourceTree = "<group>"; };
@@ -125,7 +124,6 @@
 		C7719FE52AF2861000A520CB /* SpendTItleType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendTItleType.swift; sourceTree = "<group>"; };
 		C7719FE72AF28A7B00A520CB /* SpendTypeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendTypeLabel.swift; sourceTree = "<group>"; };
 		C78E7D002AF6AF4C00C2E220 /* CommentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsView.swift; sourceTree = "<group>"; };
-		C78E7D022AF6B06500C2E220 /* Secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Secret.plist; sourceTree = "<group>"; };
 		C78E7D092AF8C53000C2E220 /* ExpandableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableTextView.swift; sourceTree = "<group>"; };
 		C7DE44BC2AE0DCE7001639CB /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		C7DE44C12AE26109001639CB /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
@@ -164,6 +162,8 @@
 			files = (
 				ABB71D642AE26EB100BE0671 /* Kingfisher in Frameworks */,
 				FD3646F52ADD8E2D0064DF94 /* Alamofire in Frameworks */,
+				C782E7142AFCCA57006BCE59 /* Moya in Frameworks */,
+				C782E7122AFCCA57006BCE59 /* CombineMoya in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -190,7 +190,6 @@
 			path = Search;
 			sourceTree = "<group>";
 		};
-
 		ABB71D6C2AE2753800BE0671 /* DTO */ = {
 			isa = PBXGroup;
 			children = (
@@ -482,6 +481,8 @@
 			packageProductDependencies = (
 				FD3646F42ADD8E2D0064DF94 /* Alamofire */,
 				ABB71D632AE26EB100BE0671 /* Kingfisher */,
+				C782E7112AFCCA57006BCE59 /* CombineMoya */,
+				C782E7132AFCCA57006BCE59 /* Moya */,
 			);
 			productName = TwoHoSun;
 			productReference = FD132BEA2ADBE8FA00F31AAF /* TwoHoSun.app */;
@@ -515,6 +516,7 @@
 			packageReferences = (
 				FD3646F32ADD8E2D0064DF94 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				ABB71D622AE26EB100BE0671 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				C782E7102AFCCA57006BCE59 /* XCRemoteSwiftPackageReference "Moya" */,
 			);
 			productRefGroup = FD132BEB2ADBE8FA00F31AAF /* Products */;
 			projectDirPath = "";
@@ -859,6 +861,14 @@
 				minimumVersion = 7.9.1;
 			};
 		};
+		C782E7102AFCCA57006BCE59 /* XCRemoteSwiftPackageReference "Moya" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Moya/Moya.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 15.0.3;
+			};
+		};
 		FD3646F32ADD8E2D0064DF94 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -874,6 +884,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = ABB71D622AE26EB100BE0671 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		C782E7112AFCCA57006BCE59 /* CombineMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C782E7102AFCCA57006BCE59 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = CombineMoya;
+		};
+		C782E7132AFCCA57006BCE59 /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C782E7102AFCCA57006BCE59 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
 		};
 		FD3646F42ADD8E2D0064DF94 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
