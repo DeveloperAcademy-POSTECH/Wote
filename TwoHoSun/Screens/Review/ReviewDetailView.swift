@@ -79,7 +79,7 @@ extension ReviewDetailView {
                     .foregroundStyle(Color.woteWhite)
                 Spacer()
                 NavigationLink {
-                    // TODO: - screen transition
+                    DetailView(isDone: false)
                 } label: {
                     HStack(spacing: 2) {
                         Text("바로가기")
@@ -90,11 +90,8 @@ extension ReviewDetailView {
                 }
             }
             NavigationLink {
-                // TODO: - screen transition
+                DetailView(isDone: true)
             } label: {
-//                VoteCardCell(cardType: .simple,
-//                             searchFilterType: .end,
-//                             isPurchased: Bool.random())
                 VoteCardCell(cardType: .simple,
                              searchFilterType: .end,
                              voteResultType: VoteResultType.draw)
@@ -133,13 +130,6 @@ extension ReviewDetailView {
                 .aspectRatio(1.5, contentMode: .fill)
                 .padding(.bottom, 28)
             HStack {
-                Label("256명 조회", systemImage: "person.2.fill")
-                    .font(.system(size: 14))
-                    .foregroundStyle(Color.white)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 6)
-                    .background(Color.darkGray2)
-                    .clipShape(RoundedRectangle(cornerRadius: 34))
                 Spacer()
                 Button {
                     print("이야 공유하자")

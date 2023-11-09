@@ -37,7 +37,8 @@ struct Review: View {
                     LazyVStack(pinnedViews: .sectionHeaders) {
                         Section {
                             reviewTypeView
-                                .padding(.horizontal, 16)
+                                .padding(.leading, 16)
+                                .padding(.trailing, 8)
                         } header: {
                             reviewFilterView
                         }
@@ -152,7 +153,7 @@ extension Review {
                     NavigationLink {
                         ReviewDetailView()
                     } label: {
-                        ReviewCardCell(isPurchased: Bool.random())
+                        ReviewCardCell(isSearchResult: false, isPurchased: Bool.random())
                     }
                 }
             case .purchased:
@@ -160,7 +161,7 @@ extension Review {
                     NavigationLink {
                         ReviewDetailView()
                     } label: {
-                        ReviewCardCell(isPurchased: true)
+                        ReviewCardCell(isSearchResult: false, isPurchased: true)
                     }
                 }
             case .notPurchased:
@@ -168,7 +169,7 @@ extension Review {
                     NavigationLink {
                         ReviewDetailView()
                     } label: {
-                        ReviewCardCell(isPurchased: false)
+                        ReviewCardCell(isSearchResult: false, isPurchased: false)
                     }
                 }
             }

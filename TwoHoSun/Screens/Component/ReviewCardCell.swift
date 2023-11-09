@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct ReviewCardCell: View {
+    var isSearchResult: Bool
     var isPurchased: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
             Divider()
-                .background(Color.dividerGray)
+                .background(isSearchResult ? Color.dividerGray : Color.clear)
                 .padding(.bottom, 6)
             HStack(spacing: 8) {
                 Circle()
@@ -25,7 +26,6 @@ struct ReviewCardCell: View {
                 Spacer()
                 SpendTypeLabel(spendType: .saving, usage: .cell)
             }
-            .padding(.horizontal, 8)
             HStack {
                 VStack(alignment: .leading, spacing: 6) {
                     HStack(spacing: 4) {
@@ -41,8 +41,10 @@ struct ReviewCardCell: View {
                         .lineLimit(1)
                         .padding(.bottom, 9)
                     HStack(spacing: 0) {
-                        Text("가격: 120,000원")
-                        Text(" · ")
+                        if isPurchased {
+                            Text("가격: 120,000원")
+                            Text(" · ")
+                        }
                         Text("2020년 3월 12일")
                     }
                     .font(.system(size: 14))
@@ -57,15 +59,17 @@ struct ReviewCardCell: View {
                         .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
             }
-            .padding(.horizontal, 8)
             .padding(.bottom, 24)
         }
+        .padding(.horizontal, 16)
+        .background(isSearchResult ? Color.disableGray : Color.clear)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 }
 
 #Preview {
     Group {
-        ReviewCardCell(isPurchased: true)
-        ReviewCardCell(isPurchased: false)
+        ReviewCardCell(isSearchResult: true, isPurchased: true)
+        ReviewCardCell(isSearchResult: false, isPurchased: false)
     }
 }
