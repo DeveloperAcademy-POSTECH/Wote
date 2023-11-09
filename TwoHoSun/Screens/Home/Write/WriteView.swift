@@ -34,7 +34,6 @@ struct WriteView: View {
                         linkView
                         contentView
                     }
-                    .modifier(Keyboard())
                     .padding(.top, 16)
                 }
                 voteRegisterButton
