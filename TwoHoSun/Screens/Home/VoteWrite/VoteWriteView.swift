@@ -8,7 +8,7 @@
 import PhotosUI
 import SwiftUI
 
-struct WriteView: View {
+struct VoteWriteView: View {
     @FocusState private var isTitleFocused: Bool
     @FocusState private var isPriceFocused: Bool
     @FocusState private var isLinkFocused: Bool
@@ -19,8 +19,7 @@ struct WriteView: View {
     @State private var showPicker: Bool = false
     @State private var isTagTextFieldShowed = false
     @State private var isEditing: Bool = false
-    @Binding var isWriteViewPresented: Bool
-    @Bindable var viewModel: WriteViewModel
+    @Bindable var viewModel: VoteWriteViewModel
     
     var body: some View {
         ZStack {
@@ -34,13 +33,27 @@ struct WriteView: View {
                         imageView
                         linkView
                         contentView
+                        Spacer()
                     }
-                    .modifier(Keyboard())
                     .padding(.top, 16)
                 }
                 voteRegisterButton
             }
-            .ignoresSafeArea(.keyboard)
+            .padding(.horizontal, 16)
+            .scrollIndicators(.hidden)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(Color.background, for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("투표만들기")
+                        .foregroundStyle(.white)
+                        .font(.system(size: 18, weight: .medium))
+                }
+            }
+            .onTapGesture {
+                dismissKeyboard()
+            }
             .customConfirmDialog(isPresented: $isEditing) {
                 Button("수정하기") {
                     isEditing = false
@@ -63,26 +76,11 @@ struct WriteView: View {
                 .frame(maxWidth: .infinity)
                 .frame(height: 42)
             }
-            .padding(.horizontal, 16)
-            .scrollIndicators(.hidden)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(Color.background, for: .navigationBar)
-            .toolbarBackground(.visible, for: .navigationBar)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("투표만들기")
-                        .foregroundStyle(.white)
-                        .font(.system(size: 18, weight: .medium))
-                }
-            }
-            .onTapGesture {
-                dismissKeyboard()
-            }
         }
     }
 }
 
-extension WriteView {
+extension VoteWriteView {
     private var titleView: some View {
         VStack(alignment: .leading, spacing: 4) {
             headerLabel("제목을 입력해주세요. ", essential: true)
@@ -276,7 +274,6 @@ extension WriteView {
             isRegisterButtonDidTap = true
             if viewModel.isTitleValid {
                 viewModel.createPost()
-                isWriteViewPresented = false
             }
             print("complete button did tap!")
         } label: {
@@ -306,6 +303,6 @@ extension WriteView {
 
 #Preview {
     NavigationStack {
-        WriteView(isWriteViewPresented: .constant(true), viewModel: WriteViewModel())
+        VoteWriteView(viewModel: VoteWriteViewModel())
     }
 }

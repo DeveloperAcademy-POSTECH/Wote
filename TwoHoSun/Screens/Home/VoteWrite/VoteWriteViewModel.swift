@@ -10,7 +10,7 @@ import Foundation
 import Alamofire
 
 @Observable
-final class WriteViewModel {
+final class VoteWriteViewModel {
     var title = ""
     var price = ""
     var externalURL = ""
@@ -27,7 +27,10 @@ final class WriteViewModel {
         postCreateModel = PostCreateModel(postType: PostType.allSchool.rawValue,
                                           title: title + " " + postCategoryType.title,
                                           contents: content.isEmpty ? " " : content,
-                                          image: "https://github.com/DeveloperAcademy-POSTECH/MacC-Team8-2HoSun/assets/108191001/890db0c2-508e-465c-a307-cd498375613a",
+                                          image: """
+                                            https://github.com/DeveloperAcademy-POSTECH/
+                                            MacC-Team8-2HoSun/assets/108191001/890db0c2-508e-465c-a307-cd498375613a
+                                            """,
                                           externalURL: "https://www.apple.com/kr/ipad-air/",
                                           postTagList: [],
                                           postCategoryType: postCategoryType.rawValue)

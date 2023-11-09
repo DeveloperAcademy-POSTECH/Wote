@@ -31,7 +31,7 @@ class DetailViewModel {
             switch response.status {
             case 200:
                 print("상세 조회 성공")
-                guard let data = response.data else { return }
+                guard response.data != nil else { return }
 //                self.detailPostData = PostModel(from: data)
             case 401:
                 APIManager.shared.refreshAllTokens()

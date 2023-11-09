@@ -8,7 +8,7 @@
 import Foundation
 
 struct CommentsModel: Codable, Identifiable {
-    let id = UUID()
+    var id = UUID()
     let commentId: Int
     let createDate: String
     let modifiedDate: String
