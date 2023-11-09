@@ -90,9 +90,12 @@ extension ReviewDetailView {
             NavigationLink {
                 // TODO: - screen transition
             } label: {
+//                VoteCardCell(cardType: .simple,
+//                             searchFilterType: .end,
+//                             isPurchased: Bool.random())
                 VoteCardCell(cardType: .simple,
                              searchFilterType: .end,
-                             isPurchased: Bool.random())
+                             voteResultType: VoteResultType.draw)
             }
         }
     }

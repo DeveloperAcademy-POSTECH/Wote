@@ -212,9 +212,9 @@ extension SearchView {
                 .listRowSeparator(.hidden)
             case .end:
                 ForEach(0..<5) { _ in
-                    VoteCardCell(cardType: .standard, 
+                    VoteCardCell(cardType: .standard,
                                  searchFilterType: .end,
-                                 isPurchased: Bool.random())
+                                 voteResultType: .draw)
                 }
                 .listRowBackground(Color.clear)
                 .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))

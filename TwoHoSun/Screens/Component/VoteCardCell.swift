@@ -12,10 +12,14 @@ enum VoteCardType {
     case simple
 }
 
+enum VoteResultType {
+    case buy, draw, notBuy
+}
+
 struct VoteCardCell: View {
     var cardType: VoteCardType
     var searchFilterType: SearchFilterType
-    var isPurchased: Bool?
+    var voteResultType: VoteResultType?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
@@ -69,9 +73,20 @@ struct VoteCardCell: View {
                         .foregroundStyle(.gray)
                         .clipShape(RoundedRectangle(cornerRadius: 8))
                         .opacity(searchFilterType == .end ? 0.5 : 1.0)
-                    if let isPurchased = isPurchased, searchFilterType == .end {
-                        Image(isPurchased ? "imgBuy" : "imgNotBuy")
-                            .offset(x: -10, y: 10)
+                    if searchFilterType == .end {
+                        Group {
+                            switch voteResultType {
+                            case .buy:
+                                Image("imgBuy")
+                            case .draw:
+                                Image("imgDraw")
+                            case .notBuy:
+                                Image("imgNotBuy")
+                            case .none:
+                                EmptyView()
+                            }
+                        }
+                        .offset(x: -10, y: 10)
                     }
                 }
             }
@@ -85,6 +100,17 @@ struct VoteCardCell: View {
 
 #Preview {
     Group {
-        VoteCardCell(cardType: .simple, searchFilterType: .progressing)
+        VoteCardCell(cardType: .simple, 
+                     searchFilterType: .progressing,
+                     voteResultType: nil)
+        VoteCardCell(cardType: .simple,
+                     searchFilterType: .end,
+                     voteResultType: .buy)
+        VoteCardCell(cardType: .simple,
+                     searchFilterType: .end,
+                     voteResultType: .draw)
+        VoteCardCell(cardType: .simple,
+                     searchFilterType: .end,
+                     voteResultType: .notBuy)
     }
 }
