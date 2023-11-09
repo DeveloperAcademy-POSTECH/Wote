@@ -57,28 +57,31 @@ struct VoteWriteView: View {
                 dismissKeyboard()
             }
             .customConfirmDialog(isPresented: $isEditing) {
-                Button("수정하기") {
+                Button {
                     showCropView.toggle()
                     isEditing = false
+                } label: {
+                    Text("수정하기")
+                        .frame(maxWidth: .infinity)
                 }
-                .frame(maxWidth: .infinity)
-                .frame(height: 42)
                 Divider()
                     .foregroundStyle(Color.gray300)
-                Button("다른 상품사진 선택하기") {
+                Button {
                     showPicker.toggle()
                     isEditing = false
+                } label: {
+                    Text("다른 상품사진 선택하기")
+                        .frame(maxWidth: .infinity)
                 }
-                .frame(maxWidth: .infinity)
-                .frame(height: 42)
                 Divider()
                     .foregroundStyle(Color.gray300)
-                Button("삭제하기") {
+                Button {
                     croppedImage = nil
                     isEditing = false
+                } label: {
+                    Text("삭제하기")
+                        .frame(maxWidth: .infinity)
                 }
-                .frame(maxWidth: .infinity)
-                .frame(height: 42)
             }
         }
     }
@@ -190,7 +193,7 @@ extension VoteWriteView {
                 }
             }
         }
-        .cropImagePicker(show: $showPicker, showCropView: $showCropView,croppedImage: $croppedImage)
+        .cropImagePicker(show: $showPicker, showCropView: $showCropView, croppedImage: $croppedImage)
     }
     
     private var linkView: some View {

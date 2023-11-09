@@ -8,55 +8,6 @@
 import SwiftUI
 import PhotosUI
 
-//struct ImageCropView: View {
-//    
-//    @State private var showPicker: Bool = false
-//    @State private var croppedImage: UIImage?
-//    
-//    var body: some View {
-//        NavigationStack {
-//            VStack {
-//                if let croppedImage {
-//                    Image(uiImage: croppedImage)
-//                        .resizable()
-//                        .aspectRatio(contentMode: .fit)
-//                        .frame(width: 400, height: 300)
-//                } else {
-//                    Text("No image is selected")
-//                }
-//            }
-//        }
-//        .navigationTitle("Crop Image Picker")
-//        .navigationBarTitleDisplayMode(.inline)
-//        .toolbar {
-//            ToolbarItem(placement: .topBarTrailing) {
-//                Button {
-//                    showPicker.toggle()
-//                } label: {
-//                    Image(systemName: "photo.on.rectangle.angled")
-//                        .font(.callout)
-//                }
-//            }
-//        }
-//        .cropImagePicker(show: $showPicker, showCropView: <#Binding<Bool>#>, croppedImage: $croppedImage)
-//    }
-//}
-
-extension View {
-    @ViewBuilder
-    func cropImagePicker(show: Binding<Bool>, showCropView: Binding<Bool>, croppedImage: Binding<UIImage?>) -> some View {
-        CustomImagePicker(show: show, showCropView: showCropView, croppedImage: croppedImage) {
-            self
-        }
-    }
-    
-    @ViewBuilder
-    func frame(_ size: CGSize) -> some View {
-        self
-            .frame(width: size.width, height: size.height)
-    }
-}
-
 struct CustomImagePicker<Content: View>: View {
     var content: Content
     @Binding var show: Bool
@@ -263,6 +214,21 @@ extension CropView {
                     .foregroundStyle(.white)
             }
         }
+    }
+}
+
+extension View {
+    @ViewBuilder
+    func cropImagePicker(show: Binding<Bool>, showCropView: Binding<Bool>, croppedImage: Binding<UIImage?>) -> some View {
+        CustomImagePicker(show: show, showCropView: showCropView, croppedImage: croppedImage) {
+            self
+        }
+    }
+    
+    @ViewBuilder
+    func frame(_ size: CGSize) -> some View {
+        self
+            .frame(width: size.width, height: size.height)
     }
 }
 

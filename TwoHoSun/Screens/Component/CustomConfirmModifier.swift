@@ -26,7 +26,7 @@ struct CustomConfirmModifier<A>: ViewModifier where A: View {
                         GroupBox {
                             actions()
                                 .padding(.vertical, 15)
-                                .frame(maxWidth: .infinity,alignment: .center)
+//                                .frame(maxWidth: .infinity,alignment: .center)
                                 .background(Color.disableGray)
                                 .foregroundStyle(Color.lightBlue)
                                 .clipShape(.rect(cornerRadius: 10))
