@@ -15,10 +15,11 @@ struct VoteWriteView: View {
     @FocusState private var isContentFocused: Bool
     @State private var placeholderText = "욕설,비방,광고 등 소비 고민과 관련없는 내용은 통보 없이 삭제될 수 있습니다."
     @State private var isRegisterButtonDidTap = false
-    @State private var selectedPhoto: PhotosPickerItem?
-    @State private var selectedImageData: Data?
+    @State private var croppedImage: UIImage?
+    @State private var showPicker: Bool = false
     @State private var isTagTextFieldShowed = false
     @State private var isEditing: Bool = false
+    @State private var showCropView: Bool = false
     @Bindable var viewModel: VoteWriteViewModel
     
     var body: some View {
@@ -42,6 +43,7 @@ struct VoteWriteView: View {
             .padding(.horizontal, 16)
             .scrollIndicators(.hidden)
             .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("투표만들기")
             .toolbarBackground(Color.background, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbar {
@@ -55,43 +57,31 @@ struct VoteWriteView: View {
                 dismissKeyboard()
             }
             .customConfirmDialog(isPresented: $isEditing) {
-                Button("수정하기") {
+                Button {
+                    showCropView.toggle()
                     isEditing = false
+                } label: {
+                    Text("수정하기")
+                        .frame(maxWidth: .infinity)
                 }
-                .frame(maxWidth: .infinity)
-                .frame(height: 42)
                 Divider()
                     .foregroundStyle(Color.gray300)
-                PhotosPicker(selection: $selectedPhoto,
-                             matching: .images,
-                             photoLibrary: .shared()) {
+                Button {
+                    showPicker.toggle()
+                    isEditing = false
+                } label: {
                     Text("다른 상품사진 선택하기")
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 42)
-                    .onChange(of: selectedPhoto) { _, newValue in
-                        PHPhotoLibrary.requestAuthorization { status in
-                            guard status == .authorized else { return }
-                            
-                            Task {
-                                if let data = try? await newValue?.loadTransferable(type: Data.self) {
-                                    selectedImageData = data
-                                    isEditing = false
-                                }
-                            }
-                        }
-                    }
+                        .frame(maxWidth: .infinity)
                 }
-                .frame(maxWidth: .infinity)
-                .frame(height: 42)
                 Divider()
                     .foregroundStyle(Color.gray300)
-                Button("삭제하기") {
-                    selectedPhoto = nil
-                    selectedImageData = nil
+                Button {
+                    croppedImage = nil
                     isEditing = false
+                } label: {
+                    Text("삭제하기")
+                        .frame(maxWidth: .infinity)
                 }
-                .frame(maxWidth: .infinity)
-                .frame(height: 42)
             }
         }
     }
@@ -174,57 +164,36 @@ extension VoteWriteView {
     private var imageView: some View {
         VStack(alignment: .leading) {
             headerLabel("고민하는 상품의 사진을 등록해 주세요. ", essential: false)
-            if selectedImageData != nil {
-                selectedImageView
+            if let croppedImage {
+                Image(uiImage: croppedImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: .infinity)
+                    .clipShape(.rect(cornerRadius: 16))
                     .onTapGesture {
                         isEditing.toggle()
                     }
             } else {
-                addImageButton
-            }
-        }
-    }
-    
-    @ViewBuilder
-    private var selectedImageView: some View {
-        if let selectedImageData,
-           let uiImage = UIImage(data: selectedImageData) {
-            Image(uiImage: uiImage)
-                .resizable()
-                .frame(height: 218)
-                .clipShape(.rect(cornerRadius: 16))
-        }
-    }
-    
-    private var addImageButton: some View {
-        PhotosPicker(selection: $selectedPhoto,
-                     matching: .images,
-                     photoLibrary: .shared()) {
-            HStack(spacing: 7) {
-                Image(systemName: "plus")
-                    .font(.system(size: 16))
-                Text("상품 이미지")
-                    .font(.system(size: 14, weight: .medium))
-            }
-            .frame(maxWidth: .infinity)
-            .frame(height: 44)
-            .foregroundStyle(Color.lightBlue)
-            .overlay {
-                RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(Color.darkBlue, lineWidth: 1)
-            }
-            .onChange(of: selectedPhoto) { _, newValue in
-                PHPhotoLibrary.requestAuthorization { status in
-                    guard status == .authorized else { return }
-                    
-                    Task {
-                        if let data = try? await newValue?.loadTransferable(type: Data.self) {
-                            selectedImageData = data
-                        }
+                Button {
+                    showPicker.toggle()
+                } label: {
+                    HStack(spacing: 7) {
+                        Image(systemName: "plus")
+                            .font(.system(size: 16))
+                        Text("상품 이미지")
+                            .font(.system(size: 14, weight: .medium))
+                    }
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 44)
+                    .foregroundStyle(Color.lightBlue)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 10)
+                            .strokeBorder(Color.darkBlue, lineWidth: 1)
                     }
                 }
             }
         }
+        .cropImagePicker(show: $showPicker, showCropView: $showCropView, croppedImage: $croppedImage)
     }
     
     private var linkView: some View {
