@@ -19,6 +19,7 @@ struct VoteWriteView: View {
     @State private var showPicker: Bool = false
     @State private var isTagTextFieldShowed = false
     @State private var isEditing: Bool = false
+    @State private var showCropView: Bool = false
     @Bindable var viewModel: VoteWriteViewModel
     
     var body: some View {
@@ -42,6 +43,7 @@ struct VoteWriteView: View {
             .padding(.horizontal, 16)
             .scrollIndicators(.hidden)
             .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("투표만들기")
             .toolbarBackground(Color.background, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbar {
@@ -56,6 +58,7 @@ struct VoteWriteView: View {
             }
             .customConfirmDialog(isPresented: $isEditing) {
                 Button("수정하기") {
+                    showCropView.toggle()
                     isEditing = false
                 }
                 .frame(maxWidth: .infinity)
@@ -63,6 +66,7 @@ struct VoteWriteView: View {
                 Divider()
                     .foregroundStyle(Color.gray300)
                 Button("다른 상품사진 선택하기") {
+                    showPicker.toggle()
                     isEditing = false
                 }
                 .frame(maxWidth: .infinity)
@@ -186,7 +190,7 @@ extension VoteWriteView {
                 }
             }
         }
-        .cropImagePicker(show: $showPicker, croppedImage: $croppedImage)
+        .cropImagePicker(show: $showPicker, showCropView: $showCropView,croppedImage: $croppedImage)
     }
     
     private var linkView: some View {
