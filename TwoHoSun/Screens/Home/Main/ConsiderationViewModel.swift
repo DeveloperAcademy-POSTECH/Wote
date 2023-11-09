@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable
-final class ConsumptionConsiderationViewModel {
+final class ConsiderationViewModel {
     // TODO: - fetch data
 //    let postData: PostModel
     var isVoted: Bool = true

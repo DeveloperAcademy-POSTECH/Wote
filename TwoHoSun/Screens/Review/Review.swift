@@ -22,7 +22,7 @@ enum ReviewType: Int, CaseIterable {
     }
 }
 
-struct ConsumptionReviewView: View {
+struct Review: View {
     @State private var selectedReviewType = ReviewType.all
 
     var body: some View {
@@ -55,7 +55,7 @@ struct ConsumptionReviewView: View {
     }
 }
 
-extension ConsumptionReviewView {
+extension Review {
 
     private var sameSpendTypeReviewView: some View {
         VStack(spacing: 18) {

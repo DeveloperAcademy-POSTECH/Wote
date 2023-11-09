@@ -121,9 +121,9 @@ extension WoteTabView {
     private func tabDestinationView(for tab: WoteTabType) -> some View {
         switch tab {
         case .consider:
-            ConsumptionConsiderationView(viewModel: ConsumptionConsiderationViewModel())
+            ConsiderationView(viewModel: ConsiderationViewModel())
         case .review:
-            ConsumptionReviewView()
+            Review()
         case .myPage:
             Text("마이페이지")
         }

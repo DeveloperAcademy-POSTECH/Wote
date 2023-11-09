@@ -29,11 +29,11 @@ enum UserVoteType {
     }
 }
 
-struct ConsumptionConsiderationView: View {
+struct ConsiderationView: View {
     @State private var isVoted = false
     @State private var selectedVoteType = UserVoteType.agree
     @State private var currentVote = 0
-    let viewModel: ConsumptionConsiderationViewModel
+    let viewModel: ConsiderationViewModel
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
@@ -52,7 +52,7 @@ struct ConsumptionConsiderationView: View {
 
 }
 
-extension ConsumptionConsiderationView {
+extension ConsiderationView {
 
     // TODO: - 투표 없을 시에 noVoteView 보여주기
     private var noVoteView: some View {

@@ -30,7 +30,10 @@ struct TwoHoSunApp: App {
 //                }
 //                .tint(Color.accentBlue)
 //            }
-            WoteTabView()
+//            WoteTabView()
+            NavigationStack {
+                ProfileSettingsView(navigationPath: $path, viewModel: ProfileSettingViewModel())
+            }
         }
     }
 }
