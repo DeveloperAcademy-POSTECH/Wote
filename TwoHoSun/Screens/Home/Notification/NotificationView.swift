@@ -16,7 +16,6 @@ struct NotificationView: View {
                 .ignoresSafeArea()
             notificationList
         }
-        .navigationTitle("알림")
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.background, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
@@ -24,6 +23,7 @@ struct NotificationView: View {
             ToolbarItem(placement: .principal) {
                 Text("알림")
                     .foregroundStyle(.white)
+                    .font(.system(size: 18, weight: .medium))
             }
         }
     }
