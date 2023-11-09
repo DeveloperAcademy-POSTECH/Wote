@@ -21,7 +21,7 @@ enum SpendTitleType {
         case .trendy:
             return "유행선도자"
         case .beautyLover:
-            return "예쁜게최고야짜릿해"
+            return "예쁜게최고야"
         case .impulseBuyer:
             return "지름신강림러"
         case .adventurer:
@@ -76,20 +76,63 @@ enum SpendTitleType {
     var textColor: Color {
         switch self {
         case .ecoWarrior:
-            return Color.green
+            return Color.blue200
         case .saving:
-            return Color.yellow
-        default:
-            return Color.blue
+            return Color.darkBlue100
+        case .flexer:
+            return Color.yellow100
+        case .trendy:
+            return Color.pink100
+        case .beautyLover:
+            return Color.purple100
+        case .impulseBuyer:
+            return Color.green100
+        case .adventurer:
+            return Color.red100
+        case .safetyShopper:
+            return Color.lightBlue100
         }
     }
 
-    var backgroundColor: Color {
+    var lightBackgroundColor: Color {
         switch self {
         case .ecoWarrior:
-            return Color.purple
-        default:
-            return Color.accentBlue
+            return Color.lightBlue200
+        case .saving:
+            return Color.lightBlue300
+        case .flexer:
+            return Color.lightYellow100
+        case .trendy:
+            return Color.lightPink100
+        case .beautyLover:
+            return Color.lightPurple100
+        case .impulseBuyer:
+            return Color.lightGreen100
+        case .adventurer:
+            return Color.lightRed100
+        case .safetyShopper:
+            return Color.lightBlue400
+        }
+    }
+
+    var darkBackgroundColor: Color {
+        switch self {
+        case .ecoWarrior:
+            return Color.darkBlue200
+        case .saving:
+            return Color.darkBlue300
+        case .flexer:
+            return Color.darkYellow100
+        case .trendy:
+            return Color.darkPink100
+        case .beautyLover:
+            return Color.darkPurple100
+        case .impulseBuyer:
+            return Color.darkGreen100
+        case .adventurer:
+            return Color.darkRed100
+        case .safetyShopper:
+            return Color.darkBlue400
         }
     }
 }

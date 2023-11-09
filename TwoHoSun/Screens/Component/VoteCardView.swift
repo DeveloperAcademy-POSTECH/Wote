@@ -21,7 +21,7 @@ struct VoteCardView: View {
                     .font(.system(size: 16, weight: .bold))
                     .foregroundStyle(.white)
                 Spacer()
-                SpendTypeLabel(spendType: .saving, usage: .detailView)
+                SpendTypeLabel(spendType: .saving, usage: .cell)
             }
             HStack {
                 VStack(alignment: .leading, spacing: 6) {
