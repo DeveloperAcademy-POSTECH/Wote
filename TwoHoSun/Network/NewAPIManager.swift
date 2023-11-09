@@ -2,184 +2,67 @@
 //  NewAPIManager.swift
 //  TwoHoSun
 //
-//  Created by 235 on 11/9/23.
+//  Created by 235 on 11/10/23.
 //
 
 import SwiftUI
-
+import Combine
 import Moya
 
-enum NewAPIManager {
-    case postAuthorCode(authorization: String)
-    case postNickname(nickname: String)
-    case postProfileSetting(profile: ProfileSetting)
-    case refreshToken
-    case getPosts(page: Int, size: Int)
-    case postVoteCreate(postId: Int, param: String)
-    case getSearchResult(page: Int, size: Int, keyword: String)
-    case postCreate(postCreate: PostCreateModel)
-    case getComments(postId: Int)
-    case postComments(commentPost: CommentPostModel)
-    case deleteComments(postId: Int, commentId: Int)
-    case getDetailPost(postId: Int)
+//class NewAPIManager {
+//    let provider: MoyaProvider<APIService>
+//    init(provider: MoyaProvider<APIService> = .init()) {
+//        self.provider = provider
+//    }
+//    func getRefreshToken(refreshToken: String, identifier: String)
+//}
+//protocol ProviderProtocol {
+//    associatedtype Target: APIService
+//    func request<T: Decodable>(_ targetType: Target) -> AnyPublisher<T, Error>
+//}
+//
+//class APIClient<Target: TargetType
+//class NewAPIManager {
+//    static let shared = NewAPIManager()
+//    private let provider = MoyaProvider<APIService>()
+//    func request<T: Decodable>(_ target: APIService, type: T.Type, completion: @escaping (Result<T, Error>) -> Void) {
+//        provider.request(target) { result in
+//            switch result {
+//            case .success(let response):
+//                do {
+//                    let data = try response.map(T.self)
+//                    completion(.success(data))
+//                } catch let error {
+//                    completion(.failure(error))
+//                }
+//            case .failure(let err):
+//                print(err)
+//            }
+//        }
+//        
+//    }
+//}
+public extension MoyaProvider {
+    static var networkLoggerPlugin: NetworkLoggerPlugin {
+         return NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))
+     }
 
-}
-
-extension NewAPIManager: TargetType {
-    var baseURL: URL {
-        return URL(string: URLConst.baseURL)!
-    }
-    var path: String {
-        switch self {
-        case .postAuthorCode:
-            return "/login/oauth2/code/apple"
-        case .postNickname:
-            return "/api/profiles/isValidNickname"
-        case .postProfileSetting:
-            return "/api/profiles"
-        case .refreshToken:
-            return "/api/auth/refresh"
-        case .getPosts:
-            return "/api/posts"
-        case .postVoteCreate(let postId, _):
-            return "/api/posts/\(postId)/votes"
-        case .postCreate:
-            return "/api/posts"
-        case .getComments(let postId):
-            return "/api/posts/\(postId)/comments"
-        case .postComments(let postComment):
-            return "/api/posts/\(postComment.postId)/comments"
-        case .deleteComments(let postId, let commentId):
-            return "/api/posts/\(postId)/comments/\(commentId)"
-        case .getSearchResult:
-            return "/api/posts/search"
-        case .getDetailPost(let postId):
-            return "/api/posts/\(postId)"
-        }
-    }
-
-    var method: Moya.Method {
-        switch self {
-        case .postAuthorCode:
-            return .post
-        case .postNickname:
-            return .post
-        case .postProfileSetting:
-            return .post
-        case .refreshToken:
-            return .post
-        case .postVoteCreate:
-            return .post
-        case .postComments:
-            return .post
-        case .deleteComments:
-            return .delete
-        case .postCreate:
-            return .post
-        default:
-            return .get
-        }
-    }
-
-    var parameters: [String: Any] {
-        switch self {
-        case .postAuthorCode(let auth):
-            return [
-                "state": "test",
-                "code": auth
-            ]
-        case .postNickname(let nickname):
-            return [
-                "userNickname": nickname
-            ]
-        case .postProfileSetting(let model):
-            return [
-                "userProfileImage": model.userProfileImage,
-                "userNickname": model.userNickname,
-                "school": [
-                    "schoolName": model.school.schoolName,
-                    "schoolRegion": model.school.schoolRegion,
-                    "schoolType": model.school.schoolType
-                ]
-            ]
-        case .refreshToken:
-            return [
-                "refreshToken": KeychainManager.shared.readToken(key: "refreshToken")!,
-                "identifier": KeychainManager.shared.readToken(key: "identifier")!
-            ]
-        case .getPosts(let page, let size):
-            return [
-                "page" : page,
-                "size" : size
-            ]
-        case .postVoteCreate(_, let param):
-            return [
-                "voteType": param
-            ]
-        case .postCreate(let postCreate):
-            return [
-                "postType": postCreate.postType,
-                "title": postCreate.title,
-                "contents": postCreate.contents,
-                "image": postCreate.image,
-                "externalURL": postCreate.externalURL,
-                "postTagList": postCreate.postTagList,
-                "postCategoryType": postCreate.postCategoryType
-            ]
-        case .getComments(let postId):
-            return [
-                "postId": postId
-            ]
-        case .postComments(let postComment):
-            var parameters: [String: Any] = ["content": postComment.content]
-            if postComment.parentId > 0 {
-                parameters["parentId"] = postComment.parentId
-            }
-            return parameters
-        case .deleteComments:
-            return [:]
-        case .getSearchResult(let page, let size, let keyword):
-            return [
-                "page" : page,
-                "size" : size,
-                "keyword": keyword
-            ]
-        case .getDetailPost(let postId):
-            return [
-                "postId": postId
-            ]
-        }
-    }
-
-    var task: Moya.Task {
-        switch self {
-        case .postAuthorCode:
-            return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
-        case .getPosts:
-            return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
-        case .getComments:
-            return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
-        case .getDetailPost:
-            return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
-        case .getSearchResult:
-            return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
-        case .deleteComments:
-            return .requestPlain
-        default:
-            return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
-        }
-    }
-
-    var headers: [String : String]? {
-        switch self {
-        case .postAuthorCode:
-            return APIConstants.headerXform
-        case .refreshToken:
-            return APIConstants.headerWithOutToken
-        default:
-            return APIConstants.headerWithAuthorization
-        }
-    }
-
-
+     // Define a class-level MoyaProvider with the NetworkLoggerPlugin
+     static func makeProvider<T>() -> MoyaProvider<T> {
+         return MoyaProvider<T>(plugins: [networkLoggerPlugin])
+     }
+    func requestPublisher(_ target: Target, callbackQueue: DispatchQueue? = nil) -> AnyPublisher<Response, MoyaError> {
+           return MoyaPublisher { [weak self] subscriber in
+                   return self?.request(target, callbackQueue: callbackQueue, progress: nil) { result in
+                       switch result {
+                       case let .success(response):
+                           _ = subscriber.receive(response)
+                           subscriber.receive(completion: .finished)
+                       case let .failure(error):
+                           subscriber.receive(completion: .failure(error))
+                       }
+                   }
+               }
+               .eraseToAnyPublisher()
+       }
 }

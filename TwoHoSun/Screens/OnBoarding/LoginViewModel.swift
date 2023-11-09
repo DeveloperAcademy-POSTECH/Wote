@@ -8,6 +8,7 @@ import SwiftUI
 
 import Alamofire
 import Combine
+import Moya
 
 class LoginViewModel: ObservableObject {
     @Published var showSheet = false
@@ -17,23 +18,23 @@ class LoginViewModel: ObservableObject {
     func setAuthorizationCode(_ code: String) {
         self.authorization = code
     }
-    
+    private var cancellable: AnyCancellable?
+//    let plugin: PluginType = NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))
+
+    let provider = MoyaProvider<APIService>(plugins: [NetworkLoggerPlugin()])
+
     func postAuthorCode() {
-        APIManager.shared.requestAPI(type: .postAuthorCode(authorization: authorization)) { (response: GeneralResponse<Tokens>) in
-            if response.status == 401 {
-                APIManager.shared.refreshAllTokens()
-                self.postAuthorCode()
-            } else {
-                if let data = response.data {
-                    KeychainManager.shared.saveToken(key: "accessToken", token: data.accessToken)
-                    KeychainManager.shared.saveToken(key: "refreshToken", token: data.refreshToken)
+        cancellable = provider.requestPublisher(.postAuthorCode(authorization: authorization))
+            .sink { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let err):
+                    print(err)
                 }
-                if response.message == "UNREGISTERED_USER" {
-                    self.showSheet = true
-                } else {
-                    self.goMain = true
-                }
+            } receiveValue: { response in
+                print(response)
             }
-        }
     }
 }
+
