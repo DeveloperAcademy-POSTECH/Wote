@@ -65,7 +65,7 @@ extension ConsumptionConsiderationView {
                     .multilineTextAlignment(.center)
                     .padding(.top, 8)
                 NavigationLink {
-                    WriteView(viewModel: WriteViewModel())
+                    VoteWriteView(viewModel: VoteWriteViewModel())
                 } label: {
                     Text("고민 등록하러 가기")
                         .font(.system(size: 16, weight: .semibold))
@@ -175,7 +175,7 @@ extension ConsumptionConsiderationView {
 
     private var createVoteButton: some View {
         NavigationLink {
-            WriteView(viewModel: WriteViewModel())
+            VoteWriteView(viewModel: VoteWriteViewModel())
         } label: {
             HStack(spacing: 2) {
                 Image(systemName: "plus")
