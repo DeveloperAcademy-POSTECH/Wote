@@ -60,7 +60,7 @@ extension Review {
     private var sameSpendTypeReviewView: some View {
         VStack(spacing: 18) {
             HStack(spacing: 6) {
-                SpendTypeLabel(spendType: .saving, size: .large)
+                SpendTypeLabel(spendType: .saving, usage: .standard)
                 Text("나와 같은 성향의 소비 후기")
                     .font(.system(size: 16, weight: .bold))
                     .foregroundStyle(.white)
@@ -127,7 +127,7 @@ extension Review {
                 .foregroundStyle(Color.subGray1)
                 .multilineTextAlignment(.center)
             NavigationLink {
-                WriteView(viewModel: WriteViewModel())
+                VoteWriteView(viewModel: VoteWriteViewModel())
             } label: {
                 Text("고민 등록하러 가기")
                     .font(.system(size: 16, weight: .semibold))

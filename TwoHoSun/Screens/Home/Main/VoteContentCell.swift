@@ -22,7 +22,7 @@ struct VoteContentCell: View {
                     .font(.system(size: 16, weight: .bold))
                     .foregroundStyle(.white)
                 Spacer()
-                SpendTypeLabel(spendType: .saving, size: .large)
+                SpendTypeLabel(spendType: .saving, usage: .standard)
             }
             .padding(.bottom, 10)
             HStack(spacing: 4) {

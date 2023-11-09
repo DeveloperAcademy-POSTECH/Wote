@@ -30,7 +30,7 @@ enum LabelTypeUsage {
 
     var fontSize: CGFloat {
         switch self {
-        case .small:
+        case .comments:
             return 12
         default:
             return 14

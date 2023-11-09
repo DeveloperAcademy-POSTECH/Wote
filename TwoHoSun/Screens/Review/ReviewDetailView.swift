@@ -11,6 +11,8 @@ struct ReviewDetailView: View {
     // TODO: - Model 만들기 전이라 임의로 isPurchased를 만들어두었음
     @State private var isPurchased = true
     @State private var isDetailCommentShown = false
+    @State private var showCustomAlert = false
+    @State private var applyComplaint = false
 
     var body: some View {
         ScrollView {
@@ -44,7 +46,7 @@ struct ReviewDetailView: View {
         .toolbarBackground(Color.background, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .sheet(isPresented: $isDetailCommentShown) {
-            CommentsView()
+            CommentsView(showComplaint: $showCustomAlert, applyComplaint: $applyComplaint)
             .presentationDetents([.large,.fraction(0.9)])
                 .presentationContentInteraction(.scrolls)
         }
@@ -102,7 +104,7 @@ extension ReviewDetailView {
 
     private var detailReviewCell: some View {
         VStack(alignment: .leading, spacing: 8) {
-            SpendTypeLabel(spendType: .saving, size: .large)
+            SpendTypeLabel(spendType: .saving, usage: .cell)
                 .padding(.bottom, 12)
             HStack(spacing: 4) {
                 PurchaseLabel(isPurchased: isPurchased)
