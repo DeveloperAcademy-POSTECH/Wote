@@ -26,6 +26,7 @@
 		AB7317F22AF92978008B5E41 /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7317F12AF92978008B5E41 /* Review.swift */; };
 		AB7317F42AF94F31008B5E41 /* ReviewCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7317F32AF94F31008B5E41 /* ReviewCardCell.swift */; };
 		AB7317F62AF96E80008B5E41 /* ReviewDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7317F52AF96E80008B5E41 /* ReviewDetailView.swift */; };
+		ABA1E82D2AFD0CD5009051E0 /* VoteContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA1E82C2AFD0CD5009051E0 /* VoteContentCell.swift */; };
 		ABAFB6412AF978790070512F /* PurchaseLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAFB6402AF978790070512F /* PurchaseLabel.swift */; };
 		ABAFB6432AF979C80070512F /* CommentPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAFB6422AF979C80070512F /* CommentPreview.swift */; };
 		ABB71D642AE26EB100BE0671 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = ABB71D632AE26EB100BE0671 /* Kingfisher */; };
@@ -94,6 +95,7 @@
 		AB7317F12AF92978008B5E41 /* Review.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
 		AB7317F32AF94F31008B5E41 /* ReviewCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewCardCell.swift; sourceTree = "<group>"; };
 		AB7317F52AF96E80008B5E41 /* ReviewDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewDetailView.swift; sourceTree = "<group>"; };
+		ABA1E82C2AFD0CD5009051E0 /* VoteContentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteContentCell.swift; sourceTree = "<group>"; };
 		ABAFB6402AF978790070512F /* PurchaseLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseLabel.swift; sourceTree = "<group>"; };
 		ABAFB6422AF979C80070512F /* CommentPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentPreview.swift; sourceTree = "<group>"; };
 		ABB71D6D2AE2754300BE0671 /* PostResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostResponseModel.swift; sourceTree = "<group>"; };
@@ -300,6 +302,7 @@
 				AB7317E52AF90CCC008B5E41 /* ConsiderationView.swift */,
 				ABBFB62F2AE3EA2F006CE8CA /* ConsiderationViewModel.swift */,
 				ABFE077B2AF37C98006CA743 /* VoteView.swift */,
+				ABA1E82C2AFD0CD5009051E0 /* VoteContentCell.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -584,6 +587,7 @@
 				AB7317F22AF92978008B5E41 /* Review.swift in Sources */,
 				C7DE44BD2AE0DCE7001639CB /* CommentCell.swift in Sources */,
 				ABB71D7C2AE2B3F100BE0671 /* NotificationView.swift in Sources */,
+				ABA1E82D2AFD0CD5009051E0 /* VoteContentCell.swift in Sources */,
 				C768F1A32AE656570020F82C /* SchoolModel.swift in Sources */,
 				ABBBC67C2AE49CC800B1E614 /* PostCreateModel.swift in Sources */,
 				C7E459D62AE03FEF00ECD008 /* WriteView.swift in Sources */,

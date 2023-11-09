@@ -183,6 +183,7 @@ extension WoteTabView {
                     .padding(.top, 14)
                     .padding(.bottom, 12)
             }
+            .contentShape(.rect)
             Divider()
                 .background(Color.gray300)
             Button {
@@ -194,6 +195,7 @@ extension WoteTabView {
                     .padding(.top, 12)
                     .padding(.bottom, 14)
             }
+            .contentShape(.rect)
         }
         .frame(width: 131, height: 88)
         .font(.system(size: 14))
