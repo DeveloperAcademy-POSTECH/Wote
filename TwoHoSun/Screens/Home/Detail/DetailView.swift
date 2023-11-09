@@ -52,7 +52,7 @@ struct DetailView : View {
                     .padding(EdgeInsets(top: 48, leading: 0, bottom: 36, trailing: 0))
                 voteResultView(.disagree, 0.33)
                 Spacer()
-                    .frame(height: 58)	
+                    .frame(height: 58)
             }
             
             if showDetailComments {
@@ -157,7 +157,7 @@ extension DetailView {
         
             Image("logo")
                 .resizable()
-                .frame(height: 228)
+                .aspectRatio(1.5, contentMode: .fit)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .padding(.vertical,8)
             VoteView()
