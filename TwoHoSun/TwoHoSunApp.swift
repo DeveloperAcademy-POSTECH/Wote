@@ -32,6 +32,7 @@ struct TwoHoSunApp: App {
 //            }
 //            WoteTabView()
             WoteTabView()
+//            TypeTestIntroView()
         }
     }
 }
