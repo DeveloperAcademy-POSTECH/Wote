@@ -123,7 +123,7 @@ extension WoteTabView {
         case .consider:
             ConsiderationView(viewModel: ConsiderationViewModel())
         case .review:
-            Review()
+            ReviewView()
         case .myPage:
             Text("마이페이지")
         }

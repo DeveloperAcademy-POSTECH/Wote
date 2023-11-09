@@ -22,7 +22,7 @@ enum ReviewType: Int, CaseIterable {
     }
 }
 
-struct Review: View {
+struct ReviewView: View {
     @State private var selectedReviewType = ReviewType.all
 
     var body: some View {
@@ -56,7 +56,7 @@ struct Review: View {
     }
 }
 
-extension Review {
+extension ReviewView {
 
     private var sameSpendTypeReviewView: some View {
         VStack(spacing: 18) {
@@ -146,14 +146,18 @@ extension Review {
     @ViewBuilder
     private var reviewTypeView: some View {
         // TODO: - data fetch
-        LazyVStack {
+        LazyVStack(spacing: 0) {
             switch selectedReviewType {
             case .all:
                 ForEach(0..<6) { _ in
                     NavigationLink {
                         ReviewDetailView()
                     } label: {
-                        ReviewCardCell(isSearchResult: false, isPurchased: Bool.random())
+                        VStack(spacing: 6) {
+                            Divider()
+                                .background(Color.dividerGray)
+                            ReviewCardCell(isSearchResult: false, isPurchased: Bool.random())
+                        }
                     }
                 }
             case .purchased:
@@ -161,7 +165,11 @@ extension Review {
                     NavigationLink {
                         ReviewDetailView()
                     } label: {
-                        ReviewCardCell(isSearchResult: false, isPurchased: true)
+                        VStack(spacing: 6) {
+                            Divider()
+                                .background(Color.dividerGray)
+                            ReviewCardCell(isSearchResult: false, isPurchased: true)
+                        }
                     }
                 }
             case .notPurchased:
@@ -169,7 +177,11 @@ extension Review {
                     NavigationLink {
                         ReviewDetailView()
                     } label: {
-                        ReviewCardCell(isSearchResult: false, isPurchased: false)
+                        VStack(spacing: 6) {
+                            Divider()
+                                .background(Color.dividerGray)
+                            ReviewCardCell(isSearchResult: false, isPurchased: false)
+                        }
                     }
                 }
             }

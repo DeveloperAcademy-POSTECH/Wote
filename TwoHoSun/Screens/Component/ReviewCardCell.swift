@@ -13,9 +13,6 @@ struct ReviewCardCell: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
-            Divider()
-                .background(isSearchResult ? Color.dividerGray : Color.clear)
-                .padding(.bottom, 6)
             HStack(spacing: 8) {
                 Circle()
                     .frame(width: 32, height: 32)
@@ -26,6 +23,7 @@ struct ReviewCardCell: View {
                 Spacer()
                 SpendTypeLabel(spendType: .saving, usage: .cell)
             }
+            .padding(.top, 24)
             HStack {
                 VStack(alignment: .leading, spacing: 6) {
                     HStack(spacing: 4) {

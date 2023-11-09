@@ -32,7 +32,7 @@
 		AB7317F42AF94F31008B5E41 /* ReviewCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7317F32AF94F31008B5E41 /* ReviewCardCell.swift */; };
 		ABA1E82D2AFD0CD5009051E0 /* VoteContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA1E82C2AFD0CD5009051E0 /* VoteContentCell.swift */; };
 		ABA1E8392AFD576A009051E0 /* ReviewDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA1E8342AFD576A009051E0 /* ReviewDetailView.swift */; };
-		ABA1E83A2AFD576A009051E0 /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA1E8352AFD576A009051E0 /* Review.swift */; };
+		ABA1E83A2AFD576A009051E0 /* ReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA1E8352AFD576A009051E0 /* ReviewView.swift */; };
 		ABA1E83E2AFD57A4009051E0 /* VoteCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA1E83D2AFD57A4009051E0 /* VoteCardCell.swift */; };
 		ABA1E8402AFD5841009051E0 /* ConsiderationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA1E83F2AFD5841009051E0 /* ConsiderationView.swift */; };
 		ABA1E8492AFD5C0B009051E0 /* ReviewWriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA1E8452AFD5C0B009051E0 /* ReviewWriteView.swift */; };
@@ -121,7 +121,7 @@
 		AB7317F32AF94F31008B5E41 /* ReviewCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewCardCell.swift; sourceTree = "<group>"; };
 		ABA1E82C2AFD0CD5009051E0 /* VoteContentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteContentCell.swift; sourceTree = "<group>"; };
 		ABA1E8342AFD576A009051E0 /* ReviewDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewDetailView.swift; sourceTree = "<group>"; };
-		ABA1E8352AFD576A009051E0 /* Review.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
+		ABA1E8352AFD576A009051E0 /* ReviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewView.swift; sourceTree = "<group>"; };
 		ABA1E83D2AFD57A4009051E0 /* VoteCardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoteCardCell.swift; sourceTree = "<group>"; };
 		ABA1E83F2AFD5841009051E0 /* ConsiderationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsiderationView.swift; sourceTree = "<group>"; };
 		ABA1E8452AFD5C0B009051E0 /* ReviewWriteView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewWriteView.swift; sourceTree = "<group>"; };
@@ -246,8 +246,8 @@
 		ABA1E8332AFD576A009051E0 /* Review */ = {
 			isa = PBXGroup;
 			children = (
+				ABA1E8352AFD576A009051E0 /* ReviewView.swift */,
 				ABA1E8342AFD576A009051E0 /* ReviewDetailView.swift */,
-				ABA1E8352AFD576A009051E0 /* Review.swift */,
 				ABA1E8442AFD5C0B009051E0 /* ReviewWrite */,
 			);
 			name = Review;
@@ -672,7 +672,7 @@
 				ABAFB6412AF978790070512F /* PurchaseLabel.swift in Sources */,
 				5E5099542AED59DE0053E529 /* AppDelegate.swift in Sources */,
 				AB7317EF2AF9178C008B5E41 /* FilterButton.swift in Sources */,
-				ABA1E83A2AFD576A009051E0 /* Review.swift in Sources */,
+				ABA1E83A2AFD576A009051E0 /* ReviewView.swift in Sources */,
 				ABBBC6782AE471B700B1E614 /* VoteWriteViewModel.swift in Sources */,
 				ABBBC6782AE471B700B1E614 /* VoteWriteViewModel.swift in Sources */,
 				FDF2D6D02AE5E62B0027EE8F /* ChartModel.swift in Sources */,

@@ -200,7 +200,7 @@ extension SearchView {
             switch searchFilterType {
             case .review:
                 ForEach(0..<5) { _ in
-                    ReviewCardCell(isSearchResult: true, isPurchased: false)
+                    ReviewCardCell(isSearchResult: true, isPurchased: Bool.random())
                 }
                 .listRowBackground(Color.clear)
                 .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
