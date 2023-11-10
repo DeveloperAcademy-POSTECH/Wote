@@ -62,6 +62,7 @@
 		C782E75C2AFED411006BCE59 /* NetworkLoggerPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = C782E75B2AFED411006BCE59 /* NetworkLoggerPlugin.swift */; };
 		C782E75E2AFED457006BCE59 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C782E75D2AFED457006BCE59 /* APIService.swift */; };
 		C782E7602AFED48D006BCE59 /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C782E75F2AFED48D006BCE59 /* APIConstants.swift */; };
+		C782E7622AFED4A7006BCE59 /* Networkable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C782E7612AFED4A7006BCE59 /* Networkable.swift */; };
 		C78E7D012AF6AF4C00C2E220 /* CommentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78E7D002AF6AF4C00C2E220 /* CommentsView.swift */; };
 		C78E7D0A2AF8C53000C2E220 /* ExpandableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78E7D092AF8C53000C2E220 /* ExpandableTextView.swift */; };
 		C7DE44BD2AE0DCE7001639CB /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DE44BC2AE0DCE7001639CB /* CommentCell.swift */; };
@@ -151,6 +152,7 @@
 		C782E75B2AFED411006BCE59 /* NetworkLoggerPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkLoggerPlugin.swift; sourceTree = "<group>"; };
 		C782E75D2AFED457006BCE59 /* APIService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		C782E75F2AFED48D006BCE59 /* APIConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
+		C782E7612AFED4A7006BCE59 /* Networkable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Networkable.swift; sourceTree = "<group>"; };
 		C78E7D002AF6AF4C00C2E220 /* CommentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsView.swift; sourceTree = "<group>"; };
 		C78E7D092AF8C53000C2E220 /* ExpandableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableTextView.swift; sourceTree = "<group>"; };
 		C7DE44BC2AE0DCE7001639CB /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
@@ -481,6 +483,7 @@
 			children = (
 				FD6673362AE071550015007D /* APIManager.swift */,
 				C782E75D2AFED457006BCE59 /* APIService.swift */,
+				C782E7612AFED4A7006BCE59 /* Networkable.swift */,
 				C782E75F2AFED48D006BCE59 /* APIConstants.swift */,
 				C782E75B2AFED411006BCE59 /* NetworkLoggerPlugin.swift */,
 				C782E7572AFED1F6006BCE59 /* MoyaPublisher.swift */,
@@ -699,6 +702,7 @@
 				C73F8E8A2AE55122001C6B07 /* VoteCounts.swift in Sources */,
 				C768F1A42AE656570020F82C /* ProfileSetting.swift in Sources */,
 				FD8D9F812ADC5FAD0072F4BA /* KeychainManager.swift in Sources */,
+				C782E7622AFED4A7006BCE59 /* Networkable.swift in Sources */,
 				AB6845B22AFC145000C3F7C2 /* TypeTestView.swift in Sources */,
 				C77113712AF0E7D500BAB128 /* Color+.swift in Sources */,
 				AB6845B02AFC143700C3F7C2 /* TypeTestIntroView.swift in Sources */,
