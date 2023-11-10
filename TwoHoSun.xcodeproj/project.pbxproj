@@ -63,6 +63,7 @@
 		C782E75E2AFED457006BCE59 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C782E75D2AFED457006BCE59 /* APIService.swift */; };
 		C782E7602AFED48D006BCE59 /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C782E75F2AFED48D006BCE59 /* APIConstants.swift */; };
 		C782E7622AFED4A7006BCE59 /* Networkable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C782E7612AFED4A7006BCE59 /* Networkable.swift */; };
+		C782E7642AFED523006BCE59 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C782E7632AFED523006BCE59 /* ErrorResponse.swift */; };
 		C78E7D012AF6AF4C00C2E220 /* CommentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78E7D002AF6AF4C00C2E220 /* CommentsView.swift */; };
 		C78E7D0A2AF8C53000C2E220 /* ExpandableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78E7D092AF8C53000C2E220 /* ExpandableTextView.swift */; };
 		C7DE44BD2AE0DCE7001639CB /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DE44BC2AE0DCE7001639CB /* CommentCell.swift */; };
@@ -153,6 +154,7 @@
 		C782E75D2AFED457006BCE59 /* APIService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		C782E75F2AFED48D006BCE59 /* APIConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
 		C782E7612AFED4A7006BCE59 /* Networkable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Networkable.swift; sourceTree = "<group>"; };
+		C782E7632AFED523006BCE59 /* ErrorResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
 		C78E7D002AF6AF4C00C2E220 /* CommentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsView.swift; sourceTree = "<group>"; };
 		C78E7D092AF8C53000C2E220 /* ExpandableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableTextView.swift; sourceTree = "<group>"; };
 		C7DE44BC2AE0DCE7001639CB /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
@@ -244,6 +246,7 @@
 		ABB71D6C2AE2753800BE0671 /* DTO */ = {
 			isa = PBXGroup;
 			children = (
+				C782E7632AFED523006BCE59 /* ErrorResponse.swift */,
 				C768F19D2AE656430020F82C /* GeneralResponse.swift */,
 				AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */,
 				ABB71D6D2AE2754300BE0671 /* PostResponseModel.swift */,
@@ -670,6 +673,7 @@
 				FDF2D6D02AE5E62B0027EE8F /* ChartModel.swift in Sources */,
 				FDF2D6CE2AE5DAD90027EE8F /* VoteInfoModel.swift in Sources */,
 				C7F1FD862ADDA37E00C5A2A1 /* BottomSheetView.swift in Sources */,
+				C782E7642AFED523006BCE59 /* ErrorResponse.swift in Sources */,
 				C782E7562AFED171006BCE59 /* NetworkError.swift in Sources */,
 				AB4522562ADDDBC400B69F24 /* SchoolResponseModel.swift in Sources */,
 				C73F8E8C2AE5527B001C6B07 /* CommonModel.swift in Sources */,

@@ -8,32 +8,55 @@ import SwiftUI
 
 import Alamofire
 import Combine
+import Moya
 
 class LoginViewModel: ObservableObject {
     @Published var showSheet = false
     @Published var authorization: String = ""
     @Published var goMain = false
+    private var cancellable: AnyCancellable?
+    let provider = MoyaProvider<APIService>(plugins: [NetworkLoggerPlugin()])
 
     func setAuthorizationCode(_ code: String) {
         self.authorization = code
     }
     
     func postAuthorCode() {
-        APIManager.shared.requestAPI(type: .postAuthorCode(authorization: authorization)) { (response: GeneralResponse<Tokens>) in
-            if response.status == 401 {
-                APIManager.shared.refreshAllTokens()
-                self.postAuthorCode()
-            } else {
-                if let data = response.data {
-                    KeychainManager.shared.saveToken(key: "accessToken", token: data.accessToken)
-                    KeychainManager.shared.saveToken(key: "refreshToken", token: data.refreshToken)
+        cancellable = provider.requestPublisher(.postAuthorCode(authorization: authorization))
+            .sink { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let err):
+                    do {
+                        let json = try err.response?.mapJSON()
+                        debugPrint(json)
+//                        let errordata = JSONDecoder.decode(ErrorResponse.self, from: err.response?.data)
+                    } catch {
+                        debugPrint(error)
+                    }
+                    print(err)
                 }
-                if response.message == "UNREGISTERED_USER" {
-                    self.showSheet = true
-                } else {
-                    self.goMain = true
+            } receiveValue: { response in
+                do {
+                    let data = try JSONDecoder().decode(GeneralResponse<Tokens>.self, from: response.data)
+                    if data.status == 401 {
+                        APIManager.shared.refreshAllTokens()
+                        self.postAuthorCode()
+                    } else {
+                        if let data = data.data {
+                            KeychainManager.shared.saveToken(key: "accessToken", token: data.accessToken)
+                            KeychainManager.shared.saveToken(key: "refreshToken", token: data.refreshToken)
+                        }
+                        if data.message == "UNREGISTERED_USER" {
+                            self.showSheet = true
+                        } else {
+                            self.goMain = true
+                        }
+                    }
+                } catch {
+                    debugPrint(error)
                 }
             }
-        }
     }
 }
