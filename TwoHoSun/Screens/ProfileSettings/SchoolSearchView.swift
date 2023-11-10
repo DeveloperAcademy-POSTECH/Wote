@@ -56,7 +56,7 @@ extension SchoolSearchView {
             .onSubmit {
                 Task {
                     textFieldState = .submitted
-                    try await viewModel.setSchoolData(searchWord: "예")
+                    try await viewModel.setSchoolData(searchWord: searchWord)
                 }
             }
             .onChange(of: isFocused) { _, isFocused in
