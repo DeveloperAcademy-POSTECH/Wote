@@ -194,29 +194,40 @@ extension SearchView {
         }
     }
 
+    private func listCell(cellType: some View, destination: some View) -> some View {
+        ZStack {
+            cellType
+            NavigationLink(destination: destination) { }
+                .opacity(0.0)
+        }
+    }
+
     private var searchResultView: some View {
         List {
             switch searchFilterType {
-            case .review:
-                ForEach(0..<5) { _ in
-                    ReviewCardCell(isSearchResult: true, isPurchased: false)
-                }
-                .listRowBackground(Color.clear)
-                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
-                .listRowSeparator(.hidden)
             case .progressing:
                 ForEach(0..<5) { _ in
-                    VoteCardCell(cardType: .standard,
-                                 searchFilterType: .progressing)
+                    listCell(cellType: VoteCardCell(cardType: .standard,
+                                                searchFilterType: .progressing),
+                             destination: DetailView(isDone: false))
                 }
                 .listRowBackground(Color.clear)
                 .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
                 .listRowSeparator(.hidden)
             case .end:
                 ForEach(0..<5) { _ in
-                    VoteCardCell(cardType: .standard,
-                                 searchFilterType: .end,
-                                 voteResultType: .draw)
+                    listCell(cellType: VoteCardCell(cardType: .standard,
+                                                searchFilterType: .end,
+                                                voteResultType: .draw),
+                             destination: DetailView(isDone: false))
+                }
+                .listRowBackground(Color.clear)
+                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
+                .listRowSeparator(.hidden)
+            case .review:
+                ForEach(0..<5) { _ in
+                    listCell(cellType: ReviewCardCell(isSearchResult: true, isPurchased: false),
+                             destination: ReviewDetailView())
                 }
                 .listRowBackground(Color.clear)
                 .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
