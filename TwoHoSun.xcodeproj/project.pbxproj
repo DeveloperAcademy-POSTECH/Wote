@@ -18,17 +18,12 @@
 		AB45225C2ADE665100B69F24 /* URLConst.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB45225B2ADE665100B69F24 /* URLConst.swift */; };
 		AB4D82692ADD7F4D00F35CCB /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4D82682ADD7F4D00F35CCB /* ProfileSettingsView.swift */; };
 		AB53CA6D2AF7AC4100FD850A /* UINavigationController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB53CA6C2AF7AC4100FD850A /* UINavigationController+.swift */; };
-		AB7317E22AF835DF008B5E41 /* VoteCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7317E12AF835DF008B5E41 /* VoteCardCell.swift */; };
-		AB7317E62AF90CCC008B5E41 /* ConsiderationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7317E52AF90CCC008B5E41 /* ConsiderationView.swift */; };
-		AB7317E82AF90DBF008B5E41 /* Secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = AB7317E72AF90DBF008B5E41 /* Secret.plist */; };
 		AB6845AD2AFC13FF00C3F7C2 /* TypeTestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6845AC2AFC13FF00C3F7C2 /* TypeTestModel.swift */; };
 		AB6845B02AFC143700C3F7C2 /* TypeTestIntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6845AF2AFC143700C3F7C2 /* TypeTestIntroView.swift */; };
 		AB6845B22AFC145000C3F7C2 /* TypeTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6845B12AFC145000C3F7C2 /* TypeTestView.swift */; };
 		AB6845B42AFC146C00C3F7C2 /* TypeTestResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6845B32AFC146C00C3F7C2 /* TypeTestResultView.swift */; };
 		AB6845B62AFC147D00C3F7C2 /* TypeTestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6845B52AFC147D00C3F7C2 /* TypeTestViewModel.swift */; };
 		AB6845B82AFCC97500C3F7C2 /* Secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = AB6845B72AFCC97500C3F7C2 /* Secret.plist */; };
-		AB7317E22AF835DF008B5E41 /* VoteCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7317E12AF835DF008B5E41 /* VoteCardView.swift */; };
-		AB7317E62AF90CCC008B5E41 /* ConsumptionConsiderationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7317E52AF90CCC008B5E41 /* ConsumptionConsiderationView.swift */; };
 		AB7317EA2AF90F00008B5E41 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C771136E2AF0E7B600BAB128 /* UIColor+.swift */; };
 		AB7317EB2AF90F1D008B5E41 /* LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D792AE2A64300BE0671 /* LinkView.swift */; };
 		AB7317EC2AF90F40008B5E41 /* ProfileSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4E75B52ADE9C20000C2277 /* ProfileSettingViewModel.swift */; };
@@ -122,9 +117,7 @@
 		AB6845B32AFC146C00C3F7C2 /* TypeTestResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeTestResultView.swift; sourceTree = "<group>"; };
 		AB6845B52AFC147D00C3F7C2 /* TypeTestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeTestViewModel.swift; sourceTree = "<group>"; };
 		AB6845B72AFCC97500C3F7C2 /* Secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Secret.plist; path = ../../../Secret.plist; sourceTree = "<group>"; };
-		AB7317E12AF835DF008B5E41 /* VoteCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteCardCell.swift; sourceTree = "<group>"; };
-		AB7317E52AF90CCC008B5E41 /* ConsiderationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsiderationView.swift; sourceTree = "<group>"; };
-		AB7317E72AF90DBF008B5E41 /* Secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Secret.plist; sourceTree = "<group>"; };
+		AB7317E52AF90CCC008B5E41 /* ConsumptionConsiderationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsumptionConsiderationView.swift; sourceTree = "<group>"; };
 		AB7317EE2AF9178C008B5E41 /* FilterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterButton.swift; sourceTree = "<group>"; };
 		AB7317F32AF94F31008B5E41 /* ReviewCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewCardCell.swift; sourceTree = "<group>"; };
 		ABA1E82C2AFD0CD5009051E0 /* VoteContentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteContentCell.swift; sourceTree = "<group>"; };
@@ -136,14 +129,6 @@
 		ABA1E8462AFD5C0B009051E0 /* ReviewWriteViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewWriteViewModel.swift; sourceTree = "<group>"; };
 		ABAFB6402AF978790070512F /* PurchaseLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseLabel.swift; sourceTree = "<group>"; };
 		ABAFB6422AF979C80070512F /* CommentPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentPreview.swift; sourceTree = "<group>"; };
-		AB6845AC2AFC13FF00C3F7C2 /* TypeTestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeTestModel.swift; sourceTree = "<group>"; };
-		AB6845AF2AFC143700C3F7C2 /* TypeTestIntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeTestIntroView.swift; sourceTree = "<group>"; };
-		AB6845B12AFC145000C3F7C2 /* TypeTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeTestView.swift; sourceTree = "<group>"; };
-		AB6845B32AFC146C00C3F7C2 /* TypeTestResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeTestResultView.swift; sourceTree = "<group>"; };
-		AB6845B52AFC147D00C3F7C2 /* TypeTestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeTestViewModel.swift; sourceTree = "<group>"; };
-		AB6845B72AFCC97500C3F7C2 /* Secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Secret.plist; path = ../../../Secret.plist; sourceTree = "<group>"; };
-		AB7317E12AF835DF008B5E41 /* VoteCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteCardView.swift; sourceTree = "<group>"; };
-		AB7317E52AF90CCC008B5E41 /* ConsumptionConsiderationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsumptionConsiderationView.swift; sourceTree = "<group>"; };
 		ABB71D6D2AE2754300BE0671 /* PostResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostResponseModel.swift; sourceTree = "<group>"; };
 		ABB71D732AE2758200BE0671 /* ImageDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailView.swift; sourceTree = "<group>"; };
 		ABB71D792AE2A64300BE0671 /* LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkView.swift; sourceTree = "<group>"; };
@@ -247,14 +232,6 @@
 			path = Search;
 			sourceTree = "<group>";
 		};
-		AB7317F02AF92965008B5E41 /* Review */ = {
-			isa = PBXGroup;
-			children = (
-				AB7317F12AF92978008B5E41 /* Review.swift */,
-				AB7317F52AF96E80008B5E41 /* ReviewDetailView.swift */,
-			);
-			path = Review;
-		};
 		AB6845AE2AFC142600C3F7C2 /* TypeTest */ = {
 			isa = PBXGroup;
 			children = (
@@ -286,6 +263,14 @@
 			);
 			name = ReviewWrite;
 			path = ReviewWrite/Review/ReviewWrite;
+			sourceTree = "<group>";
+		};
+		ABA1E84B2AFE999A009051E0 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				AB7317E52AF90CCC008B5E41 /* ConsumptionConsiderationView.swift */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		ABB71D6C2AE2753800BE0671 /* DTO */ = {
@@ -425,6 +410,7 @@
 			children = (
 				FD132BEC2ADBE8FA00F31AAF /* TwoHoSun */,
 				FD132BEB2ADBE8FA00F31AAF /* Products */,
+				ABA1E84B2AFE999A009051E0 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -496,7 +482,6 @@
 				ABFE07762AF23E99006CA743 /* Common */,
 				C7F1FD822ADDA2D900C5A2A1 /* OnBoarding */,
 				ABA1E8332AFD576A009051E0 /* Review */,
-				AB7317F02AF92965008B5E41 /* Review */,
 				AB6845AE2AFC142600C3F7C2 /* TypeTest */,
 				FD32055F2ADD1F6B00B0D5F6 /* Home */,
 				AB637DE42AF184A0004ADB64 /* Search */,
@@ -512,14 +497,12 @@
 				C77113722AF2114800BAB128 /* CustomConfirmModifier.swift */,
 				C7719FE72AF28A7B00A520CB /* SpendTypeLabel.swift */,
 				C78E7D092AF8C53000C2E220 /* ExpandableTextView.swift */,
-				AB7317E12AF835DF008B5E41 /* VoteCardCell.swift */,
 				AB7317EE2AF9178C008B5E41 /* FilterButton.swift */,
 				AB7317F32AF94F31008B5E41 /* ReviewCardCell.swift */,
 				ABAFB6402AF978790070512F /* PurchaseLabel.swift */,
 				ABAFB6422AF979C80070512F /* CommentPreview.swift */,
 				C7EFA7DC2AF94DD800C9BEA0 /* CustomAlertModalView.swift */,
 				ABA1E83D2AFD57A4009051E0 /* VoteCardCell.swift */,
-				AB7317E12AF835DF008B5E41 /* VoteCardView.swift */,
 				FD9C277D2AFA27E900702ACD /* ImageCropView.swift */,
 			);
 			path = Component;
@@ -665,15 +648,15 @@
 				C7EFA7D92AF9279200C9BEA0 /* ComplaintView.swift in Sources */,
 				FD76249F2AF954980079AEEF /* ConsiderationViewModel.swift in Sources */,
 				AB7317ED2AF90F45008B5E41 /* ConsiderationViewModel.swift in Sources */,
-				FD76249F2AF954980079AEEF /* ConsumptionConsiderationViewModel.swift in Sources */,
-				AB7317ED2AF90F45008B5E41 /* ConsumptionConsiderationViewModel.swift in Sources */,
+				FD76249F2AF954980079AEEF /* ConsiderationViewModel.swift in Sources */,
+				AB7317ED2AF90F45008B5E41 /* ConsiderationViewModel.swift in Sources */,
 				AB7317EC2AF90F40008B5E41 /* ProfileSettingViewModel.swift in Sources */,
 				AB7317EB2AF90F1D008B5E41 /* LinkView.swift in Sources */,
 				AB6845AD2AFC13FF00C3F7C2 /* TypeTestModel.swift in Sources */,
 				AB7317EA2AF90F00008B5E41 /* UIColor+.swift in Sources */,
 				ABAFB6432AF979C80070512F /* CommentPreview.swift in Sources */,
 				FD76249F2AF954980079AEEF /* ConsiderationViewModel.swift in Sources */,
-				FD76249F2AF954980079AEEF /* ConsumptionConsiderationViewModel.swift in Sources */,
+				FD76249F2AF954980079AEEF /* ConsiderationViewModel.swift in Sources */,
 				FD7624A02AF954980079AEEF /* GeneralResponse.swift in Sources */,
 				FD7624A12AF954980079AEEF /* NicknameValidation.swift in Sources */,
 				FD76249E2AF954670079AEEF /* LinkView.swift in Sources */,
@@ -704,7 +687,7 @@
 				AB7317EF2AF9178C008B5E41 /* FilterButton.swift in Sources */,
 				ABA1E83A2AFD576A009051E0 /* ReviewView.swift in Sources */,
 				ABBBC6782AE471B700B1E614 /* VoteWriteViewModel.swift in Sources */,
-				ABBBC6782AE471B700B1E614 /* WriteViewModel.swift in Sources */,
+				ABBBC6782AE471B700B1E614 /* VoteWriteViewModel.swift in Sources */,
 				ABBBC6782AE471B700B1E614 /* VoteWriteViewModel.swift in Sources */,
 				FDF2D6D02AE5E62B0027EE8F /* ChartModel.swift in Sources */,
 				FDF2D6CE2AE5DAD90027EE8F /* VoteInfoModel.swift in Sources */,
@@ -721,20 +704,14 @@
 				C7F1FD842ADDA2F000C5A2A1 /* OnBoardingView.swift in Sources */,
 				C7EFA7DB2AF9432800C9BEA0 /* ComplaintReasonView.swift in Sources */,
 				ABA1E8392AFD576A009051E0 /* ReviewDetailView.swift in Sources */,
-				AB7317E22AF835DF008B5E41 /* VoteCardCell.swift in Sources */,
-				AB7317F22AF92978008B5E41 /* Review.swift in Sources */,
 				C7EFA7DB2AF9432800C9BEA0 /* ComplaintReasonView.swift in Sources */,
-				AB7317E22AF835DF008B5E41 /* VoteCardView.swift in Sources */,
 				C7DE44BD2AE0DCE7001639CB /* CommentCell.swift in Sources */,
 				ABB71D7C2AE2B3F100BE0671 /* NotificationView.swift in Sources */,
 				ABA1E82D2AFD0CD5009051E0 /* VoteContentCell.swift in Sources */,
 				C768F1A32AE656570020F82C /* SchoolModel.swift in Sources */,
 				ABBBC67C2AE49CC800B1E614 /* PostCreateModel.swift in Sources */,
-				C7E459D62AE03FEF00ECD008 /* WriteView.swift in Sources */,
-				AB7317E62AF90CCC008B5E41 /* ConsiderationView.swift in Sources */,
 				AB6845B62AFC147D00C3F7C2 /* TypeTestViewModel.swift in Sources */,
 				5E5099732AFBE3AF0053E529 /* ParticleView.swift in Sources */,
-				AB7317E62AF90CCC008B5E41 /* ConsumptionConsiderationView.swift in Sources */,
 				AB4522532ADDD99500B69F24 /* SchoolSearchView.swift in Sources */,
 				C73F8E812AE54B24001C6B07 /* DetailViewModel.swift in Sources */,
 				C78E7D012AF6AF4C00C2E220 /* CommentsView.swift in Sources */,
