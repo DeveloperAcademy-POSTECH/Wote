@@ -10,6 +10,7 @@ import Observation
 import SwiftUI
 
 import Alamofire
+import Moya
 
 @Observable
 final class ProfileSettingViewModel {
@@ -21,17 +22,19 @@ final class ProfileSettingViewModel {
     var isFormValid = true
     var model: ProfileSetting? 
     private let forbiddenWord = ["금지어1", "금지어2"]
-    private var cancellable: Set<AnyCancellable> = []
-
+    private var cancellable: AnyCancellable?
+    let provider = MoyaProvider<APIService>(plugins: [NetworkLoggerPlugin()])
+    
+    
     var isSchoolFilled: Bool {
         return selectedSchoolInfo != nil
     }
-
+    
     var isAllInputValid: Bool {
         return nicknameValidationType == .valid
-                 && isSchoolFilled
+        && isSchoolFilled
     }
-
+    
     private func isNicknameLengthValid(_ text: String) -> Bool {
         let pattern = #"^.{1,10}$"#
         if let range = text.range(of: pattern, options: .regularExpression) {
@@ -39,17 +42,17 @@ final class ProfileSettingViewModel {
         }
         return false
     }
-
+    
     private func isNicknameIncludeForbiddenWord(_ text: String) -> Bool {
         for word in forbiddenWord where text.contains(word) {
             return true
         }
         return false
     }
-
+    
     func checkNicknameValidation(_ text: String) {
         isNicknameDuplicated = false
-
+        
         if !isNicknameLengthValid(text) {
             nicknameValidationType = .length
         } else if isNicknameIncludeForbiddenWord(text) {
@@ -58,11 +61,11 @@ final class ProfileSettingViewModel {
             nicknameValidationType = .none
         }
     }
-
+    
     func isDuplicateButtonEnabled() -> Bool {
         return isNicknameLengthValid(nickname) && !isNicknameIncludeForbiddenWord(nickname)
     }
-
+    
     func setInvalidCondition() {
         if nickname.isEmpty { nicknameValidationType = .empty }
         isFormValid = false
@@ -75,18 +78,31 @@ final class ProfileSettingViewModel {
                                school: school)
         postProfileSetting()
     }
-
+    
     func postNickname() {
-        APIManager.shared.requestAPI(type: .postNickname(nickname: nickname)) { (response: GeneralResponse<NicknameValidation>) in
-            if response.status == 401 {
-                APIManager.shared.refreshAllTokens()
-                self.postNickname()
-            } else {
-                guard let data = response.data else { return }
-                self.isNicknameDuplicated = data.isExist
-                self.nicknameValidationType = self.isNicknameDuplicated ? .duplicated : .valid
-            }
-        }
+        cancellable = provider.requestPublisher(.postNickname(nickname: nickname))
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let err):
+                    print(err)
+                }
+            }, receiveValue: { response in
+                do {
+                    let data = try JSONDecoder().decode(GeneralResponse<NicknameValidation>.self, from: response.data)
+                    if data.status == 401 {
+                        APIManager.shared.refreshAllTokens()
+                        self.postNickname()
+                    } else {
+                        guard let data = data.data else {return}
+                        self.isNicknameDuplicated = data.isExist
+                        self.nicknameValidationType = self.isNicknameDuplicated ? .duplicated : .valid
+                    }
+                } catch {
+                    print(error)
+                }
+            })
     }
     
     func postProfileSetting() {
