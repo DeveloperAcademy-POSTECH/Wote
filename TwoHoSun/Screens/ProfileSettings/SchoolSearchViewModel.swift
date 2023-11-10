@@ -9,25 +9,19 @@ import Foundation
 
 import Alamofire
 
-@Observable
-final class SchoolSearchViewModel {
-    var schools = [SchoolInfoModel]()
-    var isFetching = false
+final class SchoolSearchViewModel: ObservableObject {
+    @Published var schools = [SchoolInfoModel]()
+    @Published var isFetching = false
     private let baseURL = "http://www.career.go.kr/cnet/openapi/getOpenApi"
 
     var apiKey: String {
-        guard let file = Bundle.main.path(forResource: "Secret", ofType: "plist") else {
-            fatalError("can't read file")
-        }
-        guard let resource = NSDictionary(contentsOfFile: file) else {
-            fatalError("can't load resource")
-        }
-        guard let key = resource["SCHOOL_API_KEY"] as? String else {
+        guard let key = Bundle.main.object(forInfoDictionaryKey: "SCHOOL_API_KEY") as? String else {
             fatalError("SCHOOL_API_KEY error")
         }
         return key
     }
 
+    @MainActor
     func setSchoolData(searchWord: String) async throws {
         schools.removeAll()
         isFetching = true
@@ -38,7 +32,6 @@ final class SchoolSearchViewModel {
         let middleSchoolSchools = middleSchoolValues.dataSearch.content.map { $0.convertToSchoolInfoModel() }
 
         schools.append(contentsOf: highSchoolSchools + middleSchoolSchools)
-
         isFetching = false
     }
 
@@ -51,8 +44,6 @@ final class SchoolSearchViewModel {
             """
             ?apiKey=\(apiKey)&svcType=api&svcCode=SCHOOL&contentType=json&gubun=\(schoolType.schoolParam)&searchSchulNm=\(encodedSearchWord)
             """
-
-        print("api_key", apiKey)
 
         return try await AF.request(url, method: .get)
                         .validate()
