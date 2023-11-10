@@ -169,7 +169,6 @@ extension SearchView {
                     .foregroundStyle(Color.darkGray)
             }
         }
-        .padding(.vertical, 8)
     }
 
     private var recentSearchView: some View {
@@ -187,7 +186,7 @@ extension SearchView {
     private var searchFilterView: some View {
         HStack(spacing: 8) {
             ForEach(SearchFilterType.allCases, id: \.self) { filter in
-                FilterButton(title: filter.filterTitle, 
+                FilterButton(title: filter.filterTitle,
                              isSelected: searchFilterType == filter) {
                     searchFilterType = filter
                 }
@@ -200,7 +199,7 @@ extension SearchView {
             switch searchFilterType {
             case .review:
                 ForEach(0..<5) { _ in
-                    ReviewCardCell(isSearchResult: true, isPurchased: Bool.random())
+                    ReviewCardCell(isSearchResult: true, isPurchased: false)
                 }
                 .listRowBackground(Color.clear)
                 .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))

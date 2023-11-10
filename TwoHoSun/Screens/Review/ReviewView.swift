@@ -70,8 +70,12 @@ extension ReviewView {
             ScrollView(.horizontal) {
                 HStack(spacing: 10) {
                     ForEach(0..<3) { _ in
-                        simpleReviewCell(title: "ACG 마운틴 플라이 살까 말까?",
-                                         content: "어쩌고저쩌고저쩌고??????????????????????????")
+                        NavigationLink {
+                            ReviewDetailView(isPurchased: Bool.random())
+                        } label: {
+                            simpleReviewCell(title: "ACG 마운틴 플라이 살까 말까?",
+                                             content: "어쩌고저쩌고저쩌고??????????????????????????")
+                        }
                     }
                 }
             }
@@ -146,42 +150,40 @@ extension ReviewView {
     @ViewBuilder
     private var reviewTypeView: some View {
         // TODO: - data fetch
-        LazyVStack(spacing: 0) {
-            switch selectedReviewType {
-            case .all:
-                ForEach(0..<6) { _ in
-                    NavigationLink {
-                        ReviewDetailView()
-                    } label: {
-                        VStack(spacing: 6) {
-                            Divider()
-                                .background(Color.dividerGray)
-                            ReviewCardCell(isSearchResult: false, isPurchased: Bool.random())
-                        }
+        switch selectedReviewType {
+        case .all:
+            ForEach(0..<6) { _ in
+                NavigationLink {
+                    ReviewDetailView()
+                } label: {
+                    VStack(spacing: 6) {
+                        Divider()
+                            .background(Color.dividerGray)
+                        ReviewCardCell(isSearchResult: false, isPurchased: Bool.random())
                     }
                 }
-            case .purchased:
-                ForEach(0..<10) { _ in
-                    NavigationLink {
-                        ReviewDetailView()
-                    } label: {
-                        VStack(spacing: 6) {
-                            Divider()
-                                .background(Color.dividerGray)
-                            ReviewCardCell(isSearchResult: false, isPurchased: true)
-                        }
+            }
+        case .purchased:
+            ForEach(0..<10) { _ in
+                NavigationLink {
+                    ReviewDetailView()
+                } label: {
+                    VStack(spacing: 6) {
+                        Divider()
+                            .background(Color.dividerGray)
+                        ReviewCardCell(isSearchResult: false, isPurchased: true)
                     }
                 }
-            case .notPurchased:
-                ForEach(0..<3) { _ in
-                    NavigationLink {
-                        ReviewDetailView()
-                    } label: {
-                        VStack(spacing: 6) {
-                            Divider()
-                                .background(Color.dividerGray)
-                            ReviewCardCell(isSearchResult: false, isPurchased: false)
-                        }
+            }
+        case .notPurchased:
+            ForEach(0..<3) { _ in
+                NavigationLink {
+                    ReviewDetailView()
+                } label: {
+                    VStack(spacing: 6) {
+                        Divider()
+                            .background(Color.dividerGray)
+                        ReviewCardCell(isSearchResult: false, isPurchased: false)
                     }
                 }
             }

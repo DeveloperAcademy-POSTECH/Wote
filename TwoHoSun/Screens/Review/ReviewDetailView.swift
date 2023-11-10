@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ReviewDetailView: View {
     // TODO: - Model 만들기 전이라 임의로 isPurchased를 만들어두었음
-    @State private var isPurchased = true
+    @State var isPurchased = true
     @State private var isDetailCommentShown = false
     @State private var showCustomAlert = false
     @State private var applyComplaint = false
