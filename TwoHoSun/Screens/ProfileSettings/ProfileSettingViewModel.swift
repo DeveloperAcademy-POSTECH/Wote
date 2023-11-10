@@ -10,6 +10,7 @@ import Observation
 import SwiftUI
 
 import Alamofire
+import Moya
 
 @Observable
 final class ProfileSettingViewModel {
@@ -21,7 +22,9 @@ final class ProfileSettingViewModel {
     var isFormValid = true
     var model: ProfileSetting? 
     private let forbiddenWord = ["금지어1", "금지어2"]
-    private var cancellable: Set<AnyCancellable> = []
+
+    private var cancellable: AnyCancellable?
+    let provider = MoyaProvider<APIService>(plugins: [NetworkLoggerPlugin()])
 
     var isSchoolFilled: Bool {
         return selectedSchoolInfo != nil
@@ -77,16 +80,39 @@ final class ProfileSettingViewModel {
     }
 
     func postNickname() {
-        APIManager.shared.requestAPI(type: .postNickname(nickname: nickname)) { (response: GeneralResponse<NicknameValidation>) in
-            if response.status == 401 {
-                APIManager.shared.refreshAllTokens()
-                self.postNickname()
-            } else {
-                guard let data = response.data else { return }
-                self.isNicknameDuplicated = data.isExist
-                self.nicknameValidationType = self.isNicknameDuplicated ? .duplicated : .valid
-            }
-        }
+//        APIManager.shared.requestAPI(type: .postNickname(nickname: nickname)) { (response: GeneralResponse<NicknameValidation>) in
+//            if response.status == 401 {
+//                APIManager.shared.refreshAllTokens()
+//                self.postNickname()
+//            } else {
+//                guard let data = response.data else { return }
+//                self.isNicknameDuplicated = data.isExist
+//                self.nicknameValidationType = self.isNicknameDuplicated ? .duplicated : .valid
+//            }
+//        }
+        cancellable = provider.requestPublisher(.postNickname(nickname: nickname))
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let err):
+                    print(err)
+                }
+            }, receiveValue: { response in
+                do {
+                    let data = try JSONDecoder().decode(GeneralResponse<NicknameValidation>.self, from: response.data)
+                    if data.status == 401 {
+                        APIManager.shared.refreshAllTokens()
+                        self.postNickname()
+                    } else {
+                        guard let data = data.data else {return}
+                        self.isNicknameDuplicated = data.isExist
+                        self.nicknameValidationType = self.isNicknameDuplicated ? .duplicated : .valid
+                    }
+                } catch {
+                    print(error)
+                }
+            })
     }
     
     func postProfileSetting() {

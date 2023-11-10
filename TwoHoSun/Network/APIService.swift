@@ -90,7 +90,7 @@ extension APIService: TargetType {
             ]
         case .postNickname(let nickname):
             return [
-                "userNickname": nickname
+                "nickname": nickname
             ]
         case .postProfileSetting(let model):
             return [

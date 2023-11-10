@@ -18,7 +18,6 @@ enum APIConstants {
     static let applicationJSON = "application/json"
 
     //MARK: - Header
-
     static var headerWithOutToken: [String: String] {
         [NetworkHeaderKey.contentType.rawValue: APIConstants.applicationJSON]
     }

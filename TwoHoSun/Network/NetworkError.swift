@@ -7,6 +7,69 @@
 
 import Foundation
 enum NetworkError: Error {
-    case invalidURL
-    
+    case badRequest
+    case bodyMissing
+    case invalidType
+    case parameterMissing
+    case jsonParseException
+    case forbiddenException
+    case noMember
+    case noPost
+    case noComment
+    case invalidJWT
+    case expiredJWT
+    case unsupportedJWT
+    case emptyClaims
+    case notCompletedSignup
+    case insertError
+    case updateError
+    case deleteError
+    case nicknameDuplicate
+    case reviewDuplicate
+
+    init(divisionCode: String) {
+        switch divisionCode {
+        case "G001":
+            self = .badRequest
+        case "G002":
+            self = .bodyMissing
+        case "G003":
+            self = .invalidType
+        case "G004":
+            self = .parameterMissing
+        case "G006":
+            self = .jsonParseException
+        case "G010":
+            self = .forbiddenException
+        case "E001":
+            self = .noMember
+        case "E002":
+            self = .noPost
+        case "E003":
+            self = .noComment
+        case "E004":
+            self = .invalidJWT
+        case "E006":
+            self = .expiredJWT
+        case "E007":
+            self = .unsupportedJWT
+        case "E008":
+            self = .emptyClaims
+        case "E009":
+            self = .notCompletedSignup
+        case "E010":
+            self = .insertError
+        case "E011":
+            self = .updateError
+        case "E012":
+            self = .deleteError
+        case "E013":
+            self = .nicknameDuplicate
+        case "E014":
+            self = .reviewDuplicate
+        default:
+            // Handle unknown division codes or other cases if necessary
+            fatalError("Unknown division code: \(divisionCode)")
+        }
+    }
 }

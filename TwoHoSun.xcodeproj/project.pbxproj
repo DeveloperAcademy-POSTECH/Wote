@@ -53,7 +53,10 @@
 		C782E71A2AFD3D88006BCE59 /* NewAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C782E7192AFD3D88006BCE59 /* NewAPIManager.swift */; };
 		C782E71C2AFD41CE006BCE59 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C782E71B2AFD41CE006BCE59 /* NetworkError.swift */; };
 		C782E71E2AFD54CA006BCE59 /* MoyaPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = C782E71D2AFD54CA006BCE59 /* MoyaPublisher.swift */; };
-		C782E7222AFD5CB9006BCE59 /* Secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = C782E7212AFD5CB9006BCE59 /* Secret.plist */; };
+		C782E7262AFD8229006BCE59 /* NetworkLoggerPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = C782E7252AFD8229006BCE59 /* NetworkLoggerPlugin.swift */; };
+		C782E72A2AFE1F11006BCE59 /* Networkable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C782E7292AFE1F11006BCE59 /* Networkable.swift */; };
+		C782E72C2AFE96DC006BCE59 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C782E72B2AFE96DC006BCE59 /* ErrorResponse.swift */; };
+		C782E72E2AFEC46A006BCE59 /* Secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = C782E72D2AFEC46A006BCE59 /* Secret.plist */; };
 		C78E7D012AF6AF4C00C2E220 /* CommentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78E7D002AF6AF4C00C2E220 /* CommentsView.swift */; };
 		C78E7D0A2AF8C53000C2E220 /* ExpandableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78E7D092AF8C53000C2E220 /* ExpandableTextView.swift */; };
 		C7DE44BD2AE0DCE7001639CB /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DE44BC2AE0DCE7001639CB /* CommentCell.swift */; };
@@ -133,7 +136,10 @@
 		C782E7192AFD3D88006BCE59 /* NewAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAPIManager.swift; sourceTree = "<group>"; };
 		C782E71B2AFD41CE006BCE59 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		C782E71D2AFD54CA006BCE59 /* MoyaPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoyaPublisher.swift; sourceTree = "<group>"; };
-		C782E7212AFD5CB9006BCE59 /* Secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Secret.plist; sourceTree = "<group>"; };
+		C782E7252AFD8229006BCE59 /* NetworkLoggerPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkLoggerPlugin.swift; sourceTree = "<group>"; };
+		C782E7292AFE1F11006BCE59 /* Networkable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networkable.swift; sourceTree = "<group>"; };
+		C782E72B2AFE96DC006BCE59 /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
+		C782E72D2AFEC46A006BCE59 /* Secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Secret.plist; sourceTree = "<group>"; };
 		C78E7D002AF6AF4C00C2E220 /* CommentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsView.swift; sourceTree = "<group>"; };
 		C78E7D092AF8C53000C2E220 /* ExpandableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableTextView.swift; sourceTree = "<group>"; };
 		C7DE44BC2AE0DCE7001639CB /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
@@ -204,6 +210,7 @@
 			isa = PBXGroup;
 			children = (
 				C768F19D2AE656430020F82C /* GeneralResponse.swift */,
+				C782E72B2AFE96DC006BCE59 /* ErrorResponse.swift */,
 				AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */,
 				ABB71D6D2AE2754300BE0671 /* PostResponseModel.swift */,
 				ABBFB6312AE3EABD006CE8CA /* VoteCreateRequestModel.swift */,
@@ -377,7 +384,7 @@
 		FD1DEBA62ADC20E400588CE6 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				C782E7212AFD5CB9006BCE59 /* Secret.plist */,
+				C782E72D2AFEC46A006BCE59 /* Secret.plist */,
 				FD132BF12ADBE8FB00F31AAF /* Assets.xcassets */,
 				AB45225B2ADE665100B69F24 /* URLConst.swift */,
 			);
@@ -441,6 +448,8 @@
 				C782E7192AFD3D88006BCE59 /* NewAPIManager.swift */,
 				C782E71D2AFD54CA006BCE59 /* MoyaPublisher.swift */,
 				C782E71B2AFD41CE006BCE59 /* NetworkError.swift */,
+				C782E7252AFD8229006BCE59 /* NetworkLoggerPlugin.swift */,
+				C782E7292AFE1F11006BCE59 /* Networkable.swift */,
 				C782E7172AFCF66C006BCE59 /* APIConstants.swift */,
 			);
 			path = Network;
@@ -547,7 +556,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C782E7222AFD5CB9006BCE59 /* Secret.plist in Resources */,
+				C782E72E2AFEC46A006BCE59 /* Secret.plist in Resources */,
 				FDDB990C2ADC1BEC00B1163F /* .swiftlint.yml in Resources */,
 				FD132BF52ADBE8FB00F31AAF /* Preview Assets.xcassets in Resources */,
 				FD132BF22ADBE8FB00F31AAF /* Assets.xcassets in Resources */,
@@ -594,6 +603,7 @@
 				FD7624A12AF954980079AEEF /* NicknameValidation.swift in Sources */,
 				FD39D4992AF964AB00AD13E3 /* ReviewWriteView.swift in Sources */,
 				FD76249E2AF954670079AEEF /* LinkView.swift in Sources */,
+				C782E7262AFD8229006BCE59 /* NetworkLoggerPlugin.swift in Sources */,
 				FDD5829F2AFC175F0004DFC6 /* VoteWriteView.swift in Sources */,
 				FD76249D2AF9545C0079AEEF /* ProfileSettingViewModel.swift in Sources */,
 				FD76249C2AF954450079AEEF /* UIColor+.swift in Sources */,
@@ -611,6 +621,7 @@
 				AB45225C2ADE665100B69F24 /* URLConst.swift in Sources */,
 				C768F1A52AE656570020F82C /* Tokens.swift in Sources */,
 				C73F8E922AE58EAD001C6B07 /* CommentPostModel.swift in Sources */,
+				C782E72C2AFE96DC006BCE59 /* ErrorResponse.swift in Sources */,
 				C73F8E902AE562FE001C6B07 /* Date+.swift in Sources */,
 				C7719FE82AF28A7B00A520CB /* SpendTypeLabel.swift in Sources */,
 				C782E7162AFCD2D0006BCE59 /* APIService.swift in Sources */,
@@ -635,6 +646,7 @@
 				C768F1A32AE656570020F82C /* SchoolModel.swift in Sources */,
 				ABBBC67C2AE49CC800B1E614 /* PostCreateModel.swift in Sources */,
 				AB7317E62AF90CCC008B5E41 /* ConsumptionConsiderationView.swift in Sources */,
+				C782E72A2AFE1F11006BCE59 /* Networkable.swift in Sources */,
 				AB4522532ADDD99500B69F24 /* SchoolSearchView.swift in Sources */,
 				C73F8E812AE54B24001C6B07 /* DetailViewModel.swift in Sources */,
 				C78E7D012AF6AF4C00C2E220 /* CommentsView.swift in Sources */,
