@@ -13,6 +13,7 @@ struct ReviewDetailView: View {
     @State private var isDetailCommentShown = false
     @State private var showCustomAlert = false
     @State private var applyComplaint = false
+    @State private var isConfirmShown = false
 
     var body: some View {
         ScrollView {
@@ -50,6 +51,24 @@ struct ReviewDetailView: View {
             .presentationDetents([.large,.fraction(0.9)])
                 .presentationContentInteraction(.scrolls)
         }
+        .customConfirmDialog(isPresented: $isConfirmShown, actions: {
+            Button {
+//                showComplaint.toggle()
+                isConfirmShown.toggle()
+            } label: {
+                Text("신고하기")
+                    .frame(maxWidth: .infinity)
+            }
+            Divider()
+                .background(Color.gray300)
+            Button {
+                isConfirmShown.toggle()
+//                presentAlert.toggle()
+            } label: {
+                Text("차단하기")
+                    .frame(maxWidth: .infinity)
+            }
+        })
     }
 }
 
@@ -57,7 +76,7 @@ extension ReviewDetailView {
 
     private var menuButton: some View {
         Button {
-            print("menu button")
+            isConfirmShown = true
         } label: {
             Image(systemName: "ellipsis")
                 .foregroundStyle(Color.subGray1)
