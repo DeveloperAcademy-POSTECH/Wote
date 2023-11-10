@@ -64,7 +64,7 @@ extension ConsiderationView {
                     .multilineTextAlignment(.center)
                     .padding(.top, 8)
                 NavigationLink {
-                    VoteWriteView(viewModel: VoteWriteViewModel())
+                    WriteView(viewModel: WriteViewModel())
                 } label: {
                     Text("고민 등록하러 가기")
                         .font(.system(size: 16, weight: .semibold))
@@ -104,7 +104,7 @@ extension ConsiderationView {
     
     private var createVoteButton: some View {
         NavigationLink {
-            VoteWriteView(viewModel: VoteWriteViewModel())
+            WriteView(viewModel: WriteViewModel())
         } label: {
             HStack(spacing: 2) {
                 Image(systemName: "plus")
