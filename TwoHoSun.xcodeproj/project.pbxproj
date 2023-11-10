@@ -61,6 +61,7 @@
 		C782E7582AFED1F6006BCE59 /* MoyaPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = C782E7572AFED1F6006BCE59 /* MoyaPublisher.swift */; };
 		C782E75C2AFED411006BCE59 /* NetworkLoggerPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = C782E75B2AFED411006BCE59 /* NetworkLoggerPlugin.swift */; };
 		C782E75E2AFED457006BCE59 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C782E75D2AFED457006BCE59 /* APIService.swift */; };
+		C782E7602AFED48D006BCE59 /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C782E75F2AFED48D006BCE59 /* APIConstants.swift */; };
 		C78E7D012AF6AF4C00C2E220 /* CommentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78E7D002AF6AF4C00C2E220 /* CommentsView.swift */; };
 		C78E7D0A2AF8C53000C2E220 /* ExpandableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78E7D092AF8C53000C2E220 /* ExpandableTextView.swift */; };
 		C7DE44BD2AE0DCE7001639CB /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DE44BC2AE0DCE7001639CB /* CommentCell.swift */; };
@@ -149,6 +150,7 @@
 		C782E7572AFED1F6006BCE59 /* MoyaPublisher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoyaPublisher.swift; sourceTree = "<group>"; };
 		C782E75B2AFED411006BCE59 /* NetworkLoggerPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkLoggerPlugin.swift; sourceTree = "<group>"; };
 		C782E75D2AFED457006BCE59 /* APIService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		C782E75F2AFED48D006BCE59 /* APIConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
 		C78E7D002AF6AF4C00C2E220 /* CommentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsView.swift; sourceTree = "<group>"; };
 		C78E7D092AF8C53000C2E220 /* ExpandableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableTextView.swift; sourceTree = "<group>"; };
 		C7DE44BC2AE0DCE7001639CB /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
@@ -479,6 +481,7 @@
 			children = (
 				FD6673362AE071550015007D /* APIManager.swift */,
 				C782E75D2AFED457006BCE59 /* APIService.swift */,
+				C782E75F2AFED48D006BCE59 /* APIConstants.swift */,
 				C782E75B2AFED411006BCE59 /* NetworkLoggerPlugin.swift */,
 				C782E7572AFED1F6006BCE59 /* MoyaPublisher.swift */,
 				C782E7552AFED171006BCE59 /* NetworkError.swift */,
@@ -659,6 +662,7 @@
 				C782E75E2AFED457006BCE59 /* APIService.swift in Sources */,
 				FDDEC15B2AE3EABA004509EA /* SearchView.swift in Sources */,
 				5E5099542AED59DE0053E529 /* AppDelegate.swift in Sources */,
+				C782E7602AFED48D006BCE59 /* APIConstants.swift in Sources */,
 				ABBBC6782AE471B700B1E614 /* VoteWriteViewModel.swift in Sources */,
 				FDF2D6D02AE5E62B0027EE8F /* ChartModel.swift in Sources */,
 				FDF2D6CE2AE5DAD90027EE8F /* VoteInfoModel.swift in Sources */,
