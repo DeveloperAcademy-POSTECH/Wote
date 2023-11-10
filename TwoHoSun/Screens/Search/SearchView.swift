@@ -27,7 +27,7 @@ struct SearchView: View {
     @State private var searchText = ""
     @State private var hasResult: Bool = false
     @State private var isSearchResultViewShown = false
-    @State private var searchFilterType = SearchFilterType.progressing
+    @State private var selectedFilterType = SearchFilterType.progressing
     @State private var searchTextFieldState = SearchTextFieldState.inactive
     @FocusState private var isFocused: Bool
     private let viewModel = SearchViewModel()
@@ -187,8 +187,8 @@ extension SearchView {
         HStack(spacing: 8) {
             ForEach(SearchFilterType.allCases, id: \.self) { filter in
                 FilterButton(title: filter.filterTitle,
-                             isSelected: searchFilterType == filter) {
-                    searchFilterType = filter
+                             isSelected: selectedFilterType == filter) {
+                    selectedFilterType = filter
                 }
             }
         }
@@ -203,39 +203,47 @@ extension SearchView {
     }
 
     private var searchResultView: some View {
-        List {
-            switch searchFilterType {
-            case .progressing:
-                ForEach(0..<5) { _ in
-                    listCell(cellType: VoteCardCell(cardType: .standard,
-                                                searchFilterType: .progressing),
-                             destination: DetailView(isDone: false))
+        ScrollViewReader { proxy in
+            List {
+                switch selectedFilterType {
+                case .progressing:
+                    ForEach(0..<5) { _ in
+                        listCell(cellType: VoteCardCell(cardType: .standard,
+                                                    searchFilterType: .progressing),
+                                 destination: DetailView(isDone: false))
+                    }
+                    .listRowBackground(Color.clear)
+                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
+                    .listRowSeparator(.hidden)
+                    .id("searchResult")
+                case .end:
+                    ForEach(0..<5) { _ in
+                        listCell(cellType: VoteCardCell(cardType: .standard,
+                                                    searchFilterType: .end,
+                                                    voteResultType: .draw),
+                                 destination: DetailView(isDone: false))
+                    }
+                    .listRowBackground(Color.clear)
+                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
+                    .listRowSeparator(.hidden)
+                    .id("searchResult")
+                case .review:
+                    ForEach(0..<5) { _ in
+                        listCell(cellType: ReviewCardCell(isSearchResult: true, isPurchased: false),
+                                 destination: ReviewDetailView())
+                    }
+                    .listRowBackground(Color.clear)
+                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
+                    .listRowSeparator(.hidden)
+                    .id("searchResult")
                 }
-                .listRowBackground(Color.clear)
-                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
-                .listRowSeparator(.hidden)
-            case .end:
-                ForEach(0..<5) { _ in
-                    listCell(cellType: VoteCardCell(cardType: .standard,
-                                                searchFilterType: .end,
-                                                voteResultType: .draw),
-                             destination: DetailView(isDone: false))
-                }
-                .listRowBackground(Color.clear)
-                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
-                .listRowSeparator(.hidden)
-            case .review:
-                ForEach(0..<5) { _ in
-                    listCell(cellType: ReviewCardCell(isSearchResult: true, isPurchased: false),
-                             destination: ReviewDetailView())
-                }
-                .listRowBackground(Color.clear)
-                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
-                .listRowSeparator(.hidden)
+            }
+            .listStyle(.plain)
+            .scrollIndicators(.hidden)
+            .onChange(of: selectedFilterType) { _, _ in
+                proxy.scrollTo("searchResult", anchor: .top)
             }
         }
-        .listStyle(.plain)
-        .scrollIndicators(.hidden)
     }
 
     private var emptyResultView: some View {
