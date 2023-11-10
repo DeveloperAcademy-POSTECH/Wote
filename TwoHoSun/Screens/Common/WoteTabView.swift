@@ -66,9 +66,7 @@ struct WoteTabView: View {
         NavigationStack {
             ZStack(alignment: .topLeading) {
                 VStack(spacing: 0) {
-                    if selection == .consider || selection == .review {
-                        navigationBar
-                    }
+                    navigationBar
                     TabView(selection: $selection) {
                         ForEach(WoteTabType.allCases, id: \.self) { tab in
                             tabDestinationView(for: tab)
@@ -125,21 +123,34 @@ extension WoteTabView {
         case .review:
             ReviewView()
         case .myPage:
-            Text("마이페이지")
+            MyPageView()
         }
     }
 
+    @ViewBuilder
     private var navigationBar: some View {
-        HStack(spacing: 0) {
-            voteCategoryButton
-            Spacer()
-            notificationButton
-                .padding(.trailing, 8)
-            searchButton
+        switch selection {
+        case .consider, .review:
+            HStack(spacing: 0) {
+                voteCategoryButton
+                Spacer()
+                notificationButton
+                    .padding(.trailing, 8)
+                searchButton
+            }
+            .padding(.bottom, 9)
+            .padding(.horizontal, 16)
+            .background(Color.background)
+        case .myPage:
+            HStack {
+                Image("imgWoteLogo")
+                Spacer()
+                settingButton
+            }
+            .padding(.bottom, 9)
+            .padding(.horizontal, 16)
+            .background(Color.background)
         }
-        .padding(.bottom, 9)
-        .padding(.horizontal, 16)
-        .background(Color.background)
     }
 
     private var notificationButton: some View {
@@ -170,6 +181,22 @@ extension WoteTabView {
                     .foregroundStyle(Color.woteWhite)
             }
         }
+    }
+
+    private var settingButton: some View {
+        NavigationLink {
+            SettingView()
+        } label: {
+            ZStack {
+                RoundedRectangle(cornerRadius: 6)
+                    .frame(width: 39, height: 39)
+                    .foregroundStyle(Color.disableGray)
+                Image(systemName: "gear")
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundStyle(Color.woteWhite)
+            }
+        }
+
     }
 
     private var voteCategoryMenu: some View {
