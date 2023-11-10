@@ -12,7 +12,7 @@ struct SchoolSearchView: View {
     @Binding var selectedSchoolInfo: SchoolInfoModel?
     @Environment(\.dismiss) var dismiss
     @State private var textFieldState = SearchTextFieldState.inactive
-    private let viewModel = SchoolSearchViewModel()
+    @StateObject private var viewModel = SchoolSearchViewModel()
     @FocusState private var isFocused: Bool
 
     var body: some View {
