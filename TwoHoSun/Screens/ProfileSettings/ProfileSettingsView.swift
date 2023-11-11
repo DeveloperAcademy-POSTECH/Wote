@@ -104,6 +104,9 @@ struct ProfileSettingsView: View {
             }
             .padding(.horizontal, 16)
         }
+        .navigationDestination(isPresented: $viewModel.isSucccedPost, destination: {
+            WoteTabView()
+        })
         .ignoresSafeArea(.all)
         .onTapGesture {
             endTextEditing()
@@ -256,7 +259,8 @@ extension ProfileSettingsView {
     private var checkDuplicatedIdButton: some View {
         Button {
             viewModel.postNickname()
-            if viewModel.nicknameValidationType == .valid { endTextEditing()
+            if viewModel.nicknameValidationType == .valid { 
+                endTextEditing()
             }
         } label: {
             Text("중복확인")
@@ -290,8 +294,12 @@ extension ProfileSettingsView {
     }
     
     private var nextButton: some View {
-        NavigationLink {
-            WoteTabView()
+        Button {
+            guard viewModel.isAllInputValid else {
+                viewModel.setInvalidCondition()
+                return
+            }
+            viewModel.setProfile()
         } label: {
             Text("완료")
                 .font(.system(size: 20, weight: .semibold))
@@ -301,15 +309,6 @@ extension ProfileSettingsView {
                 .cornerRadius(10)
         }
         .disabled(viewModel.isAllInputValid ? false : true)
-        .simultaneousGesture(
-            TapGesture()
-                .onEnded {
-                    guard viewModel.isAllInputValid else {
-                        viewModel.setInvalidCondition()
-                        return
-                    }
-                    viewModel.setProfile()
-                })
     }
     
     private func roundedIconTextField(for input: ProfileInputType, text: String?, isFilled: Bool) -> some View {

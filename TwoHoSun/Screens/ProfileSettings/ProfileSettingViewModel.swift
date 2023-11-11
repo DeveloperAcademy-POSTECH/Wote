@@ -21,13 +21,12 @@ final class ProfileSettingViewModel {
     var isNicknameDuplicated = false
     var isFormValid = true
     var model: ProfileSetting? 
+    var isSucccedPost = false
     private let forbiddenWord = ["금지어1", "금지어2"]
-
-    
+    private let apiManager = NewApiManager.shared
     var isSchoolFilled: Bool {
         return selectedSchoolInfo != nil
     }
-    
     var isAllInputValid: Bool {
         return nicknameValidationType == .valid
         && isSchoolFilled
@@ -78,7 +77,7 @@ final class ProfileSettingViewModel {
     }
     
     func postNickname() {
-        NewApiManager.shared.request(.postNickname(nickname: nickname), responseType: NicknameValidation.self) { response in
+        apiManager.request(.postNickname(nickname: nickname), responseType: NicknameValidation.self) { response in
             guard let data = response.data else {return}
             self.isNicknameDuplicated = data.isExist
             self.nicknameValidationType = self.isNicknameDuplicated ? .duplicated : .valid
@@ -89,6 +88,13 @@ final class ProfileSettingViewModel {
     
     func postProfileSetting() {
         guard let model = model else { return }
+        apiManager.request(.postProfileSetting(profile: model), responseType: NoData.self) { response in
+            print("ayyy \(response.message)")
+            self.isSucccedPost = true
+        } errorHandler: { err in
+            print(err)
+        }
+
         APIManager.shared.requestAPI(type: .postProfileSetting(profile: model)) { (response: GeneralResponse<NoData>) in
             if response.status == 401 {
                 APIManager.shared.refreshAllTokens()
