@@ -56,7 +56,7 @@ struct MyPageView: View {
                 ScrollViewReader { proxy in
                     LazyVStack(pinnedViews: .sectionHeaders) {
                         Section {
-                            myPageListTypePicker
+                            myPageListTypeView
                         } header: {
                             sectionHeaderView
                         }
@@ -113,7 +113,7 @@ extension MyPageView {
     private var sectionHeaderView: some View {
         ZStack(alignment: .topTrailing) {
             VStack(spacing: 16) {
-                HStack {
+                HStack(spacing: 19) {
                     myPageListTypeButton(for: .myVote)
                     myPageListTypeButton(for: .myReview)
                     Spacer()
@@ -171,7 +171,7 @@ extension MyPageView {
     }
 
     @ViewBuilder
-    private var myPageListTypePicker: some View {
+    private var myPageListTypeView: some View {
         switch selectedMyPageListType {
         case .myVote:
             ForEach(0..<50) { _ in
@@ -183,6 +183,8 @@ extension MyPageView {
                     .padding(.horizontal, 8)
             }
             .padding(.horizontal, 8)
+//            NoVoteView()
+//                .padding(.top, 52)
         case .myReview:
             ForEach(0..<30) { _ in
                 ReviewCardCell(cellType: .myReview, isPurchased: Bool.random())
@@ -191,6 +193,8 @@ extension MyPageView {
                     .padding(.horizontal, 8)
             }
             .padding(.horizontal, 8)
+//            NoReviewView()
+//                .padding(.top, 60)
         }
     }
 

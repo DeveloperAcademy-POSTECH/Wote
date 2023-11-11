@@ -41,6 +41,7 @@ struct ConsiderationView: View {
             VStack(spacing: 0) {
                 Spacer()
                 votePagingView
+//                EmptyVoteView()
                 Spacer()
             }
             createVoteButton
@@ -52,34 +53,6 @@ struct ConsiderationView: View {
 }
 
 extension ConsiderationView {
-
-    // TODO: - 투표 없을 시에 noVoteView 보여주기
-    private var noVoteView: some View {
-        HStack {
-            Spacer()
-            VStack(spacing: 16) {
-                Image("imgNoVote")
-                Text("아직 소비고민이 없어요.\n투표 만들기를 통해 소비고민을 등록해보세요.")
-                    .foregroundStyle(Color.subGray1)
-                    .multilineTextAlignment(.center)
-                    .padding(.top, 8)
-                NavigationLink {
-                    VoteWriteView(viewModel: VoteWriteViewModel())
-                } label: {
-                    Text("고민 등록하러 가기")
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundStyle(Color.lightBlue)
-                        .padding(.horizontal, 24)
-                        .padding(.vertical, 12)
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 10)
-                                .strokeBorder(Color.lightBlue, lineWidth: 1)
-                        }
-                }
-            }
-            Spacer()
-        }
-    }
 
     private var votePagingView: some View {
         GeometryReader { proxy in
