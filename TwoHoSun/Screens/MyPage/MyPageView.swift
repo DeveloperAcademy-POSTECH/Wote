@@ -83,7 +83,9 @@ extension MyPageView {
 
     private var profileHeaderView: some View {
         NavigationLink {
-            Text("프로필 수정")
+            ProfileSettingsView(viewType: .modfiy, 
+                                navigationPath: .constant(nil),
+                                viewModel: ProfileSettingViewModel())
         } label: {
             HStack {
                 Circle()

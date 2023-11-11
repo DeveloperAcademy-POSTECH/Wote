@@ -51,7 +51,7 @@ struct BottomSheetView: View {
     @Environment(\.dismiss) var dismiss
     @State private var checked: [Bool]  = [false, false, false]
     @State private var showAlert = false
-    @Binding var navigationPath: [Route]
+    @Binding var navigationPath: [Route]?
     private var allChecked: Bool {
         checked.allSatisfy { $0 }
     }
@@ -144,7 +144,7 @@ extension BottomSheetView {
             if checked[0] == false {
                 showAlert = true
             } else {
-                navigationPath.append(.profileView)
+                navigationPath?.append(.profileView)
                 dismiss()
             }
         }, label: {

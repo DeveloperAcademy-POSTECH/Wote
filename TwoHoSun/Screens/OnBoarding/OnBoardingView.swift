@@ -13,8 +13,8 @@ import Combine
 struct OnBoardingView : View {
     @State private var goProfileView = false
     @ObservedObject var viewModel = LoginViewModel()
-    @Binding var navigationPath: [Route]
-    
+    @Binding var navigationPath: [Route]?
+
     var body: some View {
         ZStack {
             Image("onboardingBackground")
@@ -51,7 +51,9 @@ struct OnBoardingView : View {
                 case .mainTabView:
                     WoteTabView()
                 case .profileView:
-                    ProfileSettingsView(navigationPath: $navigationPath, viewModel: ProfileSettingViewModel())
+                    ProfileSettingsView(viewType: .setting,
+                                        navigationPath: $navigationPath,
+                                        viewModel: ProfileSettingViewModel())
                 }
             }
             .padding(.horizontal, 26)
@@ -62,7 +64,7 @@ struct OnBoardingView : View {
         }
         .onChange(of: viewModel.goMain, { _, newValue in
             if newValue {
-                self.navigationPath.append(.mainTabView)
+                self.navigationPath?.append(.mainTabView)
             }
         })
         .navigationDestination(for: Route.self) { route in
@@ -70,7 +72,9 @@ struct OnBoardingView : View {
             case .mainTabView:
                 WoteTabView()
             case .profileView:
-                ProfileSettingsView(navigationPath: $navigationPath, viewModel: ProfileSettingViewModel())
+                ProfileSettingsView(viewType: .setting,
+                                    navigationPath: $navigationPath,
+                                    viewModel: ProfileSettingViewModel())
             }
         }
         
