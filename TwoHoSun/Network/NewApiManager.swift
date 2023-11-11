@@ -16,15 +16,27 @@ class NewApiManager {
     func request<T: Decodable>(_ service: APIService, responseType: T.Type, successHandler: @escaping (GeneralResponse<T>) -> Void, errorHandler: @escaping (NetworkError) -> Void) {
        NewApiManager.shared.provider.requestPublisher(service)
             .tryMap({ response in
-                guard let decodedData = try? JSONDecoder().decode(GeneralResponse<T>.self, from: response.data) else {
-                    throw try JSONDecoder().decode(ErrorResponse.self, from: response.data)
-                }
-                return decodedData
+                try self.handleResponse(response, responseType)
             })
             .mapError({ error in
-                print(error)
-//                NetworkError(divisionCode: )
-                return error
+                if let netWorkError = error as? ErrorResponse {
+                    switch NetworkError(divisionCode: netWorkError.divisionCode) {
+                    case .exipredJWT:
+                        self.request(.refreshToken, responseType: Tokens.self) { response in
+                            guard let data = response.data else{ return}
+                            KeychainManager.shared.updateToken(key: "accessToken", token: data.accessToken)
+                            KeychainManager.shared.updateToken(key: "refreshToken", token: data.refreshToken)
+                        } errorHandler: { err in
+                            //TODO: refreshToken도 만료되었을때 다시 로그인창으로 가게 하게
+                            print(err)
+                        }
+                        return NetworkError(divisionCode: netWorkError.divisionCode)
+                    default:
+                        return NetworkError(divisionCode: netWorkError.divisionCode)
+                    }
+                } else {
+                    return NetworkError(divisionCode: "unknown")
+                }
             })
             .sink {
                 print($0)
@@ -32,43 +44,16 @@ class NewApiManager {
                 print(response)
                 print(response.status)
                 successHandler(response)
-//                successHandler(response.da)
-//                res
-//                successHandler(response.data)
             }
             .store(in: &cancellables)
-//            .sink { completion in
-//                switch completion {
-//                case .finished:
-//                    break
-//                case .failure(let err):
-//                    errorHandler(err)
-//                }
-//            } receiveValue: { response in
-//                do {
-//                    let data = try JSONDecoder().decode(GeneralResponse<T>.self, from: response.data)
-//                    if data.status == 401 {
-//                        self.request(.refreshToken, responseType: Tokens.self) { data in
-//                            KeychainManager.shared.updateToken(key: "accessToken", token: data.accessToken)
-//                            KeychainManager.shared.updateToken(key: "refreshToken", token: data.refreshToken)
-//                        } errorHandler: { err in
-//                            print(err)
-//                        }
-//                        self.request(service, responseType: responseType, successHandler: successHandler, errorHandler: errorHandler)
-//                    } else if data.status == 200 {
-//                        guard let responseData = data.data else {return }
-//                        successHandler(responseData)
-//                    }
-//                    else {
-/////*                        */errorHandler(NetworkError(divisionCode: data.d)
-//                    }
-//                } catch {
-//                    let data = JSONDecoder().decode(ErrorResponse.self, from: response.data)
-//                    errorHandler(NetworkError(divisionCode: data.divisionCode))
-//
-////                    errorHandler(error)
-//                }
-//            }
     }
 
+    private func handleResponse<T: Decodable>(_ response: Response, _ responseType: T.Type) throws -> GeneralResponse<T> {
+        guard response.statusCode == 200 else {
+            let decodedData = try JSONDecoder().decode(ErrorResponse.self, from: response.data)
+          throw decodedData
+        }
+        let decodedData = try JSONDecoder().decode(GeneralResponse<T>.self, from: response.data)
+        return decodedData
+    }
 }

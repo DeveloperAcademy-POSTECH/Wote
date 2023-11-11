@@ -16,8 +16,7 @@ enum NetworkError: Error {
     case noMember
     case noPost
     case noComment
-    case invalidJWT
-    case expiredJWT
+    case exipredJWT
     case unsupportedJWT
     case emptyClaims
     case notCompletedSignup
@@ -47,10 +46,10 @@ enum NetworkError: Error {
             self = .noPost
         case "E003":
             self = .noComment
-        case "E004":
-            self = .invalidJWT
-        case "E006":
-            self = .expiredJWT
+        case "E004",
+            "E005",
+            "E006":
+            self = .exipredJWT
         case "E007":
             self = .unsupportedJWT
         case "E008":
