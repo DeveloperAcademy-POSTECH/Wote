@@ -94,12 +94,10 @@ extension APIService: TargetType {
             ]
         case .postProfileSetting(let model):
             return [
-                "userProfileImage": model.userProfileImage,
-                "userNickname": model.userNickname,
+                "nickname": model.userNickname,
                 "school": [
                     "schoolName": model.school.schoolName,
                     "schoolRegion": model.school.schoolRegion,
-                    "schoolType": model.school.schoolType
                 ]
             ]
         case .refreshToken:
@@ -165,6 +163,22 @@ extension APIService: TargetType {
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case .deleteComments:
             return .requestPlain
+        case .postProfileSetting(let profile):
+            var formData: [MultipartFormData] = []
+            if let data = UIImage(data: profile.userProfileImage)?.jpegData(compressionQuality: 0.3) {
+                let imageData = MultipartFormData(provider: .data(data), name: "imageFile", fileName: "temp.jpg", mimeType: "image/jpeg")
+                formData.append(imageData)
+            }
+//            for (key,value) in parameters {
+//                let parameterData = MultipartFormData(provider: .data("\(value)".data(using: .utf8)!), name: key)
+//                formData.append(parameterData)
+//            }
+            let json = try! JSONSerialization.data(withJSONObject: parameters, options: [])
+            let jsonString = String(data: json, encoding: .utf8)!
+            let stringData = MultipartFormData(provider: .data(jsonString.data(using: String.Encoding.utf8)!), name: "profileRequest", mimeType: "application/json")
+            formData.append(stringData)
+            print(formData)
+            return .uploadMultipart(formData)
         default:
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         }
@@ -176,6 +190,8 @@ extension APIService: TargetType {
             return APIConstants.headerXform
         case .refreshToken:
             return APIConstants.headerWithOutToken
+        case .postProfileSetting:
+            return APIConstants.headerMultiPartForm
         default:
             return APIConstants.headerWithAuthorization
         }

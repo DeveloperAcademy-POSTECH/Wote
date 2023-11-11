@@ -16,6 +16,7 @@ enum APIConstants {
     static let accept: String = "Accept"
     static let applicationXForm: String = "application/x-www-form-urlencoded; charset=UTF-8"
     static let applicationJSON = "application/json"
+    static let multiPartForm = "multipart/form-data"
 
     //MARK: - Header
     static var headerWithOutToken: [String: String] {
@@ -31,6 +32,12 @@ enum APIConstants {
     static var headerXform: [String: String] {
         [
             NetworkHeaderKey.contentType.rawValue: APIConstants.applicationXForm
+        ]
+    }
+    static var headerMultiPartForm: [String: String] {
+        [
+            NetworkHeaderKey.contentType.rawValue: APIConstants.multiPartForm,
+            NetworkHeaderKey.authorization.rawValue: "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
         ]
     }
 }

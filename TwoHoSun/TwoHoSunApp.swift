@@ -18,7 +18,7 @@ struct TwoHoSunApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     let appState = AppState()
-    @State private var path: [Route] = []
+//    @State private var path: [Route] = []
 
     var body: some Scene {
         WindowGroup {
@@ -32,9 +32,9 @@ struct TwoHoSunApp: App {
 //            }
 //            WoteTabView()
 //            TypeTestIntroView()
-            NavigationStack(path: $path) {
-                OnBoardingView(navigationPath: $path)
-            }
+
+                OnBoardingView()
+
         }
     }
 }

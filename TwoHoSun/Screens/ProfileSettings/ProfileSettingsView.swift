@@ -82,7 +82,7 @@ enum ProfileInputType {
 
 struct ProfileSettingsView: View {
     @State private var selectedPhoto: PhotosPickerItem?
-    @State private var selectedImageData: Data?
+//    @State private var selectedImageData: Data?
     @State private var isProfileSheetShowed = false
     @State private var retryProfileImage = false
     @Binding var navigationPath: [Route]
@@ -104,9 +104,6 @@ struct ProfileSettingsView: View {
             }
             .padding(.horizontal, 16)
         }
-        .navigationDestination(isPresented: $viewModel.isSucccedPost, destination: {
-            WoteTabView()
-        })
         .ignoresSafeArea(.all)
         .onTapGesture {
             endTextEditing()
@@ -116,7 +113,7 @@ struct ProfileSettingsView: View {
         .customConfirmDialog(isPresented: $isProfileSheetShowed) {
             Button("프로필 삭제하기", role: .destructive) {
                 selectedPhoto = nil
-                selectedImageData = nil
+                viewModel.selectedImageData = nil
                 isProfileSheetShowed.toggle()
             }
             .frame(height: 42)
@@ -129,6 +126,9 @@ struct ProfileSettingsView: View {
             .toolbar(.hidden, for: .navigationBar)
             .navigationBarBackButtonHidden()
         }
+        .navigationDestination(isPresented: $viewModel.isSucccedPost, destination: {
+            WoteTabView()
+        })
     }
 }
 
@@ -163,8 +163,8 @@ extension ProfileSettingsView {
     
     private var profileImage: some View {
         ZStack(alignment: .bottomTrailing) {
-            if let selectedImageData,
-               let uiImage = UIImage(data: selectedImageData) {
+            if let selectedData = viewModel.selectedImageData,
+               let uiImage = UIImage(data: selectedData) {
                 Image(uiImage: uiImage)
                     .resizable()
                     .frame(width: 130, height: 130)
@@ -179,7 +179,7 @@ extension ProfileSettingsView {
             selectProfileButton
         }
         .onTapGesture {
-            if selectedImageData != nil {
+            if viewModel.selectedImageData != nil {
                 isProfileSheetShowed = true
             }
         }
@@ -207,7 +207,7 @@ extension ProfileSettingsView {
                         guard status == .authorized else { return }
                         Task {
                             if let data = try? await newValue?.loadTransferable(type: Data.self) {
-                                selectedImageData = data
+                                viewModel.selectedImageData = data
                             }
                         }
                     }
@@ -220,7 +220,7 @@ extension ProfileSettingsView {
             Text("닉네임")
                 .modifier(TitleTextStyle())
             HStack(spacing: 10) {
-                HStack {
+
                     TextField("",
                               text: $viewModel.nickname,
                               prompt: Text(ProfileInputType.nickname.placeholder)
@@ -229,7 +229,7 @@ extension ProfileSettingsView {
                     .foregroundStyle(Color.white)
                     .frame(height: 44)
                     .padding(EdgeInsets(top: 0, leading: 17, bottom: 0, trailing: 0))
-                }
+                
                 .overlay {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
@@ -271,7 +271,6 @@ extension ProfileSettingsView {
                 .cornerRadius(10)
         }
         .disabled(viewModel.nicknameValidationType == .length)
-        
     }
     
     private var schoolInputView: some View {

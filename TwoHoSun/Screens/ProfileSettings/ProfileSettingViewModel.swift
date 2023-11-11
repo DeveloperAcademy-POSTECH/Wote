@@ -18,6 +18,7 @@ final class ProfileSettingViewModel {
     var selectedSchoolInfo: SchoolInfoModel?
     var selectedGrade: String?    
     var nicknameValidationType = NicknameValidationType.none
+    var selectedImageData: Data?
     var isNicknameDuplicated = false
     var isFormValid = true
     var model: ProfileSetting? 
@@ -70,7 +71,7 @@ final class ProfileSettingViewModel {
     
     func setProfile() {
         guard let school = selectedSchoolInfo?.school else { return }
-        model = ProfileSetting(userProfileImage: "",
+        model = ProfileSetting(userProfileImage: selectedImageData ?? Data(),
                                userNickname: nickname,
                                school: school)
         postProfileSetting()
@@ -93,15 +94,6 @@ final class ProfileSettingViewModel {
             self.isSucccedPost = true
         } errorHandler: { err in
             print(err)
-        }
-
-        APIManager.shared.requestAPI(type: .postProfileSetting(profile: model)) { (response: GeneralResponse<NoData>) in
-            if response.status == 401 {
-                APIManager.shared.refreshAllTokens()
-                self.postProfileSetting()
-            } else {
-                print("The result of posting profile: \(response.message)")
-            }
         }
     }
 }
