@@ -55,7 +55,7 @@ struct MyPageView: View {
                 }
                 LazyVStack(pinnedViews: .sectionHeaders) {
                     Section {
-                        myPageListTypeView
+                        myPageListTypePicker
                     } header: {
                         sectionHeaderView
                     }
@@ -167,21 +167,26 @@ extension MyPageView {
     }
 
     @ViewBuilder
-    private var myPageListTypeView: some View {
+    private var myPageListTypePicker: some View {
         switch selectedMyPageListType {
         case .myVote:
             ForEach(0..<50) { _ in
-                Text("투표")
-                    .frame(height: 100)
-                    .background(Color.blue)
+                VoteCardCell(cardType: .myVote,
+                             progressType: .end,
+                             voteResultType: .draw)
+                Divider()
+                    .background(Color.dividerGray)
+                    .padding(.horizontal, 8)
             }
+            .padding(.horizontal, 8)
         case .myReview:
             ForEach(0..<30) { _ in
                 ReviewCardCell(cellType: .myReview, isPurchased: Bool.random())
                 Divider()
                     .background(Color.dividerGray)
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, 8)
             }
+            .padding(.horizontal, 8)
         }
     }
 

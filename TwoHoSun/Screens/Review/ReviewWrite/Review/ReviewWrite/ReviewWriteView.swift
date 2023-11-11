@@ -29,7 +29,7 @@ struct ReviewWriteView: View {
                     VStack(spacing: 48) {
                         VStack(spacing: 12) {
                             VoteCardCell(cardType: .simple,
-                                         searchFilterType: .end,
+                                         progressType: .end,
                                          voteResultType: .draw )
                             buySelection
                         }

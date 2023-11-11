@@ -93,8 +93,8 @@ extension ReviewDetailView {
                 DetailView(isDone: true)
             } label: {
                 VoteCardCell(cardType: .simple,
-                             searchFilterType: .end,
-                             voteResultType: VoteResultType.draw)
+                             progressType: .end,
+                             voteResultType: .draw)
             }
         }
     }

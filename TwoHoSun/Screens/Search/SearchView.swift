@@ -209,7 +209,7 @@ extension SearchView {
                 case .progressing:
                     ForEach(0..<5) { _ in
                         listCell(cellType: VoteCardCell(cardType: .standard,
-                                                    searchFilterType: .progressing),
+                                                        progressType: .progressing),
                                  destination: DetailView(isDone: false))
                     }
                     .listRowBackground(Color.clear)
@@ -219,8 +219,8 @@ extension SearchView {
                 case .end:
                     ForEach(0..<5) { _ in
                         listCell(cellType: VoteCardCell(cardType: .standard,
-                                                    searchFilterType: .end,
-                                                    voteResultType: .draw),
+                                                        progressType: .end,
+                                                        voteResultType: .draw),
                                  destination: DetailView(isDone: false))
                     }
                     .listRowBackground(Color.clear)
