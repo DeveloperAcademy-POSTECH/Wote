@@ -13,7 +13,7 @@ import Combine
 struct OnBoardingView : View {
     @State private var goProfileView = false
     @ObservedObject var viewModel = LoginViewModel()
-    @Binding var navigationPath: [Route]?
+    @Binding var navigationPath: [Route]
 
     var body: some View {
         ZStack {
@@ -64,7 +64,7 @@ struct OnBoardingView : View {
         }
         .onChange(of: viewModel.goMain, { _, newValue in
             if newValue {
-                self.navigationPath?.append(.mainTabView)
+                self.navigationPath.append(.mainTabView)
             }
         })
         .navigationDestination(for: Route.self) { route in

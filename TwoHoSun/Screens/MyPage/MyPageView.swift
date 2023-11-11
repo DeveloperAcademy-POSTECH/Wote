@@ -84,7 +84,7 @@ extension MyPageView {
     private var profileHeaderView: some View {
         NavigationLink {
             ProfileSettingsView(viewType: .modfiy, 
-                                navigationPath: .constant(nil),
+                                navigationPath: .constant([]),
                                 viewModel: ProfileSettingViewModel())
         } label: {
             HStack {

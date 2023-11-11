@@ -35,7 +35,7 @@ struct TypeTestIntroView: View {
             }
             .padding(.horizontal, 24)
         }
-        .toolbar(.hidden, for: .navigationBar)
+//        .toolbar(.hidden, for: .navigationBar)
     }
 }
 
