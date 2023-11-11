@@ -38,6 +38,7 @@
 		ABA1E84A2AFD5C0B009051E0 /* ReviewWriteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA1E8462AFD5C0B009051E0 /* ReviewWriteViewModel.swift */; };
 		ABA1E84E2AFE9F9A009051E0 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA1E84D2AFE9F9A009051E0 /* MyPageView.swift */; };
 		ABA1E8502AFEA3AF009051E0 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA1E84F2AFEA3AF009051E0 /* SettingView.swift */; };
+		ABA1E8542AFEA640009051E0 /* GoToTypeTestButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA1E8532AFEA640009051E0 /* GoToTypeTestButton.swift */; };
 		ABAFB6412AF978790070512F /* PurchaseLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAFB6402AF978790070512F /* PurchaseLabel.swift */; };
 		ABAFB6432AF979C80070512F /* CommentPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAFB6422AF979C80070512F /* CommentPreview.swift */; };
 		ABB71D642AE26EB100BE0671 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = ABB71D632AE26EB100BE0671 /* Kingfisher */; };
@@ -130,6 +131,7 @@
 		ABA1E8462AFD5C0B009051E0 /* ReviewWriteViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewWriteViewModel.swift; sourceTree = "<group>"; };
 		ABA1E84D2AFE9F9A009051E0 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		ABA1E84F2AFEA3AF009051E0 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		ABA1E8532AFEA640009051E0 /* GoToTypeTestButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoToTypeTestButton.swift; sourceTree = "<group>"; };
 		ABAFB6402AF978790070512F /* PurchaseLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseLabel.swift; sourceTree = "<group>"; };
 		ABAFB6422AF979C80070512F /* CommentPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentPreview.swift; sourceTree = "<group>"; };
 		ABB71D6D2AE2754300BE0671 /* PostResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostResponseModel.swift; sourceTree = "<group>"; };
@@ -517,6 +519,7 @@
 				C7EFA7DC2AF94DD800C9BEA0 /* CustomAlertModalView.swift */,
 				ABA1E83D2AFD57A4009051E0 /* VoteCardCell.swift */,
 				FD9C277D2AFA27E900702ACD /* ImageCropView.swift */,
+				ABA1E8532AFEA640009051E0 /* GoToTypeTestButton.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -741,6 +744,7 @@
 				AB7317F42AF94F31008B5E41 /* ReviewCardCell.swift in Sources */,
 				FD8D9F812ADC5FAD0072F4BA /* KeychainManager.swift in Sources */,
 				AB6845B22AFC145000C3F7C2 /* TypeTestView.swift in Sources */,
+				ABA1E8542AFEA640009051E0 /* GoToTypeTestButton.swift in Sources */,
 				C77113712AF0E7D500BAB128 /* Color+.swift in Sources */,
 				AB6845B02AFC143700C3F7C2 /* TypeTestIntroView.swift in Sources */,
 				C7EFA7DD2AF94DD800C9BEA0 /* CustomAlertModalView.swift in Sources */,

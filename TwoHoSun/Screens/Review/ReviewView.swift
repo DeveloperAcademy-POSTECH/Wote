@@ -159,7 +159,7 @@ extension ReviewView {
                     VStack(spacing: 6) {
                         Divider()
                             .background(Color.dividerGray)
-                        ReviewCardCell(isSearchResult: false, isPurchased: Bool.random())
+                        ReviewCardCell(cellType: .otherReview, isPurchased: Bool.random())
                     }
                 }
             }
@@ -171,7 +171,7 @@ extension ReviewView {
                     VStack(spacing: 6) {
                         Divider()
                             .background(Color.dividerGray)
-                        ReviewCardCell(isSearchResult: false, isPurchased: true)
+                        ReviewCardCell(cellType: .otherReview, isPurchased: true)
                     }
                 }
             }
@@ -183,7 +183,7 @@ extension ReviewView {
                     VStack(spacing: 6) {
                         Divider()
                             .background(Color.dividerGray)
-                        ReviewCardCell(isSearchResult: false, isPurchased: false)
+                        ReviewCardCell(cellType: .otherReview, isPurchased: false)
                     }
                 }
             }

@@ -229,7 +229,7 @@ extension SearchView {
                     .id("searchResult")
                 case .review:
                     ForEach(0..<5) { _ in
-                        listCell(cellType: ReviewCardCell(isSearchResult: true, isPurchased: false),
+                        listCell(cellType: ReviewCardCell(cellType: .search, isPurchased: false),
                                  destination: ReviewDetailView())
                     }
                     .listRowBackground(Color.clear)
