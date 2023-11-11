@@ -20,7 +20,7 @@ enum MyPageListType {
     }
 }
 
-enum MyVoteCategoryType: String, CaseIterable {
+enum MyVoteCategoryType: String, CaseIterable, Hashable {
     case all = "모든 투표"
     case allSchool = "전체 학교 투표"
     case mySchool = "우리 학교 투표"
@@ -28,7 +28,7 @@ enum MyVoteCategoryType: String, CaseIterable {
     case end = "종료된 투표"
 }
 
-enum MyReviewCategoryType: String, CaseIterable {
+enum MyReviewCategoryType: String, CaseIterable, Hashable {
     case all = "모든 후기"
     case allSchool = "전체 학교 후기"
     case mySchool = "우리 학교 후기"
@@ -129,21 +129,25 @@ extension MyPageView {
                     Spacer()
                     switch selectedMyPageListType {
                     case .myVote:
-                        myVoteCategoryButton
-
+                        selectCategoryButton(selectedCategoryType: $selectedMyVoteCategoryType, isButtonTapped: $isMyVoteCategoryButtonDidTap)
                     case .myReview:
-                        myReviewCategoryButton
+                        selectCategoryButton(selectedCategoryType: $selectedMyReviewCategoryType, isButtonTapped: $isMyReviewCategoryButtonDidTap)
                     }
                 }
                 .padding(.horizontal, 24)
                 .overlay(
                         isMyVoteCategoryButtonDidTap ? 
-                        myVoteCategoryMenuView
+                        categoryMenuView(categories: MyVoteCategoryType.allCases,
+                                         selectedCategoryType: $selectedMyVoteCategoryType,
+                                         isButtonTapped: $isMyVoteCategoryButtonDidTap)
                             .offset(x: -24, y: 30) : nil,
                         alignment: .topTrailing
                     )
                 .overlay(
-                        isMyReviewCategoryButtonDidTap ? myReviewCategoryMenuView
+                        isMyReviewCategoryButtonDidTap ?
+                        categoryMenuView(categories: MyReviewCategoryType.allCases,
+                                         selectedCategoryType: $selectedMyReviewCategoryType,
+                                         isButtonTapped: $isMyReviewCategoryButtonDidTap)
                             .offset(x: -24, y: 30) : nil,
                         alignment: .topTrailing
                 )
@@ -167,6 +171,22 @@ extension MyPageView {
         }
         .onTapGesture {
             selectedMyPageListType = type
+        }
+    }
+
+    private func selectCategoryButton<T: RawRepresentable>
+    (selectedCategoryType: Binding<T>, isButtonTapped: Binding<Bool>) -> some View where T.RawValue == String {
+        Button {
+            isButtonTapped.wrappedValue.toggle()
+        } label: {
+            HStack(spacing: 5) {
+                Text(selectedCategoryType.wrappedValue.rawValue)
+                    .font(.system(size: 12, weight: .light))
+                    .foregroundStyle(.white)
+                Image(systemName: "chevron.down")
+                    .font(.system(size: 14))
+                    .foregroundStyle(Color.subGray5)
+            }
         }
     }
 
@@ -210,75 +230,23 @@ extension MyPageView {
         }
     }
 
-    private var myVoteCategoryButton: some View {
-        Button {
-            isMyVoteCategoryButtonDidTap.toggle()
-        } label: {
-            HStack(spacing: 5) {
-                Text(selectedMyVoteCategoryType.rawValue)
-                    .font(.system(size: 12, weight: .light))
-                    .foregroundStyle(.white)
-                Image(systemName: "chevron.down")
-                    .font(.system(size: 14))
-                    .foregroundStyle(Color.subGray5)
-            }
-        }
-    }
-
-    private var myReviewCategoryButton: some View {
-        Button {
-            isMyReviewCategoryButtonDidTap.toggle()
-        } label: {
-            HStack(spacing: 5) {
-                Text(selectedMyReviewCategoryType.rawValue)
-                    .font(.system(size: 12, weight: .light))
-                    .foregroundStyle(.white)
-                Image(systemName: "chevron.down")
-                    .font(.system(size: 14))
-                    .foregroundStyle(Color.subGray5)
-            }
-        }
-    }
-
-    private var myVoteCategoryMenuView: some View {
+    private func categoryMenuView<T: RawRepresentable & CaseIterable & Hashable>
+    (categories: [T], selectedCategoryType: Binding<T>, isButtonTapped: Binding<Bool>)
+    -> some View where T.RawValue == String {
         VStack(alignment: .leading, spacing: 0) {
-            ForEach(MyVoteCategoryType.allCases, id: \.self) { category in
+            ForEach(categories, id: \.self) { category in
                 categoryButton(for: category) {
-                    selectedMyVoteCategoryType = category
-                    isMyVoteCategoryButtonDidTap.toggle()
-                    // TODO: - fetch data
+                    selectedCategoryType.wrappedValue = category
+                    isButtonTapped.wrappedValue.toggle()
+                    // TODO: - fetch data as each filter
                 }
-
-                if category != .end {
+                if category != categories.last {
                     Divider()
                         .background(Color.gray300)
                 }
             }
         }
-        .frame(width: 131, height: 220)
-        .font(.system(size: 14))
-        .foregroundStyle(Color.woteWhite)
-        .background(
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color.disableGray)
-        )
-    }
-
-    private var myReviewCategoryMenuView: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            ForEach(MyReviewCategoryType.allCases, id: \.self) { category in
-                categoryButton(for: category) {
-                    selectedMyReviewCategoryType = category
-                    isMyReviewCategoryButtonDidTap.toggle()
-                    // TODO: - fetch data
-                }
-                if category != .mySchool {
-                    Divider()
-                        .background(Color.gray300)
-                }
-            }
-        }
-        .frame(width: 131, height: 132)
+        .frame(width: 131, height: 44 * CGFloat(categories.count))
         .font(.system(size: 14))
         .foregroundStyle(Color.woteWhite)
         .background(
