@@ -208,7 +208,7 @@ extension SearchView {
                 switch selectedFilterType {
                 case .progressing:
                     ForEach(0..<5) { _ in
-                        listCell(cellType: VoteCardCell(cardType: .standard,
+                        listCell(cellType: VoteCardCell(cellType: .standard,
                                                         progressType: .progressing),
                                  destination: DetailView(isDone: false))
                     }
@@ -218,7 +218,7 @@ extension SearchView {
                     .id("searchResult")
                 case .end:
                     ForEach(0..<5) { _ in
-                        listCell(cellType: VoteCardCell(cardType: .standard,
+                        listCell(cellType: VoteCardCell(cellType: .standard,
                                                         progressType: .end,
                                                         voteResultType: .draw),
                                  destination: DetailView(isDone: false))

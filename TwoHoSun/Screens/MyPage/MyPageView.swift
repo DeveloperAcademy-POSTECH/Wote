@@ -53,11 +53,19 @@ struct MyPageView: View {
                         .padding(.horizontal, 24)
                         .padding(.top, 24)
                 }
-                LazyVStack(pinnedViews: .sectionHeaders) {
-                    Section {
-                        myPageListTypePicker
-                    } header: {
-                        sectionHeaderView
+                ScrollViewReader { proxy in
+                    LazyVStack(pinnedViews: .sectionHeaders) {
+                        Section {
+                            myPageListTypePicker
+                        } header: {
+                            sectionHeaderView
+                        }
+                        .id("myPageList")
+                    }
+                    .onChange(of: selectedMyPageListType) { _, _ in
+                        isMyVoteCategoryButtonDidTap = false
+                        isMyReviewCategoryButtonDidTap = false
+                        proxy.scrollTo("myPageList", anchor: .top)
                     }
                 }
             }
@@ -67,10 +75,6 @@ struct MyPageView: View {
         .background(Color.background)
         .onTapGesture {
             isMyVoteCategoryButtonDidTap = false
-        }
-        .onChange(of: selectedMyPageListType) { _, _ in
-            isMyVoteCategoryButtonDidTap = false
-            isMyReviewCategoryButtonDidTap = false
         }
     }
 }
@@ -171,7 +175,7 @@ extension MyPageView {
         switch selectedMyPageListType {
         case .myVote:
             ForEach(0..<50) { _ in
-                VoteCardCell(cardType: .myVote,
+                VoteCardCell(cellType: .myVote,
                              progressType: .end,
                              voteResultType: .draw)
                 Divider()

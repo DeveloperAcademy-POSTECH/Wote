@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum VoteCardType {
+enum VoteCardCellType {
     case standard
     case simple
     case myVote
@@ -22,13 +22,13 @@ enum VoteProgressType {
 }
 
 struct VoteCardCell: View {
-    var cardType: VoteCardType
+    var cellType: VoteCardCellType
     var progressType: VoteProgressType
     var voteResultType: VoteResultType?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
-            if cardType == .standard {
+            if cellType == .standard {
                 HStack(spacing: 8) {
                     Circle()
                         .frame(width: 32, height: 32)
@@ -97,7 +97,7 @@ struct VoteCardCell: View {
             }
 
             // TODO: - 후기를 작성한 투표라면 숨기기
-            if progressType == .end && cardType == .myVote {
+            if progressType == .end && cellType == .myVote {
                 NavigationLink {
                     ReviewWriteView()
                 } label: {
@@ -119,11 +119,11 @@ struct VoteCardCell: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 24)
-        .background(cardType != .myVote ? Color.disableGray : Color.clear)
+        .background(cellType != .myVote ? Color.disableGray : Color.clear)
         .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 }
 
 #Preview {
-    VoteCardCell(cardType: .myVote, progressType: .progressing)
+    VoteCardCell(cellType: .myVote, progressType: .progressing)
 }
