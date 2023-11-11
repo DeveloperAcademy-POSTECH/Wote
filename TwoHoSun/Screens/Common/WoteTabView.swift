@@ -138,6 +138,7 @@ extension WoteTabView {
                     .padding(.trailing, 8)
                 searchButton
             }
+            .padding(.top, 2)
             .padding(.bottom, 9)
             .padding(.horizontal, 16)
             .background(Color.background)
@@ -147,6 +148,7 @@ extension WoteTabView {
                 Spacer()
                 settingButton
             }
+            .padding(.top, 2)
             .padding(.bottom, 9)
             .padding(.horizontal, 16)
             .background(Color.background)

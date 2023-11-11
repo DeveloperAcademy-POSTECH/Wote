@@ -166,9 +166,7 @@ extension MyPageView {
                 .foregroundStyle(type == selectedMyPageListType ? Color.lightBlue : Color.clear)
         }
         .onTapGesture {
-            withAnimation(.easeInOut) {
-                selectedMyPageListType = type
-            }
+            selectedMyPageListType = type
         }
     }
 
@@ -177,22 +175,34 @@ extension MyPageView {
         switch selectedMyPageListType {
         case .myVote:
             ForEach(0..<50) { _ in
-                VoteCardCell(cellType: .myVote,
-                             progressType: .end,
-                             voteResultType: .draw)
-                Divider()
-                    .background(Color.dividerGray)
-                    .padding(.horizontal, 8)
+                NavigationLink {
+                    DetailView(isDone: false)
+                } label: {
+                    VStack(spacing: 0) {
+                        VoteCardCell(cellType: .myVote,
+                                     progressType: .end,
+                                     voteResultType: .draw)
+                        Divider()
+                            .background(Color.dividerGray)
+                            .padding(.horizontal, 8)
+                    }
+                }
             }
             .padding(.horizontal, 8)
 //            NoVoteView()
 //                .padding(.top, 52)
         case .myReview:
             ForEach(0..<30) { _ in
-                ReviewCardCell(cellType: .myReview, isPurchased: Bool.random())
-                Divider()
-                    .background(Color.dividerGray)
-                    .padding(.horizontal, 8)
+                NavigationLink {
+                    ReviewDetailView()
+                } label: {
+                    VStack(spacing: 0) {
+                        ReviewCardCell(cellType: .myReview, isPurchased: Bool.random())
+                        Divider()
+                            .background(Color.dividerGray)
+                            .padding(.horizontal, 8)
+                    }
+                }
             }
             .padding(.horizontal, 8)
 //            NoReviewView()
@@ -238,7 +248,11 @@ extension MyPageView {
                     isMyVoteCategoryButtonDidTap.toggle()
                     // TODO: - fetch data
                 }
-                Divider().background(Color.gray300)
+
+                if category != .end {
+                    Divider()
+                        .background(Color.gray300)
+                }
             }
         }
         .frame(width: 131, height: 220)
@@ -258,7 +272,10 @@ extension MyPageView {
                     isMyReviewCategoryButtonDidTap.toggle()
                     // TODO: - fetch data
                 }
-                Divider().background(Color.gray300)
+                if category != .mySchool {
+                    Divider()
+                        .background(Color.gray300)
+                }
             }
         }
         .frame(width: 131, height: 132)
