@@ -10,18 +10,9 @@ import Foundation
 @Observable
 final class ConsumptionConsiderationViewModel {
     // TODO: - fetch data
-//    let postData: PostModel
     var isVoted: Bool = true
     var agreeCount: Int = 33
     var disagreeCount: Int = 62
-
-//    init(postData: PostModel) {
-//        self.postData = postData
-//        self.agreeCount = postData.voteCount.agreeCount
-//        self.disagreeCount = postData.voteCount.disagreeCount
-//        isVoted = postData.voted ? true : false
-//    }
-
     var totalCount: Int {
         return agreeCount + disagreeCount
     }

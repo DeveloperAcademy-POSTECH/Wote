@@ -97,7 +97,7 @@ extension APIService: TargetType {
                 "nickname": model.userNickname,
                 "school": [
                     "schoolName": model.school.schoolName,
-                    "schoolRegion": model.school.schoolRegion,
+                    "schoolRegion": model.school.schoolRegion
                 ]
             ]
         case .refreshToken:

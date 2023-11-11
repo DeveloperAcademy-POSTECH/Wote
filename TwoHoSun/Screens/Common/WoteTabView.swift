@@ -61,9 +61,9 @@ struct WoteTabView: View {
     @State private var selection = WoteTabType.consider
     @State private var selectedVoteCategoryType = VoteCategoryType.all
     @State private var isVoteCategoryButtonDidTap = false
-
+    @Binding var path: [Route]
+    
     var body: some View {
-        NavigationStack {
             ZStack(alignment: .topLeading) {
                 VStack(spacing: 0) {
                     if selection == .consider || selection == .review {
@@ -105,10 +105,11 @@ struct WoteTabView: View {
             .onAppear {
                 UITabBar.appearance().unselectedItemTintColor = .gray100
                 UITabBar.appearance().backgroundColor = .background
+                print(path)
             }
             .navigationTitle(selection.tabTitle)
             .toolbar(.hidden, for: .navigationBar)
-        }
+
         .tint(Color.accentBlue)
     }
 }
@@ -217,8 +218,4 @@ extension WoteTabView {
             }
         }
     }
-}
-
-#Preview {
-    WoteTabView()
 }

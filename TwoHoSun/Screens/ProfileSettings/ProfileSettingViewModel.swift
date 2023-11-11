@@ -22,9 +22,9 @@ final class ProfileSettingViewModel {
     var isNicknameDuplicated = false
     var isFormValid = true
     var model: ProfileSetting? 
-    var isSucccedPost = false
     private let forbiddenWord = ["금지어1", "금지어2"]
     private let apiManager = NewApiManager.shared
+    var path: Binding<[Route]>
     var isSchoolFilled: Bool {
         return selectedSchoolInfo != nil
     }
@@ -33,6 +33,10 @@ final class ProfileSettingViewModel {
         && isSchoolFilled
     }
     
+    init(path: Binding<[Route]>) {
+        self._path = path
+    }
+
     private func isNicknameLengthValid(_ text: String) -> Bool {
         let pattern = #"^.{1,10}$"#
         if let range = text.range(of: pattern, options: .regularExpression) {
@@ -91,7 +95,10 @@ final class ProfileSettingViewModel {
         guard let model = model else { return }
         apiManager.request(.postProfileSetting(profile: model), responseType: NoData.self) { response in
             print("ayyy \(response.message)")
-            self.isSucccedPost = true
+            var array = self.path.wrappedValue
+            array.removeFirst()
+            array.append(.mainTabView)
+            self.path.wrappedValue = array
         } errorHandler: { err in
             print(err)
         }

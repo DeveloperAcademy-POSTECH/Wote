@@ -196,7 +196,3 @@ extension ConsumptionConsiderationView {
         return Int((voteRatio * 10).truncatingRemainder(dividingBy: 10))
     }
 }
-
-#Preview {
-    WoteTabView()
-}

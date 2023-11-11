@@ -46,14 +46,6 @@ struct OnBoardingView : View {
                     }
                     .padding(.bottom, 60)
                 }
-                .navigationDestination(for: Route.self) { route in
-                    switch route {
-                    case .mainTabView:
-                        WoteTabView()
-                    case .profileView:
-                        ProfileSettingsView(navigationPath: $navigationPath, viewModel: ProfileSettingViewModel())
-                    }
-                }
                 .padding(.horizontal, 26)
             }
             .sheet(isPresented: $viewModel.showSheet) {
@@ -65,6 +57,14 @@ struct OnBoardingView : View {
                     self.navigationPath.append(.mainTabView)
                 }
             })
+            .navigationDestination(for: Route.self) { route in
+                switch route {
+                case .mainTabView:
+                    WoteTabView(path: $navigationPath)
+                case .profileView:
+                    ProfileSettingsView(viewModel: ProfileSettingViewModel(path: $navigationPath))
+                }
+            }
         }
     }
 }

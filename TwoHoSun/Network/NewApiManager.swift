@@ -23,11 +23,11 @@ class NewApiManager {
                     switch NetworkError(divisionCode: netWorkError.divisionCode) {
                     case .exipredJWT:
                         self.request(.refreshToken, responseType: Tokens.self) { response in
-                            guard let data = response.data else{ return}
+                            guard let data = response.data else {return}
                             KeychainManager.shared.updateToken(key: "accessToken", token: data.accessToken)
                             KeychainManager.shared.updateToken(key: "refreshToken", token: data.refreshToken)
                         } errorHandler: { err in
-                            //TODO: refreshToken도 만료되었을때 다시 로그인창으로 가게 하게
+                            // TODO: refreshToken도 만료되었을때 다시 로그인창으로 가게 하게
                             print(err)
                         }
                         return NetworkError(divisionCode: netWorkError.divisionCode)

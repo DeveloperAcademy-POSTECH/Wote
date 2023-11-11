@@ -43,14 +43,6 @@ internal class MoyaPublisher<Output>: Publisher {
     }
 }
 public extension MoyaProvider {
-//    static var networkLoggerPlugin: NetworkLoggerPlugin {
-//         return NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))
-//     }
-//
-//     // Define a class-level MoyaProvider with the NetworkLoggerPlugin
-//     static func makeProvider<T>() -> MoyaProvider<T> {
-//         return MoyaProvider<T>(plugins: [networkLoggerPlugin])
-//     }
     func requestPublisher(_ target: Target, callbackQueue: DispatchQueue? = nil) -> AnyPublisher<Response, MoyaError> {
           return MoyaPublisher { [weak self] subscriber in
                   return self?.request(target, callbackQueue: callbackQueue, progress: nil) { result in

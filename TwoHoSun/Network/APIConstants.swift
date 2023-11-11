@@ -18,11 +18,9 @@ enum APIConstants {
     static let applicationJSON = "application/json"
     static let multiPartForm = "multipart/form-data"
 
-    //MARK: - Header
     static var headerWithOutToken: [String: String] {
         [NetworkHeaderKey.contentType.rawValue: APIConstants.applicationJSON]
     }
-
     static var headerWithAuthorization: [String: String] {
         [
             NetworkHeaderKey.contentType.rawValue: APIConstants.applicationJSON,

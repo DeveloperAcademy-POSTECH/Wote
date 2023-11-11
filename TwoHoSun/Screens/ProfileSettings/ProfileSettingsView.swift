@@ -85,9 +85,8 @@ struct ProfileSettingsView: View {
 //    @State private var selectedImageData: Data?
     @State private var isProfileSheetShowed = false
     @State private var retryProfileImage = false
-    @Binding var navigationPath: [Route]
     @Bindable var viewModel: ProfileSettingViewModel
-    
+
     var body: some View {
         ZStack {
             Color.background
@@ -126,9 +125,13 @@ struct ProfileSettingsView: View {
             .toolbar(.hidden, for: .navigationBar)
             .navigationBarBackButtonHidden()
         }
-        .navigationDestination(isPresented: $viewModel.isSucccedPost, destination: {
-            WoteTabView()
-        })
+//        .onChange(of: viewModel.isSucccedPost) { _, newValue in
+//            if newValue == true {
+//                navigationPath.removeFirst()
+//                navigationPath.append(.mainTabView)
+//                print(navigationPath)
+//            }
+//        }
     }
 }
 
@@ -229,7 +232,7 @@ extension ProfileSettingsView {
                     .foregroundStyle(Color.white)
                     .frame(height: 44)
                     .padding(EdgeInsets(top: 0, leading: 17, bottom: 0, trailing: 0))
-                
+
                 .overlay {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
@@ -362,6 +365,6 @@ extension ProfileSettingsView {
     }
 }
 
-#Preview {
-    ProfileSettingsView(navigationPath: .constant([]), viewModel: ProfileSettingViewModel())
-}
+//#Preview {
+//    ProfileSettingsView(navigationPath: .constant([]), viewModel: ProfileSettingViewModel())
+//}

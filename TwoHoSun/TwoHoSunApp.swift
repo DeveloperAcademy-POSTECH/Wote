@@ -23,18 +23,15 @@ struct TwoHoSunApp: App {
     var body: some Scene {
         WindowGroup {
 //            if appState.hasValidToken {
-//                MainTabView()
+//                WoteTabView(path: .constant([Route.mainTabView]))
 //            } else {
+                OnBoardingView()
+//            }
 //                NavigationStack(path: $path) {
 //                    OnBoardingView(navigationPath: $path)
 //                }
 //                .tint(Color.accentBlue)
 //            }
-//            WoteTabView()
-//            TypeTestIntroView()
-
-                OnBoardingView()
-
         }
     }
 }
@@ -45,7 +42,6 @@ class AppState {
 
     init() {
         checkTokenValidity()
-
     }
 
     private func checkTokenValidity() {
