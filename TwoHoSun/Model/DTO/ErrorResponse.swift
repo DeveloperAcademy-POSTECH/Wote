@@ -6,7 +6,7 @@
 //
 
 import Foundation
-struct ErrorResponse: Decodable {
+struct ErrorResponse: Decodable, Error {
     let status: Int
     let divisionCode: String
     let message: String

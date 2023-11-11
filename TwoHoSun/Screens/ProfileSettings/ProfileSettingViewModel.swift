@@ -22,9 +22,7 @@ final class ProfileSettingViewModel {
     var isFormValid = true
     var model: ProfileSetting? 
     private let forbiddenWord = ["금지어1", "금지어2"]
-    private var cancellable: AnyCancellable?
-    let provider = MoyaProvider<APIService>(plugins: [NetworkLoggerPlugin()])
-    
+
     
     var isSchoolFilled: Bool {
         return selectedSchoolInfo != nil
@@ -80,29 +78,13 @@ final class ProfileSettingViewModel {
     }
     
     func postNickname() {
-        cancellable = provider.requestPublisher(.postNickname(nickname: nickname))
-            .sink(receiveCompletion: { completion in
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let err):
-                    print(err)
-                }
-            }, receiveValue: { response in
-                do {
-                    let data = try JSONDecoder().decode(GeneralResponse<NicknameValidation>.self, from: response.data)
-                    if data.status == 401 {
-                        APIManager.shared.refreshAllTokens()
-                        self.postNickname()
-                    } else {
-                        guard let data = data.data else {return}
-                        self.isNicknameDuplicated = data.isExist
-                        self.nicknameValidationType = self.isNicknameDuplicated ? .duplicated : .valid
-                    }
-                } catch {
-                    print(error)
-                }
-            })
+        NewApiManager.shared.request(.postNickname(nickname: nickname), responseType: NicknameValidation.self) { response in
+            guard let data = response.data else {return}
+            self.isNicknameDuplicated = data.isExist
+            self.nicknameValidationType = self.isNicknameDuplicated ? .duplicated : .valid
+        } errorHandler: { err in
+            print(err)
+        }
     }
     
     func postProfileSetting() {
