@@ -17,7 +17,7 @@ enum Route {
 struct TwoHoSunApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
-    let appState = AppState()
+    let appState = AppLoginState()
 //    @State private var path: [Route] = []
 
     var body: some Scene {
@@ -37,7 +37,7 @@ struct TwoHoSunApp: App {
 }
 
 @Observable
-class AppState {
+class AppLoginState {
     var hasValidToken: Bool = false
 
     init() {
@@ -52,3 +52,4 @@ class AppState {
         }
     }
 }
+

@@ -23,7 +23,8 @@ final class ProfileSettingViewModel {
     var isFormValid = true
     var model: ProfileSetting? 
     private let forbiddenWord = ["금지어1", "금지어2"]
-    private let apiManager = NewApiManager.shared
+    private var apiManager: NewApiManager
+    var bag = Set<AnyCancellable>()
     var path: Binding<[Route]>
     var isSchoolFilled: Bool {
         return selectedSchoolInfo != nil
@@ -33,8 +34,9 @@ final class ProfileSettingViewModel {
         && isSchoolFilled
     }
     
-    init(path: Binding<[Route]>) {
-        self._path = path
+    init(apiManager: NewApiManager = NewApiManager(), path: Binding<[Route]>) {
+        self.apiManager = apiManager
+        self.path = path
     }
 
     private func isNicknameLengthValid(_ text: String) -> Bool {
@@ -82,24 +84,40 @@ final class ProfileSettingViewModel {
     }
     
     func postNickname() {
-        apiManager.request(.postNickname(nickname: nickname), responseType: NicknameValidation.self) { response in
-            guard let data = response.data else {return}
-            self.isNicknameDuplicated = data.isExist
-            self.nicknameValidationType = self.isNicknameDuplicated ? .duplicated : .valid
-        } errorHandler: { err in
-            print(err)
-        }
+        apiManager.request(.postNickname(nickname: nickname), decodingType: NicknameValidation.self)
+            .sink { completion in
+                print(completion)
+            } receiveValue: { response in
+                print(response)
+            }
+            .store(in: &bag)
+
+//        apiManager.request(.postNickname(nickname: nickname), responseType: NicknameValidation.self) { response in
+//            guard let data = response.data else {return}
+//            self.isNicknameDuplicated = data.isExist
+//            self.nicknameValidationType = self.isNicknameDuplicated ? .duplicated : .valid
+//        } errorHandler: { err in
+//            print(err)
+//        }
     }
     
     func postProfileSetting() {
         guard let model = model else { return }
-        apiManager.request(.postProfileSetting(profile: model), responseType: NoData.self) { _ in
-            var array = self.path.wrappedValue
-            array.removeFirst()
-            array.append(.mainTabView)
-            self.path.wrappedValue = array
-        } errorHandler: { err in
-            print(err)
-        }
+        apiManager.request(.postProfileSetting(profile: model), decodingType: NoData.self)
+            .sink { completion in
+                switch completion {
+                case .finished:
+                    var array = self.path.wrappedValue
+                    array.removeFirst()
+                    array.append(.mainTabView)
+                    self.path.wrappedValue = array
+                    break
+                case .failure(let error):
+                    print(error)
+                }
+                print(completion)
+            } receiveValue: { response in
+                print(response)
+            }
     }
 }
