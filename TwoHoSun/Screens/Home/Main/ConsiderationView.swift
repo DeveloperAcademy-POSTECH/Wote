@@ -107,6 +107,4 @@ extension ConsiderationView {
     }
 }
 
-#Preview {
-    WoteTabView(path: .constant([]))
-}
+

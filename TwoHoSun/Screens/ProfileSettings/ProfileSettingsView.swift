@@ -10,7 +10,7 @@ import SwiftUI
 
 enum NicknameValidationType {
     case none, empty, length, forbiddenWord, duplicated, valid
-    
+
     var alertMessage: String {
         switch self {
         case .none:
@@ -27,7 +27,7 @@ enum NicknameValidationType {
             return "사용 가능한 닉네임입니다."
         }
     }
-    
+
     var alertMessageColor: Color {
         switch self {
         case .none:
@@ -38,7 +38,7 @@ enum NicknameValidationType {
             return Color.errorRed
         }
     }
-    
+
     var textfieldBorderColor: Color {
         switch self {
         case .none, .valid:
@@ -51,7 +51,7 @@ enum NicknameValidationType {
 
 enum ProfileInputType {
     case nickname, school
-    
+
     var iconName: String {
         switch self {
         case .nickname:
@@ -60,7 +60,7 @@ enum ProfileInputType {
             return "magnifyingglass"
         }
     }
-    
+
     var placeholder: String {
         switch self {
         case .nickname:
@@ -69,7 +69,7 @@ enum ProfileInputType {
             return "학교를 검색해주세요."
         }
     }
-    
+
     var alertMessage: String {
         switch self {
         case .nickname:
@@ -86,13 +86,12 @@ enum ProfileSettingType {
 
 struct ProfileSettingsView: View {
     @State private var selectedPhoto: PhotosPickerItem?
-//    @State private var selectedImageData: Data?
+    //    @State private var selectedImageData: Data?
     @State private var isProfileSheetShowed = false
     @State private var retryProfileImage = false
     @State var viewType: ProfileSettingType
     @Bindable var viewModel: ProfileSettingViewModel
     @Environment(\.dismiss) private var dismiss
-
     var body: some View {
         ZStack {
             Color.background
@@ -162,20 +161,20 @@ struct ProfileSettingsView: View {
             .toolbar(.hidden, for: .navigationBar)
             .navigationBarBackButtonHidden()
         }
-//        .onChange(of: viewModel.isSucccedPost) { _, newValue in
-//            if newValue == true {
-//                navigationPath.removeFirst()
-//                navigationPath.append(.mainTabView)
-//                print(navigationPath)
-//            }
-//        }
+        //        .onChange(of: viewModel.isSucccedPost) { _, newValue in
+        //            if newValue == true {
+        //                navigationPath.removeFirst()
+        //                navigationPath.append(.mainTabView)
+        //                print(navigationPath)
+        //            }
+        //        }
     }
 }
 
 extension ProfileSettingsView {
-    
+
     // MARK: - UI Components
-    
+
     private var titleLabel: some View {
         HStack(spacing: 7) {
             VStack(alignment: .leading, spacing: 9) {
@@ -200,7 +199,7 @@ extension ProfileSettingsView {
             Spacer()
         }
     }
-    
+
     private var profileImage: some View {
         ZStack(alignment: .bottomTrailing) {
             if let selectedData = viewModel.selectedImageData,
@@ -224,7 +223,7 @@ extension ProfileSettingsView {
             }
         }
     }
-    
+
     private var selectProfileButton: some View {
         ZStack {
             Circle()
@@ -235,7 +234,7 @@ extension ProfileSettingsView {
                 .foregroundStyle(.white)
         }
     }
-    
+
     @ViewBuilder
     func photoPickerView<Content: View>(@ViewBuilder content: () -> Content) -> some View {
         PhotosPicker(selection: $selectedPhoto,
@@ -254,22 +253,20 @@ extension ProfileSettingsView {
                 }
         }
     }
-    
+
     private var nicknameInputView: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("닉네임")
                 .modifier(TitleTextStyle())
             HStack(spacing: 10) {
-
-                    TextField("",
-                              text: $viewModel.nickname,
-                              prompt: Text(ProfileInputType.nickname.placeholder)
-                        .font(.system(size: 12))
-                        .foregroundStyle(Color.placeholderGray))
-                    .foregroundStyle(Color.white)
-                    .frame(height: 44)
-                    .padding(EdgeInsets(top: 0, leading: 17, bottom: 0, trailing: 0))
-
+                TextField("",
+                          text: $viewModel.nickname,
+                          prompt: Text(ProfileInputType.nickname.placeholder)
+                    .font(.system(size: 12))
+                    .foregroundStyle(Color.placeholderGray))
+                .foregroundStyle(Color.white)
+                .frame(height: 44)
+                .padding(EdgeInsets(top: 0, leading: 17, bottom: 0, trailing: 0))
                 .overlay {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
@@ -287,18 +284,19 @@ extension ProfileSettingsView {
                 }
                 checkDuplicatedIdButton
             }
-            
-            if viewModel.nicknameValidationType != .none {
-                nicknameValidationAlertMessage(for: viewModel.nicknameValidationType)
-                    .padding(.top, 6)
-            }
+            nicknameValidationAlertMessage(for: viewModel.nicknameValidationType)
+                .padding(.top, 6)
+//            if viewModel.nicknameValidationType != .none {
+//                nicknameValidationAlertMessage(for: viewModel.nicknameValidationType != .none ? viewModel.nicknameValidationType : .none)
+//                    .padding(.top, 6)
+//            }
         }
     }
-    
+
     private var checkDuplicatedIdButton: some View {
         Button {
             viewModel.postNickname()
-            if viewModel.nicknameValidationType == .valid { 
+            if viewModel.nicknameValidationType == .valid {
                 endTextEditing()
             }
         } label: {
@@ -311,7 +309,7 @@ extension ProfileSettingsView {
         }
         .disabled(viewModel.nicknameValidationType == .length)
     }
-    
+
     private var schoolInputView: some View {
         NavigationLink {
             SchoolSearchView(selectedSchoolInfo: $viewModel.selectedSchoolInfo)
@@ -364,7 +362,7 @@ extension ProfileSettingsView {
                 .background(viewModel.isAllInputValid ? Color.lightBlue : Color.disableGray)
                 .cornerRadius(10)
         }
-       .disabled(viewModel.isAllInputValid ? false : true)
+        .disabled(viewModel.isAllInputValid ? false : true)
     }
 
     private func roundedIconTextField(for input: ProfileInputType, text: String?, isFilled: Bool) -> some View {
@@ -390,26 +388,26 @@ extension ProfileSettingsView {
     }
 
     private var goToTypeTestButton: some View {
-         NavigationLink {
-             TypeTestIntroView()
-         } label: {
-             HStack(spacing: 0) {
-                 Text("소비 성향 테스트하러가기")
-                     .foregroundStyle(.white)
-                 Text("(1회)")
-                     .foregroundStyle(Color.gray500)
-             }
-             .font(.system(size: 16, weight: .semibold))
-             .frame(height: 52)
-             .frame(maxWidth: .infinity)
-             .background(Color.lightBlue)
-             .clipShape(.rect(cornerRadius: 10))
-         }
-     }
+        NavigationLink {
+            TypeTestIntroView()
+        } label: {
+            HStack(spacing: 0) {
+                Text("소비 성향 테스트하러가기")
+                    .foregroundStyle(.white)
+                Text("(1회)")
+                    .foregroundStyle(Color.gray500)
+            }
+            .font(.system(size: 16, weight: .semibold))
+            .frame(height: 52)
+            .frame(maxWidth: .infinity)
+            .background(Color.lightBlue)
+            .clipShape(.rect(cornerRadius: 10))
+        }
+    }
 
     private func nicknameValidationAlertMessage(for input: NicknameValidationType) -> some View {
         HStack(spacing: 8) {
-            Image(systemName: viewModel.nicknameValidationType == .valid ? 
+            Image(systemName: viewModel.nicknameValidationType == .valid ?
                   "checkmark.circle.fill" : "light.beacon.max")
             Text(input.alertMessage)
             Spacer()
@@ -438,6 +436,7 @@ extension ProfileSettingsView {
     }
 }
 
-//#Preview {
-//    ProfileSettingsView(navigationPath: .constant([]), viewModel: ProfileSettingViewModel())
-//}
+#Preview {
+    ProfileSettingsView(viewType: .setting,
+                        viewModel: ProfileSettingViewModel(path: .constant([])))
+}

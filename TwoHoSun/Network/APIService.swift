@@ -164,14 +164,10 @@ extension APIService: TargetType {
             return .requestPlain
         case .postProfileSetting(let profile):
             var formData: [MultipartFormData] = []
-            if let data = UIImage(data: profile.userProfileImage)?.jpegData(compressionQuality: 0.3) {
+            if let profileImage = profile.userProfileImage, let data = UIImage(data: profileImage)?.jpegData(compressionQuality: 0.3) {
                 let imageData = MultipartFormData(provider: .data(data), name: "imageFile", fileName: "temp.jpg", mimeType: "image/jpeg")
                 formData.append(imageData)
             }
-//            for (key,value) in parameters {
-//                let parameterData = MultipartFormData(provider: .data("\(value)".data(using: .utf8)!), name: key)
-//                formData.append(parameterData)
-//            }
             let json = try! JSONSerialization.data(withJSONObject: parameters, options: [])
             let jsonString = String(data: json, encoding: .utf8)!
             let stringData = MultipartFormData(provider: .data(jsonString.data(using: String.Encoding.utf8)!), name: "profileRequest", mimeType: "application/json")
