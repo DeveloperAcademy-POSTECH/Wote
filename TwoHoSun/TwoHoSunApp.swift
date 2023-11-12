@@ -32,9 +32,6 @@ struct TwoHoSunApp: App {
 //            }
             WoteTabView()
 //            TypeTestIntroView()
-            NavigationStack {
-                ProfileSettingsView(navigationPath: $path, viewModel: ProfileSettingViewModel())
-            }
         }
     }
 }
