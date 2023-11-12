@@ -27,4 +27,5 @@ extension UIColor {
 
     static let background = UIColor(hexCode: "15151A")
     static let gray100 = UIColor(hexCode: "717071")
+    static let gray400 = UIColor(hexCode: "717071")
 }

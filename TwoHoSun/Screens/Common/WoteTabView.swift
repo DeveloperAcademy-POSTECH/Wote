@@ -66,9 +66,7 @@ struct WoteTabView: View {
     var body: some View {
             ZStack(alignment: .topLeading) {
                 VStack(spacing: 0) {
-                    if selection == .consider || selection == .review {
-                        navigationBar
-                    }
+                    navigationBar
                     TabView(selection: $selection) {
                         ForEach(WoteTabType.allCases, id: \.self) { tab in
                             tabDestinationView(for: tab)
@@ -101,11 +99,12 @@ struct WoteTabView: View {
                         .offset(x: 16, y: 40)
                 }
             }
-            .tint(Color.accentBlue)
             .onAppear {
-                UITabBar.appearance().unselectedItemTintColor = .gray100
+                let appearance = UITabBarAppearance()
+                appearance.configureWithOpaqueBackground()
                 UITabBar.appearance().backgroundColor = .background
-                print(path)
+                UITabBar.appearance().unselectedItemTintColor = .gray400
+                UITabBar.appearance().standardAppearance = appearance
             }
             .navigationTitle(selection.tabTitle)
             .toolbar(.hidden, for: .navigationBar)
@@ -120,24 +119,40 @@ extension WoteTabView {
     private func tabDestinationView(for tab: WoteTabType) -> some View {
         switch tab {
         case .consider:
-            ConsumptionConsiderationView(viewModel: ConsumptionConsiderationViewModel())
+            ConsiderationView(viewModel: ConsiderationViewModel())
         case .review:
-            Text("소비후기")
+            ReviewView()
         case .myPage:
-            Text("마이페이지")
+            MyPageView()
         }
     }
 
+    @ViewBuilder
     private var navigationBar: some View {
-        HStack(spacing: 0) {
-            voteCategoryButton
-            Spacer()
-            notificationButton
-                .padding(.trailing, 8)
-            searchButton
+        switch selection {
+        case .consider, .review:
+            HStack(spacing: 0) {
+                voteCategoryButton
+                Spacer()
+                notificationButton
+                    .padding(.trailing, 8)
+                searchButton
+            }
+            .padding(.top, 2)
+            .padding(.bottom, 9)
+            .padding(.horizontal, 16)
+            .background(Color.background)
+        case .myPage:
+            HStack {
+                Image("imgWoteLogo")
+                Spacer()
+                settingButton
+            }
+            .padding(.top, 2)
+            .padding(.bottom, 9)
+            .padding(.horizontal, 16)
+            .background(Color.background)
         }
-        .padding(.horizontal, 16)
-        .background(Color.background)
     }
 
     private var notificationButton: some View {
@@ -170,6 +185,22 @@ extension WoteTabView {
         }
     }
 
+    private var settingButton: some View {
+        NavigationLink {
+            SettingView()
+        } label: {
+            ZStack {
+                RoundedRectangle(cornerRadius: 6)
+                    .frame(width: 39, height: 39)
+                    .foregroundStyle(Color.disableGray)
+                Image(systemName: "gear")
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundStyle(Color.woteWhite)
+            }
+        }
+
+    }
+
     private var voteCategoryMenu: some View {
         VStack(alignment: .leading, spacing: 0) {
             Button {
@@ -181,6 +212,7 @@ extension WoteTabView {
                     .padding(.top, 14)
                     .padding(.bottom, 12)
             }
+            .contentShape(.rect)
             Divider()
                 .background(Color.gray300)
             Button {
@@ -192,6 +224,7 @@ extension WoteTabView {
                     .padding(.top, 12)
                     .padding(.bottom, 14)
             }
+            .contentShape(.rect)
         }
         .frame(width: 131, height: 88)
         .font(.system(size: 14))

@@ -43,6 +43,7 @@ extension Color {
     static let gray100 = Color(UIColor(hexCode: "8894B0"))
     static let gray200 = Color(UIColor(hexCode: "2C2F37"))
     static let gray300 = Color(UIColor(hexCode: "363636"))
+    static let gray400 = Color(UIColor(hexCode: "717071"))
     static let blue100 = Color(UIColor(hexCode: "293351"))
     static let black100 = Color(UIColor(hexCode: "1B1D22"))
     static let black200 = Color(UIColor(hexCode: "1A1B20"))
@@ -50,6 +51,7 @@ extension Color {
     static let darkblue2325 = Color(UIColor(hexCode: "23252C"))
     static let grayC4C4 = Color(UIColor(hexCode: "C4C4C4"))
     static let gray9595 = Color(UIColor(hexCode: "959595"))
+    static let gray500 = Color(UIColor(hexCode: "A9BDDA"))
 
     // MARK: - label foreground
 

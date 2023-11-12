@@ -11,6 +11,7 @@ struct SchoolSearchView: View {
     @State private var searchWord = ""
     @Binding var selectedSchoolInfo: SchoolInfoModel?
     @Environment(\.dismiss) var dismiss
+
     @State private var textFieldState = SearchTextFieldState.inactive
     @StateObject private var viewModel = SchoolSearchViewModel()
     @FocusState private var isFocused: Bool
