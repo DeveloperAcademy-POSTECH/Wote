@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+
 struct CustomConfirmModifier<A>: ViewModifier where A: View {
     @Binding var isPresented: Bool
     @ViewBuilder let actions: () -> A
@@ -26,7 +27,6 @@ struct CustomConfirmModifier<A>: ViewModifier where A: View {
                         GroupBox {
                             actions()
                                 .padding(.vertical, 15)
-//                                .frame(maxWidth: .infinity,alignment: .center)
                                 .background(Color.disableGray)
                                 .foregroundStyle(Color.lightBlue)
                                 .clipShape(.rect(cornerRadius: 10))

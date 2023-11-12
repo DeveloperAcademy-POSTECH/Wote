@@ -29,11 +29,10 @@ enum UserVoteType {
     }
 }
 
-struct ConsumptionConsiderationView: View {
-    @State private var isVoted = false
+struct ConsiderationView: View {
     @State private var selectedVoteType = UserVoteType.agree
     @State private var currentVote = 0
-    let viewModel: ConsumptionConsiderationViewModel
+    let viewModel: ConsiderationViewModel
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
@@ -52,7 +51,7 @@ struct ConsumptionConsiderationView: View {
 
 }
 
-extension ConsumptionConsiderationView {
+extension ConsiderationView {
 
     // TODO: - 투표 없을 시에 noVoteView 보여주기
     private var noVoteView: some View {
@@ -77,7 +76,6 @@ extension ConsumptionConsiderationView {
                                 .strokeBorder(Color.lightBlue, lineWidth: 1)
                         }
                 }
-
             }
             Spacer()
         }
@@ -88,7 +86,10 @@ extension ConsumptionConsiderationView {
             TabView(selection: $currentVote) {
                 // TODO: - cell 5개로 설정해 둠
                 ForEach(0..<5) { index in
-                    voteContentCell
+                    VoteContentCell(isVoted: false,
+                                    isEnd: Bool.random(),
+                                    selectedVoteType: selectedVoteType,
+                                    currentVote: $currentVote)
                         .tag(index)
                 }
                 .rotationEffect(.degrees(-90))
@@ -100,96 +101,32 @@ extension ConsumptionConsiderationView {
             .tabViewStyle(.page(indexDisplayMode: .never))
         }
     }
-
-    private var voteContentCell: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack(spacing: 8) {
-                Image("imgDefaultProfile")
-                    .frame(width: 32, height: 32)
-                Text("얄루")
-                    .font(.system(size: 16, weight: .bold))
-                    .foregroundStyle(.white)
-                Spacer()
-                SpendTypeLabel(spendType: .impulseBuyer, usage: .standard)
-            }
-            .padding(.bottom, 10)
-            Text("ACG 마운틴 플라이 할인하는데 살까?")
-                .font(.system(size: 16, weight: .bold))
-                .foregroundStyle(.white)
-            Text("텍스트 내용 100자 미만")
-                .font(.system(size: 14))
-                .foregroundStyle(.white)
-                .padding(.bottom, 8)
-            HStack(spacing: 0) {
-                Text("161,100원 · 64명 투표 · ")
-                Image(systemName: "message")
-                Text("245개")
-            }
-            .font(.system(size: 14))
-            .foregroundStyle(Color.gray100)
-            .padding(.bottom, 10)
-            RoundedRectangle(cornerRadius: 16)
-                .strokeBorder(Color.disableGray, lineWidth: 1)
-                .frame(maxHeight: 218)
-            VStack(spacing: 10) {
-                VoteView(isVoted: isVoted,
-                         selectedVoteType: selectedVoteType)
-                detailResultButton
-            }
-            .padding(.top, 10)
-            nextVoteButton
-                .padding(.top, 16)
-        }
-        .padding(.horizontal, 24)
-    }
-
-    private var detailResultButton: some View {
-        NavigationLink {
-            DetailView(isDone: false)
-        } label: {
-            Text("상세보기")
-                .font(.system(size: 16, weight: .semibold))
-                .foregroundStyle(.white)
-                .frame(maxWidth: .infinity)
-                .frame(height: 48)
-                .background(Color.blue100)
-                .clipShape(Capsule())
-        }
-    }
-
-    @ViewBuilder
-    private var nextVoteButton: some View {
-        if currentVote != 4 {
-            HStack {
-                Spacer()
-                Button {
-                    withAnimation {
-                        currentVote += 1
-                    }
-                } label: {
-                    Image("icnCaretDown")
-                }
-                Spacer()
-            }
-        }
-    }
-
+    
     private var createVoteButton: some View {
         NavigationLink {
             VoteWriteView(viewModel: VoteWriteViewModel())
         } label: {
             HStack(spacing: 2) {
                 Image(systemName: "plus")
-                    .font(.system(size: 14))
                 Text("투표만들기")
-                    .font(.system(size: 14, weight: .medium))
             }
+            .font(.system(size: 14, weight: .bold))
             .foregroundStyle(.white)
             .padding(.horizontal, 11)
             .padding(.vertical, 12)
             .background(Color.lightBlue)
             .clipShape(Capsule())
         }
+    }
+
+    private var endLabel: some View {
+        Text("종료")
+            .font(.system(size: 12, weight: .medium))
+            .foregroundStyle(.white)
+            .padding(.vertical, 4)
+            .padding(.horizontal, 5)
+            .background(Color.disableGray)
+            .clipShape(RoundedRectangle(cornerRadius: 3))
     }
 
     private func getFirstDecimalNum(_ voteRatio: Double) -> Int {

@@ -18,6 +18,7 @@ enum LabelTypeUsage {
             return 10
         }
     }
+
     var verticalPadding: Double {
         switch self {
         case .comments:

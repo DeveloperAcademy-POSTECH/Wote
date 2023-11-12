@@ -12,10 +12,14 @@ enum VoteCardType {
     case simple
 }
 
-struct VoteCardView: View {
+enum VoteResultType {
+    case buy, draw, notBuy
+}
+
+struct VoteCardCell: View {
     var cardType: VoteCardType
     var searchFilterType: SearchFilterType
-    var isPurchased: Bool
+    var voteResultType: VoteResultType?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
@@ -28,7 +32,7 @@ struct VoteCardView: View {
                         .font(.system(size: 16, weight: .bold))
                         .foregroundStyle(.white)
                     Spacer()
-                    SpendTypeLabel(spendType: .saving, usage: .standard)
+                    SpendTypeLabel(spendType: .saving, usage: .cell)
                 }
             }
             HStack {
@@ -54,9 +58,9 @@ struct VoteCardView: View {
                         .lineLimit(1)
                         .padding(.bottom, 9)
                     HStack(spacing: 0) {
-                        Text("161,100원 · 64명 투표 · ")
-                        Image(systemName: "message")
-                        Text("245명")
+                        Text("가격: 120,000원")
+                        Text(" · ")
+                        Text("2020년 3월 12일")
                     }
                     .font(.system(size: 14))
                     .foregroundStyle(Color.gray100)
@@ -70,8 +74,19 @@ struct VoteCardView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 8))
                         .opacity(searchFilterType == .end ? 0.5 : 1.0)
                     if searchFilterType == .end {
-                        Image(isPurchased ? "imgBuy" : "imgNotBuy")
-                            .offset(x: -10, y: 10)
+                        Group {
+                            switch voteResultType {
+                            case .buy:
+                                Image("imgBuy")
+                            case .draw:
+                                Image("imgDraw")
+                            case .notBuy:
+                                Image("imgNotBuy")
+                            case .none:
+                                EmptyView()
+                            }
+                        }
+                        .offset(x: -10, y: 10)
                     }
                 }
             }
@@ -84,5 +99,18 @@ struct VoteCardView: View {
 }
 
 #Preview {
-    VoteCardView(cardType: .simple, searchFilterType: .end, isPurchased: false)
+    Group {
+        VoteCardCell(cardType: .simple, 
+                     searchFilterType: .progressing,
+                     voteResultType: nil)
+        VoteCardCell(cardType: .simple,
+                     searchFilterType: .end,
+                     voteResultType: .buy)
+        VoteCardCell(cardType: .simple,
+                     searchFilterType: .end,
+                     voteResultType: .draw)
+        VoteCardCell(cardType: .simple,
+                     searchFilterType: .end,
+                     voteResultType: .notBuy)
+    }
 }

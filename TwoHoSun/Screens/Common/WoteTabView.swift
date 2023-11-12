@@ -101,10 +101,12 @@ struct WoteTabView: View {
                         .offset(x: 16, y: 40)
                 }
             }
-            .tint(Color.accentBlue)
             .onAppear {
-                UITabBar.appearance().unselectedItemTintColor = .gray100
+                let appearance = UITabBarAppearance()
+                appearance.configureWithOpaqueBackground()
                 UITabBar.appearance().backgroundColor = .background
+                UITabBar.appearance().unselectedItemTintColor = .gray400
+                UITabBar.appearance().standardAppearance = appearance
             }
             .navigationTitle(selection.tabTitle)
             .toolbar(.hidden, for: .navigationBar)
@@ -119,9 +121,9 @@ extension WoteTabView {
     private func tabDestinationView(for tab: WoteTabType) -> some View {
         switch tab {
         case .consider:
-            ConsumptionConsiderationView(viewModel: ConsumptionConsiderationViewModel())
+            ConsiderationView(viewModel: ConsiderationViewModel())
         case .review:
-            Text("소비후기")
+            ReviewView()
         case .myPage:
             Text("마이페이지")
         }
@@ -135,6 +137,7 @@ extension WoteTabView {
                 .padding(.trailing, 8)
             searchButton
         }
+        .padding(.bottom, 9)
         .padding(.horizontal, 16)
         .background(Color.background)
     }
@@ -180,6 +183,7 @@ extension WoteTabView {
                     .padding(.top, 14)
                     .padding(.bottom, 12)
             }
+            .contentShape(.rect)
             Divider()
                 .background(Color.gray300)
             Button {
@@ -191,6 +195,7 @@ extension WoteTabView {
                     .padding(.top, 12)
                     .padding(.bottom, 14)
             }
+            .contentShape(.rect)
         }
         .frame(width: 131, height: 88)
         .font(.system(size: 14))
