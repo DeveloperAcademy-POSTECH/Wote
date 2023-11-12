@@ -10,7 +10,7 @@ import Foundation
 import Moya
 
 enum PostService {
-    case getPosts(page: Int, size: Int, visibilitiyScope: String)
+    case getPosts(page: Int, size: Int, visibilityScope: String)
     case createPost
     case getPostDetail
     case modifyPost
@@ -40,6 +40,17 @@ extension PostService: TargetType {
         }
     }
 
+    var parameters: [String: Any] {
+        switch self {
+        case .getPosts(let page, let size, let visibilityScope):
+            return ["page": page,
+                    "size": size,
+                    "visibilityScope": visibilityScope]
+        default:
+            return [:]
+        }
+    }
+
     var method: Moya.Method {
         switch self {
         case .getPosts:
@@ -50,7 +61,13 @@ extension PostService: TargetType {
     }
     
     var task: Moya.Task {
-        return .requestPlain
+        switch self {
+        case .getPosts:
+            return .requestParameters(parameters: parameters,
+                                      encoding: URLEncoding.queryString)
+        default:
+            return .requestPlain
+        }
     }
     
     var headers: [String : String]? {
