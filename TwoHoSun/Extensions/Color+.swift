@@ -52,6 +52,12 @@ extension Color {
     static let grayC4C4 = Color(UIColor(hexCode: "C4C4C4"))
     static let gray9595 = Color(UIColor(hexCode: "959595"))
     static let gray500 = Color(UIColor(hexCode: "A9BDDA"))
+    static let gray600 = Color(UIColor(hexCode: "3A393F"))
+    
+    static let settingYellow = Color(UIColor(hexCode: "DEAE31"))
+    static let settingRed = Color(UIColor(hexCode: "FE463C"))
+    static let settingBlue = Color(UIColor(hexCode: "0C84FE"))
+    static let settingGray = Color(UIColor(hexCode: "8F8E94"))
 
     // MARK: - label foreground
 
