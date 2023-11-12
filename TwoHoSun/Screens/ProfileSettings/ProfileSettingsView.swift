@@ -86,11 +86,10 @@ enum ProfileSettingType {
 
 struct ProfileSettingsView: View {
     @State private var selectedPhoto: PhotosPickerItem?
-    @State private var selectedImageData: Data?
+//    @State private var selectedImageData: Data?
     @State private var isProfileSheetShowed = false
     @State private var retryProfileImage = false
     @State var viewType: ProfileSettingType
-    @Binding var navigationPath: [Route]
     @Bindable var viewModel: ProfileSettingViewModel
     @Environment(\.dismiss) private var dismiss
 
@@ -150,7 +149,7 @@ struct ProfileSettingsView: View {
         .customConfirmDialog(isPresented: $isProfileSheetShowed) {
             Button("프로필 삭제하기", role: .destructive) {
                 selectedPhoto = nil
-                selectedImageData = nil
+                viewModel.selectedImageData = nil
                 isProfileSheetShowed.toggle()
             }
             .frame(height: 42)
@@ -163,6 +162,13 @@ struct ProfileSettingsView: View {
             .toolbar(.hidden, for: .navigationBar)
             .navigationBarBackButtonHidden()
         }
+//        .onChange(of: viewModel.isSucccedPost) { _, newValue in
+//            if newValue == true {
+//                navigationPath.removeFirst()
+//                navigationPath.append(.mainTabView)
+//                print(navigationPath)
+//            }
+//        }
     }
 }
 
@@ -197,8 +203,8 @@ extension ProfileSettingsView {
     
     private var profileImage: some View {
         ZStack(alignment: .bottomTrailing) {
-            if let selectedImageData,
-               let uiImage = UIImage(data: selectedImageData) {
+            if let selectedData = viewModel.selectedImageData,
+               let uiImage = UIImage(data: selectedData) {
                 Image(uiImage: uiImage)
                     .resizable()
                     .frame(width: 130, height: 130)
@@ -213,7 +219,7 @@ extension ProfileSettingsView {
             selectProfileButton
         }
         .onTapGesture {
-            if selectedImageData != nil {
+            if viewModel.selectedImageData != nil {
                 isProfileSheetShowed = true
             }
         }
@@ -241,7 +247,7 @@ extension ProfileSettingsView {
                         guard status == .authorized else { return }
                         Task {
                             if let data = try? await newValue?.loadTransferable(type: Data.self) {
-                                selectedImageData = data
+                                viewModel.selectedImageData = data
                             }
                         }
                     }
@@ -254,7 +260,7 @@ extension ProfileSettingsView {
             Text("닉네임")
                 .modifier(TitleTextStyle())
             HStack(spacing: 10) {
-                HStack {
+
                     TextField("",
                               text: $viewModel.nickname,
                               prompt: Text(ProfileInputType.nickname.placeholder)
@@ -263,7 +269,7 @@ extension ProfileSettingsView {
                     .foregroundStyle(Color.white)
                     .frame(height: 44)
                     .padding(EdgeInsets(top: 0, leading: 17, bottom: 0, trailing: 0))
-                }
+
                 .overlay {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
@@ -292,7 +298,8 @@ extension ProfileSettingsView {
     private var checkDuplicatedIdButton: some View {
         Button {
             viewModel.postNickname()
-            if viewModel.nicknameValidationType == .valid { endTextEditing()
+            if viewModel.nicknameValidationType == .valid { 
+                endTextEditing()
             }
         } label: {
             Text("중복확인")
@@ -303,7 +310,6 @@ extension ProfileSettingsView {
                 .cornerRadius(10)
         }
         .disabled(viewModel.nicknameValidationType == .length)
-        
     }
     
     private var schoolInputView: some View {
@@ -325,8 +331,12 @@ extension ProfileSettingsView {
     }
 
     private var nextButton: some View {
-        NavigationLink {
-            WoteTabView()
+        Button {
+            guard viewModel.isAllInputValid else {
+                viewModel.setInvalidCondition()
+                return
+            }
+            viewModel.setProfile()
         } label: {
             Text("완료")
                 .font(.system(size: 20, weight: .semibold))
@@ -336,15 +346,6 @@ extension ProfileSettingsView {
                 .cornerRadius(10)
         }
         .disabled(viewModel.isAllInputValid ? false : true)
-        .simultaneousGesture(
-            TapGesture()
-                .onEnded {
-                    guard viewModel.isAllInputValid else {
-                        viewModel.setInvalidCondition()
-                        return
-                    }
-                    viewModel.setProfile()
-                })
     }
 
     private var completeButton: some View {
@@ -437,8 +438,6 @@ extension ProfileSettingsView {
     }
 }
 
-#Preview {
-    ProfileSettingsView(viewType: .setting, 
-                        navigationPath: .constant([]),
-                        viewModel: ProfileSettingViewModel())
-}
+//#Preview {
+//    ProfileSettingsView(navigationPath: .constant([]), viewModel: ProfileSettingViewModel())
+//}

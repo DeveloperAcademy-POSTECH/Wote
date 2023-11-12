@@ -18,20 +18,20 @@ struct TwoHoSunApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     let appState = AppState()
-    @State private var path: [Route] = []
+//    @State private var path: [Route] = []
 
     var body: some Scene {
         WindowGroup {
 //            if appState.hasValidToken {
-//                MainTabView()
+//                WoteTabView(path: .constant([Route.mainTabView]))
 //            } else {
+                OnBoardingView()
+//            }
 //                NavigationStack(path: $path) {
 //                    OnBoardingView(navigationPath: $path)
 //                }
 //                .tint(Color.accentBlue)
 //            }
-            WoteTabView()
-//            TypeTestIntroView()
         }
     }
 }
@@ -42,7 +42,6 @@ class AppState {
 
     init() {
         checkTokenValidity()
-
     }
 
     private func checkTokenValidity() {

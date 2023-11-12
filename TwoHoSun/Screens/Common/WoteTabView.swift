@@ -61,9 +61,9 @@ struct WoteTabView: View {
     @State private var selection = WoteTabType.consider
     @State private var selectedVoteCategoryType = VoteCategoryType.all
     @State private var isVoteCategoryButtonDidTap = false
-
+    @Binding var path: [Route]
+    
     var body: some View {
-        NavigationStack {
             ZStack(alignment: .topLeading) {
                 VStack(spacing: 0) {
                     navigationBar
@@ -108,7 +108,7 @@ struct WoteTabView: View {
             }
             .navigationTitle(selection.tabTitle)
             .toolbar(.hidden, for: .navigationBar)
-        }
+
         .tint(Color.accentBlue)
     }
 }
@@ -251,8 +251,4 @@ extension WoteTabView {
             }
         }
     }
-}
-
-#Preview {
-    WoteTabView()
 }

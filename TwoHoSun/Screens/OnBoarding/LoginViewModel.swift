@@ -8,6 +8,7 @@ import SwiftUI
 
 import Alamofire
 import Combine
+import Moya
 
 class LoginViewModel: ObservableObject {
     @Published var showSheet = false
@@ -17,23 +18,21 @@ class LoginViewModel: ObservableObject {
     func setAuthorizationCode(_ code: String) {
         self.authorization = code
     }
-    
+
     func postAuthorCode() {
-        APIManager.shared.requestAPI(type: .postAuthorCode(authorization: authorization)) { (response: GeneralResponse<Tokens>) in
-            if response.status == 401 {
-                APIManager.shared.refreshAllTokens()
-                self.postAuthorCode()
-            } else {
-                if let data = response.data {
-                    KeychainManager.shared.saveToken(key: "accessToken", token: data.accessToken)
-                    KeychainManager.shared.saveToken(key: "refreshToken", token: data.refreshToken)
-                }
-                if response.message == "UNREGISTERED_USER" {
+        NewApiManager.shared.request(.postAuthorCode(authorization: authorization), responseType: Tokens.self) { response in
+            if let data = response.data {
+                KeychainManager.shared.saveToken(key: "accessToken", token: data.accessToken)
+                KeychainManager.shared.saveToken(key: "refreshToken", token: data.refreshToken)
+            }
+            if response.message == "UNREGISTERED_USER" {
                     self.showSheet = true
                 } else {
                     self.goMain = true
                 }
-            }
+            print(response)
+        } errorHandler: { err in
+            print(err)
         }
     }
 }
