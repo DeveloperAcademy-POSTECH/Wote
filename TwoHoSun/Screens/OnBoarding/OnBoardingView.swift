@@ -62,7 +62,8 @@ struct OnBoardingView : View {
                 case .mainTabView:
                     WoteTabView(path: $navigationPath)
                 case .profileView:
-                    ProfileSettingsView(viewModel: ProfileSettingViewModel(path: $navigationPath))
+                    ProfileSettingsView(viewType: .setting, 
+                                        viewModel: ProfileSettingViewModel(path: $navigationPath))
                 }
             }
         }

@@ -167,5 +167,5 @@ extension ReviewView {
 }
 
 #Preview {
-    WoteTabView()
+    WoteTabView(path: .constant([]))
 }

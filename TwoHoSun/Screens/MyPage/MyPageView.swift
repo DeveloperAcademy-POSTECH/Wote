@@ -83,9 +83,8 @@ extension MyPageView {
 
     private var profileHeaderView: some View {
         NavigationLink {
-            ProfileSettingsView(viewType: .modfiy, 
-                                navigationPath: .constant([]),
-                                viewModel: ProfileSettingViewModel())
+            ProfileSettingsView(viewType: .modfiy,
+                                viewModel: ProfileSettingViewModel(path: .constant([])))
         } label: {
             HStack {
                 Circle()
@@ -269,5 +268,5 @@ extension MyPageView {
 }
 
 #Preview {
-    WoteTabView()
+    WoteTabView(path: .constant([]))
 }
