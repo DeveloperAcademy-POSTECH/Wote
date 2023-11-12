@@ -62,7 +62,8 @@ extension UserService: TargetType {
                                       encoding: JSONEncoding.default)
         case .postProfileSetting(let profile):
             var formData: [MultipartFormData] = []
-            if let data = UIImage(data: profile.userProfileImage)?.jpegData(compressionQuality: 0.3) {
+            if let data = UIImage(data: profile.userProfileImage ?? Data())?
+                                            .jpegData(compressionQuality: 0.3) {
                 let imageData = MultipartFormData(provider: .data(data),
                                                   name: "imageFile",
                                                   fileName: "temp.jpg",

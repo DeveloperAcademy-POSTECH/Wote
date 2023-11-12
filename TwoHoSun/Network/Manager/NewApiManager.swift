@@ -12,8 +12,10 @@ import Moya
 @Observable
 class NewApiManager {
 //    private var cancellables: Set<AnyCancellable> = []
-    var provider = MoyaProvider<APIService>(plugins: [NetworkLoggerPlugin()])
-    func request<T: Decodable>(_ request: APIService, decodingType: T.Type) -> AnyPublisher<GeneralResponse<T>, NetworkError> {
+    var provider = MoyaProvider<CommonAPIService>(plugins: [NetworkLoggerPlugin()])
+
+    func request<T: Decodable>(_ request: CommonAPIService, 
+                               decodingType: T.Type) -> AnyPublisher<GeneralResponse<T>, NetworkError> {
         return provider.requestPublisher(request)
             .tryMap({ response in
                 try self.handleResponse(response, decodingType)

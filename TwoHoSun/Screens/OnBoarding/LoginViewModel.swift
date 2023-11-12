@@ -25,7 +25,8 @@ class LoginViewModel: ObservableObject {
     }
 
     func postAuthorCode() {
-        apimanager.request(.postAuthorCode(authorization: authorization), decodingType: Tokens.self)
+        apimanager.request(.userService(.postAuthorCode(authorization: authorization)),
+                           decodingType: Tokens.self)
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:

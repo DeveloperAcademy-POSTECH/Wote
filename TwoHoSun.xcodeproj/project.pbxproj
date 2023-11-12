@@ -82,7 +82,6 @@
 		C782E75C2AFED411006BCE59 /* NetworkLoggerPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = C782E75B2AFED411006BCE59 /* NetworkLoggerPlugin.swift */; };
 		C782E75E2AFED457006BCE59 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C782E75D2AFED457006BCE59 /* APIService.swift */; };
 		C782E7602AFED48D006BCE59 /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C782E75F2AFED48D006BCE59 /* APIConstants.swift */; };
-		C782E7622AFED4A7006BCE59 /* Networkable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C782E7612AFED4A7006BCE59 /* Networkable.swift */; };
 		C782E7642AFED523006BCE59 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C782E7632AFED523006BCE59 /* ErrorResponse.swift */; };
 		C78E7D012AF6AF4C00C2E220 /* CommentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78E7D002AF6AF4C00C2E220 /* CommentsView.swift */; };
 		C78E7D0A2AF8C53000C2E220 /* ExpandableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78E7D092AF8C53000C2E220 /* ExpandableTextView.swift */; };
@@ -190,7 +189,6 @@
 		C782E75B2AFED411006BCE59 /* NetworkLoggerPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkLoggerPlugin.swift; sourceTree = "<group>"; };
 		C782E75D2AFED457006BCE59 /* APIService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		C782E75F2AFED48D006BCE59 /* APIConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
-		C782E7612AFED4A7006BCE59 /* Networkable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Networkable.swift; sourceTree = "<group>"; };
 		C782E7632AFED523006BCE59 /* ErrorResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
 		C78E7D002AF6AF4C00C2E220 /* CommentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsView.swift; sourceTree = "<group>"; };
 		C78E7D092AF8C53000C2E220 /* ExpandableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableTextView.swift; sourceTree = "<group>"; };
@@ -247,16 +245,6 @@
 			path = ParticleEffect;
 			sourceTree = "<group>";
 		};
-		AB03D7332B0136D6000C927A /* NewNetwork */ = {
-			isa = PBXGroup;
-			children = (
-				AB03D7442B01527B000C927A /* Foundation */,
-				AB03D7422B01524A000C927A /* Service */,
-				AB03D7432B015251000C927A /* Manager */,
-			);
-			path = NewNetwork;
-			sourceTree = "<group>";
-		};
 		AB03D7422B01524A000C927A /* Service */ = {
 			isa = PBXGroup;
 			children = (
@@ -272,6 +260,8 @@
 			isa = PBXGroup;
 			children = (
 				AB03D73E2B0138B3000C927A /* NewNewAPIManager.swift */,
+				C7B5A8412AFEE7AC00B73881 /* NewApiManager.swift */,
+				FD6673362AE071550015007D /* APIManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -522,7 +512,6 @@
 				FD1DEBA82ADC210B00588CE6 /* Screens */,
 				FD1DEBA72ADC20EE00588CE6 /* Model */,
 				FD1DEBAC2ADC219D00588CE6 /* Network */,
-				AB03D7332B0136D6000C927A /* NewNetwork */,
 				FD1DEBAB2ADC218800588CE6 /* Utility */,
 				FD1DEBA62ADC20E400588CE6 /* Resources */,
 				FD132BF32ADBE8FB00F31AAF /* Preview Content */,
@@ -612,10 +601,10 @@
 		FD1DEBAC2ADC219D00588CE6 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				FD6673362AE071550015007D /* APIManager.swift */,
+				AB03D7422B01524A000C927A /* Service */,
+				AB03D7442B01527B000C927A /* Foundation */,
+				AB03D7432B015251000C927A /* Manager */,
 				C782E75D2AFED457006BCE59 /* APIService.swift */,
-				C7B5A8412AFEE7AC00B73881 /* NewApiManager.swift */,
-				C782E7612AFED4A7006BCE59 /* Networkable.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -824,7 +813,6 @@
 				C768F1A42AE656570020F82C /* ProfileSetting.swift in Sources */,
 				AB7317F42AF94F31008B5E41 /* ReviewCardCell.swift in Sources */,
 				FD8D9F812ADC5FAD0072F4BA /* KeychainManager.swift in Sources */,
-				C782E7622AFED4A7006BCE59 /* Networkable.swift in Sources */,
 				AB6845B22AFC145000C3F7C2 /* TypeTestView.swift in Sources */,
 				ABA1E8542AFEA640009051E0 /* GoToTypeTestButton.swift in Sources */,
 				C77113712AF0E7D500BAB128 /* Color+.swift in Sources */,

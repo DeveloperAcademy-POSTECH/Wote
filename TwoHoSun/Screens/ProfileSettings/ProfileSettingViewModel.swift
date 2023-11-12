@@ -84,26 +84,20 @@ final class ProfileSettingViewModel {
     }
     
     func postNickname() {
-        apiManager.request(.postNickname(nickname: nickname), decodingType: NicknameValidation.self)
+        apiManager.request(.userService(.checkNicknameValid(nickname: nickname)),
+                           decodingType: NicknameValidation.self)
             .sink { completion in
                 print(completion)
             } receiveValue: { response in
                 print(response)
             }
             .store(in: &bag)
-
-//        apiManager.request(.postNickname(nickname: nickname), responseType: NicknameValidation.self) { response in
-//            guard let data = response.data else {return}
-//            self.isNicknameDuplicated = data.isExist
-//            self.nicknameValidationType = self.isNicknameDuplicated ? .duplicated : .valid
-//        } errorHandler: { err in
-//            print(err)
-//        }
     }
     
     func postProfileSetting() {
         guard let model = model else { return }
-        apiManager.request(.postProfileSetting(profile: model), decodingType: NoData.self)
+        apiManager.request(.userService(.postProfileSetting(profile: model)),
+                           decodingType: NoData.self)
             .sink { completion in
                 switch completion {
                 case .finished:
