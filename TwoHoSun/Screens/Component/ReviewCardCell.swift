@@ -7,23 +7,31 @@
 
 import SwiftUI
 
+enum ReviewCardCellType {
+    case search
+    case myReview
+    case otherReview
+}
+
 struct ReviewCardCell: View {
-    var isSearchResult: Bool
+    var cellType: ReviewCardCellType
     var isPurchased: Bool
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 18) {
-            HStack(spacing: 8) {
-                Circle()
-                    .frame(width: 32, height: 32)
-                    .foregroundStyle(.gray)
-                Text("얄루")
-                    .font(.system(size: 16, weight: .bold))
-                    .foregroundStyle(.white)
-                Spacer()
-                SpendTypeLabel(spendType: .saving, usage: .cell)
+        VStack(alignment: .leading, spacing: 0) {
+            if cellType != .myReview {
+                HStack(spacing: 8) {
+                    Circle()
+                        .frame(width: 32, height: 32)
+                        .foregroundStyle(.gray)
+                    Text("얄루")
+                        .font(.system(size: 16, weight: .bold))
+                        .foregroundStyle(.white)
+                    Spacer()
+                    SpendTypeLabel(spendType: .saving, usage: .cell)
+                }
+                .padding(.top, 24)
             }
-            .padding(.top, 24)
             HStack {
                 VStack(alignment: .leading, spacing: 6) {
                     HStack(spacing: 4) {
@@ -57,17 +65,19 @@ struct ReviewCardCell: View {
                         .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
             }
+            .padding(.top, cellType == .myReview ? 28 : 18)
             .padding(.bottom, 24)
         }
         .padding(.horizontal, 16)
-        .background(isSearchResult ? Color.disableGray : Color.clear)
+        .background(cellType == .search ? Color.disableGray : Color.clear)
         .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 }
 
 #Preview {
     Group {
-        ReviewCardCell(isSearchResult: true, isPurchased: true)
-        ReviewCardCell(isSearchResult: false, isPurchased: false)
+        ReviewCardCell(cellType: .search, isPurchased: true)
+        ReviewCardCell(cellType: .otherReview, isPurchased: true)
+        ReviewCardCell(cellType: .myReview, isPurchased: true)
     }
 }

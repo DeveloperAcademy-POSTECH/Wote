@@ -7,23 +7,28 @@
 
 import SwiftUI
 
-enum VoteCardType {
+enum VoteCardCellType {
     case standard
     case simple
+    case myVote
 }
 
 enum VoteResultType {
     case buy, draw, notBuy
 }
 
+enum VoteProgressType {
+    case progressing, end
+}
+
 struct VoteCardCell: View {
-    var cardType: VoteCardType
-    var searchFilterType: SearchFilterType
+    var cellType: VoteCardCellType
+    var progressType: VoteProgressType
     var voteResultType: VoteResultType?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
-            if cardType == .standard {
+            if cellType == .standard {
                 HStack(spacing: 8) {
                     Circle()
                         .frame(width: 32, height: 32)
@@ -38,7 +43,7 @@ struct VoteCardCell: View {
             HStack {
                 VStack(alignment: .leading, spacing: 6) {
                     HStack(spacing: 4) {
-                        if searchFilterType == .end {
+                        if progressType == .end {
                             Text("종료")
                                 .font(.system(size: 12, weight: .medium))
                                 .foregroundStyle(.white)
@@ -72,8 +77,8 @@ struct VoteCardCell: View {
                         .frame(width: 66, height: 66)
                         .foregroundStyle(.gray)
                         .clipShape(RoundedRectangle(cornerRadius: 8))
-                        .opacity(searchFilterType == .end ? 0.5 : 1.0)
-                    if searchFilterType == .end {
+                        .opacity(progressType == .end ? 0.5 : 1.0)
+                    if progressType == .end {
                         Group {
                             switch voteResultType {
                             case .buy:
@@ -90,27 +95,35 @@ struct VoteCardCell: View {
                     }
                 }
             }
+
+            // TODO: - 후기를 작성한 투표라면 숨기기
+            if progressType == .end && cellType == .myVote {
+                NavigationLink {
+                    ReviewWriteView()
+                } label: {
+                    Text("후기 작성하기")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundStyle(Color.lightBlue)
+                        .frame(height: 52)
+                        .frame(maxWidth: .infinity)
+                        .clipShape(.rect(cornerRadius: 10))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .strokeBorder(Color.lightBlue, lineWidth: 1)
+                        )
+                        .padding(.top, 6)
+                        .padding(.bottom, -6)
+                }
+
+            }
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 24)
-        .background(Color.disableGray)
+        .background(cellType != .myVote ? Color.disableGray : Color.clear)
         .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 }
 
 #Preview {
-    Group {
-        VoteCardCell(cardType: .simple, 
-                     searchFilterType: .progressing,
-                     voteResultType: nil)
-        VoteCardCell(cardType: .simple,
-                     searchFilterType: .end,
-                     voteResultType: .buy)
-        VoteCardCell(cardType: .simple,
-                     searchFilterType: .end,
-                     voteResultType: .draw)
-        VoteCardCell(cardType: .simple,
-                     searchFilterType: .end,
-                     voteResultType: .notBuy)
-    }
+    VoteCardCell(cellType: .myVote, progressType: .progressing)
 }

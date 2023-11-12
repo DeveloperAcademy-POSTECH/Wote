@@ -28,8 +28,8 @@ struct ReviewWriteView: View {
                 ScrollView {
                     VStack(spacing: 48) {
                         VStack(spacing: 12) {
-                            VoteCardCell(cardType: .simple,
-                                         searchFilterType: .end,
+                            VoteCardCell(cellType: .simple,
+                                         progressType: .end,
                                          voteResultType: .draw )
                             buySelection
                         }

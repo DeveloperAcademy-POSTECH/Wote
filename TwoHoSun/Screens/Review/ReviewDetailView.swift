@@ -92,9 +92,9 @@ extension ReviewDetailView {
             NavigationLink {
                 DetailView(isDone: true)
             } label: {
-                VoteCardCell(cardType: .simple,
-                             searchFilterType: .end,
-                             voteResultType: VoteResultType.draw)
+                VoteCardCell(cellType: .simple,
+                             progressType: .end,
+                             voteResultType: .draw)
             }
         }
     }
