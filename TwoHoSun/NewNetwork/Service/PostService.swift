@@ -10,7 +10,7 @@ import Foundation
 import Moya
 
 enum PostService {
-    case getPosts(page: Int, size: Int)
+    case getPosts(page: Int, size: Int, visibilitiyScope: String)
     case postVoteCreate(postId: Int, param: String)
     case getSearchResult(page: Int, size: Int, keyword: String)
     case postCreate(postCreate: PostCreateModel)
@@ -24,11 +24,21 @@ extension PostService: TargetType {
     }
     
     var path: String {
-        return "/api/posts/"
+        switch self {
+        case .getPosts:
+            return "/api/posts"
+        default:
+            return "/api/posts"
+        }
     }
     
     var method: Moya.Method {
-        return .get
+        switch self {
+        case .getPosts:
+            return .get
+        default:
+            return .get
+        }
     }
     
     var task: Moya.Task {

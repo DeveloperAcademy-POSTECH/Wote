@@ -89,7 +89,7 @@ final class ProfileSettingViewModel {
 //        } errorHandler: { err in
 //            print(err)
 //        }
-        NewNewApiManager.shared.request(.userService(.checkNicknameValid(nickname: NicknameRequestDto(nickname: nickname))),
+        NewNewApiManager.shared.request(.userService(.checkNicknameValid(nickname: nickname)),
                                         responseType: NicknameValidation.self) { response in
             guard let data = response.data else {return}
             self.isNicknameDuplicated = data.isExist

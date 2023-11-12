@@ -11,8 +11,8 @@ import Moya
 import UIKit
 
 enum UserService {
-    case postAuthorCode(auth: AuthCodeRequestDto)
-    case checkNicknameValid(nickname: NicknameRequestDto)
+    case postAuthorCode(authorization: String)
+    case checkNicknameValid(nickname: String)
     case postProfileSetting(profile: ProfileSetting)
     case refreshToken
 }
@@ -39,35 +39,46 @@ extension UserService: TargetType {
     var method: Moya.Method {
         return .post
     }
-    
+
+    var parameters: [String: Any] {
+        switch self {
+        case .postAuthorCode(let authorization):
+           return ["state": "test",
+                   "code": authorization]
+        case .checkNicknameValid(let nickname):
+            return ["nickname": nickname]
+        case .postProfileSetting:
+            return [:]
+        case .refreshToken:
+            return ["refreshToken": KeychainManager.shared.readToken(key: "refreshToken")!,
+                    "identifier": KeychainManager.shared.readToken(key: "identifier")!]
+        }
+    }
+
     var task: Moya.Task {
-        do {
-            switch self {
-            case .postAuthorCode(let auth):
-                return .requestParameters(parameters: try auth.asParameter(), encoding: URLEncoding.default)
-            case .checkNicknameValid(let nickname):
-                return .requestParameters(parameters: try nickname.asParameter(), encoding: JSONEncoding.default)
-            case .postProfileSetting(let profile):
-                var formData: [MultipartFormData] = []
-                if let data = UIImage(data: profile.userProfileImage)?.jpegData(compressionQuality: 0.3) {
-                    let imageData = MultipartFormData(provider: .data(data),
-                                                      name: "imageFile",
-                                                      fileName: "temp.jpg",
-                                                      mimeType: "image/jpeg")
-                    formData.append(imageData)
-                }
-                let json = try! JSONSerialization.data(withJSONObject: profile, options: [])
-                let jsonString = String(data: json, encoding: .utf8)!
-                let stringData = MultipartFormData(provider: .data(jsonString.data(using: String.Encoding.utf8)!),
-                                                   name: "profileRequest",
-                                                   mimeType: "application/json")
-                formData.append(stringData)
-                return .uploadMultipart(formData)
-            case .refreshToken:
-                return .requestPlain // TODO: 수정 필요
+        switch self {
+        case .checkNicknameValid:
+            return .requestParameters(parameters: parameters,
+                                      encoding: JSONEncoding.default)
+        case .postProfileSetting(let profile):
+            var formData: [MultipartFormData] = []
+            if let data = UIImage(data: profile.userProfileImage)?.jpegData(compressionQuality: 0.3) {
+                let imageData = MultipartFormData(provider: .data(data),
+                                                  name: "imageFile",
+                                                  fileName: "temp.jpg",
+                                                  mimeType: "image/jpeg")
+                formData.append(imageData)
             }
-        } catch {
-            fatalError("Failed to convert parameters. Error: \(error)")
+            let json = try! JSONSerialization.data(withJSONObject: profile, options: [])
+            let jsonString = String(data: json, encoding: .utf8)!
+            let stringData = MultipartFormData(provider: .data(jsonString.data(using: String.Encoding.utf8)!),
+                                               name: "profileRequest",
+                                               mimeType: "application/json")
+            formData.append(stringData)
+            return .uploadMultipart(formData)
+        default:
+            return .requestParameters(parameters: parameters,
+                                      encoding: URLEncoding.default)
         }
     }
     

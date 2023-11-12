@@ -34,8 +34,7 @@ class LoginViewModel: ObservableObject {
 //        } errorHandler: { err in
 //            print(err)
 //        }
-        let requestDto = AuthCodeRequestDto(state: "test", code: authorization)
-        NewNewApiManager.shared.request(.userService(.postAuthorCode(auth: requestDto)),
+        NewNewApiManager.shared.request(.userService(.postAuthorCode(authorization: authorization)),
                                         responseType: Tokens.self) { response in
             if let data = response.data {
                 KeychainManager.shared.saveToken(key: "accessToken", token: data.accessToken)
