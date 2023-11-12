@@ -23,9 +23,9 @@ struct TwoHoSunApp: App {
     var body: some Scene {
         WindowGroup {
 //            if appState.hasValidToken {
-//                WoteTabView(path: .constant([Route.mainTabView]))
+                WoteTabView(path: .constant([Route.mainTabView]))
 //            } else {
-                OnBoardingView()
+//                OnBoardingView()
 //            }
 //                NavigationStack(path: $path) {
 //                    OnBoardingView(navigationPath: $path)

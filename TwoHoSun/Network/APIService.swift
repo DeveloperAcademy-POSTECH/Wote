@@ -22,7 +22,6 @@ enum APIService {
     case postComments(commentPost: CommentPostModel)
     case deleteComments(postId: Int, commentId: Int)
     case getDetailPost(postId: Int)
-
 }
 
 extension APIService: TargetType {
@@ -179,6 +178,8 @@ extension APIService: TargetType {
             formData.append(stringData)
             print(formData)
             return .uploadMultipart(formData)
+        case .postNickname(let nickname):
+            return .requestParameters(parameters: try! nickname.asParameter(), encoding: JSONEncoding.default)
         default:
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         }

@@ -82,13 +82,22 @@ final class ProfileSettingViewModel {
     }
     
     func postNickname() {
-        apiManager.request(.postNickname(nickname: nickname), responseType: NicknameValidation.self) { response in
+//        apiManager.request(.postNickname(nickname: nickname), responseType: NicknameValidation.self) { response in
+//            guard let data = response.data else {return}
+//            self.isNicknameDuplicated = data.isExist
+//            self.nicknameValidationType = self.isNicknameDuplicated ? .duplicated : .valid
+//        } errorHandler: { err in
+//            print(err)
+//        }
+        NewNewApiManager.shared.request(.userService(.checkNicknameValid(nickname: NicknameRequestDto(nickname: nickname))),
+                                        responseType: NicknameValidation.self) { response in
             guard let data = response.data else {return}
             self.isNicknameDuplicated = data.isExist
             self.nicknameValidationType = self.isNicknameDuplicated ? .duplicated : .valid
-        } errorHandler: { err in
-            print(err)
+        } errorHandler: { error in
+            print(error)
         }
+
     }
     
     func postProfileSetting() {
@@ -102,5 +111,16 @@ final class ProfileSettingViewModel {
         } errorHandler: { err in
             print(err)
         }
+
+//        guard let model = model else { return }
+//        NewNewApiManager.shared.request(.userService(.postProfileSetting(profile: model)), 
+//                                        responseType: NoData.self) { _ in
+//            var array = self.path.wrappedValue
+//            array.removeFirst()
+//            array.append(.mainTabView)
+//            self.path.wrappedValue = array
+//        } errorHandler: { error in
+//            print(error)
+//        }
     }
 }

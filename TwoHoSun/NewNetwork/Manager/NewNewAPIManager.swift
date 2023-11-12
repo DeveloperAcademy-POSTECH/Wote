@@ -1,24 +1,25 @@
 //
-//  NewApiManager.swift
+//  NewNewAPIManager.swift
 //  TwoHoSun
 //
-//  Created by 235 on 11/11/23.
+//  Created by 김민 on 11/13/23.
 //
+
 import Combine
-import SwiftUI
+import Foundation
 
 import Moya
 
-class NewApiManager {
-    static let shared = NewApiManager()
+class NewNewApiManager {
+    static let shared = NewNewApiManager()
     private var cancellables: Set<AnyCancellable> = []
-    let provider = MoyaProvider<APIService>(plugins: [NetworkLoggerPlugin()])
+    let provider = MoyaProvider<CommonAPIService>(plugins: [NetworkLoggerPlugin()])
 
-    func request<T: Decodable>(_ service: APIService, 
+    func request<T: Decodable>(_ service: CommonAPIService,
                                responseType: T.Type,
                                successHandler: @escaping (GeneralResponse<T>) -> Void,
                                errorHandler: @escaping (NetworkError) -> Void) {
-       NewApiManager.shared.provider.requestPublisher(service)
+       NewNewApiManager.shared.provider.requestPublisher(service)
             .tryMap({ response in
                 try self.handleResponse(response, responseType)
             })
@@ -26,7 +27,7 @@ class NewApiManager {
                 if let netWorkError = error as? ErrorResponse {
                     switch NetworkError(divisionCode: netWorkError.divisionCode) {
                     case .exipredJWT:
-                        self.request(.refreshToken, responseType: Tokens.self) { response in
+                        self.request(CommonAPIService.userService(.refreshToken), responseType: Tokens.self) { response in
                             guard let data = response.data else {return}
                             KeychainManager.shared.updateToken(key: "accessToken", token: data.accessToken)
                             KeychainManager.shared.updateToken(key: "refreshToken", token: data.refreshToken)

@@ -13,7 +13,7 @@ protocol Networkable {
 }
 extension Networkable {
     static func makeProvider() -> MoyaProvider<Target> {
-        let authPlugin = AccessTokenPlugin{ _ in
+        let authPlugin = AccessTokenPlugin { _ in
             return "Bearer \(KeychainManager.shared.readToken(key: "accessToken")!)"
         }
         let loggerPlugin = NetworkLoggerPlugin()
