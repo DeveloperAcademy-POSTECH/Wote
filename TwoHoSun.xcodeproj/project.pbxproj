@@ -18,16 +18,12 @@
 		AB45225C2ADE665100B69F24 /* URLConst.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB45225B2ADE665100B69F24 /* URLConst.swift */; };
 		AB4D82692ADD7F4D00F35CCB /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4D82682ADD7F4D00F35CCB /* ProfileSettingsView.swift */; };
 		AB53CA6D2AF7AC4100FD850A /* UINavigationController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB53CA6C2AF7AC4100FD850A /* UINavigationController+.swift */; };
-		AB6845AD2AFC13FF00C3F7C2 /* TypeTestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6845AC2AFC13FF00C3F7C2 /* TypeTestModel.swift */; };
 		AB6845B02AFC143700C3F7C2 /* TypeTestIntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6845AF2AFC143700C3F7C2 /* TypeTestIntroView.swift */; };
 		AB6845B22AFC145000C3F7C2 /* TypeTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6845B12AFC145000C3F7C2 /* TypeTestView.swift */; };
 		AB6845B42AFC146C00C3F7C2 /* TypeTestResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6845B32AFC146C00C3F7C2 /* TypeTestResultView.swift */; };
 		AB6845B62AFC147D00C3F7C2 /* TypeTestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6845B52AFC147D00C3F7C2 /* TypeTestViewModel.swift */; };
-		AB6845B82AFCC97500C3F7C2 /* Secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = AB6845B72AFCC97500C3F7C2 /* Secret.plist */; };
 		AB7317EA2AF90F00008B5E41 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C771136E2AF0E7B600BAB128 /* UIColor+.swift */; };
-		AB7317EB2AF90F1D008B5E41 /* LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D792AE2A64300BE0671 /* LinkView.swift */; };
 		AB7317EC2AF90F40008B5E41 /* ProfileSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4E75B52ADE9C20000C2277 /* ProfileSettingViewModel.swift */; };
-		AB7317ED2AF90F45008B5E41 /* ConsiderationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBFB62F2AE3EA2F006CE8CA /* ConsiderationViewModel.swift */; };
 		AB7317EF2AF9178C008B5E41 /* FilterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7317EE2AF9178C008B5E41 /* FilterButton.swift */; };
 		AB7317F42AF94F31008B5E41 /* ReviewCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7317F32AF94F31008B5E41 /* ReviewCardCell.swift */; };
 		ABA1E82D2AFD0CD5009051E0 /* VoteContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA1E82C2AFD0CD5009051E0 /* VoteContentCell.swift */; };
@@ -43,10 +39,13 @@
 		ABB71D6E2AE2754300BE0671 /* PostResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D6D2AE2754300BE0671 /* PostResponseModel.swift */; };
 		ABB71D742AE2758200BE0671 /* ImageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D732AE2758200BE0671 /* ImageDetailView.swift */; };
 		ABB71D7C2AE2B3F100BE0671 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D7B2AE2B3F100BE0671 /* NotificationView.swift */; };
-		ABBBC6782AE471B700B1E614 /* VoteWriteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBBC6772AE471B700B1E614 /* VoteWriteViewModel.swift */; };
 		ABBBC67C2AE49CC800B1E614 /* PostCreateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBBC67B2AE49CC800B1E614 /* PostCreateModel.swift */; };
 		ABBEEAF52AE64F7900F6D918 /* SeachViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBEEAF42AE64F7900F6D918 /* SeachViewModel.swift */; };
 		ABBFB6322AE3EABD006CE8CA /* VoteCreateRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBFB6312AE3EABD006CE8CA /* VoteCreateRequestModel.swift */; };
+		ABDED87F2B00AFCC00D78BEA /* ConsiderationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBFB62F2AE3EA2F006CE8CA /* ConsiderationViewModel.swift */; };
+		ABDED8802B00B07300D78BEA /* TypeTestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6845AC2AFC13FF00C3F7C2 /* TypeTestModel.swift */; };
+		ABDED8832B00B0FE00D78BEA /* ComplaintReasonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7EFA7DA2AF9432800C9BEA0 /* ComplaintReasonView.swift */; };
+		ABDED8852B00B17F00D78BEA /* VoteWriteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBBC6772AE471B700B1E614 /* VoteWriteViewModel.swift */; };
 		ABFE077C2AF37C98006CA743 /* VoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFE077B2AF37C98006CA743 /* VoteView.swift */; };
 		C73F8E812AE54B24001C6B07 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73F8E802AE54B24001C6B07 /* DetailViewModel.swift */; };
 		C73F8E832AE54DD8001C6B07 /* CommentsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73F8E822AE54DD8001C6B07 /* CommentsModel.swift */; };
@@ -73,7 +72,6 @@
 		C7E30E2B2ADC40E4001AE89B /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E30E2A2ADC40E4001AE89B /* LoginViewModel.swift */; };
 		C7E459D12ADFF89000ECD008 /* WoteTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E459D02ADFF89000ECD008 /* WoteTabView.swift */; };
 		C7EFA7D92AF9279200C9BEA0 /* ComplaintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7EFA7D82AF9279200C9BEA0 /* ComplaintView.swift */; };
-		C7EFA7DB2AF9432800C9BEA0 /* ComplaintReasonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7EFA7DA2AF9432800C9BEA0 /* ComplaintReasonView.swift */; };
 		C7EFA7DD2AF94DD800C9BEA0 /* CustomAlertModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7EFA7DC2AF94DD800C9BEA0 /* CustomAlertModalView.swift */; };
 		C7F1FD842ADDA2F000C5A2A1 /* OnBoardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F1FD832ADDA2F000C5A2A1 /* OnBoardingView.swift */; };
 		C7F1FD862ADDA37E00C5A2A1 /* BottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F1FD852ADDA37E00C5A2A1 /* BottomSheetView.swift */; };
@@ -83,10 +81,7 @@
 		FD3205682ADD5C0D00B0D5F6 /* TwoHoSunApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3205672ADD5C0D00B0D5F6 /* TwoHoSunApp.swift */; };
 		FD3646F52ADD8E2D0064DF94 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FD3646F42ADD8E2D0064DF94 /* Alamofire */; };
 		FD6673372AE071550015007D /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6673362AE071550015007D /* APIManager.swift */; };
-		FD76249C2AF954450079AEEF /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C771136E2AF0E7B600BAB128 /* UIColor+.swift */; };
-		FD76249D2AF9545C0079AEEF /* ProfileSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4E75B52ADE9C20000C2277 /* ProfileSettingViewModel.swift */; };
 		FD76249E2AF954670079AEEF /* LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D792AE2A64300BE0671 /* LinkView.swift */; };
-		FD76249F2AF954980079AEEF /* ConsiderationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBFB62F2AE3EA2F006CE8CA /* ConsiderationViewModel.swift */; };
 		FD7624A02AF954980079AEEF /* GeneralResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C768F19D2AE656430020F82C /* GeneralResponse.swift */; };
 		FD7624A12AF954980079AEEF /* NicknameValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C768F1A22AE656570020F82C /* NicknameValidation.swift */; };
 		FD8D9F812ADC5FAD0072F4BA /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */; };
@@ -116,7 +111,6 @@
 		AB6845B12AFC145000C3F7C2 /* TypeTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeTestView.swift; sourceTree = "<group>"; };
 		AB6845B32AFC146C00C3F7C2 /* TypeTestResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeTestResultView.swift; sourceTree = "<group>"; };
 		AB6845B52AFC147D00C3F7C2 /* TypeTestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeTestViewModel.swift; sourceTree = "<group>"; };
-		AB6845B72AFCC97500C3F7C2 /* Secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Secret.plist; path = ../../../Secret.plist; sourceTree = "<group>"; };
 		AB7317E52AF90CCC008B5E41 /* ConsumptionConsiderationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsumptionConsiderationView.swift; sourceTree = "<group>"; };
 		AB7317EE2AF9178C008B5E41 /* FilterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterButton.swift; sourceTree = "<group>"; };
 		AB7317F32AF94F31008B5E41 /* ReviewCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewCardCell.swift; sourceTree = "<group>"; };
@@ -644,25 +638,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AB7317ED2AF90F45008B5E41 /* ConsiderationViewModel.swift in Sources */,
+				ABDED8852B00B17F00D78BEA /* VoteWriteViewModel.swift in Sources */,
+				ABDED8832B00B0FE00D78BEA /* ComplaintReasonView.swift in Sources */,
+				ABDED8802B00B07300D78BEA /* TypeTestModel.swift in Sources */,
+				ABDED87F2B00AFCC00D78BEA /* ConsiderationViewModel.swift in Sources */,
 				C7EFA7D92AF9279200C9BEA0 /* ComplaintView.swift in Sources */,
-				FD76249F2AF954980079AEEF /* ConsiderationViewModel.swift in Sources */,
-				AB7317ED2AF90F45008B5E41 /* ConsiderationViewModel.swift in Sources */,
-				FD76249F2AF954980079AEEF /* ConsiderationViewModel.swift in Sources */,
-				AB7317ED2AF90F45008B5E41 /* ConsiderationViewModel.swift in Sources */,
 				AB7317EC2AF90F40008B5E41 /* ProfileSettingViewModel.swift in Sources */,
-				AB7317EB2AF90F1D008B5E41 /* LinkView.swift in Sources */,
-				AB6845AD2AFC13FF00C3F7C2 /* TypeTestModel.swift in Sources */,
 				AB7317EA2AF90F00008B5E41 /* UIColor+.swift in Sources */,
 				ABAFB6432AF979C80070512F /* CommentPreview.swift in Sources */,
-				FD76249F2AF954980079AEEF /* ConsiderationViewModel.swift in Sources */,
-				FD76249F2AF954980079AEEF /* ConsiderationViewModel.swift in Sources */,
 				FD7624A02AF954980079AEEF /* GeneralResponse.swift in Sources */,
 				FD7624A12AF954980079AEEF /* NicknameValidation.swift in Sources */,
 				FD76249E2AF954670079AEEF /* LinkView.swift in Sources */,
 				FDD5829F2AFC175F0004DFC6 /* VoteWriteView.swift in Sources */,
-				FD76249D2AF9545C0079AEEF /* ProfileSettingViewModel.swift in Sources */,
-				FD76249C2AF954450079AEEF /* UIColor+.swift in Sources */,
 				ABBEEAF52AE64F7900F6D918 /* SeachViewModel.swift in Sources */,
 				FD6673372AE071550015007D /* APIManager.swift in Sources */,
 				C7F1FD882ADDA39500C5A2A1 /* DesciptionView.swift in Sources */,
@@ -686,9 +673,6 @@
 				5E5099542AED59DE0053E529 /* AppDelegate.swift in Sources */,
 				AB7317EF2AF9178C008B5E41 /* FilterButton.swift in Sources */,
 				ABA1E83A2AFD576A009051E0 /* ReviewView.swift in Sources */,
-				ABBBC6782AE471B700B1E614 /* VoteWriteViewModel.swift in Sources */,
-				ABBBC6782AE471B700B1E614 /* VoteWriteViewModel.swift in Sources */,
-				ABBBC6782AE471B700B1E614 /* VoteWriteViewModel.swift in Sources */,
 				FDF2D6D02AE5E62B0027EE8F /* ChartModel.swift in Sources */,
 				FDF2D6CE2AE5DAD90027EE8F /* VoteInfoModel.swift in Sources */,
 				ABA1E8492AFD5C0B009051E0 /* ReviewWriteView.swift in Sources */,
@@ -702,9 +686,7 @@
 				C77113732AF2114800BAB128 /* CustomConfirmModifier.swift in Sources */,
 				FDB4B1502AE68FC000720328 /* DetailView.swift in Sources */,
 				C7F1FD842ADDA2F000C5A2A1 /* OnBoardingView.swift in Sources */,
-				C7EFA7DB2AF9432800C9BEA0 /* ComplaintReasonView.swift in Sources */,
 				ABA1E8392AFD576A009051E0 /* ReviewDetailView.swift in Sources */,
-				C7EFA7DB2AF9432800C9BEA0 /* ComplaintReasonView.swift in Sources */,
 				C7DE44BD2AE0DCE7001639CB /* CommentCell.swift in Sources */,
 				ABB71D7C2AE2B3F100BE0671 /* NotificationView.swift in Sources */,
 				ABA1E82D2AFD0CD5009051E0 /* VoteContentCell.swift in Sources */,
