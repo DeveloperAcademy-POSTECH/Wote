@@ -131,9 +131,6 @@ Packages
 xcuserdata
 *.xcodeproj
 
-## APIKEY
-Secret.plist
-
 
 ### Xcode ###
 
