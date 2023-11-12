@@ -284,11 +284,12 @@ extension ProfileSettingsView {
                 }
                 checkDuplicatedIdButton
             }
-
-            if viewModel.nicknameValidationType != .none {
-                nicknameValidationAlertMessage(for: viewModel.nicknameValidationType)
-                    .padding(.top, 6)
-            }
+            nicknameValidationAlertMessage(for: viewModel.nicknameValidationType)
+                .padding(.top, 6)
+//            if viewModel.nicknameValidationType != .none {
+//                nicknameValidationAlertMessage(for: viewModel.nicknameValidationType != .none ? viewModel.nicknameValidationType : .none)
+//                    .padding(.top, 6)
+//            }
         }
     }
 

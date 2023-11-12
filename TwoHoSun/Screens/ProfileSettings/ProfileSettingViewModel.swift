@@ -93,8 +93,7 @@ final class ProfileSettingViewModel {
     
     func postProfileSetting() {
         guard let model = model else { return }
-        apiManager.request(.postProfileSetting(profile: model), responseType: NoData.self) { response in
-            print("ayyy \(response.message)")
+        apiManager.request(.postProfileSetting(profile: model), responseType: NoData.self) { _ in
             var array = self.path.wrappedValue
             array.removeFirst()
             array.append(.mainTabView)

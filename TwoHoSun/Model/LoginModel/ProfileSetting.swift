@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ProfileSetting: Codable {
-    var userProfileImage: Data
+    var userProfileImage: Data?
     var userNickname: String
     var school: SchoolModel
 }

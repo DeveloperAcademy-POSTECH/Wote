@@ -13,7 +13,10 @@ class NewApiManager {
     static let shared = NewApiManager()
     private var cancellables: Set<AnyCancellable> = []
     let provider = MoyaProvider<APIService>(plugins: [NetworkLoggerPlugin()])
-    func request<T: Decodable>(_ service: APIService, responseType: T.Type, successHandler: @escaping (GeneralResponse<T>) -> Void, errorHandler: @escaping (NetworkError) -> Void) {
+    func request<T: Decodable>(_ service: APIService, 
+                               responseType: T.Type,
+                               successHandler: @escaping (GeneralResponse<T>) -> Void,
+                               errorHandler: @escaping (NetworkError) -> Void) {
        NewApiManager.shared.provider.requestPublisher(service)
             .tryMap({ response in
                 try self.handleResponse(response, responseType)
