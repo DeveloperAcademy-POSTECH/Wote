@@ -17,17 +17,19 @@ enum Route {
 struct TwoHoSunApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
-    var appState = AppLoginState()    
+    @State private var appState = AppLoginState()
+    
     var body: some Scene {
         WindowGroup {
-            switch appState.loginState {
+            switch appState.serviceRoot.auth.authState {
             case .none, .allexpired, .unregister:
-                OnBoardingView(viewModel: LoginViewModel(apimanager: appState.serviceRoot.apimanager), loginState: appState)
+                OnBoardingView(viewModel: LoginViewModel(appState: appState))
+                    .environment(appState)
             case .loggedIn:
                 NavigationStack {
                     WoteTabView(path: .constant([]))
+                        .environment(appState)
                 }
-                
             }
         }
     }
@@ -41,28 +43,32 @@ class ServiceRoot {
     }()
 }
 
+enum TokenState {
+    case none, allexpired, loggedIn, unregister
+}
 @Observable
 class AppLoginState {
-    var loginState: TokenState = .none
     let serviceRoot: ServiceRoot
+
     init() {
         serviceRoot = ServiceRoot()
-        loginState = serviceRoot.auth.authState
+
         checkTokenValidity()
         serviceRoot.auth.relogin = relogin
-    }
 
+    }
+    
     private func relogin() {
         DispatchQueue.main.async {
-            self.loginState = .none
+            self.serviceRoot.auth.authState = .none
         }
     }
-
+    
     private func checkTokenValidity() {
         if KeychainManager.shared.readToken(key: "accessToken") != nil {
-            loginState = .loggedIn
+            serviceRoot.auth.authState = .loggedIn
         } else {
-            loginState = .none
+            serviceRoot.auth.authState = .none
         }
     }
 }

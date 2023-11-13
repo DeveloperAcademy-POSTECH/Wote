@@ -1,0 +1,72 @@
+import Combine
+import SwiftUI
+import Moya
+
+@Observable
+class NewApiManager {
+    var provider = MoyaProvider<CommonAPIService>(plugins: [NetworkLoggerPlugin()])
+    var authenticator: Authenticator
+
+    init(authenticator: Authenticator) {
+        self.authenticator = authenticator
+    }
+
+    func request<T: Decodable>(_ request: CommonAPIService, decodingType: T.Type) -> AnyPublisher<GeneralResponse<T>, NetworkError> {
+        return authenticator.authStatePublisher
+            .flatMap { authState -> AnyPublisher<GeneralResponse<T>, NetworkError> in
+                if authState == .loggedIn {
+                    return self.performRequest(request, decodingType: decodingType)
+                } else {
+                    return Empty<GeneralResponse<T>, NetworkError>()
+                        .eraseToAnyPublisher()
+                }
+            }
+            .eraseToAnyPublisher()
+    }
+
+    func requestLogin(authorization: String) -> AnyPublisher<GeneralResponse<Tokens>, NetworkError> {
+        return provider
+            .requestPublisher(.userService(
+                .postAuthorCode(authorization: authorization)))
+            .tryMap { response in
+                try self.handleResponse(response, Tokens.self)
+            }
+            .mapError { error in
+                if let networkError = error as? ErrorResponse {
+                    return NetworkError(divisionCode: networkError.divisionCode)
+                }
+                return NetworkError(divisionCode: "unknown")
+            }
+            .eraseToAnyPublisher()
+    }
+
+    private func performRequest<T: Decodable>(_ request: CommonAPIService, decodingType: T.Type) -> AnyPublisher<GeneralResponse<T>, NetworkError> {
+        return provider
+            .requestPublisher(request)
+            .tryMap { response in
+                try self.handleResponse(response, decodingType)
+            }
+            .mapError { error in
+                if let networkError = error as? ErrorResponse {
+                    let errorType = NetworkError(divisionCode: networkError.divisionCode)
+                    if errorType == .exipredJWT {
+                        self.authenticator.updateAuthState(.allexpired)
+                    }
+                    self.authenticator.updateAuthState(.unregister)
+                    return errorType
+                } else {
+                    return NetworkError(divisionCode: "unknown")
+                }
+            }
+            .eraseToAnyPublisher()
+    }
+
+    private func handleResponse<T: Decodable>(_ response: Response, _ responseType: T.Type) throws -> GeneralResponse<T> {
+        guard response.statusCode == 200 else {
+            let decodedData = try JSONDecoder().decode(ErrorResponse.self, from: response.data)
+            throw decodedData
+        }
+        let decodedData = try JSONDecoder().decode(GeneralResponse<T>.self, from: response.data)
+        return decodedData
+    }
+}

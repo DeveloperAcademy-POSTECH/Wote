@@ -32,24 +32,33 @@ enum UserVoteType {
 struct ConsiderationView: View {
     @State private var selectedVoteType = UserVoteType.agree
     @State private var currentVote = 0
-    let viewModel: ConsiderationViewModel
-
+    @ObservedObject var viewModel: ConsiderationViewModel
+    @Binding var selectedVisibilityScope: VisibilityScopeType
+    @Environment(AppLoginState.self) private var loginState
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             Color.background
                 .ignoresSafeArea()
             VStack(spacing: 0) {
                 Spacer()
-                votePagingView
-//                EmptyVoteView()
+                if viewModel.posts.isEmpty {
+                    NoVoteView()
+                } else {
+                    votePagingView
+                }
                 Spacer()
             }
             createVoteButton
                 .padding(.bottom, 21)
                 .padding(.trailing, 24)
         }
+        .onAppear {
+            viewModel.fetchPosts(visibilityScope: selectedVisibilityScope.type)
+        }
+        .onChange(of: selectedVisibilityScope) { _, newScope in
+            viewModel.fetchPosts(visibilityScope: newScope.type)
+        }
     }
-
 }
 
 extension ConsiderationView {
@@ -58,12 +67,13 @@ extension ConsiderationView {
         GeometryReader { proxy in
             TabView(selection: $currentVote) {
                 // TODO: - cell 5개로 설정해 둠
-                ForEach(0..<5) { index in
-                    VoteContentCell(isVoted: false,
-                                    isEnd: Bool.random(),
-                                    selectedVoteType: selectedVoteType,
-                                    currentVote: $currentVote)
-                        .tag(index)
+                ForEach(Array(zip(viewModel.posts.indices, viewModel.posts)), id: \.0) { index, item in
+                    VStack(spacing: 0) {
+                        VoteContentCell(voteData: item)
+                        nextVoteButton
+                            .padding(.top, 16)
+                    }
+                    .tag(index)
                 }
                 .rotationEffect(.degrees(-90))
                 .frame(width: proxy.size.width, height: proxy.size.height)
@@ -102,9 +112,26 @@ extension ConsiderationView {
             .clipShape(RoundedRectangle(cornerRadius: 3))
     }
 
+    @ViewBuilder
+    private var nextVoteButton: some View {
+        HStack {
+            Spacer()
+            Button {
+                withAnimation {
+                    if currentVote != viewModel.posts.count - 1 {
+                        currentVote += 1
+                    }
+                }
+            } label: {
+                // TODO: - 마지막 cell이면 화살표 버튼을 어떻게 처리할 것인가?
+                Image("icnCaretDown")
+//                    .opacity(currentVote != viewModel.posts.count - 1 ? 1 : 0)
+            }
+            Spacer()
+        }
+    }
+
     private func getFirstDecimalNum(_ voteRatio: Double) -> Int {
         return Int((voteRatio * 10).truncatingRemainder(dividingBy: 10))
     }
 }
-
-

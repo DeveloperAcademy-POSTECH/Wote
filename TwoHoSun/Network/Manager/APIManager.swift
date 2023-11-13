@@ -163,7 +163,7 @@ class APIManager {
                 ]
             case .postCreate(let postCreate):
                 return [
-                    "postType": postCreate.postType,
+//                    "postType": postCreate.postType,
                     "title": postCreate.title,
                     "contents": postCreate.contents,
                     "image": postCreate.image,

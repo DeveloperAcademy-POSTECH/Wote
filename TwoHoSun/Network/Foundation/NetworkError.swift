@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 enum NetworkError: Error {
     case badRequest
     case bodyMissing

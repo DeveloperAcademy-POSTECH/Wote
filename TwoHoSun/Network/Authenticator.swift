@@ -9,14 +9,14 @@ import SwiftUI
 
 import Moya
 
-
-enum TokenState {
-    case none, allexpired, loggedIn, unregister
-}
-
 @Observable
 class Authenticator {
-    var authState: TokenState = .none
+    var authState: TokenState = .none {
+        didSet {
+            authStateSubject.send(authState)
+        }
+    }
+    
     private var accessToken: String? {
         if let accessToken = KeychainManager.shared.readToken(key: "accessToken") {
             return accessToken
@@ -29,26 +29,26 @@ class Authenticator {
         }
         return nil
     }
-    private let queue = DispatchQueue(label: "Authenticator.")
+    private let queue = DispatchQueue(label: "Authenticator")
     private var refreshPublisher: AnyPublisher<Tokens, NetworkError>?
-    var provider = MoyaProvider<APIService>(plugins: [NetworkLoggerPlugin()])
     var relogin: (() -> Void)?
+    private var authStateSubject = CurrentValueSubject<TokenState, Never>(.none)
+    init() {
+         authStateSubject = CurrentValueSubject<TokenState, Never>(authState)
+     }
 
-//    func validToken(_ shouldRefresh: Bool = false) -> AnyPublisher<Tokens, NetworkError> {
-//        return queue.sync { [weak self] in
-//            // 이미 새로운 토큰을 로딩중일때
-//            if let publisher = self?.refreshPublisher {
-//                return publisher
-//            }
-//            // 액세스토큰이 없을때 로그인으로 가도록
-//            guard let token = self?.accessToken else {
-//                return Fail(error: NetworkError.shouldgoLogin)
-//                    .eraseToAnyPublisher()
-//            }
-//            //need new token
-//            ㄱㄷ셔
-//        }
-//    }
+    var authStatePublisher: AnyPublisher<TokenState, Never> {
+         return authStateSubject
+            .eraseToAnyPublisher()
+     }
 
+    func updateAuthState(_ newState: TokenState) {
+        authState = newState
+        authStateSubject.send(newState)
+    }
 
+    func saveTokens(_ token: Tokens) {
+        KeychainManager.shared.saveToken(key: "accessToken", token: token.accessToken)
+        KeychainManager.shared.saveToken(key: "refreshToken", token: token.refreshToken)
+    }
 }
