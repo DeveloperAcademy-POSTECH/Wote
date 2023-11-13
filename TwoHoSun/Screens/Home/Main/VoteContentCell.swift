@@ -58,17 +58,7 @@ struct VoteContentCell: View {
                 voteInfoButton(label: "댓글 \(voteData.commentCount)개", icon: "message.fill")
             }
             .padding(.bottom, 2)
-            // TODO: - 이미지가 없을 때는 랜덤 이미지를 보여주기
-            if let imageURL = voteData.image {
-                ImageView(imageURL: imageURL)
-            } else {
-                Image("imgDummyVote\([1, 2, 3].randomElement()!)")
-                    .resizable()
-                    .frame(maxWidth: .infinity)
-                    .aspectRatio(1.5, contentMode: .fit)
-                    .clipShape(.rect(cornerRadius: 16))
-            }
-
+            voteImageView
             VStack(spacing: 10) {
                 // TODO: - 나의 선택도 추가 필요
                 VoteView(isVoted: voteData.isVoted ?? false,
@@ -94,6 +84,19 @@ extension VoteContentCell {
             .padding(.horizontal, 5)
             .background(Color.disableGray)
             .clipShape(RoundedRectangle(cornerRadius: 3))
+    }
+
+    @ViewBuilder
+    private var voteImageView: some View {
+        if let imageURL = voteData.image {
+            ImageView(imageURL: imageURL)
+        } else {
+            Image("imgDummyVote\([1, 2, 3].randomElement()!)")
+                .resizable()
+                .frame(maxWidth: .infinity)
+                .aspectRatio(1.5, contentMode: .fit)
+                .clipShape(.rect(cornerRadius: 16))
+        }
     }
 
     private func voteInfoButton(label: String, icon: String) -> some View {
