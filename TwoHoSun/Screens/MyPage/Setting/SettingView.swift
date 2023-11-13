@@ -153,10 +153,18 @@ extension SettingView {
             }
             Text(SettingType.appVersion.label)
             Spacer()
-            Text("v 1.0.0")
+            Text(version ?? "")
                 .foregroundStyle(Color.subGray1)
                 .font(.system(size: 14))
         }
+    }
+    
+    private var version: String? {
+        guard let dictionary = Bundle.main.infoDictionary,
+            let version = dictionary["CFBundleShortVersionString"] as? String
+             else { return nil }
+        
+        return "v \(version)"
     }
     
     private var logOutView: some View {
