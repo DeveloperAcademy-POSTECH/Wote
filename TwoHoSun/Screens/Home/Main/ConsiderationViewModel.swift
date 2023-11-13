@@ -10,17 +10,16 @@ import SwiftUI
 import Combine
 
 final class ConsiderationViewModel: ObservableObject {
-    // TODO: - fetch data
-    var isVoted: Bool = true
     var agreeCount: Int = 33
     var disagreeCount: Int = 62
     private let apiManager = NewApiManager()
-    var cancellables: Set<AnyCancellable> = []
     var totalCount: Int {
         return agreeCount + disagreeCount
     }
+
     @Published var votes: [PostResponseDto] = []
     @Published var isLoading: Bool = false
+    var cancellables: Set<AnyCancellable> = []
 
     var buyCountRatio: Double {
         guard totalCount > 0 else { return 0.0 }
