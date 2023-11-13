@@ -46,7 +46,7 @@ struct SettingBlockView: View {
         .toolbarBackground(.hidden)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Text("알림")
+                Text("차단 목록")
                     .foregroundStyle(.white)
                     .font(.system(size: 18, weight: .medium))
             }
