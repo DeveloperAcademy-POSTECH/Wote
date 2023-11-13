@@ -25,7 +25,7 @@ struct TwoHoSunApp: App {
 ////            if appState.hasValidToken {
                 WoteTabView(path: .constant([Route.mainTabView]))
 ////            } else {
-////                OnBoardingView()
+//                OnBoardingView()
 ////            }
 ////                NavigationStack(path: $path) {
 ////                    OnBoardingView(navigationPath: $path)
@@ -52,4 +52,3 @@ class AppLoginState {
         }
     }
 }
-

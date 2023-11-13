@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ConsiderationView: View {
     @State private var currentVote = 0
-    @ObservedObject private var viewModel = ConsiderationViewModel()
+    @ObservedObject private var viewModel =  ConsiderationViewModel()
     @Binding var selectedVisibilityScope: VisibilityScopeType
     @State private var isRefreshing = false
 
@@ -58,6 +58,11 @@ extension ConsiderationView {
                             .padding(.top, 16)
                     }
                     .tag(index)
+                    .onAppear {
+                        if index == viewModel.pageOffset - 2 && viewModel.pageOffset % 5 == 0 {
+                            viewModel.fetchMorePosts(selectedVisibilityScope.type)
+                        }
+                    }
                 }
                 .rotationEffect(.degrees(-90))
                 .frame(width: proxy.size.width, height: proxy.size.height)

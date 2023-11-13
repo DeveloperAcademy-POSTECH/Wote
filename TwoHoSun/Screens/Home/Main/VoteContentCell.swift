@@ -59,7 +59,6 @@ struct VoteContentCell: View {
             .padding(.bottom, 2)
             voteImageView
             VStack(spacing: 10) {
-                // TODO: - 나의 선택도 추가 필요
                 VoteView(postStatus: voteData.postStatus,
                          myChoice: voteData.myChoice,
                          voteCount: voteData.voteCount,
@@ -89,7 +88,7 @@ extension VoteContentCell {
         if let imageURL = voteData.image {
             ImageView(imageURL: imageURL)
         } else {
-            Image("imgDummyVote\([1, 2, 3].randomElement()!)")
+            Image("imgDummyVote\(voteData.id % 3 + 1)")
                 .resizable()
                 .frame(maxWidth: .infinity)
                 .aspectRatio(1.5, contentMode: .fit)
