@@ -19,12 +19,19 @@ struct ConsiderationView: View {
                 .ignoresSafeArea()
             VStack(spacing: 0) {
                 Spacer()
-                if viewModel.votes.isEmpty {
+                if viewModel.isLoading {
+                    HStack {
+                        Spacer()
+                        ProgressView()
+                        Spacer()
+                    }
+                } else if viewModel.votes.isEmpty {
                     NoVoteView()
                 } else {
                     votePagingView
                 }
                 Spacer()
+
             }
             createVoteButton
                 .padding(.bottom, 21)

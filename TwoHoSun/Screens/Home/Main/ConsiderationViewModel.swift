@@ -17,8 +17,9 @@ final class ConsiderationViewModel: ObservableObject {
         return agreeCount + disagreeCount
     }
 
-    @Published var votes: [PostResponseDto] = []
-    @Published var isLoading: Bool = false
+    @Published var votes = [PostResponseDto]()
+    @Published var isLoading = false
+
     var cancellables: Set<AnyCancellable> = []
 
     var buyCountRatio: Double {
@@ -31,6 +32,7 @@ final class ConsiderationViewModel: ObservableObject {
     }
 
     func fetchPosts(page: Int = 0, size: Int = 10, visibilityScope: String) {
+        isLoading = true
         apiManager.request(.postService(.getPosts(page: page,
                                                   size: size,
                                                   visibilityScope: visibilityScope)),
@@ -47,6 +49,7 @@ final class ConsiderationViewModel: ObservableObject {
             if let data = response.data {
                 self.votes.append(contentsOf: data)
             }
+            self.isLoading = false
         }
         .store(in: &cancellables)
     }
