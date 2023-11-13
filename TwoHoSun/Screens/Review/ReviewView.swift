@@ -61,7 +61,7 @@ extension ReviewView {
     private var sameSpendTypeReviewView: some View {
         VStack(spacing: 18) {
             HStack(spacing: 6) {
-                SpendTypeLabel(spendType: .saving, usage: .standard)
+                SpendTypeLabel(spendType: .beautyLover, usage: .standard)
                 Text("나와 같은 성향의 소비 후기")
                     .font(.system(size: 16, weight: .bold))
                     .foregroundStyle(.white)

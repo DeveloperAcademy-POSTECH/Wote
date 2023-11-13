@@ -7,10 +7,9 @@
 
 import SwiftUI
 
+import Kingfisher
+
 struct VoteContentCell: View {
-//    @State var isVoted = false
-//    @State var postStatus = "ACTIVE"
-//    @State var selectedVoteType = UserVoteType.agree
     @State var voteData: PostResponseDto
 
     var body: some View {
@@ -23,8 +22,8 @@ struct VoteContentCell: View {
                     .font(.system(size: 16, weight: .bold))
                     .foregroundStyle(.white)
                 Spacer()
-                // TODO: - 소비 성향 라벨 서버랑 맞추고 변경
-                SpendTypeLabel(spendType: .saving, usage: .standard)
+                SpendTypeLabel(spendType: ConsumerType(rawValue: voteData.author.consumerType) ?? .adventurer,
+                               usage: .standard)
             }
             .padding(.bottom, 10)
             HStack(spacing: 4) {
@@ -59,15 +58,20 @@ struct VoteContentCell: View {
                 voteInfoButton(label: "댓글 \(voteData.commentCount)개", icon: "message.fill")
             }
             .padding(.bottom, 2)
-            RoundedRectangle(cornerRadius: 16)
-                .strokeBorder(Color.disableGray, lineWidth: 1)
-                .frame(maxWidth: .infinity)
-                .aspectRatio(1.5, contentMode: .fit)
+            // TODO: - 이미지가 없을 때는 랜덤 이미지를 보여주기
+            if let imageURL = voteData.image {
+                ImageView(imageURL: imageURL)
+            } else {
+                Image("imgDummyVote\([1, 2, 3].randomElement()!)")
+                    .resizable()
+                    .frame(maxWidth: .infinity)
+                    .aspectRatio(1.5, contentMode: .fit)
+                    .clipShape(.rect(cornerRadius: 16))
+            }
+
             VStack(spacing: 10) {
-//                VoteView(isVoted: voteData.isVoted,
-//                         postStatus: voteData.postStatus,
-//                         selectedVoteType: .agree) // TODO: 수정 필요
-                VoteView(isVoted: voteData.isVoted,
+                // TODO: - 나의 선택도 추가 필요
+                VoteView(isVoted: voteData.isVoted ?? false,
                          postStatus: voteData.postStatus,
                          selectedVoteType: .agree,
                          voteCount: voteData.voteCount,

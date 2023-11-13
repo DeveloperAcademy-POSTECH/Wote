@@ -16,6 +16,7 @@
 		AB03D7392B0137CC000C927A /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB03D7382B0137CC000C927A /* UserService.swift */; };
 		AB03D73B2B0137D5000C927A /* PostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB03D73A2B0137D5000C927A /* PostService.swift */; };
 		AB03D73D2B0137DD000C927A /* CommentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB03D73C2B0137DD000C927A /* CommentService.swift */; };
+		AB03D7462B020EB2000C927A /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB03D7452B020EB2000C927A /* ImageView.swift */; };
 		AB3BACFD2AF7A5FC00E792BE /* SearchTextFieldState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3BACFC2AF7A5FC00E792BE /* SearchTextFieldState.swift */; };
 		AB4522532ADDD99500B69F24 /* SchoolSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */; };
 		AB4522562ADDDBC400B69F24 /* SchoolResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */; };
@@ -71,7 +72,7 @@
 		C768F1A82AE656680020F82C /* PostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C768F1A72AE656680020F82C /* PostModel.swift */; };
 		C77113712AF0E7D500BAB128 /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77113702AF0E7D500BAB128 /* Color+.swift */; };
 		C77113732AF2114800BAB128 /* CustomConfirmModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77113722AF2114800BAB128 /* CustomConfirmModifier.swift */; };
-		C7719FE62AF2861000A520CB /* SpendTitleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7719FE52AF2861000A520CB /* SpendTitleType.swift */; };
+		C7719FE62AF2861000A520CB /* ConsumerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7719FE52AF2861000A520CB /* ConsumerType.swift */; };
 		C7719FE82AF28A7B00A520CB /* SpendTypeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7719FE72AF28A7B00A520CB /* SpendTypeLabel.swift */; };
 		C782E7122AFCCA57006BCE59 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = C782E7112AFCCA57006BCE59 /* CombineMoya */; };
 		C782E7142AFCCA57006BCE59 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = C782E7132AFCCA57006BCE59 /* Moya */; };
@@ -121,6 +122,7 @@
 		AB03D7382B0137CC000C927A /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		AB03D73A2B0137D5000C927A /* PostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostService.swift; sourceTree = "<group>"; };
 		AB03D73C2B0137DD000C927A /* CommentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentService.swift; sourceTree = "<group>"; };
+		AB03D7452B020EB2000C927A /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 		AB3BACFC2AF7A5FC00E792BE /* SearchTextFieldState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTextFieldState.swift; sourceTree = "<group>"; };
 		AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolSearchView.swift; sourceTree = "<group>"; };
 		AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolResponseModel.swift; sourceTree = "<group>"; };
@@ -178,7 +180,7 @@
 		C771136E2AF0E7B600BAB128 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		C77113702AF0E7D500BAB128 /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
 		C77113722AF2114800BAB128 /* CustomConfirmModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomConfirmModifier.swift; sourceTree = "<group>"; };
-		C7719FE52AF2861000A520CB /* SpendTitleType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendTitleType.swift; sourceTree = "<group>"; };
+		C7719FE52AF2861000A520CB /* ConsumerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsumerType.swift; sourceTree = "<group>"; };
 		C7719FE72AF28A7B00A520CB /* SpendTypeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendTypeLabel.swift; sourceTree = "<group>"; };
 		C782E7552AFED171006BCE59 /* NetworkError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		C782E7572AFED1F6006BCE59 /* MoyaPublisher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoyaPublisher.swift; sourceTree = "<group>"; };
@@ -415,7 +417,7 @@
 		C7719FE42AF2769E00A520CB /* EnumType */ = {
 			isa = PBXGroup;
 			children = (
-				C7719FE52AF2861000A520CB /* SpendTitleType.swift */,
+				C7719FE52AF2861000A520CB /* ConsumerType.swift */,
 			);
 			path = EnumType;
 			sourceTree = "<group>";
@@ -579,6 +581,7 @@
 				ABA1E83D2AFD57A4009051E0 /* VoteCardCell.swift */,
 				FD9C277D2AFA27E900702ACD /* ImageCropView.swift */,
 				ABA1E8532AFEA640009051E0 /* GoToTypeTestButton.swift */,
+				AB03D7452B020EB2000C927A /* ImageView.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -741,6 +744,7 @@
 				C768F1A82AE656680020F82C /* PostModel.swift in Sources */,
 				ABA1E83E2AFD57A4009051E0 /* VoteCardCell.swift in Sources */,
 				AB03D73D2B0137DD000C927A /* CommentService.swift in Sources */,
+				AB03D7462B020EB2000C927A /* ImageView.swift in Sources */,
 				ABB71D6E2AE2754300BE0671 /* PostResponseDto.swift in Sources */,
 				C78E7D0A2AF8C53000C2E220 /* ExpandableTextView.swift in Sources */,
 				AB3BACFD2AF7A5FC00E792BE /* SearchTextFieldState.swift in Sources */,
@@ -793,7 +797,7 @@
 				C78E7D012AF6AF4C00C2E220 /* CommentsView.swift in Sources */,
 				AB03D7392B0137CC000C927A /* UserService.swift in Sources */,
 				C7E30E2B2ADC40E4001AE89B /* LoginViewModel.swift in Sources */,
-				C7719FE62AF2861000A520CB /* SpendTitleType.swift in Sources */,
+				C7719FE62AF2861000A520CB /* ConsumerType.swift in Sources */,
 				ABA1E8502AFEA3AF009051E0 /* SettingView.swift in Sources */,
 				C7DE44C22AE26109001639CB /* View+.swift in Sources */,
 				ABB71D742AE2758200BE0671 /* ImageDetailView.swift in Sources */,

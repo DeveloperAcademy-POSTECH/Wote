@@ -39,7 +39,7 @@ enum LabelTypeUsage {
 }
 
 struct SpendTypeLabel: View {
-    let spendType: SpendTitleType
+    let spendType: ConsumerType
     let usage: LabelTypeUsage
 
     var body: some View {

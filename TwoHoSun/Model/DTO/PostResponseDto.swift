@@ -16,12 +16,12 @@ struct PostResponseDto: Codable, Identifiable {
     var author: Author
     var title: String
     var contents: String?
-    var image: String?
+    var image: String? = "empty"
     var externalURL: String?
     var voteCount: Int
     var commentCount: Int
     var price: Int
-    var isVoted: Bool
+    var isVoted: Bool?
     var voteCounts: VoteCounts
 
     enum CodingKeys: String, CodingKey {

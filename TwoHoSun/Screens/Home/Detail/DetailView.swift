@@ -224,7 +224,7 @@ extension DetailView {
                 .foregroundStyle(Color.priceGray)
             HStack(spacing: 8) {
                 // TODO: viewModel로 부터 데이터를 받아서 어떤 유형인지 여기에 알려주면 댐.
-                SpendTypeLabel(spendType: .saving, usage: .standard)
+                SpendTypeLabel(spendType: .budgetKeeper, usage: .standard)
                 SpendTypeLabel(spendType: .ecoWarrior, usage: .standard)
             }
             Text("투표 후 구매 \(type.title) 의견을 선택한 유형을 확인해봐요!")

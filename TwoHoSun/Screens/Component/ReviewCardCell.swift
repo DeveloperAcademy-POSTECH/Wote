@@ -28,7 +28,7 @@ struct ReviewCardCell: View {
                         .font(.system(size: 16, weight: .bold))
                         .foregroundStyle(.white)
                     Spacer()
-                    SpendTypeLabel(spendType: .saving, usage: .cell)
+                    SpendTypeLabel(spendType: .budgetKeeper, usage: .cell)
                 }
                 .padding(.top, 24)
             }

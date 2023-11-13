@@ -101,7 +101,7 @@ extension ReviewDetailView {
 
     private var detailReviewCell: some View {
         VStack(alignment: .leading, spacing: 8) {
-            SpendTypeLabel(spendType: .saving, usage: .cell)
+            SpendTypeLabel(spendType: .budgetKeeper, usage: .cell)
                 .padding(.bottom, 12)
             HStack(spacing: 4) {
                 PurchaseLabel(isPurchased: isPurchased)

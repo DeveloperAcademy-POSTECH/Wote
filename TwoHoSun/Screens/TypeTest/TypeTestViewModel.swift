@@ -10,9 +10,9 @@ import Foundation
 @Observable
 final class TypeTestViewModel {
     var testChoices = [-1, -1, -1, -1, -1, -1, -1]
-    var typeScores = [SpendTitleType: Int]()
+    var typeScores = [ConsumerType: Int]()
     var testProgressValue = 1.0
-    var userSpendType = SpendTitleType.adventurer
+    var userSpendType = ConsumerType.adventurer
 
     var questionNumber: Int {
         Int(testProgressValue)
@@ -30,7 +30,7 @@ final class TypeTestViewModel {
         testProgressValue += 1.0
     }
 
-    func setChoice(order: Int, types: [SpendTitleType]) {
+    func setChoice(order: Int, types: [ConsumerType]) {
         testChoices[questionNumber - 1] = order
 
         for type in types {
@@ -38,7 +38,7 @@ final class TypeTestViewModel {
         }
     }
 
-    func setUserSpendType() -> SpendTitleType {
+    func setUserSpendType() -> ConsumerType {
         let maxScore = typeScores.values.max()!
         let maxScoreTypes = typeScores.filter { $0.value == maxScore }.map { $0.key }
         return maxScoreTypes.randomElement()!
