@@ -21,6 +21,7 @@ enum APIConstants {
     static var headerWithOutToken: [String: String] {
         [NetworkHeaderKey.contentType.rawValue: APIConstants.applicationJSON]
     }
+
     static var headerWithAuthorization: [String: String] {
         [
             NetworkHeaderKey.contentType.rawValue: APIConstants.applicationJSON,

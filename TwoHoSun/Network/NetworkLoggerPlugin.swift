@@ -6,6 +6,7 @@
 //
 
 import Moya
+import Foundation
 
 struct NetworkLoggerPlugin: PluginType {
     func willSend(_ request: RequestType, target: TargetType) {
@@ -75,8 +76,21 @@ struct NetworkLoggerPlugin: PluginType {
                 httpLog.append("\(responseString)\n")
             }
             httpLog.append("[HTTP Response End]")
-
             print(httpLog)
+//            if statusCode != 200 {
+//                do {
+//                    let decodedError = try JSONDecoder().decode(ErrorResponse.self, from: response.data)
+//                    let networkerror = NetworkError(divisionCode: decodedError.divisionCode)
+//                    switch networkerror {
+//                    case .exipredJWT:
+//                        print("여기서에러헨들링을 할까 저 위에서 할까 고민중")
+//                    default:
+//                        throw networkerror
+//                    }
+//                } catch {
+//                    print("error\(error)")
+//                }
+//            }
         }
     func onFail(_ error: MoyaError, target: TargetType) {
             if let response = error.response {

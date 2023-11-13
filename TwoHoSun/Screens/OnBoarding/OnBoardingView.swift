@@ -12,8 +12,13 @@ import Combine
 
 struct OnBoardingView : View {
     @State private var goProfileView = false
-    @ObservedObject var viewModel = LoginViewModel()
+    @StateObject var viewModel: LoginViewModel
     @State private var navigationPath: [Route] = []
+    var loginState: AppLoginState
+    init(viewModel: LoginViewModel, loginState: AppLoginState) {
+        self._viewModel = StateObject(wrappedValue:  viewModel)
+        self.loginState = loginState
+    }
     var body: some View {
         NavigationStack(path: $navigationPath) {
             ZStack {

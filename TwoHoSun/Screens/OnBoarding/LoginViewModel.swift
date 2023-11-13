@@ -20,7 +20,7 @@ class LoginViewModel: ObservableObject {
     func setAuthorizationCode(_ code: String) {
         self.authorization = code
     }
-    init(apimanager: NewApiManager = NewApiManager()) {
+    init(apimanager: NewApiManager) {
         self.apimanager = apimanager
     }
 

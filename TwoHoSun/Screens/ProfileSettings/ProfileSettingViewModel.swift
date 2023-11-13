@@ -33,7 +33,6 @@ final class ProfileSettingViewModel {
         return nicknameValidationType == .valid
         && isSchoolFilled
     }
-    
     init(apiManager: NewApiManager = NewApiManager(), path: Binding<[Route]>) {
         self.apiManager = apiManager
         self.path = path

@@ -16,39 +16,53 @@ enum Route {
 @main
 struct TwoHoSunApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-
-    let appState = AppLoginState()
-//    @State private var path: [Route] = []
-
+    
+    var appState = AppLoginState()    
     var body: some Scene {
         WindowGroup {
-//            if appState.hasValidToken {
-//                WoteTabView(path: .constant([Route.mainTabView]))
-//            } else {
-                OnBoardingView()
-//            }
-//                NavigationStack(path: $path) {
-//                    OnBoardingView(navigationPath: $path)
-//                }
-//                .tint(Color.accentBlue)
-//            }
+            switch appState.loginState {
+            case .none, .allexpired, .unregister:
+                OnBoardingView(viewModel: LoginViewModel(apimanager: appState.serviceRoot.apimanager), loginState: appState)
+            case .loggedIn:
+                NavigationStack {
+                    WoteTabView(path: .constant([]))
+                }
+                
+            }
         }
     }
 }
 
+class ServiceRoot {
+    let auth = Authenticator()
+    lazy var apimanager: NewApiManager = {
+        let manager = NewApiManager(authenticator: auth)
+        return manager
+    }()
+}
+
 @Observable
 class AppLoginState {
-    var hasValidToken: Bool = false
-
+    var loginState: TokenState = .none
+    let serviceRoot: ServiceRoot
     init() {
+        serviceRoot = ServiceRoot()
+        loginState = serviceRoot.auth.authState
         checkTokenValidity()
+        serviceRoot.auth.relogin = relogin
+    }
+
+    private func relogin() {
+        DispatchQueue.main.async {
+            self.loginState = .none
+        }
     }
 
     private func checkTokenValidity() {
         if KeychainManager.shared.readToken(key: "accessToken") != nil {
-            hasValidToken = true
+            loginState = .loggedIn
         } else {
-            hasValidToken = false
+            loginState = .none
         }
     }
 }
