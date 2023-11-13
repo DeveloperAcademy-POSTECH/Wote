@@ -11,7 +11,7 @@ import UserNotifications
 struct SettingNotificationView: View {
     
     @State private var isNotificationOn: Bool = false
-    @State private var sliderValue: Double = 0.0
+    @State private var isMarketingOn: Bool = false
     
     var body: some View {
         ZStack {
@@ -22,12 +22,9 @@ struct SettingNotificationView: View {
                     Toggle(isOn: $isNotificationOn) {
                         Text("알림")
                     }
-                    HStack {
-                        Image(systemName: "speaker.fill")
-                        Slider(value: $sliderValue, in: 0...100, step: 1)
-                        Image(systemName: "speaker.wave.3.fill")
+                    Toggle(isOn: $isMarketingOn) {
+                        Text("마케팅 수신 알림")
                     }
-                    .foregroundStyle(Color.settingGray)
                 }
                 .foregroundStyle(.white)
                 .listRowBackground(Color.disableGray)
