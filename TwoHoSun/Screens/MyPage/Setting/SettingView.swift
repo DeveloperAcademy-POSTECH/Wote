@@ -85,7 +85,7 @@ struct SettingView: View {
                         SettingNotificationView()
                     }
                     settingLinkView(.block) {
-                        Text("알림")
+                        SettingBlockView()
                     }
                 }
                 settingSectionView {
