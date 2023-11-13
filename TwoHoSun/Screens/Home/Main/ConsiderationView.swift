@@ -33,6 +33,7 @@ struct ConsiderationView: View {
     @State private var selectedVoteType = UserVoteType.agree
     @State private var currentVote = 0
     @ObservedObject private var viewModel = ConsiderationViewModel()
+    @Binding var selectedVisibilityScope: VisibilityScopeType
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
@@ -40,8 +41,11 @@ struct ConsiderationView: View {
                 .ignoresSafeArea()
             VStack(spacing: 0) {
                 Spacer()
-                votePagingView
-//                EmptyVoteView()
+                if viewModel.posts.isEmpty {
+                    NoVoteView()
+                } else {
+                    votePagingView
+                }
                 Spacer()
             }
             createVoteButton
@@ -49,7 +53,10 @@ struct ConsiderationView: View {
                 .padding(.trailing, 24)
         }
         .onAppear {
-            viewModel.fetchPosts(visibilityScope: VisibilityScopeType.school.type)
+            viewModel.fetchPosts(visibilityScope: selectedVisibilityScope.type)
+        }
+        .onChange(of: selectedVisibilityScope) { _, newScope in
+            viewModel.fetchPosts(visibilityScope: newScope.type)
         }
     }
 }

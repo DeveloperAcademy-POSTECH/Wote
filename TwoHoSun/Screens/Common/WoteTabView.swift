@@ -68,7 +68,7 @@ enum VisibilityScopeType {
 
 struct WoteTabView: View {
     @State private var selection = WoteTabType.consider
-    @State private var selectedVoteCategoryType = VisibilityScopeType.global
+    @State private var selectedVisibilityScope = VisibilityScopeType.global
     @State private var isVoteCategoryButtonDidTap = false
     @Binding var path: [Route]
     
@@ -128,8 +128,7 @@ extension WoteTabView {
     private func tabDestinationView(for tab: WoteTabType) -> some View {
         switch tab {
         case .consider:
-//            ConsiderationView(viewModel: ConsiderationViewModel())
-            ConsiderationView()
+            ConsiderationView(selectedVisibilityScope: $selectedVisibilityScope)
         case .review:
             ReviewView()
         case .myPage:
@@ -214,7 +213,7 @@ extension WoteTabView {
     private var voteCategoryMenu: some View {
         VStack(alignment: .leading, spacing: 0) {
             Button {
-                selectedVoteCategoryType = .global
+                selectedVisibilityScope = .global
                 isVoteCategoryButtonDidTap = false
             } label: {
                 Text("전국 투표")
@@ -226,7 +225,7 @@ extension WoteTabView {
             Divider()
                 .background(Color.gray300)
             Button {
-                selectedVoteCategoryType = .school
+                selectedVisibilityScope = .school
                 isVoteCategoryButtonDidTap = false
             } label: {
                 Text("우리 학교 투표")
@@ -251,7 +250,7 @@ extension WoteTabView {
                 isVoteCategoryButtonDidTap.toggle()
             } label: {
                 HStack(spacing: 5) {
-                    Text(selectedVoteCategoryType.title)
+                    Text(selectedVisibilityScope.title)
                         .font(.system(size: 20, weight: .bold))
                         .foregroundStyle(.white)
                     Image(systemName: "chevron.down")
