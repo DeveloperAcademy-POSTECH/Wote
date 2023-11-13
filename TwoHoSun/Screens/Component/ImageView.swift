@@ -12,20 +12,33 @@ import Kingfisher
 struct ImageView: View {
     var imageURL: String
     var ratio: Double = 1.5
+    @State private var isImageLoadFailed = false
 
     var body: some View {
-        KFImage(URL(string: imageURL))
-            .placeholder {
-                ProgressView()
+        if isImageLoadFailed {
+            ZStack {
+                RoundedRectangle(cornerRadius: 16)
+                    .frame(maxWidth: .infinity)
+                    .foregroundStyle(Color.lightGray)
+                    .aspectRatio(1.5, contentMode: .fit)
+                Text("이미지 로딩에 실패했습니다")
+                    .font(.system(size: 13))
+                    .foregroundStyle(.white)
             }
-            .onFailure { error in
-                print(error.localizedDescription)
-            }
-            .cancelOnDisappear(true)
-            .resizable()
-            .aspectRatio(ratio, contentMode: .fit)
-            .frame(maxWidth: .infinity)
-            .clipShape(.rect(cornerRadius: 16))
+        } else {
+            KFImage(URL(string: imageURL))
+                .placeholder {
+                    ProgressView()
+                }
+                .onFailure { _ in
+                    isImageLoadFailed.toggle()
+                }
+                .cancelOnDisappear(true)
+                .resizable()
+                .aspectRatio(ratio, contentMode: .fit)
+                .frame(maxWidth: .infinity)
+                .clipShape(.rect(cornerRadius: 16))
+        }
     }
 }
 
