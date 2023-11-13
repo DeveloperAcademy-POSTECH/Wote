@@ -82,7 +82,7 @@ struct SettingView: View {
             List {
                 settingSectionView {
                     settingLinkView(.notification) {
-                        Text("알림")
+                        SettingNotificationView()
                     }
                     settingLinkView(.block) {
                         Text("알림")
@@ -107,6 +107,7 @@ struct SettingView: View {
             .foregroundStyle(.white)
             .scrollContentBackground(.hidden)
         }
+        .navigationTitle("설정")
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.background)
         .toolbarBackground(.visible)
