@@ -85,10 +85,17 @@ final class ProfileSettingViewModel {
     func postNickname() {
         apiManager.request(.userService(.checkNicknameValid(nickname: nickname)),
                            decodingType: NicknameValidation.self)
+        .compactMap(\.data)
             .sink { completion in
-                print(completion)
-            } receiveValue: { response in
-                print(response)
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    print(error)
+                }
+            } receiveValue: { data in
+                self.isNicknameDuplicated = data.isExist
+                self.nicknameValidationType = self.isNicknameDuplicated ? .duplicated : .valid
             }
             .store(in: &bag)
     }
@@ -104,11 +111,9 @@ final class ProfileSettingViewModel {
                     array.removeFirst()
                     array.append(.mainTabView)
                     self.path.wrappedValue = array
-                    break
                 case .failure(let error):
                     print(error)
                 }
-                print(completion)
             } receiveValue: { response in
                 print(response)
             }

@@ -32,17 +32,20 @@ class LoginViewModel: ObservableObject {
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
+
                     break
                 case .failure(let failure):
                     print(failure)
                 }
-            }) {response in
+            }) { response in
                 if let data = response.data {
                     self.appState.serviceRoot.auth.saveTokens(data)
                 }
                 if response.message == "UNREGISTERED_USER" {
+                    self.appState.serviceRoot.auth.authState = .unfinishRegister
                     self.showSheet = true
                 } else {
+                    self.appState.serviceRoot.auth.authState = .loggedIn
                     self.goMain = true
                 }
             }

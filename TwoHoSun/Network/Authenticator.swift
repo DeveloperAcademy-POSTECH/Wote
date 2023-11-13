@@ -16,8 +16,8 @@ class Authenticator {
             authStateSubject.send(authState)
         }
     }
-    
-    private var accessToken: String? {
+
+    var accessToken: String? {
         if let accessToken = KeychainManager.shared.readToken(key: "accessToken") {
             return accessToken
         }

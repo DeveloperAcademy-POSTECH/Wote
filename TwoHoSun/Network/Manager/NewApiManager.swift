@@ -14,9 +14,10 @@ class NewApiManager {
     func request<T: Decodable>(_ request: CommonAPIService, decodingType: T.Type) -> AnyPublisher<GeneralResponse<T>, NetworkError> {
         return authenticator.authStatePublisher
             .flatMap { authState -> AnyPublisher<GeneralResponse<T>, NetworkError> in
-                if authState == .loggedIn {
+                switch authState {
+                case .loggedIn, .unfinishRegister:
                     return self.performRequest(request, decodingType: decodingType)
-                } else {
+                default:
                     return Empty<GeneralResponse<T>, NetworkError>()
                         .eraseToAnyPublisher()
                 }
@@ -52,7 +53,7 @@ class NewApiManager {
                     if errorType == .exipredJWT {
                         self.authenticator.updateAuthState(.allexpired)
                     }
-                    self.authenticator.updateAuthState(.unregister)
+                    self.authenticator.updateAuthState(.unfinishRegister)
                     return errorType
                 } else {
                     return NetworkError(divisionCode: "unknown")

@@ -22,7 +22,7 @@ struct TwoHoSunApp: App {
     var body: some Scene {
         WindowGroup {
             switch appState.serviceRoot.auth.authState {
-            case .none, .allexpired, .unregister:
+            case .none, .allexpired, .unfinishRegister:
                 OnBoardingView(viewModel: LoginViewModel(appState: appState))
                     .environment(appState)
             case .loggedIn:
@@ -44,18 +44,17 @@ class ServiceRoot {
 }
 
 enum TokenState {
-    case none, allexpired, loggedIn, unregister
+    case none, allexpired, loggedIn, unfinishRegister
 }
+
 @Observable
 class AppLoginState {
     let serviceRoot: ServiceRoot
 
     init() {
         serviceRoot = ServiceRoot()
-
         checkTokenValidity()
         serviceRoot.auth.relogin = relogin
-
     }
     
     private func relogin() {
@@ -65,11 +64,10 @@ class AppLoginState {
     }
     
     private func checkTokenValidity() {
-        if KeychainManager.shared.readToken(key: "accessToken") != nil {
+        if serviceRoot.apimanager.authenticator.accessToken != nil {
             serviceRoot.auth.authState = .loggedIn
         } else {
             serviceRoot.auth.authState = .none
         }
     }
 }
-

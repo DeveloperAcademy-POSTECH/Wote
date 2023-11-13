@@ -38,6 +38,7 @@ final class ConsiderationViewModel: ObservableObject {
                                                   size: size,
                                                   visibilityScope: visibilityScope)),
                            decodingType: [PostResponseDto].self)
+        .compactMap(\.data)
         .receive(on: DispatchQueue.main)
         .sink { completion in
             switch completion {
@@ -46,10 +47,8 @@ final class ConsiderationViewModel: ObservableObject {
             case .failure(let failure):
                 print(failure)
             }
-        } receiveValue: { response in
-            if let data = response.data {
-                self.posts.append(contentsOf: data)
-            }
+        } receiveValue: { data in
+            self.posts.append(contentsOf: data)
         }
         .store(in: &cancellables)
     }
