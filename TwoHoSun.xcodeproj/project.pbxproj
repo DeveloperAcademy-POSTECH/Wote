@@ -86,6 +86,7 @@
 		FD3205682ADD5C0D00B0D5F6 /* TwoHoSunApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3205672ADD5C0D00B0D5F6 /* TwoHoSunApp.swift */; };
 		FD3646F52ADD8E2D0064DF94 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FD3646F42ADD8E2D0064DF94 /* Alamofire */; };
 		FD50A0482B01EBE000CF7F59 /* SettingNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD50A0472B01EBE000CF7F59 /* SettingNotificationView.swift */; };
+		FD50A04A2B01F16200CF7F59 /* SettingAnnouncementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD50A0492B01F16200CF7F59 /* SettingAnnouncementView.swift */; };
 		FD6673372AE071550015007D /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6673362AE071550015007D /* APIManager.swift */; };
 		FD70B1F62B01C3080097B727 /* SettingBlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD70B1F52B01C3080097B727 /* SettingBlockView.swift */; };
 		FD76249E2AF954670079AEEF /* LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D792AE2A64300BE0671 /* LinkView.swift */; };
@@ -184,6 +185,7 @@
 		FD3205672ADD5C0D00B0D5F6 /* TwoHoSunApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoHoSunApp.swift; sourceTree = "<group>"; };
 		FD4E75B52ADE9C20000C2277 /* ProfileSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingViewModel.swift; sourceTree = "<group>"; };
 		FD50A0472B01EBE000CF7F59 /* SettingNotificationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingNotificationView.swift; sourceTree = "<group>"; };
+		FD50A0492B01F16200CF7F59 /* SettingAnnouncementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingAnnouncementView.swift; sourceTree = "<group>"; };
 		FD6673362AE071550015007D /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		FD70B1F52B01C3080097B727 /* SettingBlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingBlockView.swift; sourceTree = "<group>"; };
 		FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
@@ -565,6 +567,7 @@
 				ABA1E84F2AFEA3AF009051E0 /* SettingView.swift */,
 				FD50A0472B01EBE000CF7F59 /* SettingNotificationView.swift */,
 				FD70B1F52B01C3080097B727 /* SettingBlockView.swift */,
+				FD50A0492B01F16200CF7F59 /* SettingAnnouncementView.swift */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -701,6 +704,7 @@
 				AB45225C2ADE665100B69F24 /* URLConst.swift in Sources */,
 				C768F1A52AE656570020F82C /* Tokens.swift in Sources */,
 				C73F8E922AE58EAD001C6B07 /* CommentPostModel.swift in Sources */,
+				FD50A04A2B01F16200CF7F59 /* SettingAnnouncementView.swift in Sources */,
 				FD9C277E2AFA27E900702ACD /* ImageCropView.swift in Sources */,
 				C73F8E902AE562FE001C6B07 /* Date+.swift in Sources */,
 				ABA1E8402AFD5841009051E0 /* ConsiderationView.swift in Sources */,

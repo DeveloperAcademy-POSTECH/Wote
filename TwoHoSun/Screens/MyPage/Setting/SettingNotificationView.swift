@@ -46,5 +46,7 @@ struct SettingNotificationView: View {
 }
 
 #Preview {
-    SettingNotificationView()
+    NavigationStack {
+        SettingNotificationView()
+    }
 }
