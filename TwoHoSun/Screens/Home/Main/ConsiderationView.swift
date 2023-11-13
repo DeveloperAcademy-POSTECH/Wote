@@ -7,30 +7,7 @@
 
 import SwiftUI
 
-enum UserVoteType {
-    case agree, disagree
-
-    var title: String {
-        switch self {
-        case .agree:
-            return "산다"
-        case .disagree:
-            return "안 산다"
-        }
-    }
-
-    var iconImage: String {
-        switch self {
-        case .agree:
-            return "circle"
-        case .disagree:
-            return "xmark"
-        }
-    }
-}
-
 struct ConsiderationView: View {
-    @State private var selectedVoteType = UserVoteType.agree
     @State private var currentVote = 0
     @ObservedObject private var viewModel = ConsiderationViewModel()
     @Binding var selectedVisibilityScope: VisibilityScopeType

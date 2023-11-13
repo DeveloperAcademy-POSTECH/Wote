@@ -8,19 +8,17 @@
 import SwiftUI
 
 struct VoteView: View {
-    @State var isVoted: Bool
     @State var postStatus: String
-    @State var selectedVoteType: UserVoteType
+    @State var myChoice: Bool?
     @State var voteCount: Int
     @State var voteCounts: VoteCounts
 
     var agreeVoteRatio: Double {
-
-        return voteCount != 0 ? Double(voteCounts.agreeCount) / Double(voteCount) : 0
+        return voteCount != 0 ? Double(voteCounts.agreeCount) / Double(voteCount) * 100 : 0
     }
 
     var disagreeVoteRatio: Double {
-        return voteCount != 0 ? Double(voteCounts.disagreeCount) / Double(voteCount) : 0
+        return voteCount != 0 ? Double(voteCounts.disagreeCount) / Double(voteCount) * 100 : 0
     }
 
     var isAgreeVoteRatioHigher: Bool {
@@ -29,21 +27,16 @@ struct VoteView: View {
 
     var body: some View {
         VStack(spacing: 8) {
-            if postStatus == PostStatus.closed.rawValue {
-                resultVoteButton(voteType: .agree,
-                                 voteRatio: agreeVoteRatio)
-                resultVoteButton(voteType: .disagree,
-                                 voteRatio: disagreeVoteRatio)
-            } else if isVoted {
-                completedVoteButton(voteType: .agree,
-                                    selectedType: selectedVoteType,
+            if postStatus == PostStatus.closed.rawValue || myChoice != nil {
+                voteResultView(choice: true,
+                                    myChoice: myChoice,
                                     voteRatio: agreeVoteRatio)
-                completedVoteButton(voteType: .disagree,
-                                    selectedType: selectedVoteType,
+                voteResultView(choice: false,
+                                    myChoice: myChoice,
                                     voteRatio: disagreeVoteRatio)
             } else {
-                incompletedVoteButton(.agree)
-                incompletedVoteButton(.disagree)
+                incompletedVoteButton(true)
+                incompletedVoteButton(false)
             }
         }
     }
@@ -51,18 +44,18 @@ struct VoteView: View {
 
 extension VoteView {
 
-    private func incompletedVoteButton(_ voteType: UserVoteType) -> some View {
+    private func incompletedVoteButton(_ choice: Bool) -> some View {
         Button {
-            isVoted = true
-            selectedVoteType = voteType
+            // TODO: - 투표하기 api 추가 후 결과 업데이트
+            myChoice = choice
         } label: {
             ZStack(alignment: .leading) {
                 Capsule()
                     .frame(maxWidth: .infinity)
                     .foregroundStyle(Color.black100)
                 HStack(spacing: 4) {
-                    Image(systemName: voteType.iconImage)
-                    Text(voteType.title)
+                    Image(systemName: choice ? "circle" : "xmark")
+                    Text(choice ? "산다" : "안 산다")
                 }
                 .font(.system(size: 16, weight: .bold))
                 .foregroundStyle(.white)
@@ -72,63 +65,39 @@ extension VoteView {
         .frame(height: 48)
     }
 
-    private func resultVoteButton(voteType: UserVoteType, voteRatio: Double) -> some View {
+    private func voteResultView(choice: Bool, myChoice: Bool?, voteRatio: Double) -> some View {
         ZStack(alignment: .leading) {
             Capsule()
                 .foregroundStyle(Color.black100)
                 .overlay(alignment: .leading) {
-                    voteBackgroundButtonView(voteType: voteType,
-                                             voteRatio: voteRatio)
-                }
-                .clipShape(Capsule())
-            voteDescriptionView(voteType: voteType,
-                                voteRatio: voteRatio)
-        }
-        .frame(height: 48)
-    }
-
-    private func completedVoteButton(voteType: UserVoteType, selectedType: UserVoteType, voteRatio: Double) -> some View {
-        ZStack(alignment: .leading) {
-            Capsule()
-                .foregroundStyle(Color.black100)
-                .overlay(alignment: .leading) {
-                    voteBackgroundButtonView(voteType: voteType,
-                                             voteRatio: voteRatio)
+                    let voteButtonWidth = UIScreen.main.bounds.width - 48
+                    Rectangle()
+                        .frame(width: voteButtonWidth * voteRatio)
+                        .foregroundStyle(isAgreeVoteRatioHigher && choice ||
+                                         !isAgreeVoteRatioHigher && !choice ?
+                                         Color.lightBlue : Color.gray200)
                 }
                 .overlay {
-                    Capsule()
-                        .strokeBorder(Color.lightBlue,
-                                      lineWidth: !(postStatus == PostStatus.closed.rawValue) && voteType == selectedType ? 1 : 0)
+                    if let myChoice = myChoice {
+                        Capsule()
+                            .strokeBorder(Color.lightBlue,
+                                          lineWidth: choice == myChoice ? 1 : 0)
+                    }
                 }
                 .clipShape(Capsule())
-            voteDescriptionView(voteType: voteType,
-                                voteRatio: voteRatio)
+            HStack(spacing: 4) {
+                Image(systemName: choice ? "circle" : "xmark")
+                Text(choice ? "산다" : "안 산다")
+                    .fontWeight(.bold)
+                Spacer()
+                Text(String(format: getFirstDecimalNum(voteRatio) == 0 ?
+                            "%.0f" : "%.1f", voteRatio) + "%")
+            }
+            .foregroundStyle(.white)
+            .font(.system(size: 16))
+            .padding(.horizontal, 20)
         }
         .frame(height: 48)
-    }
-
-    private func voteBackgroundButtonView(voteType: UserVoteType, voteRatio: Double) -> some View {
-        let voteButtonWidth = UIScreen.main.bounds.width - 48
-
-        return Rectangle()
-            .frame(width: voteButtonWidth * voteRatio * 0.01)
-            .foregroundStyle(isAgreeVoteRatioHigher && voteType == .agree ||
-                             !isAgreeVoteRatioHigher && voteType == .disagree ?
-                             Color.lightBlue : Color.gray200)
-    }
-
-    private func voteDescriptionView(voteType: UserVoteType, voteRatio: Double) -> some View {
-        HStack(spacing: 4) {
-            Image(systemName: voteType.iconImage)
-            Text(voteType.title)
-                .fontWeight(.bold)
-            Spacer()
-            Text(String(format: getFirstDecimalNum(voteRatio) == 0 ?
-                        "%.0f" : "%.1f", voteRatio) + "%")
-        }
-        .foregroundStyle(.white)
-        .font(.system(size: 16))
-        .padding(.horizontal, 20)
     }
 
     private func getFirstDecimalNum(_ voteRatio: Double) -> Int {

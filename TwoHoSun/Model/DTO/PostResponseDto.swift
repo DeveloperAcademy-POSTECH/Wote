@@ -16,19 +16,24 @@ struct PostResponseDto: Codable, Identifiable {
     var author: Author
     var title: String
     var contents: String?
-    var image: String? = "empty"
+    var image: String?
     var externalURL: String?
     var voteCount: Int
     var commentCount: Int
     var price: Int
-    var isVoted: Bool?
+    var myChoice: Bool?
     var voteCounts: VoteCounts
+    var voteInfoList: VoteInfoList?
+    var isMine: Bool?
+    var isNotified: Bool?
+    var isPurchased: Bool?
 
     enum CodingKeys: String, CodingKey {
         case id = "postId"
         case createDate, modifiedDate, visibilityScope, postStatus,
              author, title, contents, image, externalURL, voteCount,
-             commentCount, price, isVoted, voteCounts
+             commentCount, price, myChoice, voteCounts, voteInfoList,
+             isMine, isNotified, isPurchased
     }
 }
 
@@ -41,4 +46,30 @@ enum PostStatus: String, Codable {
     case active = "ACTIVE"
     case closed = "CLOSED"
     case review = "REVIEW"
+}
+
+enum VisibilityScopeType {
+    case all, global, school
+
+    var title: String {
+        switch self {
+        case .all:
+            return "전체"
+        case .global:
+            return "전국 투표"
+        case .school:
+            return "OO고등학교 투표"
+        }
+    }
+
+    var type: String {
+        switch self {
+        case .all:
+            return "ALL"
+        case .global:
+            return "GLOBAL"
+        case .school:
+            return "SCHOOL"
+        }
+    }
 }

@@ -44,28 +44,6 @@ enum WoteTabType: Int, CaseIterable {
     }
 }
 
-enum VisibilityScopeType {
-    case global, school
-
-    var title: String {
-        switch self {
-        case .global:
-            return "전국 투표"
-        case .school:
-            return "OO고등학교 투표"
-        }
-    }
-
-    var type: String {
-        switch self {
-        case .global:
-            return "GLOBAL"
-        case .school:
-            return "SCHOOL"
-        }
-    }
-}
-
 struct WoteTabView: View {
     @State private var selection = WoteTabType.consider
     @State private var selectedVisibilityScope = VisibilityScopeType.global

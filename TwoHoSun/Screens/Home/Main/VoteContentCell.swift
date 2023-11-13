@@ -61,9 +61,8 @@ struct VoteContentCell: View {
             voteImageView
             VStack(spacing: 10) {
                 // TODO: - 나의 선택도 추가 필요
-                VoteView(isVoted: voteData.isVoted ?? false,
-                         postStatus: voteData.postStatus,
-                         selectedVoteType: .agree,
+                VoteView(postStatus: voteData.postStatus,
+                         myChoice: voteData.myChoice,
                          voteCount: voteData.voteCount,
                          voteCounts: voteData.voteCounts)
                 detailResultButton
