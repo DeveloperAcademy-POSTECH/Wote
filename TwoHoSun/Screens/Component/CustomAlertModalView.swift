@@ -9,6 +9,7 @@ import SwiftUI
 enum AlertType {
     case ban(nickname: String)
     case erase
+    case withdrawal
 
     var title: String {
         switch self {
@@ -16,6 +17,8 @@ enum AlertType {
             return "차단"
         case .erase:
             return "삭제"
+        case .withdrawal:
+            return "탈퇴"
         }
     }
 
@@ -25,6 +28,8 @@ enum AlertType {
             return "\(nickname)님의 게시글이 더 이상 보이지 않습니다."
         case .erase:
             return "지금 댓글을 삭제하시면 댓글을 영구히\n복구할 수 없습니다."
+        case .withdrawal:
+            return "계정을 삭제하면 투표, 후기 등 모든 활동 정보가 삭제 되며 7일간 다시 가입할 수 없어요."
         }
     }
     var optionalDescription: String {
@@ -33,6 +38,30 @@ enum AlertType {
             return "(‘마이페이지 > 앱 설정 > 사용자 차단 목록'에서 취소할 수 \n있습니다.)"
         case .erase:
             return ""
+        case .withdrawal:
+            return ""
+        }
+    }
+    
+    var leftButtonLabel: String {
+        switch self {
+        case .ban:
+            return "차단하기"
+        case .erase:
+            return "삭제하기"
+        case .withdrawal:
+            return "탈퇴"
+        }
+    }
+    
+    var rightButtonLabel: String {
+        switch self {
+        case .ban:
+            return "취소"
+        case .erase:
+            return "취소"
+        case .withdrawal:
+            return "유지하기"
         }
     }
 }
@@ -46,6 +75,8 @@ struct CustomAlertModalView: View {
             return "\(nickname)님을 "
         case .erase:
             return "댓글을 "
+        case .withdrawal:
+            return "정말 Wote를 "
         }
     }
 
@@ -79,7 +110,7 @@ struct CustomAlertModalView: View {
                     Button {
                         leftButtonAction()
                     } label: {
-                        Text("\(alertType.title)하기")
+                        Text(alertType.leftButtonLabel)
                             .foregroundStyle(.white)
                             .font(.system(size: 16, weight: .semibold))
                             .frame(width: 136, height: 41)
@@ -90,7 +121,7 @@ struct CustomAlertModalView: View {
                     Button {
                         isPresented.toggle()
                     } label: {
-                        Text("취소")
+                        Text(alertType.rightButtonLabel)
                             .foregroundStyle(.white)
                             .font(.system(size: 16, weight: .semibold))
                             .frame(width: 136, height: 41)
@@ -100,10 +131,10 @@ struct CustomAlertModalView: View {
 
                 }
             }
-
             .padding(EdgeInsets(top: 32, leading: 28, bottom: 28, trailing: 28))
             .background(Color.disableGray)
             .clipShape(.rect(cornerRadius: 10))
+            .padding(.horizontal, 16)
         }
     }
 }

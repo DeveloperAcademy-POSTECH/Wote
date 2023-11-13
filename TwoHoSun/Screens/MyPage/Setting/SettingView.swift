@@ -98,7 +98,7 @@ struct SettingView: View {
                         SettingQuestionsView(viewModel: SettingQuestionsViewModel(), isSubmited: $isSubmited)
                     }
                     settingLinkView(.terms) {
-                        Text("알림")
+                        SettingTermsView()
                     }
                     appVersionView
                 }
@@ -142,7 +142,7 @@ struct SettingView: View {
 
 extension SettingView {
     private var appVersionView: some View {
-        HStack {
+        HStack(spacing: 16) {
             ZStack {
                 SettingType.appVersion.color
                     .frame(width: 28, height: 28)
@@ -163,7 +163,7 @@ extension SettingView {
         Button {
             print("tap")
         } label: {
-            HStack {
+            HStack(spacing: 16) {
                 ZStack {
                     SettingType.logOut.color
                         .frame(width: 28, height: 28)
@@ -189,7 +189,7 @@ extension SettingView {
         NavigationLink {
             content()
         } label: {
-            HStack {
+            HStack(spacing: 16) {
                 ZStack {
                     type.color
                         .frame(width: 28, height: 28)

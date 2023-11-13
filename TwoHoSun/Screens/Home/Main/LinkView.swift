@@ -13,11 +13,12 @@ struct LinkView: View {
     var externalURL: String
 
     var body: some View {
-        LinkWebView(externalURL: externalURL)
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
+        VStack(spacing: 16) {
+            HStack {
                 dismissButton
+                Spacer()
             }
+            LinkWebView(externalURL: externalURL)
         }
     }
 }
@@ -32,6 +33,7 @@ extension LinkView {
                 .font(.system(size: 20))
                 .foregroundStyle(.black)
         }
+        .padding(.leading, 16)
     }
 }
 
