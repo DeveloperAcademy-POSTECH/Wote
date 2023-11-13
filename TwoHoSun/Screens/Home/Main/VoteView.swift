@@ -8,16 +8,20 @@
 import SwiftUI
 
 struct VoteView: View {
-//    @State var isVoted = false
-//    @State var postStatus = PostStatus.active.rawValue
-//    @State var selectedVoteType = UserVoteType.agree
-//    @State var agreeVoteRatio = 30.0
-//    @State var disagreeVoteRatio = 70.0
     @State var isVoted: Bool
     @State var postStatus: String
     @State var selectedVoteType: UserVoteType
-    @State var agreeVoteRatio = 30.0
-    @State var disagreeVoteRatio = 70.0
+    @State var voteCount: Int
+    @State var voteCounts: VoteCounts
+
+    var agreeVoteRatio: Double {
+
+        return voteCount != 0 ? Double(voteCounts.agreeCount) / Double(voteCount) : 0
+    }
+
+    var disagreeVoteRatio: Double {
+        return voteCount != 0 ? Double(voteCounts.disagreeCount) / Double(voteCount) : 0
+    }
 
     var isAgreeVoteRatioHigher: Bool {
         agreeVoteRatio > disagreeVoteRatio
@@ -130,10 +134,4 @@ extension VoteView {
     private func getFirstDecimalNum(_ voteRatio: Double) -> Int {
         return Int((voteRatio * 10).truncatingRemainder(dividingBy: 10))
     }
-}
-
-#Preview {
-    VoteView(isVoted: Bool.random(),
-             postStatus: PostStatus.closed.rawValue,
-             selectedVoteType: .agree)
 }

@@ -19,7 +19,7 @@ final class ConsiderationViewModel: ObservableObject {
     var totalCount: Int {
         return agreeCount + disagreeCount
     }
-    @Published var posts: [PostResponseDto] = []
+    @Published var votes: [PostResponseDto] = []
     @Published var isLoading: Bool = false
 
     var buyCountRatio: Double {
@@ -46,7 +46,7 @@ final class ConsiderationViewModel: ObservableObject {
             }
         } receiveValue: { response in
             if let data = response.data {
-                self.posts.append(contentsOf: data)
+                self.votes.append(contentsOf: data)
             }
         }
         .store(in: &cancellables)

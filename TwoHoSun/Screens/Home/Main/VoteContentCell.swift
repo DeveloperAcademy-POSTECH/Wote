@@ -64,9 +64,14 @@ struct VoteContentCell: View {
                 .frame(maxWidth: .infinity)
                 .aspectRatio(1.5, contentMode: .fit)
             VStack(spacing: 10) {
+//                VoteView(isVoted: voteData.isVoted,
+//                         postStatus: voteData.postStatus,
+//                         selectedVoteType: .agree) // TODO: 수정 필요
                 VoteView(isVoted: voteData.isVoted,
                          postStatus: voteData.postStatus,
-                         selectedVoteType: .agree) // TODO: 수정 필요
+                         selectedVoteType: .agree,
+                         voteCount: voteData.voteCount,
+                         voteCounts: voteData.voteCounts)
                 detailResultButton
             }
             .padding(.top, 2)

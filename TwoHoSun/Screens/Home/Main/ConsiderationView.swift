@@ -34,6 +34,7 @@ struct ConsiderationView: View {
     @State private var currentVote = 0
     @ObservedObject private var viewModel = ConsiderationViewModel()
     @Binding var selectedVisibilityScope: VisibilityScopeType
+    @State private var isRefreshing = false
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
@@ -41,7 +42,7 @@ struct ConsiderationView: View {
                 .ignoresSafeArea()
             VStack(spacing: 0) {
                 Spacer()
-                if viewModel.posts.isEmpty {
+                if viewModel.votes.isEmpty {
                     NoVoteView()
                 } else {
                     votePagingView
@@ -67,7 +68,7 @@ extension ConsiderationView {
         GeometryReader { proxy in
             TabView(selection: $currentVote) {
                 // TODO: - cell 5개로 설정해 둠
-                ForEach(Array(zip(viewModel.posts.indices, viewModel.posts)), id: \.0) { index, item in
+                ForEach(Array(zip(viewModel.votes.indices, viewModel.votes)), id: \.0) { index, item in
                     VStack(spacing: 0) {
                         VoteContentCell(voteData: item)
                         nextVoteButton
@@ -118,7 +119,7 @@ extension ConsiderationView {
             Spacer()
             Button {
                 withAnimation {
-                    if currentVote != viewModel.posts.count - 1 {
+                    if currentVote != viewModel.votes.count - 1 {
                         currentVote += 1
                     }
                 }

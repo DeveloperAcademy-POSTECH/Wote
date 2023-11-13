@@ -161,9 +161,9 @@ extension DetailView {
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .padding(.vertical,8)
             // TODO: - 수정 필요 
-            VoteView(isVoted: Bool.random(),
-                     postStatus: PostStatus.active.rawValue,
-                     selectedVoteType: .agree)
+//            VoteView(isVoted: Bool.random(),
+//                     postStatus: PostStatus.active.rawValue,
+//                     selectedVoteType: .agree)
             HStack {
                 Label("0명 투표", systemImage: "person.2.fill")
                     .font(.system(size: 14))
