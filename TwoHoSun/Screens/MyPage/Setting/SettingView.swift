@@ -75,6 +75,8 @@ enum SettingType {
 }
 
 struct SettingView: View {
+    @State private var isSubmited: Bool = false
+    
     var body: some View {
         ZStack {
             Color.background
@@ -90,10 +92,10 @@ struct SettingView: View {
                 }
                 settingSectionView {
                     settingLinkView(.announcement) {
-                        Text("알림")
+                        SettingAnnouncementView()
                     }
                     settingLinkView(.questions) {
-                        Text("알림")
+                        SettingQuestionsView(viewModel: SettingQuestionsViewModel(), isSubmited: $isSubmited)
                     }
                     settingLinkView(.terms) {
                         Text("알림")
@@ -106,6 +108,23 @@ struct SettingView: View {
             }
             .foregroundStyle(.white)
             .scrollContentBackground(.hidden)
+            if isSubmited {
+                ZStack {
+                    Color.black.opacity(0.7)
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.lightBlue)
+                        .frame(width: 283, height: 36)
+                    Text("금방 답변 드리겠습니다 :)")
+                        .foregroundStyle(.white)
+                        .font(.system(size: 16, weight: .semibold))
+                }
+                .ignoresSafeArea()
+                .onAppear {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        isSubmited = false
+                    }
+                }
+            }
         }
         .navigationTitle("설정")
         .navigationBarTitleDisplayMode(.inline)
