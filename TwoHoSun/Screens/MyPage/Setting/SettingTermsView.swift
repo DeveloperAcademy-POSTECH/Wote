@@ -50,7 +50,7 @@ struct SettingTermsView: View {
     @State private var isFirstOpened: Bool = false
     @State private var isSecondOpened: Bool = false
     @State private var isThirdOpened: Bool = false
-    @State private var isWithdrawal: Bool = false
+    @State private var showWithdrawal: Bool = false
     
     var body: some View {
         ZStack {
@@ -87,9 +87,9 @@ struct SettingTermsView: View {
                 .listRowSeparatorTint(Color.gray600)
             }
             .scrollContentBackground(.hidden)
-            if isWithdrawal {
-                CustomAlertModalView(alertType: .withdrawal, isPresented: $isWithdrawal) {
-                    isWithdrawal = false
+            if showWithdrawal {
+                CustomAlertModalView(alertType: .withdrawal, isPresented: $showWithdrawal) {
+                    showWithdrawal = false
                     print("탈퇴 완료!")
                 }
             }
@@ -120,7 +120,7 @@ extension SettingTermsView {
     private var withdrawalView: some View {
         Button {
             withAnimation {
-                isWithdrawal = true
+                showWithdrawal = true
             }
         } label: {
             HStack(spacing: 16) {

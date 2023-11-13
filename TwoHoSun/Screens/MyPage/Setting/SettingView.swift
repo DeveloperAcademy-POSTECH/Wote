@@ -76,6 +76,7 @@ enum SettingType {
 
 struct SettingView: View {
     @State private var isSubmited: Bool = false
+    @State private var showLogOut: Bool = false
     
     var body: some View {
         ZStack {
@@ -108,6 +109,12 @@ struct SettingView: View {
             }
             .foregroundStyle(.white)
             .scrollContentBackground(.hidden)
+            if showLogOut {
+                CustomAlertModalView(alertType: .logOut, isPresented: $showLogOut) {
+                    print("로그아웃 완료!")
+                    showLogOut = false
+                }
+            }
             if isSubmited {
                 ZStack {
                     Color.black.opacity(0.7)
@@ -169,7 +176,9 @@ extension SettingView {
     
     private var logOutView: some View {
         Button {
-            print("tap")
+            withAnimation {
+                showLogOut = true
+            }
         } label: {
             HStack(spacing: 16) {
                 ZStack {

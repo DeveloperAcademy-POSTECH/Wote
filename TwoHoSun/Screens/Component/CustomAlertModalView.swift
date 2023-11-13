@@ -10,6 +10,7 @@ enum AlertType {
     case ban(nickname: String)
     case erase
     case withdrawal
+    case logOut
 
     var title: String {
         switch self {
@@ -19,6 +20,8 @@ enum AlertType {
             return "삭제"
         case .withdrawal:
             return "탈퇴"
+        case .logOut:
+            return ""
         }
     }
 
@@ -29,7 +32,9 @@ enum AlertType {
         case .erase:
             return "지금 댓글을 삭제하시면 댓글을 영구히\n복구할 수 없습니다."
         case .withdrawal:
-            return "계정을 삭제하면 투표, 후기 등 모든 활동 정보가 삭제 되며 7일간 다시 가입할 수 없어요."
+            return "계정을 삭제하면 투표, 후기 등 모든 활동 정보가\n삭제 되며 7일간 다시 가입할 수 없어요."
+        case .logOut:
+            return "로그아웃하면 재 로그인 할 때까지 Wote의\n콘텐츠들을 이용하기 어려워요."
         }
     }
     var optionalDescription: String {
@@ -39,6 +44,8 @@ enum AlertType {
         case .erase:
             return ""
         case .withdrawal:
+            return ""
+        case .logOut:
             return ""
         }
     }
@@ -51,6 +58,8 @@ enum AlertType {
             return "삭제하기"
         case .withdrawal:
             return "탈퇴"
+        case .logOut:
+            return "로그아웃"
         }
     }
     
@@ -61,6 +70,8 @@ enum AlertType {
         case .erase:
             return "취소"
         case .withdrawal:
+            return "유지하기"
+        case .logOut:
             return "유지하기"
         }
     }
@@ -77,6 +88,8 @@ struct CustomAlertModalView: View {
             return "댓글을 "
         case .withdrawal:
             return "정말 Wote를 "
+        case .logOut:
+            return "로그아웃 "
         }
     }
 
