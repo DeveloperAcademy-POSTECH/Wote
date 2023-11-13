@@ -9,6 +9,7 @@ import Foundation
 
 struct Author: Codable {
     let id: Int
-    let userNickname: String?
+    let nickname: String
     let userProfileImage: String?
+    let consumerType: String
 }

@@ -16,7 +16,6 @@
 		AB03D7392B0137CC000C927A /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB03D7382B0137CC000C927A /* UserService.swift */; };
 		AB03D73B2B0137D5000C927A /* PostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB03D73A2B0137D5000C927A /* PostService.swift */; };
 		AB03D73D2B0137DD000C927A /* CommentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB03D73C2B0137DD000C927A /* CommentService.swift */; };
-		AB03D73F2B0138B3000C927A /* NewNewAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB03D73E2B0138B3000C927A /* NewNewAPIManager.swift */; };
 		AB3BACFD2AF7A5FC00E792BE /* SearchTextFieldState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3BACFC2AF7A5FC00E792BE /* SearchTextFieldState.swift */; };
 		AB4522532ADDD99500B69F24 /* SchoolSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */; };
 		AB4522562ADDDBC400B69F24 /* SchoolResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */; };
@@ -47,7 +46,7 @@
 		ABAFB6412AF978790070512F /* PurchaseLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAFB6402AF978790070512F /* PurchaseLabel.swift */; };
 		ABAFB6432AF979C80070512F /* CommentPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAFB6422AF979C80070512F /* CommentPreview.swift */; };
 		ABB71D642AE26EB100BE0671 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = ABB71D632AE26EB100BE0671 /* Kingfisher */; };
-		ABB71D6E2AE2754300BE0671 /* PostResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D6D2AE2754300BE0671 /* PostResponseModel.swift */; };
+		ABB71D6E2AE2754300BE0671 /* PostResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D6D2AE2754300BE0671 /* PostResponseDto.swift */; };
 		ABB71D742AE2758200BE0671 /* ImageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D732AE2758200BE0671 /* ImageDetailView.swift */; };
 		ABB71D7C2AE2B3F100BE0671 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D7B2AE2B3F100BE0671 /* NotificationView.swift */; };
 		ABBBC67C2AE49CC800B1E614 /* PostCreateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBBC67B2AE49CC800B1E614 /* PostCreateModel.swift */; };
@@ -122,7 +121,6 @@
 		AB03D7382B0137CC000C927A /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		AB03D73A2B0137D5000C927A /* PostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostService.swift; sourceTree = "<group>"; };
 		AB03D73C2B0137DD000C927A /* CommentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentService.swift; sourceTree = "<group>"; };
-		AB03D73E2B0138B3000C927A /* NewNewAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewNewAPIManager.swift; sourceTree = "<group>"; };
 		AB3BACFC2AF7A5FC00E792BE /* SearchTextFieldState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTextFieldState.swift; sourceTree = "<group>"; };
 		AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolSearchView.swift; sourceTree = "<group>"; };
 		AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolResponseModel.swift; sourceTree = "<group>"; };
@@ -153,7 +151,7 @@
 		ABA1E8532AFEA640009051E0 /* GoToTypeTestButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoToTypeTestButton.swift; sourceTree = "<group>"; };
 		ABAFB6402AF978790070512F /* PurchaseLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseLabel.swift; sourceTree = "<group>"; };
 		ABAFB6422AF979C80070512F /* CommentPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentPreview.swift; sourceTree = "<group>"; };
-		ABB71D6D2AE2754300BE0671 /* PostResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostResponseModel.swift; sourceTree = "<group>"; };
+		ABB71D6D2AE2754300BE0671 /* PostResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostResponseDto.swift; sourceTree = "<group>"; };
 		ABB71D732AE2758200BE0671 /* ImageDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailView.swift; sourceTree = "<group>"; };
 		ABB71D792AE2A64300BE0671 /* LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkView.swift; sourceTree = "<group>"; };
 		ABB71D7B2AE2B3F100BE0671 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
@@ -257,7 +255,6 @@
 		AB03D7432B015251000C927A /* Manager */ = {
 			isa = PBXGroup;
 			children = (
-				AB03D73E2B0138B3000C927A /* NewNewAPIManager.swift */,
 				C7B5A8412AFEE7AC00B73881 /* NewApiManager.swift */,
 				FD6673362AE071550015007D /* APIManager.swift */,
 			);
@@ -351,7 +348,7 @@
 			isa = PBXGroup;
 			children = (
 				AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */,
-				ABB71D6D2AE2754300BE0671 /* PostResponseModel.swift */,
+				ABB71D6D2AE2754300BE0671 /* PostResponseDto.swift */,
 				ABBFB6312AE3EABD006CE8CA /* VoteCreateRequestModel.swift */,
 			);
 			path = DTO;
@@ -744,13 +741,12 @@
 				C768F1A82AE656680020F82C /* PostModel.swift in Sources */,
 				ABA1E83E2AFD57A4009051E0 /* VoteCardCell.swift in Sources */,
 				AB03D73D2B0137DD000C927A /* CommentService.swift in Sources */,
-				ABB71D6E2AE2754300BE0671 /* PostResponseModel.swift in Sources */,
+				ABB71D6E2AE2754300BE0671 /* PostResponseDto.swift in Sources */,
 				C78E7D0A2AF8C53000C2E220 /* ExpandableTextView.swift in Sources */,
 				AB3BACFD2AF7A5FC00E792BE /* SearchTextFieldState.swift in Sources */,
 				AB53CA6D2AF7AC4100FD850A /* UINavigationController+.swift in Sources */,
 				C73F8E882AE55101001C6B07 /* Author.swift in Sources */,
 				C782E7582AFED1F6006BCE59 /* MoyaPublisher.swift in Sources */,
-				AB03D73F2B0138B3000C927A /* NewNewAPIManager.swift in Sources */,
 				AB45225C2ADE665100B69F24 /* URLConst.swift in Sources */,
 				C7B5A8422AFEE7AC00B73881 /* NewApiManager.swift in Sources */,
 				C768F1A52AE656570020F82C /* Tokens.swift in Sources */,

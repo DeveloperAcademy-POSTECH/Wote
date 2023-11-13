@@ -44,22 +44,31 @@ enum WoteTabType: Int, CaseIterable {
     }
 }
 
-enum VoteCategoryType {
-    case all, mySchool
+enum VisibilityScopeType {
+    case global, school
 
     var title: String {
         switch self {
-        case .all:
+        case .global:
             return "전국 투표"
-        case .mySchool:
+        case .school:
             return "OO고등학교 투표"
+        }
+    }
+
+    var type: String {
+        switch self {
+        case .global:
+            return "GLOBAL"
+        case .school:
+            return "SCHOOL"
         }
     }
 }
 
 struct WoteTabView: View {
     @State private var selection = WoteTabType.consider
-    @State private var selectedVoteCategoryType = VoteCategoryType.all
+    @State private var selectedVoteCategoryType = VisibilityScopeType.global
     @State private var isVoteCategoryButtonDidTap = false
     @Binding var path: [Route]
     
@@ -119,7 +128,8 @@ extension WoteTabView {
     private func tabDestinationView(for tab: WoteTabType) -> some View {
         switch tab {
         case .consider:
-            ConsiderationView(viewModel: ConsiderationViewModel())
+//            ConsiderationView(viewModel: ConsiderationViewModel())
+            ConsiderationView()
         case .review:
             ReviewView()
         case .myPage:
@@ -204,7 +214,7 @@ extension WoteTabView {
     private var voteCategoryMenu: some View {
         VStack(alignment: .leading, spacing: 0) {
             Button {
-                selectedVoteCategoryType = .all
+                selectedVoteCategoryType = .global
                 isVoteCategoryButtonDidTap = false
             } label: {
                 Text("전국 투표")
@@ -216,7 +226,7 @@ extension WoteTabView {
             Divider()
                 .background(Color.gray300)
             Button {
-                selectedVoteCategoryType = .mySchool
+                selectedVoteCategoryType = .school
                 isVoteCategoryButtonDidTap = false
             } label: {
                 Text("우리 학교 투표")

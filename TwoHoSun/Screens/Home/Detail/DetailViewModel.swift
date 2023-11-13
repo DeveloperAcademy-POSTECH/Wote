@@ -11,7 +11,7 @@ import Observation
 @Observable
 class DetailViewModel {
     var commentsDatas: [CommentsModel] = []
-    var detailPostData: PostModel?
+//    var detailPostData: PostModel?
     var postId: Int
     var isSendMessage: Bool = false
 
@@ -21,13 +21,13 @@ class DetailViewModel {
 
     func getNicknameForComment(commentId: Int) -> String? {
         if let comment = commentsDatas.first(where: { $0.commentId == commentId }) {
-            return comment.author.userNickname
+            return comment.author.nickname
         }
         return nil
     }
     
     func fetchVoteDetailPost() {
-        APIManager.shared.requestAPI(type: .getDetailPost(postId: postId)) { (response: GeneralResponse<PostResponse>) in
+        APIManager.shared.requestAPI(type: .getDetailPost(postId: postId)) { (response: GeneralResponse<PostResponseDto>) in
             switch response.status {
             case 200:
                 print("상세 조회 성공")
