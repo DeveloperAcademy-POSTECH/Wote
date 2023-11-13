@@ -15,8 +15,7 @@ struct VoteContentCell: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 8) {
-                // TODO: - 프로필 이미지 변경
-                Image("imgDefaultProfile")
+                ProfileImageView(imageURL: voteData.author.profileImage)
                     .frame(width: 32, height: 32)
                 Text(voteData.author.nickname)
                     .font(.system(size: 16, weight: .bold))
