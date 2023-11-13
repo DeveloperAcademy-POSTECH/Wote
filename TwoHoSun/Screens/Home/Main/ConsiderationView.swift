@@ -51,7 +51,6 @@ extension ConsiderationView {
     private var votePagingView: some View {
         GeometryReader { proxy in
             TabView(selection: $currentVote) {
-                // TODO: - cell 5개로 설정해 둠
                 ForEach(Array(zip(viewModel.votes.indices, viewModel.votes)), id: \.0) { index, item in
                     VStack(spacing: 0) {
                         VoteContentCell(voteData: item)

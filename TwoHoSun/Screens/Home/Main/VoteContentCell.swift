@@ -47,7 +47,7 @@ struct VoteContentCell: View {
             HStack(spacing: 0) {
                 Text("가격: \(voteData.price)원")
                 Text(" · ")
-                Text("2020년 3월 12일")
+                Text(voteData.createDate.convertToStringDate() ?? "")
             }
             .font(.system(size: 14))
             .foregroundStyle(Color.gray100)
