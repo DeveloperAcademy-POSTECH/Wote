@@ -10,9 +10,7 @@ import SwiftUI
 struct ConsiderationView: View {
     @State private var currentVote = 0
     @Binding var selectedVisibilityScope: VisibilityScopeType
-    @State private var isRefreshing = false
-    @State private var dragAmount = CGSize.zero
-    @State private var isDragging = false
+//    @State private var isRefreshing = false
     @EnvironmentObject var viewModel: ConsiderationViewModel
 
     var body: some View {
@@ -71,6 +69,25 @@ extension ConsiderationView {
             .rotationEffect(.degrees(90), anchor: .topLeading)
             .offset(x: proxy.size.width)
             .tabViewStyle(.page(indexDisplayMode: .never))
+            .gesture(
+                DragGesture()
+                    .onChanged { value in
+                        if currentVote == 0 && value.translation.height > 0 { // 새로 고침하기
+//                            isRefreshing = true
+                            viewModel.fetchPosts(visibilityScope: selectedVisibilityScope.type)
+                        }
+                    }
+                    .onEnded { _ in
+                        print("Gesture Ended")
+                    }
+            )
+
+//            if viewModel.isRefreshing {
+//                ProgressView()
+//                    .progressViewStyle(CircularProgressViewStyle(tint: .blue))
+//                    .scaleEffect(1.5, anchor: .center)
+//                    .offset(x: UIScreen.main.bounds.width / 2, y: 30)
+//            }
         }
     }
     
