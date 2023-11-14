@@ -9,9 +9,11 @@ import SwiftUI
 
 struct ConsiderationView: View {
     @State private var currentVote = 0
-    @ObservedObject private var viewModel =  ConsiderationViewModel()
     @Binding var selectedVisibilityScope: VisibilityScopeType
     @State private var isRefreshing = false
+    @State private var dragAmount = CGSize.zero
+    @State private var isDragging = false
+    @ObservedObject var viewModel: ConsiderationViewModel
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
@@ -59,7 +61,7 @@ extension ConsiderationView {
                     }
                     .tag(index)
                     .onAppear {
-                        if index == viewModel.pageOffset - 2 && viewModel.pageOffset % 5 == 0 {
+                        if (index == viewModel.votes.count - 2) {
                             viewModel.fetchMorePosts(selectedVisibilityScope.type)
                         }
                     }

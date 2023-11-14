@@ -16,8 +16,11 @@ final class ConsiderationViewModel: ObservableObject {
     private let apiManager = NewApiManager()
     private var page = 0
     var cancellables: Set<AnyCancellable> = []
+    private var isLastPage = false
 
     func fetchMorePosts(_ visibilityScope: String) {
+        guard !isLastPage else { return }
+
         page += 1
         fetchPosts(page: page,
                    visibilityScope: visibilityScope,
@@ -29,6 +32,13 @@ final class ConsiderationViewModel: ObservableObject {
                     visibilityScope: String,
                     isFirstFetch: Bool = true) {
         if isFirstFetch { isLoading = true }
+        
+        if isFirstFetch {
+            self.isLastPage = false
+            self.page = 0
+            self.votes.removeAll()
+        }
+
         apiManager.request(.postService(.getPosts(page: page,
                                                   size: size,
                                                   visibilityScope: visibilityScope)),
@@ -41,14 +51,17 @@ final class ConsiderationViewModel: ObservableObject {
             case .failure(let failure):
                 print(failure)
             }
-        } receiveValue: { response in
+        } receiveValue: { [self] response in
             if let data = response.data {
                 self.votes.append(contentsOf: data)
             }
-            self.pageOffset = self.votes.count
             if isFirstFetch { self.isLoading = false }
         }
         .store(in: &cancellables)
+
+        if self.votes.count % 5 != 0 {
+            isLastPage = true
+        }
     }
 
 //    func postVoteCreate(_ voteType: String) {
