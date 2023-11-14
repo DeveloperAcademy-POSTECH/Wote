@@ -18,6 +18,10 @@ final class ConsiderationViewModel: ObservableObject {
     var cancellables: Set<AnyCancellable> = []
     private var isLastPage = false
 
+    init() {
+        fetchPosts(visibilityScope: VisibilityScopeType.global.type)
+    }
+
     func fetchMorePosts(_ visibilityScope: String) {
         guard !isLastPage else { return }
 

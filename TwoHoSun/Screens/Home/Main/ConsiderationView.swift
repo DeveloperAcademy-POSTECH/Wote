@@ -13,7 +13,7 @@ struct ConsiderationView: View {
     @State private var isRefreshing = false
     @State private var dragAmount = CGSize.zero
     @State private var isDragging = false
-    @ObservedObject var viewModel: ConsiderationViewModel
+    @EnvironmentObject var viewModel: ConsiderationViewModel
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
@@ -39,10 +39,8 @@ struct ConsiderationView: View {
                 .padding(.bottom, 21)
                 .padding(.trailing, 24)
         }
-        .onAppear {
-            viewModel.fetchPosts(visibilityScope: selectedVisibilityScope.type)
-        }
         .onChange(of: selectedVisibilityScope) { _, newScope in
+            currentVote = 0
             viewModel.fetchPosts(visibilityScope: newScope.type)
         }
     }
