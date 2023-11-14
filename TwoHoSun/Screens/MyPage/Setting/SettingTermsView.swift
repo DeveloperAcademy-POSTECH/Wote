@@ -7,7 +7,9 @@
 
 import SwiftUI
 
-enum TermsType {
+enum TermsType: Identifiable {
+    var id: Self { self }
+    
     case first
     case second
     case third
@@ -44,12 +46,22 @@ enum TermsType {
             Color.settingGray
         }
     }
+    
+    var externalURL: String {
+        switch self {
+        case .first:
+            "https://hansn97.notion.site/Wote-dcd81699a906483d8b91f88f88164d31"
+        case .second:
+            "https://hansn97.notion.site/88ed8c9e4dd04f31b071c6b43d32a828?pvs=4"
+        case .third:
+            "https://hansn97.notion.site/3a21b194a622480b88e60a066f71c44f"
+        }
+    }
 }
 
 struct SettingTermsView: View {
-    @State private var isFirstOpened: Bool = false
-    @State private var isSecondOpened: Bool = false
-    @State private var isThirdOpened: Bool = false
+    @State private var openLink: [TermsType: Bool] = [.first: false, .second: false, .third: false]
+    @State private var currentTermsType: TermsType?
     @State private var showWithdrawal: Bool = false
     
     var body: some View {
@@ -58,15 +70,9 @@ struct SettingTermsView: View {
                 .ignoresSafeArea()
             List {
                 Section {
-                    termsLinkView(.first) {
-                        isFirstOpened.toggle()
-                    }
-                    termsLinkView(.second) {
-                        isSecondOpened.toggle()
-                    }
-                    termsLinkView(.third) {
-                        isThirdOpened.toggle()
-                    }
+                    termsLinkView(.first)
+                    termsLinkView(.second)
+                    termsLinkView(.third)
                 } header: {
                     Text("서비스 약관 내용")
                         .font(.system(size: 14))
@@ -94,15 +100,9 @@ struct SettingTermsView: View {
                 }
             }
         }
-        .fullScreenCover(isPresented: $isFirstOpened, content: {
-            LinkView(externalURL: "https://hansn97.notion.site/Wote-dcd81699a906483d8b91f88f88164d31")
-        })
-        .fullScreenCover(isPresented: $isSecondOpened, content: {
-            LinkView(externalURL: "https://hansn97.notion.site/88ed8c9e4dd04f31b071c6b43d32a828?pvs=4")
-        })
-        .fullScreenCover(isPresented: $isThirdOpened, content: {
-            LinkView(externalURL: "https://hansn97.notion.site/3a21b194a622480b88e60a066f71c44f")
-        })
+        .fullScreenCover(item: $currentTermsType) { type in
+            LinkView(externalURL: type.externalURL)
+        }
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.background)
         .toolbarBackground(.visible)
@@ -137,9 +137,9 @@ extension SettingTermsView {
         }
     }
     
-    private func termsLinkView(_ type: TermsType, content: @escaping () -> Void) -> some View {
+    private func termsLinkView(_ type: TermsType) -> some View {
         Button {
-            content()
+            currentTermsType = type
         } label: {
             HStack(spacing: 16) {
                 ZStack {
