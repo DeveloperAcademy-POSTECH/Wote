@@ -16,40 +16,58 @@ enum Route {
 @main
 struct TwoHoSunApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-
-    let appState = AppState()
-    @State private var path: [Route] = []
-
+    
+    @State private var appState = AppLoginState()
+    
     var body: some Scene {
         WindowGroup {
-//            if appState.hasValidToken {
-//                MainTabView()
-//            } else {
-//                NavigationStack(path: $path) {
-//                    OnBoardingView(navigationPath: $path)
-//                }
-//                .tint(Color.accentBlue)
-//            }
-            WoteTabView()
-//            TypeTestIntroView()
+            switch appState.serviceRoot.auth.authState {
+            case .none, .allexpired, .unfinishRegister:
+                OnBoardingView(viewModel: LoginViewModel(appState: appState))
+                    .environment(appState)
+            case .loggedIn:
+                NavigationStack {
+                    WoteTabView(path: .constant([]))
+                        .environment(appState)
+                }
+            }
         }
     }
 }
 
+class ServiceRoot {
+    let auth = Authenticator()
+    lazy var apimanager: NewApiManager = {
+        let manager = NewApiManager(authenticator: auth)
+        return manager
+    }()
+}
+
+enum TokenState {
+    case none, allexpired, loggedIn, unfinishRegister
+}
+
 @Observable
-class AppState {
-    var hasValidToken: Bool = false
+class AppLoginState {
+    let serviceRoot: ServiceRoot
 
     init() {
+        serviceRoot = ServiceRoot()
         checkTokenValidity()
-
+        serviceRoot.auth.relogin = relogin
     }
-
+    
+    private func relogin() {
+        DispatchQueue.main.async {
+            self.serviceRoot.auth.authState = .none
+        }
+    }
+    
     private func checkTokenValidity() {
-        if KeychainManager.shared.readToken(key: "accessToken") != nil {
-            hasValidToken = true
+        if serviceRoot.apimanager.authenticator.accessToken != nil {
+            serviceRoot.auth.authState = .loggedIn
         } else {
-            hasValidToken = false
+            serviceRoot.auth.authState = .none
         }
     }
 }

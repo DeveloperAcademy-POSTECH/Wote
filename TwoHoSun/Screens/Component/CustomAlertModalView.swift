@@ -100,7 +100,6 @@ struct CustomAlertModalView: View {
 
                 }
             }
-
             .padding(EdgeInsets(top: 32, leading: 28, bottom: 28, trailing: 28))
             .background(Color.disableGray)
             .clipShape(.rect(cornerRadius: 10))
@@ -109,6 +108,5 @@ struct CustomAlertModalView: View {
 }
 
 //#Preview {
-////    CustomAlertModalView(alertType: .ban(nickname: "선호"))
-////    CustomAlertModalView(alertType: .erase)
+//    CustomAlertModalView(alertType: .ban(nickname: "선호"))
 //}

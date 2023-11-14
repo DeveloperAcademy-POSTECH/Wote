@@ -8,32 +8,47 @@ import SwiftUI
 
 import Alamofire
 import Combine
+import Moya
 
+@Observable
 class LoginViewModel: ObservableObject {
-    @Published var showSheet = false
-    @Published var authorization: String = ""
-    @Published var goMain = false
+    var showSheet = false
+    var authorization: String = ""
+    var goMain = false
+    private var bag = Set<AnyCancellable>()
+    private var appState: AppLoginState
+
+    init(appState: AppLoginState) {
+        self.appState = appState
+    }
 
     func setAuthorizationCode(_ code: String) {
         self.authorization = code
     }
-    
+
     func postAuthorCode() {
-        APIManager.shared.requestAPI(type: .postAuthorCode(authorization: authorization)) { (response: GeneralResponse<Tokens>) in
-            if response.status == 401 {
-                APIManager.shared.refreshAllTokens()
-                self.postAuthorCode()
-            } else {
+        appState.serviceRoot.apimanager
+            .requestLogin(authorization: authorization)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+
+                    break
+                case .failure(let failure):
+                    print(failure)
+                }
+            }) { response in
                 if let data = response.data {
-                    KeychainManager.shared.saveToken(key: "accessToken", token: data.accessToken)
-                    KeychainManager.shared.saveToken(key: "refreshToken", token: data.refreshToken)
+                    self.appState.serviceRoot.auth.saveTokens(data)
                 }
                 if response.message == "UNREGISTERED_USER" {
+                    self.appState.serviceRoot.auth.authState = .unfinishRegister
                     self.showSheet = true
                 } else {
+                    self.appState.serviceRoot.auth.authState = .loggedIn
                     self.goMain = true
                 }
             }
-        }
+            .store(in: &bag)
     }
 }

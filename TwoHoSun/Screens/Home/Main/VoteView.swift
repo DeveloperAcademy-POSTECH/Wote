@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct VoteView: View {
-    @State var isVoted = false
-    @State var isEnd = false
-    @State var selectedVoteType = UserVoteType.agree
+    @State var isVoted: Bool
+    @State var postStatus: String
+    @State var selectedVoteType: UserVoteType
     @State var agreeVoteRatio = 30.0
     @State var disagreeVoteRatio = 70.0
 
@@ -20,7 +20,7 @@ struct VoteView: View {
 
     var body: some View {
         VStack(spacing: 8) {
-            if isEnd {
+            if postStatus == PostStatus.closed.rawValue {
                 resultVoteButton(voteType: .agree,
                                  voteRatio: agreeVoteRatio)
                 resultVoteButton(voteType: .disagree,
@@ -88,7 +88,8 @@ extension VoteView {
                 }
                 .overlay {
                     Capsule()
-                        .strokeBorder(Color.lightBlue, lineWidth: !isEnd && voteType == selectedType ? 1 : 0)
+                        .strokeBorder(Color.lightBlue,
+                                      lineWidth: !(postStatus == PostStatus.closed.rawValue) && voteType == selectedType ? 1 : 0)
                 }
                 .clipShape(Capsule())
             voteDescriptionView(voteType: voteType,
@@ -127,5 +128,7 @@ extension VoteView {
 }
 
 #Preview {
-    VoteView()
+    VoteView(isVoted: Bool.random(),
+             postStatus: PostStatus.closed.rawValue,
+             selectedVoteType: .agree)
 }

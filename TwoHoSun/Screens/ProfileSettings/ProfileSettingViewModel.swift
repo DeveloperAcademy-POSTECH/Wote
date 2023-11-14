@@ -10,6 +10,7 @@ import Observation
 import SwiftUI
 
 import Alamofire
+import Moya
 
 @Observable
 final class ProfileSettingViewModel {
@@ -17,19 +18,24 @@ final class ProfileSettingViewModel {
     var selectedSchoolInfo: SchoolInfoModel?
     var selectedGrade: String?    
     var nicknameValidationType = NicknameValidationType.none
+    var selectedImageData: Data?
     var isNicknameDuplicated = false
     var isFormValid = true
     var model: ProfileSetting? 
     private let forbiddenWord = ["금지어1", "금지어2"]
-    private var cancellable: Set<AnyCancellable> = []
-
+    private var apiManager: NewApiManager
+    var bag = Set<AnyCancellable>()
+    var path: Binding<[Route]>
     var isSchoolFilled: Bool {
         return selectedSchoolInfo != nil
     }
-
     var isAllInputValid: Bool {
         return nicknameValidationType == .valid
-                 && isSchoolFilled
+        && isSchoolFilled
+    }
+    init(apiManager: NewApiManager , path: Binding<[Route]>) {
+        self.apiManager = apiManager
+        self.path = path
     }
 
     private func isNicknameLengthValid(_ text: String) -> Bool {
@@ -39,17 +45,17 @@ final class ProfileSettingViewModel {
         }
         return false
     }
-
+    
     private func isNicknameIncludeForbiddenWord(_ text: String) -> Bool {
         for word in forbiddenWord where text.contains(word) {
             return true
         }
         return false
     }
-
+    
     func checkNicknameValidation(_ text: String) {
         isNicknameDuplicated = false
-
+        
         if !isNicknameLengthValid(text) {
             nicknameValidationType = .length
         } else if isNicknameIncludeForbiddenWord(text) {
@@ -58,11 +64,11 @@ final class ProfileSettingViewModel {
             nicknameValidationType = .none
         }
     }
-
+    
     func isDuplicateButtonEnabled() -> Bool {
         return isNicknameLengthValid(nickname) && !isNicknameIncludeForbiddenWord(nickname)
     }
-
+    
     func setInvalidCondition() {
         if nickname.isEmpty { nicknameValidationType = .empty }
         isFormValid = false
@@ -70,34 +76,46 @@ final class ProfileSettingViewModel {
     
     func setProfile() {
         guard let school = selectedSchoolInfo?.school else { return }
-        model = ProfileSetting(userProfileImage: "",
+        model = ProfileSetting(userProfileImage: selectedImageData ?? Data(),
                                userNickname: nickname,
                                school: school)
         postProfileSetting()
     }
-
+    
     func postNickname() {
-        APIManager.shared.requestAPI(type: .postNickname(nickname: nickname)) { (response: GeneralResponse<NicknameValidation>) in
-            if response.status == 401 {
-                APIManager.shared.refreshAllTokens()
-                self.postNickname()
-            } else {
-                guard let data = response.data else { return }
+        apiManager.request(.userService(.checkNicknameValid(nickname: nickname)),
+                           decodingType: NicknameValidation.self)
+        .compactMap(\.data)
+            .sink { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    print(error)
+                }
+            } receiveValue: { data in
                 self.isNicknameDuplicated = data.isExist
                 self.nicknameValidationType = self.isNicknameDuplicated ? .duplicated : .valid
             }
-        }
+            .store(in: &bag)
     }
     
     func postProfileSetting() {
         guard let model = model else { return }
-        APIManager.shared.requestAPI(type: .postProfileSetting(profile: model)) { (response: GeneralResponse<NoData>) in
-            if response.status == 401 {
-                APIManager.shared.refreshAllTokens()
-                self.postProfileSetting()
-            } else {
-                print("The result of posting profile: \(response.message)")
+        apiManager.request(.userService(.postProfileSetting(profile: model)),
+                           decodingType: NoData.self)
+            .sink { completion in
+                switch completion {
+                case .finished:
+                    var array = self.path.wrappedValue
+                    array.removeFirst()
+                    array.append(.mainTabView)
+                    self.path.wrappedValue = array
+                case .failure(let error):
+                    print(error)
+                }
+            } receiveValue: { response in
+                print(response)
             }
-        }
     }
 }

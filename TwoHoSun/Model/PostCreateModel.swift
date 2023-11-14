@@ -8,7 +8,6 @@
 import Foundation
 
 struct PostCreateModel: Codable {
-    let postType: String
     let title: String
     let contents: String
     let image: String

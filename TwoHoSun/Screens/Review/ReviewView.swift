@@ -165,7 +165,3 @@ extension ReviewView {
         }
     }
 }
-
-#Preview {
-    WoteTabView()
-}

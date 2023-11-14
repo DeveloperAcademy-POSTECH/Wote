@@ -9,7 +9,6 @@ import Foundation
 
 struct Tokens: Codable {
     var accessToken: String
-    var accessExpirationTime: Int64
     var refreshToken: String
-    var refreshExpirationTime: Int64
+
 }
