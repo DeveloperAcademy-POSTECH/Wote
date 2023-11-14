@@ -29,8 +29,7 @@ class Authenticator {
         }
         return nil
     }
-    private let queue = DispatchQueue(label: "Authenticator")
-    private var refreshPublisher: AnyPublisher<Tokens, NetworkError>?
+    
     var relogin: (() -> Void)?
     private var authStateSubject = CurrentValueSubject<TokenState, Never>(.none)
     init() {

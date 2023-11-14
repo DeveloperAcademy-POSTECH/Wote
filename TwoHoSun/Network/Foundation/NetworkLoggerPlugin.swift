@@ -44,13 +44,13 @@ struct NetworkLoggerPlugin: PluginType {
     func didReceive(_ result: Result<Response, MoyaError>, target: TargetType) {
             switch result {
             case let .success(response):
-                onSuceed(response, target: target, isFromError: false)
+                onSucceed(response, target: target, isFromError: false)
             case let .failure(error):
                 onFail(error, target: target)
             }
         }
 
-        func onSuceed(_ response: Response, target: TargetType, isFromError: Bool) {
+        func onSucceed(_ response: Response, target: TargetType, isFromError: Bool) {
             let request = response.request
             let url = request?.url?.absoluteString ?? "nil"
             let statusCode = response.statusCode
@@ -77,24 +77,10 @@ struct NetworkLoggerPlugin: PluginType {
             }
             httpLog.append("[HTTP Response End]")
             print(httpLog)
-//            if statusCode != 200 {
-//                do {
-//                    let decodedError = try JSONDecoder().decode(ErrorResponse.self, from: response.data)
-//                    let networkerror = NetworkError(divisionCode: decodedError.divisionCode)
-//                    switch networkerror {
-//                    case .exipredJWT:
-//                        print("여기서에러헨들링을 할까 저 위에서 할까 고민중")
-//                    default:
-//                        throw networkerror
-//                    }
-//                } catch {
-//                    print("error\(error)")
-//                }
-//            }
         }
     func onFail(_ error: MoyaError, target: TargetType) {
             if let response = error.response {
-                onSuceed(response, target: target, isFromError: true)
+                onSucceed(response, target: target, isFromError: true)
                 return
             }
 
