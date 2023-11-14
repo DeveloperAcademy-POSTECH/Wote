@@ -44,7 +44,8 @@ struct ComplaintView: View {
 
                     List {
                         ForEach(ComplaintReason.allCases, id: \.hashValue) { value in
-                            NavigationLink(destination: ComplaintReasonView(isSheet: $isSheet, isComplaintApply: $isComplaintApply, complaint: value)) {
+                            NavigationLink(destination: 
+                                            ComplaintReasonView(isSheet: $isSheet, isComplaintApply: $isComplaintApply, complaint: value)) {
                                 Text(value.title)
                                     .foregroundStyle(Color.subGray3)
                             }

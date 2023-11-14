@@ -5,10 +5,10 @@
 //  Created by 관식 on 10/18/23.
 //
 
-import Foundation
+import SwiftUI
 
 struct ProfileSetting: Codable {
-    var userProfileImage: String
+    var userProfileImage: Data?
     var userNickname: String
     var school: SchoolModel
 }

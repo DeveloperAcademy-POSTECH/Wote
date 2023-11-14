@@ -153,6 +153,5 @@ struct CustomAlertModalView: View {
 }
 
 //#Preview {
-////    CustomAlertModalView(alertType: .ban(nickname: "선호"))
-////    CustomAlertModalView(alertType: .erase)
+//    CustomAlertModalView(alertType: .ban(nickname: "선호"))
 //}

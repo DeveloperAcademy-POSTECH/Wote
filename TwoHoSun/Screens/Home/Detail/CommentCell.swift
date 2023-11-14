@@ -56,7 +56,7 @@ struct CommentCell: View {
             VStack(alignment: .leading) {
                 HStack(spacing: 8) {
                     SpendTypeLabel(spendType: .ecoWarrior, usage: .comments)
-                    Text(comment.author.userNickname!)
+                    Text(comment.author.nickname)
                         .font(.system(size: 14, weight: .medium))
                         .foregroundStyle(Color.white)
                     //                    Text("\(comment.modifiedDate)")
@@ -113,4 +113,3 @@ struct CommentCell: View {
         }
     }
 }
-

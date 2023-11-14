@@ -8,25 +8,27 @@
 import SwiftUI
 
 struct VoteContentCell: View {
-    @State var isVoted = false
-    @State var isEnd = false
-    @State var selectedVoteType = UserVoteType.agree
-    @Binding var currentVote: Int
+//    @State var isVoted = false
+//    @State var postStatus = "ACTIVE"
+//    @State var selectedVoteType = UserVoteType.agree
+    @State var voteData: PostResponseDto
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 8) {
+                // TODO: - 프로필 이미지 변경
                 Image("imgDefaultProfile")
                     .frame(width: 32, height: 32)
-                Text("얄루")
+                Text(voteData.author.nickname)
                     .font(.system(size: 16, weight: .bold))
                     .foregroundStyle(.white)
                 Spacer()
+                // TODO: - 소비 성향 라벨 서버랑 맞추고 변경
                 SpendTypeLabel(spendType: .saving, usage: .standard)
             }
             .padding(.bottom, 10)
             HStack(spacing: 4) {
-                if isEnd {
+                if voteData.postStatus == PostStatus.closed.rawValue {
                     Text("종료")
                         .font(.system(size: 12, weight: .medium))
                         .foregroundStyle(.white)
@@ -35,16 +37,16 @@ struct VoteContentCell: View {
                         .background(Color.disableGray)
                         .clipShape(RoundedRectangle(cornerRadius: 3))
                 }
-                Text("ACG 마운틴 플라이 할인하는데 살까?")
+                Text(voteData.title)
                     .font(.system(size: 16, weight: .bold))
                     .foregroundStyle(.white)
             }
-            Text("텍스트 내용 100자 미만")
+            Text(voteData.contents ?? "")
                 .font(.system(size: 14))
                 .foregroundStyle(.white)
                 .padding(.bottom, 8)
             HStack(spacing: 0) {
-                Text("가격: 120,000원")
+                Text("가격: \(voteData.price)원")
                 Text(" · ")
                 Text("2020년 3월 12일")
             }
@@ -52,9 +54,9 @@ struct VoteContentCell: View {
             .foregroundStyle(Color.gray100)
             .padding(.bottom, 10)
             HStack {
-                voteInfoButton(label: "256명 투표", icon: "person.2.fill")
+                voteInfoButton(label: "\(voteData.voteCount)명 투표", icon: "person.2.fill")
                 Spacer()
-                voteInfoButton(label: "댓글 20개", icon: "message.fill")
+                voteInfoButton(label: "댓글 \(voteData.commentCount)개", icon: "message.fill")
             }
             .padding(.bottom, 2)
             RoundedRectangle(cornerRadius: 16)
@@ -62,14 +64,12 @@ struct VoteContentCell: View {
                 .frame(maxWidth: .infinity)
                 .aspectRatio(1.5, contentMode: .fit)
             VStack(spacing: 10) {
-                VoteView(isVoted: isVoted,
-                         isEnd: isEnd,
-                         selectedVoteType: selectedVoteType)
+                VoteView(isVoted: voteData.isVoted,
+                         postStatus: voteData.postStatus,
+                         selectedVoteType: .agree) // TODO: 수정 필요
                 detailResultButton
             }
             .padding(.top, 2)
-            nextVoteButton
-                .padding(.top, 16)
         }
         .padding(.horizontal, 24)
     }
@@ -113,26 +113,4 @@ extension VoteContentCell {
                 .clipShape(Capsule())
         }
     }
-
-    @ViewBuilder
-    private var nextVoteButton: some View {
-        HStack {
-            Spacer()
-            Button {
-                withAnimation {
-                    if currentVote != 4 {
-                        currentVote += 1
-                    }
-                }
-            } label: {
-                Image("icnCaretDown")
-                    .opacity(currentVote != 4 ? 1 : 0)
-            }
-            Spacer()
-        }
-    }
-}
-
-#Preview {
-    VoteContentCell(currentVote: .constant(0))
 }
