@@ -15,9 +15,6 @@ struct SettingAnnouncementView: View {
             ScrollView {
                 VStack(spacing: 0) {
                     ExpandableList()
-                        .zIndex(1)
-                    ExpandableList()
-                        .zIndex(0)
                 }
             }
         }
