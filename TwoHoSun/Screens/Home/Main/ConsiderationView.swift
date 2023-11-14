@@ -10,7 +10,7 @@ import SwiftUI
 struct ConsiderationView: View {
     @State private var currentVote = 0
     @Binding var selectedVisibilityScope: VisibilityScopeType
-//    @State private var isRefreshing = false
+    @State private var isRefreshing = false
     @EnvironmentObject var viewModel: ConsiderationViewModel
 
     var body: some View {
@@ -19,13 +19,7 @@ struct ConsiderationView: View {
                 .ignoresSafeArea()
             VStack(spacing: 0) {
                 Spacer()
-                if viewModel.isLoading {
-                    HStack {
-                        Spacer()
-                        ProgressView()
-                        Spacer()
-                    }
-                } else if viewModel.votes.isEmpty {
+                if viewModel.votes.isEmpty && !viewModel.isLoading {
                     NoVoteView()
                 } else {
                     votePagingView
@@ -72,22 +66,21 @@ extension ConsiderationView {
             .gesture(
                 DragGesture()
                     .onChanged { value in
-                        if currentVote == 0 && value.translation.height > 0 { // 새로 고침하기
-//                            isRefreshing = true
-                            viewModel.fetchPosts(visibilityScope: selectedVisibilityScope.type)
+                        if currentVote == 0 && value.translation.height > 0 {
+                            isRefreshing = true
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                                viewModel.fetchPosts(visibilityScope: selectedVisibilityScope.type)
+                                isRefreshing = false
+                            }
                         }
                     }
-                    .onEnded { _ in
-                        print("Gesture Ended")
-                    }
             )
-
-//            if viewModel.isRefreshing {
-//                ProgressView()
-//                    .progressViewStyle(CircularProgressViewStyle(tint: .blue))
-//                    .scaleEffect(1.5, anchor: .center)
-//                    .offset(x: UIScreen.main.bounds.width / 2, y: 30)
-//            }
+            if isRefreshing {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: Color.gray100))
+                    .scaleEffect(1.3, anchor: .center)
+                    .offset(x: UIScreen.main.bounds.width / 2, y: 30)
+            }
         }
     }
     

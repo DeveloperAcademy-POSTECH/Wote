@@ -35,8 +35,8 @@ final class ConsiderationViewModel: ObservableObject {
                     size: Int = 5,
                     visibilityScope: String,
                     isFirstFetch: Bool = true) {
-        if isFirstFetch { isLoading = true }
-        
+        isLoading = true
+
         if isFirstFetch {
             self.isLastPage = false
             self.page = 0
@@ -59,7 +59,8 @@ final class ConsiderationViewModel: ObservableObject {
             if let data = response.data {
                 self.votes.append(contentsOf: data)
             }
-            if isFirstFetch { self.isLoading = false }
+
+            isLoading = false
         }
         .store(in: &cancellables)
 
