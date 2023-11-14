@@ -11,7 +11,7 @@ struct ConsiderationView: View {
     @State private var currentVote = 0
     @Binding var selectedVisibilityScope: VisibilityScopeType
     @State private var isRefreshing = false
-    @EnvironmentObject var viewModel: ConsiderationViewModel
+    @StateObject var viewModel: ConsiderationViewModel
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {

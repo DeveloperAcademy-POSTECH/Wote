@@ -17,8 +17,6 @@ enum Route {
 struct TwoHoSunApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
-    @StateObject var considerationViewModel = ConsiderationViewModel()
-
     let appState = AppLoginState()
 //    @State private var path: [Route] = []
 
@@ -28,7 +26,6 @@ struct TwoHoSunApp: App {
             NavigationStack {
                 WoteTabView(path: .constant([Route.mainTabView]))
             }
-            .environmentObject(considerationViewModel)
 ////            } else {
 //                OnBoardingView()
 ////            }

@@ -49,7 +49,6 @@ struct WoteTabView: View {
     @State private var selectedVisibilityScope = VisibilityScopeType.global
     @State private var isVoteCategoryButtonDidTap = false
     @Binding var path: [Route]
-    @EnvironmentObject var considerationViewModel: ConsiderationViewModel
 
     var body: some View {
             ZStack(alignment: .topLeading) {
@@ -107,7 +106,8 @@ extension WoteTabView {
     private func tabDestinationView(for tab: WoteTabType) -> some View {
         switch tab {
         case .consider:
-            ConsiderationView(selectedVisibilityScope: $selectedVisibilityScope)
+            ConsiderationView(selectedVisibilityScope: $selectedVisibilityScope,
+                              viewModel: ConsiderationViewModel())
         case .review:
             ReviewView()
         case .myPage:
