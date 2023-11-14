@@ -18,16 +18,10 @@ class Authenticator {
     }
 
     var accessToken: String? {
-        if let accessToken = KeychainManager.shared.readToken(key: "accessToken") {
-            return accessToken
-        }
-        return nil
+        return KeychainManager.shared.readToken(key: "accessToken")
     }
     private var refreshToken: String? {
-        if let refreshToken = KeychainManager.shared.readToken(key: "refreshToken") {
-            return refreshToken
-        }
-        return nil
+       return KeychainManager.shared.readToken(key: "refreshToken")
     }
     
     var relogin: (() -> Void)?

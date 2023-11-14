@@ -75,7 +75,6 @@
 		C7719FE82AF28A7B00A520CB /* SpendTypeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7719FE72AF28A7B00A520CB /* SpendTypeLabel.swift */; };
 		C782E7122AFCCA57006BCE59 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = C782E7112AFCCA57006BCE59 /* CombineMoya */; };
 		C782E7142AFCCA57006BCE59 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = C782E7132AFCCA57006BCE59 /* Moya */; };
-		C782E75E2AFED457006BCE59 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C782E75D2AFED457006BCE59 /* APIService.swift */; };
 		C782E7642AFED523006BCE59 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C782E7632AFED523006BCE59 /* ErrorResponse.swift */; };
 		C78E7D012AF6AF4C00C2E220 /* CommentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78E7D002AF6AF4C00C2E220 /* CommentsView.swift */; };
 		C78E7D0A2AF8C53000C2E220 /* ExpandableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78E7D092AF8C53000C2E220 /* ExpandableTextView.swift */; };
@@ -98,7 +97,6 @@
 		FD132BF52ADBE8FB00F31AAF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD132BF42ADBE8FB00F31AAF /* Preview Assets.xcassets */; };
 		FD3205682ADD5C0D00B0D5F6 /* TwoHoSunApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3205672ADD5C0D00B0D5F6 /* TwoHoSunApp.swift */; };
 		FD3646F52ADD8E2D0064DF94 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FD3646F42ADD8E2D0064DF94 /* Alamofire */; };
-		FD6673372AE071550015007D /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6673362AE071550015007D /* APIManager.swift */; };
 		FD76249E2AF954670079AEEF /* LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D792AE2A64300BE0671 /* LinkView.swift */; };
 		FD7624A02AF954980079AEEF /* GeneralResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C768F19D2AE656430020F82C /* GeneralResponse.swift */; };
 		FD7624A12AF954980079AEEF /* NicknameValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C768F1A22AE656570020F82C /* NicknameValidation.swift */; };
@@ -181,7 +179,6 @@
 		C77113722AF2114800BAB128 /* CustomConfirmModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomConfirmModifier.swift; sourceTree = "<group>"; };
 		C7719FE52AF2861000A520CB /* SpendTitleType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendTitleType.swift; sourceTree = "<group>"; };
 		C7719FE72AF28A7B00A520CB /* SpendTypeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendTypeLabel.swift; sourceTree = "<group>"; };
-		C782E75D2AFED457006BCE59 /* APIService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		C782E7632AFED523006BCE59 /* ErrorResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
 		C78E7D002AF6AF4C00C2E220 /* CommentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsView.swift; sourceTree = "<group>"; };
 		C78E7D092AF8C53000C2E220 /* ExpandableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableTextView.swift; sourceTree = "<group>"; };
@@ -207,7 +204,6 @@
 		FD32055D2ADD16AC00B0D5F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FD3205672ADD5C0D00B0D5F6 /* TwoHoSunApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoHoSunApp.swift; sourceTree = "<group>"; };
 		FD4E75B52ADE9C20000C2277 /* ProfileSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingViewModel.swift; sourceTree = "<group>"; };
-		FD6673362AE071550015007D /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		FD9C277D2AFA27E900702ACD /* ImageCropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropView.swift; sourceTree = "<group>"; };
 		FDB4B14F2AE68FC000720328 /* DetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
@@ -258,7 +254,6 @@
 			isa = PBXGroup;
 			children = (
 				C7A95F102B01FFBA00F8595A /* NewApiManager.swift */,
-				FD6673362AE071550015007D /* APIManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -600,7 +595,6 @@
 				AB03D7422B01524A000C927A /* Service */,
 				AB03D7442B01527B000C927A /* Foundation */,
 				AB03D7432B015251000C927A /* Manager */,
-				C782E75D2AFED457006BCE59 /* APIService.swift */,
 				C7B5A8872B01641A00B73881 /* Authenticator.swift */,
 			);
 			path = Network;
@@ -737,7 +731,6 @@
 				FD76249E2AF954670079AEEF /* LinkView.swift in Sources */,
 				FDD5829F2AFC175F0004DFC6 /* VoteWriteView.swift in Sources */,
 				ABBEEAF52AE64F7900F6D918 /* SeachViewModel.swift in Sources */,
-				FD6673372AE071550015007D /* APIManager.swift in Sources */,
 				C7F1FD882ADDA39500C5A2A1 /* DesciptionView.swift in Sources */,
 				AB4D82692ADD7F4D00F35CCB /* ProfileSettingsView.swift in Sources */,
 				C768F1A82AE656680020F82C /* PostModel.swift in Sources */,
@@ -756,7 +749,6 @@
 				C73F8E902AE562FE001C6B07 /* Date+.swift in Sources */,
 				ABA1E8402AFD5841009051E0 /* ConsiderationView.swift in Sources */,
 				C7719FE82AF28A7B00A520CB /* SpendTypeLabel.swift in Sources */,
-				C782E75E2AFED457006BCE59 /* APIService.swift in Sources */,
 				FDDEC15B2AE3EABA004509EA /* SearchView.swift in Sources */,
 				ABAFB6412AF978790070512F /* PurchaseLabel.swift in Sources */,
 				C7B5A8882B01641A00B73881 /* Authenticator.swift in Sources */,

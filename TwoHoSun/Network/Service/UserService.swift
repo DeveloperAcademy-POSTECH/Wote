@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import UIKit
 
 import Moya
-import UIKit
+
 
 enum UserService {
     case postAuthorCode(authorization: String)
