@@ -37,7 +37,7 @@ struct PostDetailModel: Codable, Identifiable {
     }
 }
 
-struct VoteInfoModel: Codable {
+struct VoteInfoModel: Codable, Hashable {
     let isAgree: Bool
     let consumerType: String
 }

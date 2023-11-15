@@ -35,17 +35,27 @@ final class DetailViewModel {
                 }
             } receiveValue: { data in
                 self.postDetailData = data
-
-//                if let voteInfoList = data.voteInfoList {
-//                    self.calculateVoteResult(voteResult: voteInfoList)
-//                }
             }
             .store(in: &cancellables)
     }
 
-    func calculateVoteResult(voteResult: VoteInfoModel?) -> (Double, Double) {
-        print(voteResult)
-        return (0.0, 0.0)
+    func filterSelectedResult(voteInfoList: [VoteInfoModel], isAgree: Bool) -> [VoteInfoModel] {
+        return voteInfoList.filter { $0.isAgree == isAgree }
+    }
+
+    func calculateVoteRatio(for voteCount: Int, voteInfoListCount: Int) -> Double {
+        return Double(voteCount) / Double(voteInfoListCount)
+    }
+
+    func setTopConsumerTypes(for votes: [VoteInfoModel]) -> [ConsumerType] {
+        let groupedConsumerTypes = Dictionary(grouping: votes, by: { $0.consumerType })
+        let topConsumerTypes = groupedConsumerTypes
+                                    .sorted { $0.value.count > $1.value.count }
+                                    .prefix(2)
+                                    .map { ConsumerType(rawValue: $0.key) }
+                                    .compactMap { $0 }
+
+        return topConsumerTypes
     }
 
 //    func getNicknameForComment(commentId: Int) -> String? {
