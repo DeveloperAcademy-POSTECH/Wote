@@ -7,6 +7,74 @@
 
 import SwiftUI
 
+enum ClosedPostStatus: Codable {
+    case myPostWithReview
+    case myPostWithoutReview
+    case othersPostWithReview
+    case othersPostWithoutReview
+
+    init?(isMine: Bool?, hasReview: Bool?) {
+        switch (isMine, hasReview) {
+        case (true, true):
+            self = .myPostWithReview
+        case (true, false):
+            self = .myPostWithoutReview
+        case (false, true):
+            self = .othersPostWithReview
+        case (false, false):
+            self = .othersPostWithoutReview
+        case (_, _):
+            return nil
+        }
+    }
+
+    var description: String {
+        switch self {
+        case .myPostWithReview:
+            return "님의 소비후기"
+        case .myPostWithoutReview:
+            return "님! 상품에 대한 후기를 들려주세요!"
+        case .othersPostWithReview:
+            return "님의 소비후기 보러가기"
+        case .othersPostWithoutReview:
+            return "님이 아직 소비후기를 작성하기 전이에요!"
+        }
+    }
+
+    @ViewBuilder
+    var buttonView: some View {
+        switch self {
+        case .myPostWithoutReview:
+            Image(systemName: "pencil.line")
+                        .font(.system(size: 20))
+        case .othersPostWithoutReview:
+            EmptyView()
+        default:
+            Image("icnReview")
+        }
+    }
+
+//    @ViewBuilder
+//    var button: some View {
+//        ZStack {
+//            Rectangle()
+//                .frame(width: 50, height: 42)
+//                .foregroundStyle(Color.gray200)
+//                .clipShape(.rect(cornerRadius: 6))
+//            switch self {
+//            case .myPostWithReview:
+//                Text("HI")
+//            case .myPostWithoutReview:
+//                Text("HI")
+//            case .othersPostWithReview:
+//                Image
+//            case .othersPostWithoutReview:
+//                Text("HI")
+//            }
+//        }
+//    }
+}
+
 struct DetailView: View {
     @Environment(\.dismiss) var dismiss
     @State private var showDetailComments = false
@@ -14,7 +82,6 @@ struct DetailView: View {
     @State private var backgroundColor: Color = .background
     @State private var showCustomAlert = false
     @State private var applyComplaint = false
-    @State private var alertOn = false
     var viewModel: DetailViewModel
     var postId: Int
     var isMine = false
@@ -39,8 +106,10 @@ struct DetailView: View {
             if let postDetailData = viewModel.postDetailData {
                 ScrollView {
                     VStack(spacing: 0) {
-                        detailHeaderView(author: postDetailData.author,
-                                         isMine: postDetailData.isMine)
+                        DetailHeaderView(author: postDetailData.author,
+                                         postStatus: PostStatus(rawValue: postDetailData.postStatus) ?? PostStatus.closed,
+                                         isMine: postDetailData.isMine,
+                                         hasReview: postDetailData.hasReview)
                             .padding(.top, 18)
                         Divider()
                             .background(Color.disableGray)
@@ -127,53 +196,6 @@ struct DetailView: View {
 }
 extension DetailView {
 
-    // TODO: - isMine 분리
-    private func detailHeaderView(author: Author, isMine: Bool?) -> some View {
-        HStack(spacing: 0) {
-            ProfileImageView(imageURL: author.profileImage)
-                .frame(width: 32, height: 32)
-                .padding(.trailing, 10)
-            Text(author.nickname)
-                .font(.system(size: 16, weight: .medium))
-                .foregroundStyle(Color.whiteGray)
-            Text("님의 구매후기 받기")
-                .font(.system(size: 14))
-                .foregroundStyle(Color.whiteGray)
-            Spacer()
-//            if isMine {
-//                // TODO: 내껀지 남의껀지 보고 버튼놓기
-//            } else {
-//                Toggle("", isOn: $alertOn)
-//                    .toggleStyle(AlertCustomToggle())
-//            }
-        }
-        .padding(.horizontal, 24)
-        .padding(.bottom, 13)
-    }
-
-
-//    @ViewBuilder
-//    func detailTextView(title: String, price: Int, contents: String) -> some View {
-//        VStack(alignment: .leading, spacing: 13) {
-//            SpendTypeLabel(spendType: .beautyLover, usage: .standard)
-//            Text(title)
-//                .foregroundStyle(Color.white)
-//                .font(.system(size: 18, weight: .bold))
-//            Text(contents)
-//                .frame(maxWidth: .infinity, alignment: .leading)
-//                .lineLimit(3)
-//                .multilineTextAlignment(.leading)
-//                .foregroundStyle(Color.whiteGray)
-//
-//            HStack(spacing: 9) {
-//                Text("2023년 8월 2일 · 가격: \(price)원")    .foregroundStyle(Color.priceGray)
-//                    .font(.system(size: 14))
-//            }
-//            .padding(.top, 3)
-//        }
-//        .padding(.bottom, 36)
-//    }
-
     var commentPreview: some View {
         CommentPreview()
             .onTapGesture {
@@ -224,8 +246,8 @@ struct DetailContentCell: View {
                 HStack(spacing: 0) {
                     if let price = postDetailData.price {
                         Text("가격: \(price)원")
+                        Text(" · ")
                     }
-                    Text(" · ")
                     Text(postDetailData.modifiedDate.convertToStringDate() ?? "")
                 }
                 .foregroundStyle(Color.priceGray)
@@ -285,43 +307,5 @@ struct DetailContentCell: View {
         }
         .padding(.horizontal, 24)
         .padding(.bottom, 8)
-    }
-}
-
-
-struct AlertCustomToggle: ToggleStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        let isOn = configuration.isOn
-        return ZStack {
-            RoundedRectangle(cornerRadius: 17)
-                .strokeBorder(Color.white, lineWidth: 2)
-                .frame(width: 65, height: 25)
-                .background(isOn ? Color.lightBlue : Color.darkblue)
-                .overlay(alignment: .leading) {
-                    Text(isOn ? "ON" : "OFF")
-                        .font(.system(size: 14, weight: .bold))
-                        .foregroundStyle(Color.white)
-                        .offset(x: isOn ? 6 : 28)
-                        .padding(.trailing, 8)
-                }
-                .overlay(alignment: .leading) {
-                    Image("smile")
-                        .resizable()
-                        .foregroundStyle(Color.white)
-                        .frame(width: 15,height: 15)
-                        .clipShape(Circle())
-                        .rotationEffect(Angle.degrees(isOn ? 180 : 0))
-                        .offset(x: isOn ? 45 : 6)
-                }
-                .mask {
-                    RoundedRectangle(cornerRadius: 17)
-                        .frame(width: 65, height: 25)
-                }
-        }
-        .onTapGesture {
-            withAnimation {
-                configuration.isOn.toggle()
-            }
-        }
     }
 }
