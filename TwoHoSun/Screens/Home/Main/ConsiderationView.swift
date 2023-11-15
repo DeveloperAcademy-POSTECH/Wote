@@ -19,10 +19,12 @@ struct ConsiderationView: View {
                 .ignoresSafeArea()
             VStack(spacing: 0) {
                 Spacer()
-                if viewModel.votes.isEmpty && !viewModel.isLoading {
-                    NoVoteView()
-                } else {
-                    votePagingView
+                if !viewModel.isPostFetching {
+                    if viewModel.votes.isEmpty {
+                        NoVoteView()
+                    } else {
+                        votePagingView
+                    }
                 }
                 Spacer()
 

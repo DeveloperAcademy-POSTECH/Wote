@@ -11,7 +11,7 @@ import Combine
 
 final class ConsiderationViewModel: ObservableObject {
     @Published var votes = [PostResponseDto]()
-    @Published var isLoading = false
+    @Published var isPostFetching = true
     @Published var pageOffset = 0
     private let apiManager = NewApiManager()
     private var page = 0
@@ -35,12 +35,12 @@ final class ConsiderationViewModel: ObservableObject {
                     size: Int = 5,
                     visibilityScope: String,
                     isFirstFetch: Bool = true) {
-        isLoading = true
 
         if isFirstFetch {
             self.isLastPage = false
             self.page = 0
             self.votes.removeAll()
+            self.isPostFetching = true
         }
 
         apiManager.request(.postService(.getPosts(page: page,
@@ -60,7 +60,9 @@ final class ConsiderationViewModel: ObservableObject {
                 self.votes.append(contentsOf: data)
             }
 
-            isLoading = false
+            if isFirstFetch {
+                isPostFetching = false
+            }
         }
         .store(in: &cancellables)
 
@@ -68,19 +70,4 @@ final class ConsiderationViewModel: ObservableObject {
             isLastPage = true
         }
     }
-
-//    func postVoteCreate(_ voteType: String) {
-//        APIManager.shared.requestAPI(type: .postVoteCreate(postId: postData.postId, param: voteType)) { (response: GeneralResponse<VoteCounts>) in
-//            if response.status == 401 {
-//                APIManager.shared.refreshAllTokens()
-//                self.postVoteCreate(voteType)
-//            } else {
-//                guard let data = response.data else {return}
-//                self.isVoted = true
-//                self.agreeCount = data.agreeCount
-//                self.disagreeCount = data.disagreeCount
-//                print("Vote Completed!")
-//            }
-//        }
-//    }
 }
