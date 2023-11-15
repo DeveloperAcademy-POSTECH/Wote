@@ -67,7 +67,8 @@ struct OnBoardingView : View {
                     WoteTabView(path: $navigationPath)
                 case .profileView:
                     ProfileSettingsView(viewType: .setting, 
-                                        viewModel: ProfileSettingViewModel(apiManager: loginState.serviceRoot.apimanager, path: $navigationPath))
+                                        viewModel: ProfileSettingViewModel(apiManager: loginState.serviceRoot.apimanager, 
+                                                                           path: $navigationPath))
                 }
             }
         }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PostResponseModel: Codable, Identifiable {
+struct PostDetailModel: Codable, Identifiable {
     var id: Int
     var createDate: String
     var modifiedDate: String
@@ -32,43 +32,12 @@ struct PostResponseModel: Codable, Identifiable {
         case id = "postId"
         case createDate, modifiedDate, visibilityScope, postStatus,
              author, title, contents, image, externalURL, voteCount,
-             commentCount, price, myChoice, voteCounts
+             commentCount, price, myChoice, voteCounts, voteInfoList,
+             isMine, isNotified, isPurchased
     }
 }
 
 struct VoteInfoList: Codable {
     let isAgree: Bool
     let consumerType: String
-}
-
-enum PostStatus: String, Codable {
-    case active = "ACTIVE"
-    case closed = "CLOSED"
-    case review = "REVIEW"
-}
-
-enum VisibilityScopeType {
-    case all, global, school
-
-    var title: String {
-        switch self {
-        case .all:
-            return "전체"
-        case .global:
-            return "전국 투표"
-        case .school:
-            return "OO고등학교 투표"
-        }
-    }
-
-    var type: String {
-        switch self {
-        case .all:
-            return "ALL"
-        case .global:
-            return "GLOBAL"
-        case .school:
-            return "SCHOOL"
-        }
-    }
 }

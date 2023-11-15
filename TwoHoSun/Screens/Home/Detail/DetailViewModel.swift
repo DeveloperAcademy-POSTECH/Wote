@@ -5,18 +5,39 @@
 //  Created by 235 on 10/22/23.
 //
 
+import Combine
 import SwiftUI
 import Observation
 
 @Observable
 final class DetailViewModel {
+    var postDetailData: PostModel?
     var commentsDatas: [CommentsModel] = []
-//    var detailPostData: PostModel?
-    var postId: Int
     var isSendMessage: Bool = false
+    private let apiManager: NewApiManager
+    var cancellables: Set<AnyCancellable> = []
 
-    init(postId: Int) {
-        self.postId = postId
+    init(apiManager: NewApiManager) {
+        self.apiManager = apiManager
+    }
+
+    func fetchPostDetail(postId: Int) {
+        apiManager.request(.postService(.getPostDetail(postId: postId)),
+                           decodingType: PostModel.self)
+            .compactMap(\.data)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let failure):
+                    print(failure)
+                }
+            } receiveValue: { data in
+                self.postDetailData = data
+            }
+            .store(in: &cancellables)
+
     }
 
 //    func getNicknameForComment(commentId: Int) -> String? {
@@ -25,7 +46,7 @@ final class DetailViewModel {
 //        }
 //        return nil
 //    }
-//    
+//
 //    func fetchVoteDetailPost() {
 //        APIManager.shared.requestAPI(type: .getDetailPost(postId: postId)) { (response: GeneralResponse<PostResponseDto>) in
 //            switch response.status {
@@ -87,3 +108,4 @@ final class DetailViewModel {
 //        }
 //    }
 }
+

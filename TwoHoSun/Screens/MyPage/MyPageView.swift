@@ -201,7 +201,8 @@ extension MyPageView {
         case .myVote:
             ForEach(0..<50) { _ in
                 NavigationLink {
-                    DetailView(isDone: false)
+                    // TODO: - postId 알맞게 변경
+//                    DetailView(postId: 0)
                 } label: {
                     VStack(spacing: 0) {
                         VoteCardCell(cellType: .myVote,

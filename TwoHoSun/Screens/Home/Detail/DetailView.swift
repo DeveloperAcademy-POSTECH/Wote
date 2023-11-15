@@ -6,9 +6,8 @@
 //
 
 import SwiftUI
-// TODO: 후에 모델작업은 수정 예정 여기서 사용하기 위해 임의로 제작
 
-struct DetailView : View {
+struct DetailView: View {
     @Environment(\.dismiss) var dismiss
     @State private var showDetailComments = false
     @State private var showconfirm = false
@@ -16,11 +15,9 @@ struct DetailView : View {
     @State private var showCustomAlert = false
     @State private var applyComplaint = false
     @State private var alertOn = false
-    var isDone: Bool
-
-    init(isDone: Bool) {
-        self.isDone = isDone
-    }
+    var viewModel: DetailViewModel
+    var postId: Int
+    var isMine = false
 
     enum VoteType {
         case agree, disagree
@@ -38,23 +35,39 @@ struct DetailView : View {
         ZStack {
             backgroundColor
                 .ignoresSafeArea()
-            ScrollView {
-                detailHeaderView
-                    .padding(.top, 35)
-                Divider()
-                    .background(Color.disableGray)
-                    .padding(.horizontal, 12)
-                detailCell
-                    .padding(.top, 30)
-                commentPreview
-                    .padding(.horizontal, 24)
-                voteResultView(.agree, 0.47)
-                    .padding(EdgeInsets(top: 48, leading: 0, bottom: 36, trailing: 0))
-                voteResultView(.disagree, 0.33)
-                Spacer()
-                    .frame(height: 58)
+
+            if let postDetailData = viewModel.postDetailData {
+                ScrollView {
+                    VStack(spacing: 0) {
+                        detailHeaderView(author: postDetailData.author,
+                                         isMine: postDetailData.isMine)
+                            .padding(.top, 18)
+                        Divider()
+                            .background(Color.disableGray)
+                            .padding(.horizontal, 12)
+                        detailCell(postDetailData: postDetailData)
+                            .padding(.top, 27)
+                        VoteView(postStatus: postDetailData.postStatus,
+                                 myChoice: postDetailData.myChoice,
+                                 voteCount: postDetailData.voteCount,
+                                 voteCounts: postDetailData.voteCounts)
+                            .padding(.horizontal, 24)
+                        commentPreview
+                            .padding(.horizontal, 24)
+                            .padding(.vertical, 48)
+                        voteResultView(type: .agree, 0.47)
+                            .padding(.bottom, 36)
+                        voteResultView(type: .disagree, 0.33)
+                        Spacer()
+                            .frame(height: 56)
+                    }
+                }
+            } else {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: Color.gray100))
+                    .scaleEffect(1.3, anchor: .center)
             }
-            
+
             if showDetailComments {
                 Color.black.opacity(0.7)
             }
@@ -101,71 +114,72 @@ struct DetailView : View {
             }
         }
         .toolbarBackground(Color.background, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
         .sheet(isPresented: $showDetailComments) {
                 CommentsView(showComplaint: $showCustomAlert, applyComplaint: $applyComplaint)
                     .presentationDetents([.large,.fraction(0.9)])
                     .presentationContentInteraction(.scrolls)
         }
-
+        .onAppear {
+            viewModel.fetchPostDetail(postId: postId)
+        }
     }
 }
 extension DetailView {
-    private var detailHeaderView: some View {
+
+    // TODO: - isMine 분리
+    private func detailHeaderView(author: Author, isMine: Bool?) -> some View {
         HStack(spacing: 0) {
-            // TODO: 추후에 서버의 이미지와 연동
-            Image("defaultProfile")
-                .resizable()
+            ProfileImageView(imageURL: author.profileImage)
                 .frame(width: 32, height: 32)
-                .clipShape(Circle())
                 .padding(.trailing, 10)
-            Text( "일단써놈 ")
+            Text(author.nickname)
                 .font(.system(size: 16, weight: .medium))
                 .foregroundStyle(Color.whiteGray)
             Text("님의 구매후기 받기")
                 .font(.system(size: 14))
                 .foregroundStyle(Color.whiteGray)
             Spacer()
-            if isDone {
-                // TODO: 내껀지 남의껀지 보고 버튼놓기
-            } else {
-                Toggle("", isOn: $alertOn)
-                    .toggleStyle(AlertCustomToggle())
-            }
+//            if isMine {
+//                // TODO: 내껀지 남의껀지 보고 버튼놓기
+//            } else {
+//                Toggle("", isOn: $alertOn)
+//                    .toggleStyle(AlertCustomToggle())
+//            }
         }
         .padding(.horizontal, 24)
+        .padding(.bottom, 13)
     }
 
-    private var detailCell: some View {
-        // TODO: 데이터 연결할것
+    private func detailCell(postDetailData: PostModel) -> some View {
         VStack(alignment: .leading) {
-            detailTextView(title: "ACG마운틴 플라이 할인 살말?",
-                           price: 1000,
-                           description: "어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고어쩌고저쩌고사고말고어쩌라고")
-            Link(destination: URL(string: "https://naver.com")!, label: {
-                Text("https://naver.comeeeefqefewqfewqfewqfewqffqewfq")
-                    .tint(Color.white)
-                    .font(.system(size: 16))
-                    .frame(maxWidth: .infinity)
-                    .multilineTextAlignment(.leading)
-                    .truncationMode(.tail)
-                    .lineLimit(1)
-                    .padding(.vertical,10)
-                    .padding(.horizontal,14)
-                    .background(Color.lightGray)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-            })
-        
-            Image("logo")
-                .resizable()
-                .aspectRatio(1.5, contentMode: .fit)
-                .clipShape(RoundedRectangle(cornerRadius: 16))
-                .padding(.vertical,8)
-            // TODO: - 수정 필요 
-//            VoteView(isVoted: Bool.random(),
-//                     postStatus: PostStatus.active.rawValue,
-//                     selectedVoteType: .agree)
+            VStack(alignment: .leading, spacing: 13) {
+                SpendTypeLabel(spendType: .beautyLover, usage: .standard)
+                Text(postDetailData.title)
+                    .foregroundStyle(Color.white)
+                    .font(.system(size: 18, weight: .bold))
+                if let contents = postDetailData.contents {
+                    Text(contents)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .lineLimit(3)
+                        .multilineTextAlignment(.leading)
+                        .foregroundStyle(Color.whiteGray)
+                }
+                HStack(spacing: 0) {
+                    if let price = postDetailData.price {
+                        Text("가격: \(price)원")
+                    }
+                    Text(" · ")
+                    Text(postDetailData.modifiedDate.convertToStringDate() ?? "")
+                }
+                .foregroundStyle(Color.priceGray)
+                .font(.system(size: 14))
+                .padding(.top, 3)
+            }
+            .padding(.bottom, 16)
+
             HStack {
-                Label("0명 투표", systemImage: "person.2.fill")
+                Label("\(postDetailData.voteCount)명 투표", systemImage: "person.2.fill")
                     .font(.system(size: 14))
                     .foregroundStyle(Color.white)
                     .frame(width: 94, height: 29)
@@ -183,32 +197,61 @@ extension DetailView {
                         .clipShape(RoundedRectangle(cornerRadius: 34))
                 }
             }
-            .padding(.top, 36)
+            .padding(.bottom, 4)
+
+            if let externalURL = postDetailData.externalURL {
+                Link(destination: URL(string: externalURL)!, label: {
+                    Text(externalURL)
+                        .tint(Color.white)
+                        .font(.system(size: 16))
+                        .frame(maxWidth: .infinity)
+                        .multilineTextAlignment(.leading)
+                        .truncationMode(.tail)
+                        .lineLimit(1)
+                        .padding(.vertical,10)
+                        .padding(.horizontal,14)
+                        .background(Color.lightGray)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                })
+            }
+
+            Group {
+                if let imageURL = postDetailData.image {
+                    ImageView(imageURL: imageURL)
+                } else {
+                    Image("imgDummyVote\((postDetailData.id) % 3 + 1)")
+                        .resizable()
+                        .frame(maxWidth: .infinity)
+                        .aspectRatio(1.5, contentMode: .fit)
+                        .clipShape(.rect(cornerRadius: 16))
+                }
+            }
         }
         .padding(.horizontal, 24)
+        .padding(.bottom, 8)
     }
 
-    @ViewBuilder
-    func detailTextView(title: String, price: Int, description: String) -> some View {
-        VStack(alignment: .leading, spacing: 13) {
-            SpendTypeLabel(spendType: .beautyLover, usage: .standard)
-            Text(title)
-                .foregroundStyle(Color.white)
-                .font(.system(size: 18, weight: .bold))
-            Text(description)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .lineLimit(3)
-                .multilineTextAlignment(.leading)
-                .foregroundStyle(Color.whiteGray)
-
-            HStack(spacing: 9) {
-                Text("2023년 8월 2일 · 가격: \(price)원")    .foregroundStyle(Color.priceGray)
-                    .font(.system(size: 14))
-            }
-            .padding(.top, 3)
-        }
-        .padding(.bottom, 36)
-    }
+//    @ViewBuilder
+//    func detailTextView(title: String, price: Int, contents: String) -> some View {
+//        VStack(alignment: .leading, spacing: 13) {
+//            SpendTypeLabel(spendType: .beautyLover, usage: .standard)
+//            Text(title)
+//                .foregroundStyle(Color.white)
+//                .font(.system(size: 18, weight: .bold))
+//            Text(contents)
+//                .frame(maxWidth: .infinity, alignment: .leading)
+//                .lineLimit(3)
+//                .multilineTextAlignment(.leading)
+//                .foregroundStyle(Color.whiteGray)
+//
+//            HStack(spacing: 9) {
+//                Text("2023년 8월 2일 · 가격: \(price)원")    .foregroundStyle(Color.priceGray)
+//                    .font(.system(size: 14))
+//            }
+//            .padding(.top, 3)
+//        }
+//        .padding(.bottom, 36)
+//    }
 
     var commentPreview: some View {
         CommentPreview()
@@ -217,13 +260,13 @@ extension DetailView {
             }
     }
 
-    func voteResultView(_ type: VoteType, _ percent: Double) -> some View {
+    func voteResultView(type: VoteType, _ percent: Double) -> some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("구매 \(type.title) 의견")
                 .font(.system(size: 14))
                 .foregroundStyle(Color.priceGray)
             HStack(spacing: 8) {
-                // TODO: viewModel로 부터 데이터를 받아서 어떤 유형인지 여기에 알려주면 댐.
+                // TODO: - 여기 계산해야 함.
                 SpendTypeLabel(spendType: .budgetKeeper, usage: .standard)
                 SpendTypeLabel(spendType: .ecoWarrior, usage: .standard)
             }
@@ -273,11 +316,5 @@ struct AlertCustomToggle: ToggleStyle {
                 configuration.isOn.toggle()
             }
         }
-    }
-}
-
-#Preview {
-    NavigationStack {
-        DetailView(isDone: false)
     }
 }

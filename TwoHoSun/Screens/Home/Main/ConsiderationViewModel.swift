@@ -10,7 +10,7 @@ import SwiftUI
 import Combine
 
 final class ConsiderationViewModel: ObservableObject {
-    @Published var votes = [PostResponseModel]()
+    @Published var posts = [PostModel]()
     @Published var isPostFetching = true
     @Published var pageOffset = 0
     private let apiManager: NewApiManager
@@ -40,14 +40,14 @@ final class ConsiderationViewModel: ObservableObject {
         if isFirstFetch {
             self.isLastPage = false
             self.page = 0
-            self.votes.removeAll()
+            self.posts.removeAll()
             self.isPostFetching = true
         }
 
         apiManager.request(.postService(.getPosts(page: page,
                                                   size: size,
                                                   visibilityScope: visibilityScope)),
-                           decodingType: [PostResponseModel].self)
+                           decodingType: [PostModel].self)
         .compactMap(\.data)
         .receive(on: DispatchQueue.main)
         .sink { completion in
@@ -58,7 +58,7 @@ final class ConsiderationViewModel: ObservableObject {
                 print(failure)
             }
         } receiveValue: { data in
-            self.votes.append(contentsOf: data)
+            self.posts.append(contentsOf: data)
 
             if isFirstFetch {
                 self.isPostFetching = false
@@ -66,7 +66,7 @@ final class ConsiderationViewModel: ObservableObject {
         }
         .store(in: &cancellables)
 
-        if self.votes.count % 5 != 0 {
+        if self.posts.count % 5 != 0 {
             isLastPage = true
         }
     }

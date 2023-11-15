@@ -79,7 +79,8 @@ extension ReviewDetailView {
                     .foregroundStyle(Color.woteWhite)
                 Spacer()
                 NavigationLink {
-                    DetailView(isDone: false)
+                    // TODO: - postId 알맞게 변경
+//                    DetailView(viewModel: DetailViewModel(apiManager: <#T##NewApiManager#>, postId: <#T##Int#>))
                 } label: {
                     HStack(spacing: 2) {
                         Text("바로가기")
@@ -90,7 +91,8 @@ extension ReviewDetailView {
                 }
             }
             NavigationLink {
-                DetailView(isDone: true)
+                // TODO: - postId 알맞게 변경
+//                DetailView(viewModel: DetailViewModel(apiManager: <#T##NewApiManager#>, postId: <#T##Int#>))
             } label: {
                 VoteCardCell(cellType: .simple,
                              progressType: .end,

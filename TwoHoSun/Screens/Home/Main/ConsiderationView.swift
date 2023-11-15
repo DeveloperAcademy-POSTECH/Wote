@@ -21,7 +21,7 @@ struct ConsiderationView: View {
             VStack(spacing: 0) {
                 Spacer()
                 if !viewModel.isPostFetching {
-                    if viewModel.votes.isEmpty {
+                    if viewModel.posts.isEmpty {
                         NoVoteView()
                     } else {
                         votePagingView
@@ -46,15 +46,15 @@ extension ConsiderationView {
     private var votePagingView: some View {
         GeometryReader { proxy in
             TabView(selection: $currentVote) {
-                ForEach(Array(zip(viewModel.votes.indices, viewModel.votes)), id: \.0) { index, item in
+                ForEach(Array(zip(viewModel.posts.indices, viewModel.posts)), id: \.0) { index, item in
                     VStack(spacing: 0) {
-                        VoteContentCell(voteData: item)
+                        VoteContentCell(postData: item)
                         nextVoteButton
                             .padding(.top, 16)
                     }
                     .tag(index)
                     .onAppear {
-                        if (index == viewModel.votes.count - 2) {
+                        if (index == viewModel.posts.count - 2) {
                             viewModel.fetchMorePosts(selectedVisibilityScope.type)
                         }
                     }
@@ -120,7 +120,7 @@ extension ConsiderationView {
             Spacer()
             Button {
                 withAnimation {
-                    if currentVote != viewModel.votes.count - 1 {
+                    if currentVote != viewModel.posts.count - 1 {
                         currentVote += 1
                     }
                 }
