@@ -44,8 +44,10 @@ struct VoteContentCell: View {
                 .foregroundStyle(.white)
                 .padding(.bottom, 8)
             HStack(spacing: 0) {
-                Text("가격: \(voteData.price)원")
-                Text(" · ")
+                if let price = voteData.price {
+                    Text("가격: \(price)원")
+                    Text(" · ")
+                }
                 Text(voteData.createDate.convertToStringDate() ?? "")
             }
             .font(.system(size: 14))

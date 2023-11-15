@@ -20,7 +20,7 @@ struct PostResponseModel: Codable, Identifiable {
     var externalURL: String?
     var voteCount: Int
     var commentCount: Int
-    var price: Int
+    var price: Int?
     var myChoice: Bool?
     var voteCounts: VoteCounts
     var voteInfoList: VoteInfoList?
@@ -32,8 +32,7 @@ struct PostResponseModel: Codable, Identifiable {
         case id = "postId"
         case createDate, modifiedDate, visibilityScope, postStatus,
              author, title, contents, image, externalURL, voteCount,
-             commentCount, price, myChoice, voteCounts, voteInfoList,
-             isMine, isNotified, isPurchased
+             commentCount, price, myChoice, voteCounts
     }
 }
 

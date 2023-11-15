@@ -9,7 +9,7 @@ import SwiftUI
 import Observation
 
 @Observable
-class DetailViewModel {
+final class DetailViewModel {
     var commentsDatas: [CommentsModel] = []
 //    var detailPostData: PostModel?
     var postId: Int
