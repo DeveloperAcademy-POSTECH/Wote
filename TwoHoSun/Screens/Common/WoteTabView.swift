@@ -44,7 +44,7 @@ enum WoteTabType: Int, CaseIterable {
     }
 }
 
-enum VisibilityScopeType {
+enum VisibilityScopeType: Codable {
     case global, school
 
     var title: String {

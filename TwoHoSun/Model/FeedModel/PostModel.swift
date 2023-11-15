@@ -22,7 +22,6 @@ struct PostModel: Identifiable {
     let viewCount: Int
     let commentCount: Int
     let voteCount: VoteCountModel
-    let postCategoryType: PostCategoryType
     let voteInfoList: [VoteInfo]
     let voted: Bool
     let mine: Bool

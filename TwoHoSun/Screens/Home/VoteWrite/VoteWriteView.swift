@@ -307,9 +307,3 @@ extension VoteWriteView {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
-
-#Preview {
-    NavigationStack {
-        VoteWriteView(viewModel: VoteWriteViewModel())
-    }
-}
