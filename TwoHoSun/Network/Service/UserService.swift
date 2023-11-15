@@ -63,20 +63,32 @@ extension UserService: TargetType {
                                       encoding: JSONEncoding.default)
         case .postProfileSetting(let profile):
             var formData: [MultipartFormData] = []
-            if let data = UIImage(data: profile.userProfileImage ?? Data())?
+
+            if let data = UIImage(data: profile.imageFile ?? Data())?
                                             .jpegData(compressionQuality: 0.3) {
                 let imageData = MultipartFormData(provider: .data(data),
                                                   name: "imageFile",
-                                                  fileName: "temp.jpg",
+                                                  fileName: "\(profile.nickname).jpg",
                                                   mimeType: "image/jpeg")
                 formData.append(imageData)
             }
-            let json = try! JSONSerialization.data(withJSONObject: profile, options: [])
-            let jsonString = String(data: json, encoding: .utf8)!
-            let stringData = MultipartFormData(provider: .data(jsonString.data(using: String.Encoding.utf8)!),
-                                               name: "profileRequest",
-                                               mimeType: "application/json")
-            formData.append(stringData)
+            let profileData: [String: Any] = [
+                 "nickname": profile.nickname,
+                 "school": [
+                     "schoolName": profile.school.schoolName,
+                     "schoolRegion": profile.school.schoolRegion
+                 ]
+             ]
+            do {
+                let jsonData = try JSONSerialization.data(withJSONObject: profileData)
+                let jsonString = String(data: jsonData, encoding: .utf8)!
+                let stringData = MultipartFormData(provider: .data(jsonString.data(using: String.Encoding.utf8)!),
+                                                   name: "profileRequest",
+                                                   mimeType: "application/json")
+                formData.append(stringData)
+            } catch {
+                print("error")
+            }
             return .uploadMultipart(formData)
         default:
             return .requestParameters(parameters: parameters,

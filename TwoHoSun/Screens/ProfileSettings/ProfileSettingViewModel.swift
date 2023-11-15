@@ -25,7 +25,7 @@ final class ProfileSettingViewModel {
     private let forbiddenWord = ["금지어1", "금지어2"]
     private var apiManager: NewApiManager
     var bag = Set<AnyCancellable>()
-    var path: Binding<[Route]>
+    var path: Binding<[AllNavigation]>
     var isSchoolFilled: Bool {
         return selectedSchoolInfo != nil
     }
@@ -33,7 +33,7 @@ final class ProfileSettingViewModel {
         return nicknameValidationType == .valid
         && isSchoolFilled
     }
-    init(apiManager: NewApiManager , path: Binding<[Route]>) {
+    init(apiManager: NewApiManager , path: Binding<[AllNavigation]>) {
         self.apiManager = apiManager
         self.path = path
     }
@@ -76,8 +76,8 @@ final class ProfileSettingViewModel {
     
     func setProfile() {
         guard let school = selectedSchoolInfo?.school else { return }
-        model = ProfileSetting(userProfileImage: selectedImageData ?? Data(),
-                               userNickname: nickname,
+        model = ProfileSetting(imageFile: selectedImageData ?? Data(),
+                               nickname: nickname,
                                school: school)
         postProfileSetting()
     }
@@ -117,5 +117,6 @@ final class ProfileSettingViewModel {
             } receiveValue: { response in
                 print(response)
             }
+            .store(in: &bag)
     }
 }

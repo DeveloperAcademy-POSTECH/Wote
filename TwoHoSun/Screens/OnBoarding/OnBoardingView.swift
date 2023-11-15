@@ -13,10 +13,13 @@ import Combine
 struct OnBoardingView : View {
     @State private var goProfileView = false
     @State var viewModel: LoginViewModel
-    @State private var navigationPath: [Route] = []
+//    @State private var navigationPath: [Route] = []
     @Environment(AppLoginState.self) private var loginState
+//    @Environment(NavigationManager.self) private var navigationManager
+    @State private var navigationPath: [AllNavigation] = []
     init(viewModel: LoginViewModel) {
         self.viewModel = viewModel
+//        navigationPath = navigationManager.navigationPath
     }
     var body: some View {
         NavigationStack(path: $navigationPath) {
@@ -61,13 +64,15 @@ struct OnBoardingView : View {
                     self.navigationPath.append(.mainTabView)
                 }
             })
-            .navigationDestination(for: Route.self) { route in
+            .navigationDestination(for: AllNavigation.self) { route in
                 switch route {
                 case .mainTabView:
                     WoteTabView(path: $navigationPath)
                 case .profileView:
                     ProfileSettingsView(viewType: .setting, 
                                         viewModel: ProfileSettingViewModel(apiManager: loginState.serviceRoot.apimanager, path: $navigationPath))
+                default:
+                    EmptyView()
                 }
             }
         }

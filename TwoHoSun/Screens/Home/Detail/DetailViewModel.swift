@@ -14,9 +14,11 @@ class DetailViewModel {
 //    var detailPostData: PostModel?
     var postId: Int
     var isSendMessage: Bool = false
+    private var appState: AppLoginState
 
-    init(postId: Int) {
+    init(postId: Int, appState: AppLoginState) {
         self.postId = postId
+        self.appState = appState
     }
 
     func getNicknameForComment(commentId: Int) -> String? {
@@ -26,64 +28,5 @@ class DetailViewModel {
         return nil
     }
     
-    func fetchVoteDetailPost() {
-        APIManager.shared.requestAPI(type: .getDetailPost(postId: postId)) { (response: GeneralResponse<PostResponseDto>) in
-            switch response.status {
-            case 200:
-                print("상세 조회 성공")
-                guard response.data != nil else { return }
-//                self.detailPostData = PostModel(from: data)
-            case 401:
-                APIManager.shared.refreshAllTokens()
-                self.fetchVoteDetailPost()
-            default:
-                print("error")
-            }
-        }
-    }
 
-    func getComments() {
-        APIManager.shared.requestAPI(type: .getComments(postId: postId)) { (response: GeneralResponse<[CommentsModel]>) in
-            switch response.status {
-            case 200:
-                guard let data = response.data else {return}
-                self.commentsDatas = data
-                self.isSendMessage = false
-                print("data가져옴")
-            default:
-                print("error")
-            }
-        }
-    }
-
-    func postComments(commentPost: CommentPostModel) {
-        APIManager.shared.requestAPI(type: .postComments(commentPost: commentPost)) { (response: GeneralResponse<NoData>) in
-            switch response.status {
-            case 401:
-                APIManager.shared.refreshAllTokens()
-                self.postComments(commentPost: commentPost)
-            case 200:
-                print("post 잘됨.")
-                self.getComments()
-
-            default:
-                print("error")
-            }
-        }
-    }
-
-    func deleteComments(postId: Int, commentId: Int) {
-        APIManager.shared.requestAPI(type: .deleteComments(postId: postId, commentId: commentId)) { (response: GeneralResponse<NoData>) in
-            switch response.status {
-            case 401:
-                APIManager.shared.refreshAllTokens()
-                self.deleteComments(postId: postId, commentId: commentId)
-            case 200:
-                print("delete 잘됨.")
-                self.isSendMessage = false
-            default:
-                print("error")
-            }
-        }
-    }
 }

@@ -16,19 +16,23 @@ enum Route {
 @main
 struct TwoHoSunApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    
+   
     @State private var appState = AppLoginState()
-    
+    @State private var pathManager = NavigationManager()
+
     var body: some Scene {
         WindowGroup {
             switch appState.serviceRoot.auth.authState {
             case .none, .allexpired, .unfinishRegister:
                 OnBoardingView(viewModel: LoginViewModel(appState: appState))
                     .environment(appState)
+                    .environment(pathManager)
             case .loggedIn:
-                NavigationStack {
+                NavigationStack(path: $pathManager.navigationPath) {
                     WoteTabView(path: .constant([]))
                         .environment(appState)
+                        .environment(pathManager)
+
                 }
             }
         }

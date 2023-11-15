@@ -71,7 +71,8 @@ struct WoteTabView: View {
     @State private var selectedVisibilityScope = VisibilityScopeType.global
     @State private var isVoteCategoryButtonDidTap = false
     @Environment(AppLoginState.self) private var loginStateManager
-    @Binding var path: [Route]
+    @Binding var path: [AllNavigation]
+    @Environment(NavigationManager.self) private var navigationManager
     
     var body: some View {
             ZStack(alignment: .topLeading) {
@@ -130,10 +131,13 @@ extension WoteTabView {
         switch tab {
         case .consider:
             ConsiderationView(viewModel: ConsiderationViewModel(apiManager: loginStateManager.serviceRoot.apimanager), selectedVisibilityScope: $selectedVisibilityScope)
+//                .environment(navigationPath)
         case .review:
             ReviewView()
+//                .environment(navigationPath)
         case .myPage:
             MyPageView()
+//                .environment(navigationPath)
         }
     }
 
@@ -262,3 +266,6 @@ extension WoteTabView {
         }
     }
 }
+//#Preview {
+//    WoteTabView(path: .constant([.mainTabView]))
+//}
