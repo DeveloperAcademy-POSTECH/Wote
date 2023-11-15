@@ -173,6 +173,11 @@ extension VoteWriteView {
                     .onTapGesture {
                         isEditing.toggle()
                     }
+                    .onAppear {
+                        if let imageData = croppedImage.jpegData(compressionQuality: 1.0) {
+                            viewModel.image = imageData
+                        }
+                    }
             } else {
                 Button {
                     showPicker.toggle()
