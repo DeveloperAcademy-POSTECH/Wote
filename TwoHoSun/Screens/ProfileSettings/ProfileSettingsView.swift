@@ -92,6 +92,8 @@ struct ProfileSettingsView: View {
     @State var viewType: ProfileSettingType
     @Bindable var viewModel: ProfileSettingViewModel
     @Environment(\.dismiss) private var dismiss
+    @Environment(AppLoginState.self) private var loginState
+    
     var body: some View {
         ZStack {
             Color.background

@@ -90,7 +90,7 @@ extension MyPageView {
     private var profileHeaderView: some View {
         NavigationLink {
             ProfileSettingsView(viewType: .modfiy,
-                                viewModel: ProfileSettingViewModel(apiManager: loginState.serviceRoot.apimanager, path: .constant([])))
+                                viewModel: ProfileSettingViewModel(appState: loginState))
         } label: {
             HStack {
                 Circle()

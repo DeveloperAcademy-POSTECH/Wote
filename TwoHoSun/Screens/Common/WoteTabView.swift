@@ -72,7 +72,6 @@ struct WoteTabView: View {
     @State private var isVoteCategoryButtonDidTap = false
     @Environment(AppLoginState.self) private var loginStateManager
     @Binding var path: [AllNavigation]
-    @Environment(NavigationManager.self) private var navigationManager
     
     var body: some View {
             ZStack(alignment: .topLeading) {

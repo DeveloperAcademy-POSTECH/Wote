@@ -35,8 +35,6 @@ struct ConsiderationView: View {
     @ObservedObject var viewModel: ConsiderationViewModel
     @Binding var selectedVisibilityScope: VisibilityScopeType
     @Environment(AppLoginState.self) private var loginState
-    @Environment(NavigationManager.self) private var mainPath
-//    @Binding var path: AllNavigation
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
@@ -57,26 +55,12 @@ struct ConsiderationView: View {
         }
         .onAppear {
             viewModel.fetchPosts(visibilityScope: selectedVisibilityScope.type)
+//            print(loginState.serviceRoot.apimanager.authenticator.)
         }
         .onChange(of: selectedVisibilityScope) { _, newScope in
             viewModel.fetchPosts(visibilityScope: newScope.type)
         }
-        .navigationDestination(for: AllNavigation.self) { destination in
-            switch destination {
-            case .alertView:
-                NotificationView()
-            case .detailView:
-                DetailView(isDone: true)
-            case .reveiwView:
-                ReviewView()
-//            case .testView:
-//                TypeTestView(viewModel: <#T##TypeTestViewModel#>)
-            case .makeVoteView:
-                VoteWriteView(viewModel: VoteWriteViewModel())
-            default:
-                EmptyView()
-            }
-        }
+   
     }
 }
 

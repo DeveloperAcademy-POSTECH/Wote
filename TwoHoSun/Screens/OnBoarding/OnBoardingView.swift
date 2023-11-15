@@ -15,7 +15,6 @@ struct OnBoardingView : View {
     @State var viewModel: LoginViewModel
 //    @State private var navigationPath: [Route] = []
     @Environment(AppLoginState.self) private var loginState
-//    @Environment(NavigationManager.self) private var navigationManager
     @State private var navigationPath: [AllNavigation] = []
     init(viewModel: LoginViewModel) {
         self.viewModel = viewModel
@@ -70,7 +69,7 @@ struct OnBoardingView : View {
                     WoteTabView(path: $navigationPath)
                 case .profileView:
                     ProfileSettingsView(viewType: .setting, 
-                                        viewModel: ProfileSettingViewModel(apiManager: loginState.serviceRoot.apimanager, path: $navigationPath))
+                                        viewModel: ProfileSettingViewModel(appState: loginState))
                 default:
                     EmptyView()
                 }

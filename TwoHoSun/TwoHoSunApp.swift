@@ -18,7 +18,6 @@ struct TwoHoSunApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
    
     @State private var appState = AppLoginState()
-    @State private var pathManager = NavigationManager()
 
     var body: some Scene {
         WindowGroup {
@@ -26,13 +25,10 @@ struct TwoHoSunApp: App {
             case .none, .allexpired, .unfinishRegister:
                 OnBoardingView(viewModel: LoginViewModel(appState: appState))
                     .environment(appState)
-                    .environment(pathManager)
             case .loggedIn:
-                NavigationStack(path: $pathManager.navigationPath) {
+                NavigationStack(path: $appState.serviceRoot.pathManager.navigationPath) {
                     WoteTabView(path: .constant([]))
                         .environment(appState)
-                        .environment(pathManager)
-
                 }
             }
         }
@@ -40,11 +36,12 @@ struct TwoHoSunApp: App {
 }
 
 class ServiceRoot {
-    let auth = Authenticator()
+    var auth = Authenticator()
     lazy var apimanager: NewApiManager = {
         let manager = NewApiManager(authenticator: auth)
         return manager
     }()
+    var pathManager = NavigationManager()
 }
 
 enum TokenState {
@@ -53,7 +50,7 @@ enum TokenState {
 
 @Observable
 class AppLoginState {
-    let serviceRoot: ServiceRoot
+    var serviceRoot: ServiceRoot
 
     init() {
         serviceRoot = ServiceRoot()

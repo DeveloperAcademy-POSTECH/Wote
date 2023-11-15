@@ -23,19 +23,26 @@ final class ProfileSettingViewModel {
     var isFormValid = true
     var model: ProfileSetting? 
     private let forbiddenWord = ["금지어1", "금지어2"]
-    private var apiManager: NewApiManager
     var bag = Set<AnyCancellable>()
-    var path: Binding<[AllNavigation]>
+//    var path: Binding<[AllNavigation]>
+    private var appState: AppLoginState
+    private var isSucceed = false {
+        didSet {
+            if isSucceed {
+                self.appState.serviceRoot.auth.authState = .loggedIn
+            }
+        }
+    }
+    init(appState: AppLoginState) {
+        self.appState = appState
+//        self.path = path
+    }
     var isSchoolFilled: Bool {
         return selectedSchoolInfo != nil
     }
     var isAllInputValid: Bool {
         return nicknameValidationType == .valid
         && isSchoolFilled
-    }
-    init(apiManager: NewApiManager , path: Binding<[AllNavigation]>) {
-        self.apiManager = apiManager
-        self.path = path
     }
 
     private func isNicknameLengthValid(_ text: String) -> Bool {
@@ -83,7 +90,7 @@ final class ProfileSettingViewModel {
     }
     
     func postNickname() {
-        apiManager.request(.userService(.checkNicknameValid(nickname: nickname)),
+        appState.serviceRoot.apimanager.request(.userService(.checkNicknameValid(nickname: nickname)),
                            decodingType: NicknameValidation.self)
         .compactMap(\.data)
             .sink { completion in
@@ -102,21 +109,15 @@ final class ProfileSettingViewModel {
     
     func postProfileSetting() {
         guard let model = model else { return }
-        apiManager.request(.userService(.postProfileSetting(profile: model)),
+        var cancellable: AnyCancellable?
+        cancellable = appState.serviceRoot.apimanager.request(.userService(.postProfileSetting(profile: model)),
                            decodingType: NoData.self)
             .sink { completion in
-                switch completion {
-                case .finished:
-                    var array = self.path.wrappedValue
-                    array.removeFirst()
-                    array.append(.mainTabView)
-                    self.path.wrappedValue = array
-                case .failure(let error):
-                    print(error)
-                }
+                print("끝남? \(completion)")
             } receiveValue: { response in
-                print(response)
+                self.appState.serviceRoot.auth.authState = .loggedIn
+                cancellable?.cancel()
             }
-            .store(in: &bag)
+
     }
 }
