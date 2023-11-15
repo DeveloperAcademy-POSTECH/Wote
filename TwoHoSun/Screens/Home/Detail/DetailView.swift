@@ -45,7 +45,7 @@ struct DetailView: View {
                         Divider()
                             .background(Color.disableGray)
                             .padding(.horizontal, 12)
-                        detailCell(postDetailData: postDetailData)
+                        DetailContentCell(postDetailData: postDetailData)
                             .padding(.top, 27)
                         VoteView(postStatus: postDetailData.postStatus,
                                  myChoice: postDetailData.myChoice,
@@ -151,7 +151,63 @@ extension DetailView {
         .padding(.bottom, 13)
     }
 
-    private func detailCell(postDetailData: PostModel) -> some View {
+
+//    @ViewBuilder
+//    func detailTextView(title: String, price: Int, contents: String) -> some View {
+//        VStack(alignment: .leading, spacing: 13) {
+//            SpendTypeLabel(spendType: .beautyLover, usage: .standard)
+//            Text(title)
+//                .foregroundStyle(Color.white)
+//                .font(.system(size: 18, weight: .bold))
+//            Text(contents)
+//                .frame(maxWidth: .infinity, alignment: .leading)
+//                .lineLimit(3)
+//                .multilineTextAlignment(.leading)
+//                .foregroundStyle(Color.whiteGray)
+//
+//            HStack(spacing: 9) {
+//                Text("2023년 8월 2일 · 가격: \(price)원")    .foregroundStyle(Color.priceGray)
+//                    .font(.system(size: 14))
+//            }
+//            .padding(.top, 3)
+//        }
+//        .padding(.bottom, 36)
+//    }
+
+    var commentPreview: some View {
+        CommentPreview()
+            .onTapGesture {
+                showDetailComments.toggle()
+            }
+    }
+
+    func voteResultView(type: VoteType, _ percent: Double) -> some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("구매 \(type.title) 의견")
+                .font(.system(size: 14))
+                .foregroundStyle(Color.priceGray)
+            HStack(spacing: 8) {
+                // TODO: - 여기 계산해야 함.
+                SpendTypeLabel(spendType: .budgetKeeper, usage: .standard)
+                SpendTypeLabel(spendType: .ecoWarrior, usage: .standard)
+            }
+            Text("투표 후 구매 \(type.title) 의견을 선택한 유형을 확인해봐요!")
+                .font(.system(size: 16, weight: .medium))
+                .foregroundStyle(Color.white)
+            ProgressView(value: percent)
+                .frame(height: 8)
+                .tint(Color.lightBlue)
+                .background(Color.darkGray2)
+                .padding(.top, 8)
+        }
+        .padding(.horizontal, 24)
+    }
+}
+
+struct DetailContentCell: View {
+    var postDetailData: PostModel
+
+    var body: some View {
         VStack(alignment: .leading) {
             VStack(alignment: .leading, spacing: 13) {
                 SpendTypeLabel(spendType: .beautyLover, usage: .standard)
@@ -230,58 +286,9 @@ extension DetailView {
         .padding(.horizontal, 24)
         .padding(.bottom, 8)
     }
-
-//    @ViewBuilder
-//    func detailTextView(title: String, price: Int, contents: String) -> some View {
-//        VStack(alignment: .leading, spacing: 13) {
-//            SpendTypeLabel(spendType: .beautyLover, usage: .standard)
-//            Text(title)
-//                .foregroundStyle(Color.white)
-//                .font(.system(size: 18, weight: .bold))
-//            Text(contents)
-//                .frame(maxWidth: .infinity, alignment: .leading)
-//                .lineLimit(3)
-//                .multilineTextAlignment(.leading)
-//                .foregroundStyle(Color.whiteGray)
-//
-//            HStack(spacing: 9) {
-//                Text("2023년 8월 2일 · 가격: \(price)원")    .foregroundStyle(Color.priceGray)
-//                    .font(.system(size: 14))
-//            }
-//            .padding(.top, 3)
-//        }
-//        .padding(.bottom, 36)
-//    }
-
-    var commentPreview: some View {
-        CommentPreview()
-            .onTapGesture {
-                showDetailComments.toggle()
-            }
-    }
-
-    func voteResultView(type: VoteType, _ percent: Double) -> some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text("구매 \(type.title) 의견")
-                .font(.system(size: 14))
-                .foregroundStyle(Color.priceGray)
-            HStack(spacing: 8) {
-                // TODO: - 여기 계산해야 함.
-                SpendTypeLabel(spendType: .budgetKeeper, usage: .standard)
-                SpendTypeLabel(spendType: .ecoWarrior, usage: .standard)
-            }
-            Text("투표 후 구매 \(type.title) 의견을 선택한 유형을 확인해봐요!")
-                .font(.system(size: 16, weight: .medium))
-                .foregroundStyle(Color.white)
-            ProgressView(value: percent)
-                .frame(height: 8)
-                .tint(Color.lightBlue)
-                .background(Color.darkGray2)
-                .padding(.top, 8)
-        }
-        .padding(.horizontal, 24)
-    }
 }
+
+
 struct AlertCustomToggle: ToggleStyle {
     func makeBody(configuration: Configuration) -> some View {
         let isOn = configuration.isOn
