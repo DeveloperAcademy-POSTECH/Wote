@@ -23,7 +23,7 @@ struct PostModel: Codable, Identifiable {
     var price: Int?
     var myChoice: Bool?
     var voteCounts: VoteCounts
-    var voteInfoList: VoteInfoList?
+    var voteInfoList: [VoteInfoModel]?
     var isMine: Bool?
     var isNotified: Bool?
     var isPurchased: Bool?

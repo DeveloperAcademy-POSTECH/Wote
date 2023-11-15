@@ -35,9 +35,17 @@ final class DetailViewModel {
                 }
             } receiveValue: { data in
                 self.postDetailData = data
+
+//                if let voteInfoList = data.voteInfoList {
+//                    self.calculateVoteResult(voteResult: voteInfoList)
+//                }
             }
             .store(in: &cancellables)
+    }
 
+    func calculateVoteResult(voteResult: VoteInfoModel?) -> (Double, Double) {
+        print(voteResult)
+        return (0.0, 0.0)
     }
 
 //    func getNicknameForComment(commentId: Int) -> String? {

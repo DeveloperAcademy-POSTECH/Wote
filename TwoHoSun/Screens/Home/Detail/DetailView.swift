@@ -7,74 +7,6 @@
 
 import SwiftUI
 
-enum ClosedPostStatus: Codable {
-    case myPostWithReview
-    case myPostWithoutReview
-    case othersPostWithReview
-    case othersPostWithoutReview
-
-    init?(isMine: Bool?, hasReview: Bool?) {
-        switch (isMine, hasReview) {
-        case (true, true):
-            self = .myPostWithReview
-        case (true, false):
-            self = .myPostWithoutReview
-        case (false, true):
-            self = .othersPostWithReview
-        case (false, false):
-            self = .othersPostWithoutReview
-        case (_, _):
-            return nil
-        }
-    }
-
-    var description: String {
-        switch self {
-        case .myPostWithReview:
-            return "님의 소비후기"
-        case .myPostWithoutReview:
-            return "님! 상품에 대한 후기를 들려주세요!"
-        case .othersPostWithReview:
-            return "님의 소비후기 보러가기"
-        case .othersPostWithoutReview:
-            return "님이 아직 소비후기를 작성하기 전이에요!"
-        }
-    }
-
-    @ViewBuilder
-    var buttonView: some View {
-        switch self {
-        case .myPostWithoutReview:
-            Image(systemName: "pencil.line")
-                        .font(.system(size: 20))
-        case .othersPostWithoutReview:
-            EmptyView()
-        default:
-            Image("icnReview")
-        }
-    }
-
-//    @ViewBuilder
-//    var button: some View {
-//        ZStack {
-//            Rectangle()
-//                .frame(width: 50, height: 42)
-//                .foregroundStyle(Color.gray200)
-//                .clipShape(.rect(cornerRadius: 6))
-//            switch self {
-//            case .myPostWithReview:
-//                Text("HI")
-//            case .myPostWithoutReview:
-//                Text("HI")
-//            case .othersPostWithReview:
-//                Image
-//            case .othersPostWithoutReview:
-//                Text("HI")
-//            }
-//        }
-//    }
-}
-
 struct DetailView: View {
     @Environment(\.dismiss) var dismiss
     @State private var showDetailComments = false
@@ -194,6 +126,7 @@ struct DetailView: View {
         }
     }
 }
+
 extension DetailView {
 
     var commentPreview: some View {
@@ -232,7 +165,8 @@ struct DetailContentCell: View {
     var body: some View {
         VStack(alignment: .leading) {
             VStack(alignment: .leading, spacing: 13) {
-                SpendTypeLabel(spendType: .beautyLover, usage: .standard)
+                SpendTypeLabel(spendType: ConsumerType(rawValue: postDetailData.author.consumerType) ?? .adventurer, 
+                               usage: .standard)
                 Text(postDetailData.title)
                     .foregroundStyle(Color.white)
                     .font(.system(size: 18, weight: .bold))
