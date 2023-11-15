@@ -7,20 +7,21 @@
 
 import Foundation
 
-enum NetworkHeaderKey: String {
-    case contentType = "Content-Type"
-    case authorization = "Authorization"
-}
+
 
 enum APIConstants {
     static let accept: String = "Accept"
     static let applicationXForm: String = "application/x-www-form-urlencoded; charset=UTF-8"
     static let applicationJSON = "application/json"
     static let multiPartForm = "multipart/form-data"
-
+    enum NetworkHeaderKey: String {
+        case contentType = "Content-Type"
+        case authorization = "Authorization"
+    }
     static var headerWithOutToken: [String: String] {
         [NetworkHeaderKey.contentType.rawValue: APIConstants.applicationJSON]
     }
+
     static var headerWithAuthorization: [String: String] {
         [
             NetworkHeaderKey.contentType.rawValue: APIConstants.applicationJSON,

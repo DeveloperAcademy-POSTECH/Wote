@@ -26,6 +26,7 @@ enum NetworkError: Error {
     case deleteError
     case nicknameDuplicate
     case reviewDuplicate
+    case shouldgoLogin
 
     init(divisionCode: String) {
         switch divisionCode {

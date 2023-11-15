@@ -16,41 +16,58 @@ enum Route {
 @main
 struct TwoHoSunApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-
-    let appState = AppLoginState()
-//    @State private var path: [Route] = []
-
+    
+    @State private var appState = AppLoginState()
+    
     var body: some Scene {
         WindowGroup {
-////            if appState.hasValidToken {
-            NavigationStack {
-                WoteTabView(path: .constant([Route.mainTabView]))
+            switch appState.serviceRoot.auth.authState {
+            case .none, .allexpired, .unfinishRegister:
+                OnBoardingView(viewModel: LoginViewModel(appState: appState))
+                    .environment(appState)
+            case .loggedIn:
+                NavigationStack {
+                    WoteTabView(path: .constant([]))
+                        .environment(appState)
+                }
             }
-////            } else {
-//                OnBoardingView()
-////            }
-////                NavigationStack(path: $path) {
-////                    OnBoardingView(navigationPath: $path)
-////                }
-////                .tint(Color.accentBlue)
-////            }
         }
     }
 }
 
+class ServiceRoot {
+    let auth = Authenticator()
+    lazy var apimanager: NewApiManager = {
+        let manager = NewApiManager(authenticator: auth)
+        return manager
+    }()
+}
+
+enum TokenState {
+    case none, allexpired, loggedIn, unfinishRegister
+}
+
 @Observable
 class AppLoginState {
-    var hasValidToken: Bool = false
+    let serviceRoot: ServiceRoot
 
     init() {
+        serviceRoot = ServiceRoot()
         checkTokenValidity()
+        serviceRoot.auth.relogin = relogin
     }
-
+    
+    private func relogin() {
+        DispatchQueue.main.async {
+            self.serviceRoot.auth.authState = .none
+        }
+    }
+    
     private func checkTokenValidity() {
-        if KeychainManager.shared.readToken(key: "accessToken") != nil {
-            hasValidToken = true
+        if serviceRoot.apimanager.authenticator.accessToken != nil {
+            serviceRoot.auth.authState = .loggedIn
         } else {
-            hasValidToken = false
+            serviceRoot.auth.authState = .none
         }
     }
 }

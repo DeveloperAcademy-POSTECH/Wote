@@ -12,8 +12,12 @@ import Combine
 
 struct OnBoardingView : View {
     @State private var goProfileView = false
-    @ObservedObject var viewModel = LoginViewModel()
+    @State var viewModel: LoginViewModel
     @State private var navigationPath: [Route] = []
+    @Environment(AppLoginState.self) private var loginState
+    init(viewModel: LoginViewModel) {
+        self.viewModel = viewModel
+    }
     var body: some View {
         NavigationStack(path: $navigationPath) {
             ZStack {
@@ -63,7 +67,7 @@ struct OnBoardingView : View {
                     WoteTabView(path: $navigationPath)
                 case .profileView:
                     ProfileSettingsView(viewType: .setting, 
-                                        viewModel: ProfileSettingViewModel(path: $navigationPath))
+                                        viewModel: ProfileSettingViewModel(apiManager: loginState.serviceRoot.apimanager, path: $navigationPath))
                 }
             }
         }

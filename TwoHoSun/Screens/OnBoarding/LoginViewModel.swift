@@ -10,38 +10,42 @@ import Alamofire
 import Combine
 import Moya
 
+@Observable
 class LoginViewModel: ObservableObject {
-    @Published var showSheet = false
-    @Published var authorization: String = ""
-    @Published var goMain = false
+    var showSheet = false
+    var authorization: String = ""
+    var goMain = false
     private var bag = Set<AnyCancellable>()
-    private var apimanager: NewApiManager
+    private var appState: AppLoginState
+
+    init(appState: AppLoginState) {
+        self.appState = appState
+    }
 
     func setAuthorizationCode(_ code: String) {
         self.authorization = code
     }
-    init(apimanager: NewApiManager = NewApiManager()) {
-        self.apimanager = apimanager
-    }
 
     func postAuthorCode() {
-        apimanager.request(.userService(.postAuthorCode(authorization: authorization)),
-                           decodingType: Tokens.self)
+        appState.serviceRoot.apimanager
+            .requestLogin(authorization: authorization)
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
+
                     break
                 case .failure(let failure):
                     print(failure)
                 }
             }) { response in
                 if let data = response.data {
-                    KeychainManager.shared.saveToken(key: "accessToken", token: data.accessToken)
-                    KeychainManager.shared.saveToken(key: "refreshToken", token: data.refreshToken)
+                    self.appState.serviceRoot.auth.saveTokens(data)
                 }
                 if response.message == "UNREGISTERED_USER" {
+                    self.appState.serviceRoot.auth.authState = .unfinishRegister
                     self.showSheet = true
                 } else {
+                    self.appState.serviceRoot.auth.authState = .loggedIn
                     self.goMain = true
                 }
             }

@@ -436,7 +436,7 @@ extension ProfileSettingsView {
     }
 }
 
-#Preview {
-    ProfileSettingsView(viewType: .setting,
-                        viewModel: ProfileSettingViewModel(path: .constant([])))
-}
+//#Preview {
+//    ProfileSettingsView(viewType: .setting,
+//                        viewModel: ProfileSettingViewModel(path: .constant([])))
+//}

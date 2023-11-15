@@ -16,6 +16,9 @@ final class ConsiderationViewModel: ObservableObject {
     private let apiManager = NewApiManager()
     private var page = 0
     var cancellables: Set<AnyCancellable> = []
+    init(apiManager: NewApiManager) {
+        self.apiManager = apiManager
+    }
     private var isLastPage = false
 
     init() {
@@ -47,6 +50,7 @@ final class ConsiderationViewModel: ObservableObject {
                                                   size: size,
                                                   visibilityScope: visibilityScope)),
                            decodingType: [PostResponseDto].self)
+        .compactMap(\.data)
         .receive(on: DispatchQueue.main)
         .sink { completion in
             switch completion {

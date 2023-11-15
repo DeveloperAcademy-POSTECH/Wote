@@ -10,6 +10,7 @@ import SwiftUI
 struct ConsiderationView: View {
     @State private var currentVote = 0
     @Binding var selectedVisibilityScope: VisibilityScopeType
+    @Environment(AppLoginState.self) private var loginState
     @State private var isRefreshing = false
     @StateObject var viewModel: ConsiderationViewModel
 

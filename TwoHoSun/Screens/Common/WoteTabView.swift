@@ -48,6 +48,7 @@ struct WoteTabView: View {
     @State private var selection = WoteTabType.consider
     @State private var selectedVisibilityScope = VisibilityScopeType.global
     @State private var isVoteCategoryButtonDidTap = false
+    @Environment(AppLoginState.self) private var loginStateManager
     @Binding var path: [Route]
 
     var body: some View {
@@ -106,6 +107,7 @@ extension WoteTabView {
     private func tabDestinationView(for tab: WoteTabType) -> some View {
         switch tab {
         case .consider:
+            ConsiderationView(viewModel: ConsiderationViewModel(apiManager: loginStateManager.serviceRoot.apimanager), selectedVisibilityScope: $selectedVisibilityScope)
             ConsiderationView(selectedVisibilityScope: $selectedVisibilityScope,
                               viewModel: ConsiderationViewModel())
         case .review:

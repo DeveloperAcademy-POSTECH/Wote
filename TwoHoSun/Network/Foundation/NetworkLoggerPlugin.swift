@@ -4,8 +4,10 @@
 //
 //  Created by 235 on 11/10/23.
 //
+import Foundation
 
 import Moya
+
 
 struct NetworkLoggerPlugin: PluginType {
     func willSend(_ request: RequestType, target: TargetType) {
@@ -43,13 +45,13 @@ struct NetworkLoggerPlugin: PluginType {
     func didReceive(_ result: Result<Response, MoyaError>, target: TargetType) {
             switch result {
             case let .success(response):
-                onSuceed(response, target: target, isFromError: false)
+                onSucceed(response, target: target, isFromError: false)
             case let .failure(error):
                 onFail(error, target: target)
             }
         }
 
-        func onSuceed(_ response: Response, target: TargetType, isFromError: Bool) {
+        func onSucceed(_ response: Response, target: TargetType, isFromError: Bool) {
             let request = response.request
             let url = request?.url?.absoluteString ?? "nil"
             let statusCode = response.statusCode
@@ -75,12 +77,11 @@ struct NetworkLoggerPlugin: PluginType {
                 httpLog.append("\(responseString)\n")
             }
             httpLog.append("[HTTP Response End]")
-
             print(httpLog)
         }
     func onFail(_ error: MoyaError, target: TargetType) {
             if let response = error.response {
-                onSuceed(response, target: target, isFromError: true)
+                onSucceed(response, target: target, isFromError: true)
                 return
             }
 
