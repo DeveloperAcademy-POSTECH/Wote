@@ -107,9 +107,8 @@ extension WoteTabView {
     private func tabDestinationView(for tab: WoteTabType) -> some View {
         switch tab {
         case .consider:
-            ConsiderationView(viewModel: ConsiderationViewModel(apiManager: loginStateManager.serviceRoot.apimanager), selectedVisibilityScope: $selectedVisibilityScope)
             ConsiderationView(selectedVisibilityScope: $selectedVisibilityScope,
-                              viewModel: ConsiderationViewModel())
+                              viewModel: ConsiderationViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
         case .review:
             ReviewView()
         case .myPage:

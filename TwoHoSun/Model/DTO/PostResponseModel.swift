@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PostResponseDto: Codable, Identifiable {
+struct PostResponseModel: Codable, Identifiable {
     var id: Int
     var createDate: String
     var modifiedDate: String

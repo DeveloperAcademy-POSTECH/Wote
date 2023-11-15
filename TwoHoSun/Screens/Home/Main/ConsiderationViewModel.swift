@@ -10,18 +10,16 @@ import SwiftUI
 import Combine
 
 final class ConsiderationViewModel: ObservableObject {
-    @Published var votes = [PostResponseDto]()
+    @Published var votes = [PostResponseModel]()
     @Published var isPostFetching = true
     @Published var pageOffset = 0
-    private let apiManager = NewApiManager()
+    private let apiManager: NewApiManager
     private var page = 0
+    private var isLastPage = false
     var cancellables: Set<AnyCancellable> = []
+
     init(apiManager: NewApiManager) {
         self.apiManager = apiManager
-    }
-    private var isLastPage = false
-
-    init() {
         fetchPosts(visibilityScope: VisibilityScopeType.global.type)
     }
 
@@ -49,7 +47,7 @@ final class ConsiderationViewModel: ObservableObject {
         apiManager.request(.postService(.getPosts(page: page,
                                                   size: size,
                                                   visibilityScope: visibilityScope)),
-                           decodingType: [PostResponseDto].self)
+                           decodingType: [PostResponseModel].self)
         .compactMap(\.data)
         .receive(on: DispatchQueue.main)
         .sink { completion in
@@ -59,13 +57,11 @@ final class ConsiderationViewModel: ObservableObject {
             case .failure(let failure):
                 print(failure)
             }
-        } receiveValue: { [self] response in
-            if let data = response.data {
-                self.votes.append(contentsOf: data)
-            }
+        } receiveValue: { data in
+            self.votes.append(contentsOf: data)
 
             if isFirstFetch {
-                isPostFetching = false
+                self.isPostFetching = false
             }
         }
         .store(in: &cancellables)

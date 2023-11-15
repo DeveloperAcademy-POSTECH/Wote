@@ -10,7 +10,7 @@ import SwiftUI
 import Kingfisher
 
 struct VoteContentCell: View {
-    @State var voteData: PostResponseDto
+    @State var voteData: PostResponseModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
