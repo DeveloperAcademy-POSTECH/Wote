@@ -55,7 +55,6 @@ enum ClosedPostStatus: Codable {
     }
 }
 
-
 struct DetailHeaderView: View {
     @State private var alertOn = false
     var author: Author
@@ -92,6 +91,7 @@ struct DetailHeaderView: View {
                     Text("님의 소비고민")
                         .font(.system(size: 13))
                         .foregroundStyle(Color.whiteGray)
+                    Spacer()
                 } else {
                     Text("님의 구매후기 받기")
                         .font(.system(size: 13))

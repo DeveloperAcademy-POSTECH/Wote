@@ -88,7 +88,12 @@ extension ConsiderationView {
     
     private var createVoteButton: some View {
         NavigationLink {
-            VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: selectedVisibilityScope, apiManager: loginState.serviceRoot.apimanager))
+            VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: selectedVisibilityScope,
+                                                        apiManager: loginState.serviceRoot.apimanager))
+            .onDisappear {
+                viewModel.fetchPosts(visibilityScope: selectedVisibilityScope.type)
+                currentVote = 0
+            }
         } label: {
             HStack(spacing: 2) {
                 Image(systemName: "plus")
@@ -124,15 +129,10 @@ extension ConsiderationView {
                     }
                 }
             } label: {
-                // TODO: - 마지막 cell이면 화살표 버튼을 어떻게 처리할 것인가?
                 Image("icnCaretDown")
-//                    .opacity(currentVote != viewModel.posts.count - 1 ? 1 : 0)
+                    .opacity(currentVote != viewModel.posts.count - 1 ? 1 : 0)
             }
             Spacer()
         }
-    }
-
-    private func getFirstDecimalNum(_ voteRatio: Double) -> Int {
-        return Int((voteRatio * 10).truncatingRemainder(dividingBy: 10))
     }
 }

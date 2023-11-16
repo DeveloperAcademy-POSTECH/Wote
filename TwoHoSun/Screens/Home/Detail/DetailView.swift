@@ -53,7 +53,6 @@ struct DetailView: View {
         ZStack {
             backgroundColor
                 .ignoresSafeArea()
-
             if let data = viewModel.postDetailData {
                 ScrollView {
                     VStack(spacing: 0) {

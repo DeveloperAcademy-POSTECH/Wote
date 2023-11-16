@@ -18,6 +18,7 @@ final class VoteWriteViewModel {
     var image: Data?
     var visibilityScope: VisibilityScopeType
     var postCreateModel: PostCreateModel?
+    var isPostCreated = false
     private var apiManager: NewApiManager
     private var cancellable = Set<AnyCancellable>()
     var isTitleValid: Bool {
