@@ -60,7 +60,7 @@ struct ConsiderationView: View {
             }
         }
     }
-
+}
 extension ConsiderationView {
 
     private var votePagingView: some View {

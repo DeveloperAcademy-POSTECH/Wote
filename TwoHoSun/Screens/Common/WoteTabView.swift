@@ -117,7 +117,8 @@ struct WoteTabView: View {
                 case .detailView:
                     DetailView(isDone: false)
                 case .makeVoteView:
-                    VoteWriteView(viewModel: VoteWriteViewModel(), tabselection: $selection )
+                    VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: selectedVisibilityScope, 
+                                                                apiManager: loginStateManager.serviceRoot.apimanager), tabselection: $selection )
                 case .testIntroView:
                     TypeTestIntroView()
                         .toolbar(.hidden, for: .navigationBar)
