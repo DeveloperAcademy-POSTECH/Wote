@@ -21,7 +21,13 @@ struct VoteWriteView: View {
     @State private var isEditing: Bool = false
     @State private var showCropView: Bool = false
     @Bindable var viewModel: VoteWriteViewModel
-    
+    @Binding var tabselection: WoteTabType
+
+    init(viewModel: VoteWriteViewModel, tabselection: Binding<WoteTabType> = Binding.constant(.consider)) {
+        self.viewModel = viewModel
+        self._tabselection = tabselection
+    }
+
     var body: some View {
         ZStack {
             Color.background
@@ -83,6 +89,9 @@ struct VoteWriteView: View {
                         .frame(maxWidth: .infinity)
                 }
             }
+        }
+        .onAppear {
+            tabselection = .consider
         }
     }
 }
@@ -282,6 +291,7 @@ extension VoteWriteView {
             if viewModel.isTitleValid {
                 viewModel.createPost()
             }
+  
             print("complete button did tap!")
         } label: {
             Text("등록하기")
@@ -308,8 +318,8 @@ extension VoteWriteView {
     }
 }
 
-#Preview {
-    NavigationStack {
-        VoteWriteView(viewModel: VoteWriteViewModel())
-    }
-}
+//#Preview {
+//    NavigationStack {
+//        VoteWriteView(viewModel: VoteWriteViewModel())
+//    }
+//}

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct GoToTypeTestButton: View {
+    
     @EnvironmentObject private var pathManager: NavigationManager
     var body: some View {
         Button {

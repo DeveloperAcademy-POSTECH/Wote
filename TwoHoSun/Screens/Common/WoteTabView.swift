@@ -117,7 +117,7 @@ struct WoteTabView: View {
                 case .detailView:
                     DetailView(isDone: false)
                 case .makeVoteView:
-                    VoteWriteView(viewModel: VoteWriteViewModel())
+                    VoteWriteView(viewModel: VoteWriteViewModel(), tabselection: $selection )
                 case .testIntroView:
                     TypeTestIntroView()
                         .toolbar(.hidden, for: .navigationBar)
@@ -128,7 +128,8 @@ struct WoteTabView: View {
                 case .reveiwView:
                     ReviewView()
                 case .writeReiview:
-                    VoteWriteView(viewModel: VoteWriteViewModel())
+//                    VoteWriteView(viewModel: VoteWriteViewModel())
+                    Text("아직")
                 case .settingView:
                     SettingView()
                 case .mypageView:
@@ -140,7 +141,6 @@ struct WoteTabView: View {
         }
 
         .onAppear {
-//            self.navigatePath = loginStateManager.serviceRoot.pathManager.navigatePath
             let appearance = UITabBarAppearance()
             appearance.configureWithOpaqueBackground()
             UITabBar.appearance().backgroundColor = .background
@@ -162,40 +162,12 @@ extension WoteTabView {
         case .consider:
             ConsiderationView(viewModel: ConsiderationViewModel(apiManager: loginStateManager.serviceRoot.apimanager), selectedVisibilityScope: $selectedVisibilityScope)
                 .environmentObject(navigatePath)
-
-//                .navigationDestination(for: MainNavigation.self) { destination in
-//                    switch destination {
-//                    case .makeVoteView:
-//                        VoteWriteView(viewModel: VoteWriteViewModel())
-//                    default:
-//                        EmptyView()
-//                    }
-//                }
         case .review:
             ReviewView()
                 .environmentObject(navigatePath)
-//                .navigationDestination(for: ReviewNavigation.self) { destination in
-//                    switch destination {
-//                    case .writeReview:
-//                        ReviewWriteView()
-//                    case .detailView:
-//                        ReviewDetailView()
-//                    }
-//                }
         case .myPage:
             MyPageView()
                 .environmentObject(navigatePath)
-
-//                .navigationDestination(for: MyPageNavigation.self) { destination in
-//                    switch destination {
-//                    case .settingView:
-//                        SettingView()
-//                    case .testIntroView:
-//                        TypeTestIntroView()
-//                    case .testView:
-//                        TypeTestView(viewModel: TypeTestViewModel())
-//                    }
-//                }
         }
     }
 
