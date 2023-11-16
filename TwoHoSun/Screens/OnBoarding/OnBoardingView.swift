@@ -68,8 +68,6 @@ struct OnBoardingView : View {
                 case .profileView:
                     ProfileSettingsView(viewType: .setting, 
                                         viewModel: ProfileSettingViewModel(appState: loginState))
-                default:
-                    EmptyView()
                 }
             }
         }
