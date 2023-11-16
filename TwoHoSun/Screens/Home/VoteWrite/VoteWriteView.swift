@@ -21,6 +21,7 @@ struct VoteWriteView: View {
     @State private var isEditing: Bool = false
     @State private var showCropView: Bool = false
     @Bindable var viewModel: VoteWriteViewModel
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         ZStack {
@@ -286,8 +287,8 @@ extension VoteWriteView {
             isRegisterButtonDidTap = true
             if viewModel.isTitleValid {
                 viewModel.createPost()
+                dismiss()
             }
-            print("complete button did tap!")
         } label: {
             Text("등록하기")
                 .font(.system(size: 20, weight: .bold))
