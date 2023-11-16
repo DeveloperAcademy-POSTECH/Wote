@@ -44,7 +44,7 @@ enum WoteTabType: Int, CaseIterable {
     }
 }
 
-enum VisibilityScopeType {
+enum VisibilityScopeType: Codable {
     case global, school
 
     var title: String {
@@ -134,8 +134,6 @@ struct WoteTabView: View {
                     SettingView()
                 case .mypageView:
                     MyPageView()
-                default:
-                    EmptyView()
                 }
             }
         }
@@ -150,17 +148,16 @@ struct WoteTabView: View {
         .navigationTitle(selection.tabTitle)
         .toolbar(.hidden, for: .navigationBar)
         .tint(Color.accentBlue)
-        
     }
 }
 
 extension WoteTabView {
-
     @ViewBuilder
     private func tabDestinationView(for tab: WoteTabType) -> some View {
         switch tab {
         case .consider:
-            ConsiderationView(viewModel: ConsiderationViewModel(apiManager: loginStateManager.serviceRoot.apimanager), selectedVisibilityScope: $selectedVisibilityScope)
+            ConsiderationView(viewModel: ConsiderationViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
+                              selectedVisibilityScope: $selectedVisibilityScope)
                 .environmentObject(navigatePath)
         case .review:
             ReviewView()
@@ -212,28 +209,6 @@ extension WoteTabView {
                     .foregroundStyle(Color.woteWhite)
             }
         }
-        //        Button {
-        //            switch selection {
-        //            case .consider:
-        //                pathManager.navigate(route: .mainNavigation(route: .alertView))
-        //                //                mainPath.append(.alertView)
-        //            case .review:
-        //                pathManager.navigate(route: .reviewNavigation(route: .alertView))
-        //            default:
-        //                print("ㅡㅁㅡ")
-        //            }
-        //            //            pathManager.next(route: .alertView)
-        //            //            NotificationView()
-        //        } label: {
-        //            ZStack {
-        //                RoundedRectangle(cornerRadius: 6)
-        //                    .frame(width: 39, height: 39)
-        //                    .foregroundStyle(Color.disableGray)
-        //                Image(systemName: "bell.fill")
-        //                    .font(.system(size: 16))
-        //                    .foregroundStyle(Color.woteWhite)
-        //            }
-        //        }
     }
 
     private var searchButton: some View {

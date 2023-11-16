@@ -26,16 +26,8 @@ final class ProfileSettingViewModel {
     var bag = Set<AnyCancellable>()
 
     private var appState: AppLoginState
-    private var isSucceed = false {
-        didSet {
-            if isSucceed {
-                self.appState.serviceRoot.auth.authState = .loggedIn
-            }
-        }
-    }
     init(appState: AppLoginState) {
         self.appState = appState
-//        self.path = path
     }
     var isSchoolFilled: Bool {
         return selectedSchoolInfo != nil
@@ -62,7 +54,6 @@ final class ProfileSettingViewModel {
     
     func checkNicknameValidation(_ text: String) {
         isNicknameDuplicated = false
-        
         if !isNicknameLengthValid(text) {
             nicknameValidationType = .length
         } else if isNicknameIncludeForbiddenWord(text) {
@@ -114,7 +105,7 @@ final class ProfileSettingViewModel {
                            decodingType: NoData.self)
             .sink { completion in
                 print("끝남? \(completion)")
-            } receiveValue: { response in
+            } receiveValue: { _ in
                 self.appState.serviceRoot.auth.authState = .loggedIn
                 cancellable?.cancel()
             }

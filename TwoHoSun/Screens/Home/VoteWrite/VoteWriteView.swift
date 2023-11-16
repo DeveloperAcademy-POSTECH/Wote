@@ -28,6 +28,7 @@ struct VoteWriteView: View {
         self._tabselection = tabselection
     }
 
+    @Environment(\.dismiss) private var dismiss
     var body: some View {
         ZStack {
             Color.background
@@ -182,6 +183,11 @@ extension VoteWriteView {
                     .onTapGesture {
                         isEditing.toggle()
                     }
+                    .onAppear {
+                        if let imageData = croppedImage.jpegData(compressionQuality: 1.0) {
+                            viewModel.image = imageData
+                        }
+                    }
             } else {
                 Button {
                     showPicker.toggle()
@@ -290,9 +296,8 @@ extension VoteWriteView {
             isRegisterButtonDidTap = true
             if viewModel.isTitleValid {
                 viewModel.createPost()
+                dismiss()
             }
-  
-            print("complete button did tap!")
         } label: {
             Text("등록하기")
                 .font(.system(size: 20, weight: .bold))
@@ -317,9 +322,3 @@ extension VoteWriteView {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
-
-//#Preview {
-//    NavigationStack {
-//        VoteWriteView(viewModel: VoteWriteViewModel())
-//    }
-//}

@@ -54,9 +54,6 @@ struct TypeTestView: View {
                     .environmentObject(pathManger)
             }
         }
-        .onAppear {
-            print("엥 이게 켜져>?")
-        }
     }
 }
 

@@ -32,12 +32,11 @@ class LoginViewModel: ObservableObject {
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
-
                     break
                 case .failure(let failure):
                     print(failure)
                 }
-            }) { response in
+            }, receiveValue: { response in
                 if let data = response.data {
                     self.appState.serviceRoot.auth.saveTokens(data)
                 }
@@ -48,7 +47,7 @@ class LoginViewModel: ObservableObject {
                     self.appState.serviceRoot.auth.authState = .loggedIn
                     self.goMain = true
                 }
-            }
+            })
             .store(in: &bag)
     }
 }

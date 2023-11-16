@@ -35,20 +35,18 @@ struct ConsiderationView: View {
     @StateObject var viewModel: ConsiderationViewModel
     @Binding var selectedVisibilityScope: VisibilityScopeType
     @Environment(AppLoginState.self) private var loginState
-    @EnvironmentObject private var pathManger: NavigationManager//    @Binding var path: [MainNavigation]
+    @EnvironmentObject private var pathManger: NavigationManager
 
     var body: some View {
-            ZStack(alignment: .bottomTrailing) {
-                Color.background
-                    .ignoresSafeArea()
-                VStack(spacing: 0) {
-                    Spacer()
-                    if viewModel.posts.isEmpty {
-                        NoVoteView()
-                    } else {
-                        votePagingView
-                    }
-                    Spacer()
+        ZStack(alignment: .bottomTrailing) {
+            Color.background
+                .ignoresSafeArea()
+            VStack(spacing: 0) {
+                Spacer()
+                if viewModel.posts.isEmpty {
+                    NoVoteView(selectedVisibilityScope: $selectedVisibilityScope)
+                } else {
+                    votePagingView
                 }
                 createVoteButton
                     .padding(.bottom, 21)
@@ -56,24 +54,12 @@ struct ConsiderationView: View {
             }
             .onAppear {
                 viewModel.fetchPosts(visibilityScope: selectedVisibilityScope.type)
-                //            print(loginState.serviceRoot.apimanager.authenticator.)
             }
             .onChange(of: selectedVisibilityScope) { _, newScope in
                 viewModel.fetchPosts(visibilityScope: newScope.type)
             }
         }
-//        .navigationDestination(for: MainNavigation.self) { destination in
-//            switch destination {
-//            case .alertView:
-//            case .searchView:
-//            case .makeVoteView:
-//                VoteWriteView(viewModel: VoteWriteViewModel())
-//            default:
-//                print(destination)
-//            }
-//        }
     }
-
 
 extension ConsiderationView {
 
@@ -114,10 +100,7 @@ extension ConsiderationView {
             .background(Color.lightBlue)
             .clipShape(Capsule())
         }
-
-
     }
-        
 
     private var endLabel: some View {
         Text("종료")

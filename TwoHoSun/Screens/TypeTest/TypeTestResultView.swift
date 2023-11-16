@@ -47,7 +47,6 @@ struct TypeTestResultView: View {
             }
             .padding(.horizontal, 24)
         }
-
         .toolbar(.hidden, for: .navigationBar)
     }
 }

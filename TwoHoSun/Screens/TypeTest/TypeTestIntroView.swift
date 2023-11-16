@@ -10,6 +10,7 @@ import SwiftUI
 struct TypeTestIntroView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var pathManger: NavigationManager
+
     var body: some View {
         ZStack {
             Color.background
@@ -36,15 +37,7 @@ struct TypeTestIntroView: View {
             }
             .padding(.horizontal, 24)
         }
-//        .toolbar(.hidden, for: .navigationBar)
-        .onAppear {
-            print("인트로큐")
-        }
-        .onDisappear {
-            print("this")
-        }
     }
-
 }
 
 extension TypeTestIntroView {
@@ -52,7 +45,6 @@ extension TypeTestIntroView {
     private var goToTestButton: some View {
         Button {
             pathManger.navigate(.testView)
-//            TypeTestView(viewModel: TypeTestViewModel())
         } label: {
             Text("소비 성향 테스트하러가기")
                 .font(.system(size: 16, weight: .semibold))
@@ -62,8 +54,6 @@ extension TypeTestIntroView {
                 .background(Color.lightBlue)
                 .clipShape(.rect(cornerRadius: 10))
         }
-
-
     }
 
     private var dismissButton: some View {

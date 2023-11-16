@@ -16,7 +16,6 @@ enum Route {
 @main
 struct TwoHoSunApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-   
     @State private var appState = AppLoginState()
 
     var body: some Scene {
@@ -26,10 +25,8 @@ struct TwoHoSunApp: App {
                 OnBoardingView(viewModel: LoginViewModel(appState: appState))
                     .environment(appState)
             case .loggedIn:
-//                NavigationStack(path: $appState.serviceRoot.pathManager.navigationPath) {
                     WoteTabView(path: .constant([]))
                         .environment(appState)
-//                }
             }
         }
     }
@@ -41,7 +38,6 @@ class ServiceRoot {
         let manager = NewApiManager(authenticator: auth)
         return manager
     }()
-    var pathManager = NavigationManager()
 }
 
 enum TokenState {
