@@ -32,7 +32,7 @@ enum UserVoteType {
 struct ConsiderationView: View {
     @State private var selectedVoteType = UserVoteType.agree
     @State private var currentVote = 0
-    @ObservedObject var viewModel: ConsiderationViewModel
+    @StateObject var viewModel: ConsiderationViewModel
     @Binding var selectedVisibilityScope: VisibilityScopeType
     @Environment(AppLoginState.self) private var loginState
     var body: some View {
