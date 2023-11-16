@@ -23,6 +23,13 @@ final class ConsiderationViewModel: ObservableObject {
         fetchPosts(visibilityScope: VisibilityScopeType.global.type)
     }
 
+    func resetPosts() {
+        posts.removeAll()
+        page = 0
+        isLastPage = false
+        isPostFetching = true
+    }
+
     func fetchMorePosts(_ visibilityScope: String) {
         guard !isLastPage else { return }
 
@@ -38,10 +45,7 @@ final class ConsiderationViewModel: ObservableObject {
                     isFirstFetch: Bool = true) {
 
         if isFirstFetch {
-            self.isLastPage = false
-            self.page = 0
-            self.posts.removeAll()
-            self.isPostFetching = true
+            resetPosts()
         }
 
         apiManager.request(.postService(.getPosts(page: page,
@@ -60,14 +64,15 @@ final class ConsiderationViewModel: ObservableObject {
         } receiveValue: { data in
             self.posts.append(contentsOf: data)
 
+            if data.isEmpty || self.posts.count % 5 != 0 {
+                self.isLastPage = true
+            }
+
             if isFirstFetch {
                 self.isPostFetching = false
             }
         }
         .store(in: &cancellables)
 
-        if self.posts.count % 5 != 0 {
-            isLastPage = true
-        }
     }
 }
