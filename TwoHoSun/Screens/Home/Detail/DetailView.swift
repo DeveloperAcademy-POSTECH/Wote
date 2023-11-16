@@ -65,7 +65,7 @@ struct DetailView: View {
                         Divider()
                             .background(Color.disableGray)
                             .padding(.horizontal, 12)
-                        DetailContentCell(postDetailData: data)
+                        DetailContentView(postDetailData: data)
                             .padding(.top, 27)
                         VoteView(postStatus: data.postStatus,
                                  myChoice: data.myChoice,
@@ -181,11 +181,8 @@ extension DetailView {
                 }
             }
             ProgressView(value: type.isAgree ? 1.0 : 0.0, total: 1.0)
-                .progressViewStyle(.linear)
-                .scaleEffect(x: 1, y: 2)
-                .tint(Color.lightBlue)
-                .background(Color.darkGray2)
-                .padding(.top, 8)
+                .progressViewStyle(CustomProgressStyle(foregroundColor: type.isAgree ? Color.lightBlue : Color.gray200,
+                                                       height: 8))
         }
     }
 
@@ -223,17 +220,15 @@ extension DetailView {
                 .font(.system(size: 16, weight: .medium))
                 .foregroundStyle(Color.white)
             ProgressView(value: ratio, total: 100.0)
-                .progressViewStyle(.linear)
-                .scaleEffect(x: 1, y: 2)
-                .foregroundStyle(Color.black100)
-                .tint(isAgreeHigher || isDisagreeHigher ? Color.lightBlue : Color.gray200)
-                .padding(.top, 8)
+                .progressViewStyle(CustomProgressStyle(foregroundColor: isAgreeHigher || isDisagreeHigher ? 
+                                                       Color.lightBlue : Color.gray200,
+                                                       height: 8))
         }
         .padding(.horizontal, 24)
     }
 }
 
-struct DetailContentCell: View {
+struct DetailContentView: View {
     var postDetailData: PostModel
 
     var body: some View {
