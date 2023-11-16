@@ -78,6 +78,9 @@ final class NavigationManager: ObservableObject {
     func countPop(count: Int) {
         navigatePath.removeLast(count)
     }
+    func countDeque(count: Int) {
+        navigatePath.removeFirst(count)
+    }
 
 //    func navigate(route: TabNavigation) {
 //        switch route {

@@ -138,6 +138,7 @@ struct WoteTabView: View {
                 }
             }
         }
+
         .onAppear {
 //            self.navigatePath = loginStateManager.serviceRoot.pathManager.navigatePath
             let appearance = UITabBarAppearance()
@@ -149,6 +150,7 @@ struct WoteTabView: View {
         .navigationTitle(selection.tabTitle)
         .toolbar(.hidden, for: .navigationBar)
         .tint(Color.accentBlue)
+        
     }
 }
 

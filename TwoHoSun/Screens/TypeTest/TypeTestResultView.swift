@@ -47,6 +47,7 @@ struct TypeTestResultView: View {
             }
             .padding(.horizontal, 24)
         }
+
         .toolbar(.hidden, for: .navigationBar)
     }
 }
@@ -73,9 +74,13 @@ extension TypeTestResultView {
 
     private var pushToHomeButton: some View {
         Button {
+            pathManger.navigate(.makeVoteView)
+            var transaction = Transaction()
+            transaction.disablesAnimations = true
+            withTransaction(transaction) {
+                pathManger.countDeque(count: 2)
+            }
 
-            pathManger.navigate(.writeReiview)
-//            pathManger.countPop(count: 3)
         } label: {
             Text("소비 고민 등록하러 가기")
                 .font(.system(size: 16, weight: .semibold))
