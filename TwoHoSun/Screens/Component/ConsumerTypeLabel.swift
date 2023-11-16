@@ -38,28 +38,28 @@ enum LabelTypeUsage {
     }
 }
 
-struct SpendTypeLabel: View {
-    let spendType: ConsumerType
+struct ConsumerTypeLabel: View {
+    let consumerType: ConsumerType
     let usage: LabelTypeUsage
 
     var body: some View {
         HStack(spacing: 4) {
-            spendType.icon
+            consumerType.icon
                 .resizable()
                 .frame(width: 20, height: 20)
-            Text(spendType.title)
+            Text(consumerType.title)
                 .font(.system(size: usage.fontSize, weight: .semibold))
         }
-        .foregroundStyle(spendType.textColor)
+        .foregroundStyle(consumerType.textColor)
         .padding(.horizontal, usage.horizontalPadding)
         .padding(.vertical, usage.verticalPadding)
         .background(
             Group {
                 switch usage {
                 case .cell:
-                    spendType.lightBackgroundColor
+                    consumerType.lightBackgroundColor
                 default:
-                    spendType.darkBackgroundColor
+                    consumerType.darkBackgroundColor
                 }
             }
         )
@@ -71,9 +71,9 @@ struct SpendTypeLabel: View {
     ZStack {
         Color.background
         VStack {
-            SpendTypeLabel(spendType: .adventurer, usage: .cell)
-            SpendTypeLabel(spendType: .adventurer, usage: .standard)
-            SpendTypeLabel(spendType: .adventurer, usage: .comments)
+            ConsumerTypeLabel(consumerType: .adventurer, usage: .cell)
+            ConsumerTypeLabel(consumerType: .adventurer, usage: .standard)
+            ConsumerTypeLabel(consumerType: .adventurer, usage: .comments)
         }
     }
 }

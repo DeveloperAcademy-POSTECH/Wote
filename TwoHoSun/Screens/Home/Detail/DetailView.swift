@@ -20,12 +20,31 @@ struct DetailView: View {
 
     enum VoteType {
         case agree, disagree
+
+        var isAgree: Bool {
+            switch self {
+            case .agree:
+                return true
+            case .disagree:
+                return false
+            }
+        }
+
         var title: String {
             switch self {
             case .agree:
                 return "추천"
             case .disagree:
                 return "비추천"
+            }
+        }
+
+        var subtitle: String {
+            switch self {
+            case .agree:
+                return "사는"
+            case .disagree:
+                return "사지 않는"
             }
         }
     }
@@ -56,9 +75,24 @@ struct DetailView: View {
                         commentPreview
                             .padding(.horizontal, 24)
                             .padding(.vertical, 48)
-                        voteResultView(type: .agree, 0.47)
-                            .padding(.bottom, 36)
-                        voteResultView(type: .disagree, 0.33)
+                            .padding(.bottom, 34)
+                        if postDetailData.voteCount != 0 {
+                            if postDetailData.postStatus == "CLOSED" || postDetailData.myChoice != nil {
+                                voteResultView(.agree,
+                                               postDetailData: postDetailData,
+                                               topConsumerTypes: viewModel.agreeTopConsumerTypes)
+                                    .padding(.bottom, 34)
+                                voteResultView(.disagree,
+                                               postDetailData: postDetailData,
+                                               topConsumerTypes: viewModel.disagreeTopConsumerTypes)
+                            } else {
+                                hiddenResultView(for: .agree, 
+                                                 topConsumerTypesCount: viewModel.agreeTopConsumerTypes.count)
+                                    .padding(.bottom, 34)
+                                hiddenResultView(for: .disagree,
+                                                 topConsumerTypesCount: viewModel.disagreeTopConsumerTypes.count)
+                            }
+                        }
                         Spacer()
                             .frame(height: 56)
                     }
@@ -136,23 +170,63 @@ extension DetailView {
             }
     }
 
-    func voteResultView(type: VoteType, _ percent: Double) -> some View {
+    private func hiddenResultView(for type: VoteType, topConsumerTypesCount: Int) -> some View {
+        VStack(spacing: 16) {
+            Text("투표 후 구매 \(type.title) 의견을 선택한 유형을 확인해봐요!")
+                .font(.system(size: 16, weight: .medium))
+                .foregroundStyle(Color.white)
+            HStack {
+                ForEach(0..<topConsumerTypesCount, id: \.self) { _ in
+                    hiddenTypeLabel
+                }
+            }
+            ProgressView(value: type.isAgree ? 1.0 : 0.0, total: 1.0)
+                .progressViewStyle(.linear)
+                .scaleEffect(x: 1, y: 2)
+                .tint(Color.lightBlue)
+                .background(Color.darkGray2)
+                .padding(.top, 8)
+        }
+    }
+
+    private var hiddenTypeLabel: some View {
+        HStack(spacing: 4) {
+            Image(systemName: "questionmark")
+                .font(.system(size: 14))
+                .foregroundStyle(.white)
+            Text("??????????")
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundStyle(Color.priceGray)
+        }
+        .padding(.vertical, 5)
+        .padding(.horizontal, 10)
+        .background(Color.gray200)
+        .clipShape(Capsule())
+    }
+
+    private func voteResultView(_ type: VoteType, postDetailData: PostModel, topConsumerTypes: [ConsumerType]) -> some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("구매 \(type.title) 의견")
                 .font(.system(size: 14))
                 .foregroundStyle(Color.priceGray)
-            HStack(spacing: 8) {
-                // TODO: - 여기 계산해야 함.
-                SpendTypeLabel(spendType: .budgetKeeper, usage: .standard)
-                SpendTypeLabel(spendType: .ecoWarrior, usage: .standard)
+            HStack {
+                ForEach(topConsumerTypes, id: \.self) { consumerType in
+                    ConsumerTypeLabel(consumerType: consumerType, usage: .standard)
+                }
             }
-            Text("투표 후 구매 \(type.title) 의견을 선택한 유형을 확인해봐요!")
+            let ratio = type.isAgree ? viewModel.agreeRatio : viewModel.disagreeRatio
+            let isAgreeHigher = viewModel.isAgreeHigher && type.isAgree
+            let isDisagreeHigher = !viewModel.isAgreeHigher && !type.isAgree
+
+            Text(String(format: ratio.getFirstDecimalNum == 0 ? "%.0f" : "%.1f", ratio)
+                 + "%의 친구들이 \(type.subtitle) 것을 추천했어요!")
                 .font(.system(size: 16, weight: .medium))
                 .foregroundStyle(Color.white)
-            ProgressView(value: percent)
-                .frame(height: 8)
-                .tint(Color.lightBlue)
-                .background(Color.darkGray2)
+            ProgressView(value: ratio, total: 100.0)
+                .progressViewStyle(.linear)
+                .scaleEffect(x: 1, y: 2)
+                .foregroundStyle(Color.black100)
+                .tint(isAgreeHigher || isDisagreeHigher ? Color.lightBlue : Color.gray200)
                 .padding(.top, 8)
         }
         .padding(.horizontal, 24)
@@ -165,7 +239,7 @@ struct DetailContentCell: View {
     var body: some View {
         VStack(alignment: .leading) {
             VStack(alignment: .leading, spacing: 13) {
-                SpendTypeLabel(spendType: ConsumerType(rawValue: postDetailData.author.consumerType) ?? .adventurer, 
+                ConsumerTypeLabel(consumerType: ConsumerType(rawValue: postDetailData.author.consumerType) ?? .adventurer, 
                                usage: .standard)
                 Text(postDetailData.title)
                     .foregroundStyle(Color.white)

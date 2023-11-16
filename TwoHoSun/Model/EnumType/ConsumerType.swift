@@ -1,5 +1,5 @@
 //
-//  SpendTItleType.swift
+//  ConsumerType.swift
 //  TwoHoSun
 //
 //  Created by 235 on 11/1/23.

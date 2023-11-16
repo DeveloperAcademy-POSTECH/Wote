@@ -90,8 +90,7 @@ extension VoteView {
                 Text(choice ? "산다" : "안 산다")
                     .fontWeight(.bold)
                 Spacer()
-                Text(String(format: getFirstDecimalNum(voteRatio) == 0 ?
-                            "%.0f" : "%.1f", voteRatio) + "%")
+                Text(String(format: voteRatio.getFirstDecimalNum == 0 ? "%.0f" : "%.1f", voteRatio) + "%")
             }
             .foregroundStyle(.white)
             .font(.system(size: 16))

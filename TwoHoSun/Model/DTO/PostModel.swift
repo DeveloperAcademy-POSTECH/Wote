@@ -34,7 +34,7 @@ struct PostModel: Codable, Identifiable {
         case createDate, modifiedDate, visibilityScope, 
              postStatus, author, title, contents, image,
              externalURL, voteCount, commentCount, price,
-             myChoice, voteCounts, isMine, isNotified, isPurchased, hasReview
+             myChoice, voteCounts, isMine, isNotified, isPurchased, hasReview, voteInfoList
     } 
 }
 

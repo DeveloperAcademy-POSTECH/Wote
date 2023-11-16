@@ -55,7 +55,7 @@ struct CommentCell: View {
                 .clipShape(Circle())
             VStack(alignment: .leading) {
                 HStack(spacing: 8) {
-                    SpendTypeLabel(spendType: .ecoWarrior, usage: .comments)
+                    ConsumerTypeLabel(consumerType: .ecoWarrior, usage: .comments)
                     Text(comment.author.nickname)
                         .font(.system(size: 14, weight: .medium))
                         .foregroundStyle(Color.white)

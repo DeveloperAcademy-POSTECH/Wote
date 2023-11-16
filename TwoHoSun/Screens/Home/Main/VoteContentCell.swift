@@ -22,7 +22,7 @@ struct VoteContentCell: View {
                     .font(.system(size: 16, weight: .bold))
                     .foregroundStyle(.white)
                 Spacer()
-                SpendTypeLabel(spendType: ConsumerType(rawValue: postData.author.consumerType) ?? .adventurer,
+                ConsumerTypeLabel(consumerType: ConsumerType(rawValue: postData.author.consumerType) ?? .adventurer,
                                usage: .standard)
             }
             .padding(.bottom, 10)

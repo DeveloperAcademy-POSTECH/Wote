@@ -37,7 +37,7 @@ struct VoteCardCell: View {
                         .font(.system(size: 16, weight: .bold))
                         .foregroundStyle(.white)
                     Spacer()
-                    SpendTypeLabel(spendType: .budgetKeeper, usage: .cell)
+                    ConsumerTypeLabel(consumerType: .budgetKeeper, usage: .cell)
                 }
             }
             HStack {

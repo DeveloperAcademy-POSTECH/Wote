@@ -17,6 +17,7 @@
 		AB03D73D2B0137DD000C927A /* CommentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB03D73C2B0137DD000C927A /* CommentService.swift */; };
 		AB03D7462B020EB2000C927A /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB03D7452B020EB2000C927A /* ImageView.swift */; };
 		AB03D7482B0276F9000C927A /* ProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB03D7472B0276F9000C927A /* ProfileImageView.swift */; };
+		AB38A1032B0646F1004153B5 /* Double+.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1022B0646F1004153B5 /* Double+.swift */; };
 		AB3BACFD2AF7A5FC00E792BE /* SearchTextFieldState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3BACFC2AF7A5FC00E792BE /* SearchTextFieldState.swift */; };
 		AB4019122B04EB6A00779024 /* PostDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4019112B04EB6A00779024 /* PostDetailModel.swift */; };
 		AB4522532ADDD99500B69F24 /* SchoolSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */; };
@@ -74,7 +75,7 @@
 		C77113712AF0E7D500BAB128 /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77113702AF0E7D500BAB128 /* Color+.swift */; };
 		C77113732AF2114800BAB128 /* CustomConfirmModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77113722AF2114800BAB128 /* CustomConfirmModifier.swift */; };
 		C7719FE62AF2861000A520CB /* ConsumerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7719FE52AF2861000A520CB /* ConsumerType.swift */; };
-		C7719FE82AF28A7B00A520CB /* SpendTypeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7719FE72AF28A7B00A520CB /* SpendTypeLabel.swift */; };
+		C7719FE82AF28A7B00A520CB /* ConsumerTypeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7719FE72AF28A7B00A520CB /* ConsumerTypeLabel.swift */; };
 		C782E7122AFCCA57006BCE59 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = C782E7112AFCCA57006BCE59 /* CombineMoya */; };
 		C782E7142AFCCA57006BCE59 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = C782E7132AFCCA57006BCE59 /* Moya */; };
 		C782E7642AFED523006BCE59 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C782E7632AFED523006BCE59 /* ErrorResponse.swift */; };
@@ -128,6 +129,7 @@
 		AB03D73C2B0137DD000C927A /* CommentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentService.swift; sourceTree = "<group>"; };
 		AB03D7452B020EB2000C927A /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 		AB03D7472B0276F9000C927A /* ProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageView.swift; sourceTree = "<group>"; };
+		AB38A1022B0646F1004153B5 /* Double+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+.swift"; sourceTree = "<group>"; };
 		AB3BACFC2AF7A5FC00E792BE /* SearchTextFieldState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTextFieldState.swift; sourceTree = "<group>"; };
 		AB4019112B04EB6A00779024 /* PostDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailModel.swift; sourceTree = "<group>"; };
 		AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolSearchView.swift; sourceTree = "<group>"; };
@@ -187,7 +189,7 @@
 		C77113702AF0E7D500BAB128 /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
 		C77113722AF2114800BAB128 /* CustomConfirmModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomConfirmModifier.swift; sourceTree = "<group>"; };
 		C7719FE52AF2861000A520CB /* ConsumerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsumerType.swift; sourceTree = "<group>"; };
-		C7719FE72AF28A7B00A520CB /* SpendTypeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendTypeLabel.swift; sourceTree = "<group>"; };
+		C7719FE72AF28A7B00A520CB /* ConsumerTypeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsumerTypeLabel.swift; sourceTree = "<group>"; };
 		C782E7632AFED523006BCE59 /* ErrorResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
 		C78E7D002AF6AF4C00C2E220 /* CommentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsView.swift; sourceTree = "<group>"; };
 		C78E7D092AF8C53000C2E220 /* ExpandableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableTextView.swift; sourceTree = "<group>"; };
@@ -452,6 +454,7 @@
 				C771136E2AF0E7B600BAB128 /* UIColor+.swift */,
 				C77113702AF0E7D500BAB128 /* Color+.swift */,
 				AB53CA6C2AF7AC4100FD850A /* UINavigationController+.swift */,
+				AB38A1022B0646F1004153B5 /* Double+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -580,7 +583,7 @@
 			isa = PBXGroup;
 			children = (
 				C77113722AF2114800BAB128 /* CustomConfirmModifier.swift */,
-				C7719FE72AF28A7B00A520CB /* SpendTypeLabel.swift */,
+				C7719FE72AF28A7B00A520CB /* ConsumerTypeLabel.swift */,
 				C78E7D092AF8C53000C2E220 /* ExpandableTextView.swift */,
 				AB7317EE2AF9178C008B5E41 /* FilterButton.swift */,
 				AB7317F32AF94F31008B5E41 /* ReviewCardCell.swift */,
@@ -781,7 +784,7 @@
 				FD9C277E2AFA27E900702ACD /* ImageCropView.swift in Sources */,
 				C73F8E902AE562FE001C6B07 /* Date+.swift in Sources */,
 				ABA1E8402AFD5841009051E0 /* ConsiderationView.swift in Sources */,
-				C7719FE82AF28A7B00A520CB /* SpendTypeLabel.swift in Sources */,
+				C7719FE82AF28A7B00A520CB /* ConsumerTypeLabel.swift in Sources */,
 				FDDEC15B2AE3EABA004509EA /* SearchView.swift in Sources */,
 				ABAFB6412AF978790070512F /* PurchaseLabel.swift in Sources */,
 				FD50A0482B01EBE000CF7F59 /* SettingNotificationView.swift in Sources */,
@@ -821,6 +824,7 @@
 				AB4522532ADDD99500B69F24 /* SchoolSearchView.swift in Sources */,
 				C73F8E812AE54B24001C6B07 /* DetailViewModel.swift in Sources */,
 				AB8770F42AFF897100B272F2 /* NoVoteView.swift in Sources */,
+				AB38A1032B0646F1004153B5 /* Double+.swift in Sources */,
 				AB4019122B04EB6A00779024 /* PostDetailModel.swift in Sources */,
 				C78E7D012AF6AF4C00C2E220 /* CommentsView.swift in Sources */,
 				AB03D7392B0137CC000C927A /* UserService.swift in Sources */,

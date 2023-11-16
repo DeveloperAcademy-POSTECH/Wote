@@ -89,7 +89,9 @@ struct DetailHeaderView: View {
                 .foregroundStyle(Color.whiteGray)
             if let isMine = isMine {
                 if isMine {
-                    Spacer()
+                    Text("님의 소비고민")
+                        .font(.system(size: 13))
+                        .foregroundStyle(Color.whiteGray)
                 } else {
                     Text("님의 구매후기 받기")
                         .font(.system(size: 13))
