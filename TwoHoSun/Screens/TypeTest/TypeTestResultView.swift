@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TypeTestResultView: View {
-    var spendType: SpendTitleType
+    var spendType: ConsumerType
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var pathManger: NavigationManager
     var body: some View {
@@ -106,5 +106,5 @@ extension TypeTestResultView {
 }
 
 #Preview {
-    TypeTestResultView(spendType: .safetyShopper)
+    TypeTestResultView(spendType: .riskAverse)
 }

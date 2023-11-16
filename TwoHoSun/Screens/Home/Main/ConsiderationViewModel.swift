@@ -10,34 +10,48 @@ import SwiftUI
 import Combine
 
 final class ConsiderationViewModel: ObservableObject {
-    // TODO: - fetch data
-    var isVoted: Bool = true
-    var agreeCount: Int = 33
-    var disagreeCount: Int = 62
+    @Published var posts = [PostModel]()
+    @Published var isPostFetching = true
+    @Published var pageOffset = 0
     private let apiManager: NewApiManager
+    private var page = 0
+    private var isLastPage = false
     var cancellables: Set<AnyCancellable> = []
-    var totalCount: Int {
-        return agreeCount + disagreeCount
-    }
-    @Published var posts: [PostResponseDto] = []
-    @Published var isLoading: Bool = false
+
     init(apiManager: NewApiManager) {
         self.apiManager = apiManager
-    }
-    var buyCountRatio: Double {
-        guard totalCount > 0 else { return 0.0 }
-        return round(Double(agreeCount) / Double(totalCount) * 1000) / 10
+        fetchPosts(visibilityScope: VisibilityScopeType.global.type)
     }
 
-    var notBuyCountRatio: Double {
-        return 100 - buyCountRatio
+    func resetPosts() {
+        posts.removeAll()
+        page = 0
+        isLastPage = false
+        isPostFetching = true
     }
 
-    func fetchPosts(page: Int = 0, size: Int = 10, visibilityScope: String) {
+    func fetchMorePosts(_ visibilityScope: String) {
+        guard !isLastPage else { return }
+
+        page += 1
+        fetchPosts(page: page,
+                   visibilityScope: visibilityScope,
+                   isFirstFetch: false)
+    }
+
+    func fetchPosts(page: Int = 0,
+                    size: Int = 5,
+                    visibilityScope: String,
+                    isFirstFetch: Bool = true) {
+
+        if isFirstFetch {
+            resetPosts()
+        }
+
         apiManager.request(.postService(.getPosts(page: page,
                                                   size: size,
                                                   visibilityScope: visibilityScope)),
-                           decodingType: [PostResponseDto].self)
+                           decodingType: [PostModel].self)
         .compactMap(\.data)
         .receive(on: DispatchQueue.main)
         .sink { completion in
@@ -49,8 +63,16 @@ final class ConsiderationViewModel: ObservableObject {
             }
         } receiveValue: { data in
             self.posts.append(contentsOf: data)
+
+            if data.isEmpty || self.posts.count % 5 != 0 {
+                self.isLastPage = true
+            }
+
+            if isFirstFetch {
+                self.isPostFetching = false
+            }
         }
         .store(in: &cancellables)
-    }
 
+    }
 }

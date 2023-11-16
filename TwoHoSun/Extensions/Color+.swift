@@ -93,4 +93,6 @@ extension Color {
     static let darkPurple100 = Color(UIColor(hexCode: "28232E"))
     static let darkBlue300 = Color(UIColor(hexCode: "282836"))
     static let darkBlue400 = Color(UIColor(hexCode: "273234"))
+
+    static let lightBlue500 = Color(UIColor(hexCode: "7B94EF"))
 }

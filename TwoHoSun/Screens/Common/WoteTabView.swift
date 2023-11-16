@@ -44,28 +44,6 @@ enum WoteTabType: Int, CaseIterable {
     }
 }
 
-enum VisibilityScopeType: Codable {
-    case global, school
-
-    var title: String {
-        switch self {
-        case .global:
-            return "전국 투표"
-        case .school:
-            return "OO고등학교 투표"
-        }
-    }
-
-    var type: String {
-        switch self {
-        case .global:
-            return "GLOBAL"
-        case .school:
-            return "SCHOOL"
-        }
-    }
-}
-
 struct WoteTabView: View {
     @State private var selection = WoteTabType.consider
     @State private var selectedVisibilityScope = VisibilityScopeType.global
@@ -114,8 +92,8 @@ struct WoteTabView: View {
 
             }  .navigationDestination(for: AllNavigation.self) { destination in
                 switch destination {
-                case .detailView:
-                    DetailView(isDone: false)
+                case .detailView(let postId):
+                    DetailView(viewModel: DetailViewModel(apiManager: loginStateManager.serviceRoot.apimanager), postId: postId)
                 case .makeVoteView:
                     VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: selectedVisibilityScope, 
                                                                 apiManager: loginStateManager.serviceRoot.apimanager), tabselection: $selection )
@@ -157,8 +135,7 @@ extension WoteTabView {
     private func tabDestinationView(for tab: WoteTabType) -> some View {
         switch tab {
         case .consider:
-            ConsiderationView(viewModel: ConsiderationViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
-                              selectedVisibilityScope: $selectedVisibilityScope)
+            ConsiderationView(selectedVisibilityScope: $selectedVisibilityScope, viewModel: ConsiderationViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
                 .environmentObject(navigatePath)
         case .review:
             ReviewView()

@@ -105,7 +105,7 @@ struct ProfileSettingsView: View {
                         .padding(.top, 40)
                 case .modfiy:
                     HStack {
-                        SpendTypeLabel(spendType: .impulseBuyer, usage: .standard)
+                        ConsumerTypeLabel(consumerType: .impulseBuyer, usage: .standard)
                         Spacer()
                     }
                     .padding(.top, 30)

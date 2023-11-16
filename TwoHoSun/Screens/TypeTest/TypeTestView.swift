@@ -11,9 +11,8 @@ struct TypeTestView: View {
     @State private var isTypeTestResultViewShown = false
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: TypeTestViewModel
-    @State var userSpendType: SpendTitleType?
+    @State var userSpendType: ConsumerType?
     @EnvironmentObject private var pathManger: NavigationManager
-    
     var body: some View {
         ZStack {
             Color.background
