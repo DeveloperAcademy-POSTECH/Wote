@@ -5,9 +5,9 @@
 //  Created by 김민 on 11/13/23.
 //
 
-import Foundation
-import Moya
 import UIKit
+
+import Moya
 
 enum PostService {
     case getPosts(page: Int, size: Int, visibilityScope: String)
