@@ -75,7 +75,10 @@ struct WoteTabView: View {
     @State private var pathManager: NavigationManager  = NavigationManager()
 
     var body: some View {
+        NavigationStack(path: $pathManager.path) {
             ZStack(alignment: .topLeading) {
+                VStack(spacing: 0) {
+                    navigationBar
                     TabView(selection: $selection) {
                         ForEach(WoteTabType.allCases, id: \.self) { tab in
                             tabDestinationView(for: tab)
@@ -86,6 +89,7 @@ struct WoteTabView: View {
                                 }
                         }
                     }
+                }
 
                 if isVoteCategoryButtonDidTap {
                     Color.black
@@ -106,7 +110,9 @@ struct WoteTabView: View {
                     voteCategoryMenu
                         .offset(x: 16, y: 40)
                 }
+
             }
+        }
         .onAppear {
             let appearance = UITabBarAppearance()
             appearance.configureWithOpaqueBackground()
@@ -114,6 +120,9 @@ struct WoteTabView: View {
             UITabBar.appearance().unselectedItemTintColor = .gray400
             UITabBar.appearance().standardAppearance = appearance
         }
+        .onChange(of: pathManager.path, { oldValue, newValue in
+            print(newValue)
+        })
         .navigationTitle(selection.tabTitle)
         .toolbar(.hidden, for: .navigationBar)
 
@@ -127,30 +136,40 @@ extension WoteTabView {
     private func tabDestinationView(for tab: WoteTabType) -> some View {
         switch tab {
         case .consider:
-            NavigationStack(path: $pathManager.mainPath) {
-                navigationBar
-                ConsiderationView(viewModel: ConsiderationViewModel(apiManager: loginStateManager.serviceRoot.apimanager), selectedVisibilityScope: $selectedVisibilityScope)
-                                .environment(pathManager)
-                                .navigationDestination(for: MainNavigation.self) { destination in
-                                    switch destination {
-                                    case .alertView:
-                                        NotificationView()
-                                    case .searchView:
-                                        SearchView()
-                                    case .makeVoteView:
-                                        VoteWriteView(viewModel: VoteWriteViewModel())
-                                    default:
-                                        EmptyView()
-                                    }
-                                }
-            }
+            //            NavigationStack(path: $pathManager.mainPath) {
+
+            ConsiderationView(viewModel: ConsiderationViewModel(apiManager: loginStateManager.serviceRoot.apimanager), selectedVisibilityScope: $selectedVisibilityScope)
+                .environment(pathManager)
+                .navigationDestination(for: MainNavigation.self) { destination in
+
+                    switch destination {
+                    case .makeVoteView:
+                        VoteWriteView(viewModel: VoteWriteViewModel())
+                    default:
+                        EmptyView()
+                    }
+                }
+
 
         case .review:
+            //            NavigationStack(path: $pathManager.reviewPath) {
             ReviewView()
-            //                .environment(navigationPath)
+                .environment(pathManager)
+                .navigationDestination(for: ReviewNavigation.self) { destination in
+                    switch destination {
+                    case .writeReview:
+                        ReviewWriteView()
+                    case .detailView:
+                        ReviewDetailView()
+                        
+                    }
+                }
+            //            }
         case .myPage:
             MyPageView()
-            //                .environment(navigationPath)
+                .environment(pathManager)
+
+            //            }
         }
     }
 
@@ -183,18 +202,8 @@ extension WoteTabView {
     }
 
     private var notificationButton: some View {
-        Button {
-            switch selection {
-            case .consider:
-                pathManager.navigate(route: .mainNavigation(route: .alertView))
-//                mainPath.append(.alertView)
-            case .review:
-                pathManager.navigate(route: .reviewNavigation(route: .alertView))
-            default:
-               print("ㅡㅁㅡ")
-            }
-//            pathManager.next(route: .alertView)
-//            NotificationView()
+        NavigationLink {
+            NotificationView()
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 6)
@@ -205,19 +214,33 @@ extension WoteTabView {
                     .foregroundStyle(Color.woteWhite)
             }
         }
+        //        Button {
+        //            switch selection {
+        //            case .consider:
+        //                pathManager.navigate(route: .mainNavigation(route: .alertView))
+        //                //                mainPath.append(.alertView)
+        //            case .review:
+        //                pathManager.navigate(route: .reviewNavigation(route: .alertView))
+        //            default:
+        //                print("ㅡㅁㅡ")
+        //            }
+        //            //            pathManager.next(route: .alertView)
+        //            //            NotificationView()
+        //        } label: {
+        //            ZStack {
+        //                RoundedRectangle(cornerRadius: 6)
+        //                    .frame(width: 39, height: 39)
+        //                    .foregroundStyle(Color.disableGray)
+        //                Image(systemName: "bell.fill")
+        //                    .font(.system(size: 16))
+        //                    .foregroundStyle(Color.woteWhite)
+        //            }
+        //        }
     }
 
     private var searchButton: some View {
-        Button {
-            switch selection {
-            case .consider:
-                pathManager.navigate(route: .mainNavigation(route: .searchView))
-//                mainPath.append(.searchView)
-            case .review:
-                pathManager.navigate(route: .reviewNavigation(route: .searchView))
-            default:
-               print("ㅡㅁㅡ")
-            }
+        NavigationLink {
+            SearchView()
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 6)
@@ -233,7 +256,6 @@ extension WoteTabView {
     private var settingButton: some View {
         NavigationLink {
             SettingView()
-
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 6)
@@ -244,7 +266,6 @@ extension WoteTabView {
                     .foregroundStyle(Color.woteWhite)
             }
         }
-
     }
 
     private var voteCategoryMenu: some View {
@@ -298,6 +319,3 @@ extension WoteTabView {
         }
     }
 }
-//#Preview {
-//    WoteTabView(path: .constant([.mainTabView]))
-//}

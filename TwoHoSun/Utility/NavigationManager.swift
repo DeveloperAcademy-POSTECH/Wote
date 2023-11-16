@@ -10,17 +10,15 @@ import SwiftUI
 enum MainNavigation {
     case mainView
     case detailView
-    case alertView
-    case searchView
     case reveiwView
     case makeVoteView
     case testView
 }
-enum TabNavigation {
-    case myPage(route: MyPageNavigation)
-    case mainNavigation(route: MainNavigation)
-    case reviewNavigation(route: ReviewNavigation)
-}
+//enum TabNavigation {
+//    case myPage(route: MyPageNavigation)
+//    case mainNavigation(route: MainNavigation)
+//    case reviewNavigation(route: ReviewNavigation)
+//}
 enum LoginNavigation {
     case mainTabView
     case profileView
@@ -30,42 +28,36 @@ enum MyPageNavigation {
 //    case 
 }
 enum ReviewNavigation {
-    case searchView
-    case alertView
     case detailView
     case writeReview
 }
 
+enum AlertNavigation {
+    case voteView(id: String)
+    case reviewView(id: String)
+}
+
 @Observable
 final class NavigationManager {
-    var navigationPath = [TabNavigation]()
-    var mainPath = [MainNavigation]()
-    var reviewPath = [ReviewNavigation]()
-    var loginPath = [LoginNavigation]()
-    var mypagePath = [MyPageNavigation]()
+    var path = NavigationPath()
 
-    func popToRootView(route: TabNavigation) {
-        navigationPath.removeAll()
-        switch route {
-        case .myPage:
-            mypagePath.removeAll()
-        case .mainNavigation:
-            mainPath.removeAll()
-        case .reviewNavigation:
-            reviewPath.removeAll()
-        }
+    func popToRootView() {
+        path.removeLast(path.count)
+    }
+    func printPath() {
+        print(path)
     }
 
-    func navigate(route: TabNavigation) {
-        switch route {
-        case .myPage(let route):
-            mypagePath.append(route)
-        case .mainNavigation(let route):
-            mainPath.append(route)
-        case .reviewNavigation(let route):
-            reviewPath.append(route)
-        }
-    }
+//    func navigate(route: TabNavigation) {
+//        switch route {
+//        case .myPage(let route):
+//            mypagePath.append(route)
+//        case .mainNavigation(let route):
+//            mainPath.append(route)
+//        case .reviewNavigation(let route):
+//            reviewPath.append(route)
+//        }
+//    }
 
 
 }

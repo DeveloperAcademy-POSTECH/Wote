@@ -101,9 +101,7 @@ extension ConsiderationView {
     }
 
     private var createVoteButton: some View {
-        Button {
-            pathManger.navigate(route: .mainNavigation(route: .makeVoteView))
-        } label: {
+        NavigationLink(value: MainNavigation.makeVoteView, label: {
             HStack(spacing: 2) {
                 Image(systemName: "plus")
                 Text("투표만들기")
@@ -114,8 +112,10 @@ extension ConsiderationView {
             .padding(.vertical, 12)
             .background(Color.lightBlue)
             .clipShape(Capsule())
-        }
+        })
+
     }
+        
 
     private var endLabel: some View {
         Text("종료")
