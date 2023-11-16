@@ -24,7 +24,7 @@ final class ProfileSettingViewModel {
     var model: ProfileSetting? 
     private let forbiddenWord = ["금지어1", "금지어2"]
     var bag = Set<AnyCancellable>()
-//    var path: Binding<[AllNavigation]>
+
     private var appState: AppLoginState
     private var isSucceed = false {
         didSet {

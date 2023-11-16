@@ -102,9 +102,7 @@ extension ConsiderationView {
 
     private var createVoteButton: some View {
         Button {
-//            VoteWriteView(viewModel: VoteWriteViewModel())
-            pathManger.navigate(route: .makeVoteView)
-//            path.append(.makeVoteView)
+            pathManger.navigate(route: .mainNavigation(route: .makeVoteView))
         } label: {
             HStack(spacing: 2) {
                 Image(systemName: "plus")

@@ -71,7 +71,7 @@ struct WoteTabView: View {
     @State private var selectedVisibilityScope = VisibilityScopeType.global
     @State private var isVoteCategoryButtonDidTap = false
     @Environment(AppLoginState.self) private var loginStateManager
-    @Binding var path: [AllNavigation]
+    @Binding var path: [LoginNavigation]
     @State private var pathManager: NavigationManager  = NavigationManager()
 
     var body: some View {
@@ -186,11 +186,10 @@ extension WoteTabView {
         Button {
             switch selection {
             case .consider:
-                pathManager.navigate(route: .alertView)
+                pathManager.navigate(route: .mainNavigation(route: .alertView))
 //                mainPath.append(.alertView)
-
-//            case .myPage:
-//            case .review:
+            case .review:
+                pathManager.navigate(route: .reviewNavigation(route: .alertView))
             default:
                print("ㅡㅁㅡ")
             }
@@ -212,14 +211,13 @@ extension WoteTabView {
         Button {
             switch selection {
             case .consider:
-                pathManager.navigate(route: .searchView)
+                pathManager.navigate(route: .mainNavigation(route: .searchView))
 //                mainPath.append(.searchView)
-//            case .review:
+            case .review:
+                pathManager.navigate(route: .reviewNavigation(route: .searchView))
             default:
                print("ㅡㅁㅡ")
             }
-
-//            SearchView()
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 6)

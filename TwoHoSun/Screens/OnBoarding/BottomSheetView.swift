@@ -51,7 +51,7 @@ struct BottomSheetView: View {
     @Environment(\.dismiss) var dismiss
     @State private var checked: [Bool]  = [false, false, false]
     @State private var showAlert = false
-    @Binding var navigationPath: [AllNavigation]
+    @Binding var navigationPath: [LoginNavigation]
     private var allChecked: Bool {
         checked.allSatisfy { $0 }
     }

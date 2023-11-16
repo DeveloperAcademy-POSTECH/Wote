@@ -28,15 +28,13 @@ enum PostService {
 extension PostService: TargetType {
     
     var baseURL: URL {
-        return URL(string: URLConst.baseURL)!
+        return URL(string: "\(URLConst.baseURL)/api/posts")!
     }
     
     var path: String {
         switch self {
-        case .getPosts:
-            return "/api/posts"
         default:
-            return "/api/posts"
+            return ""
         }
     }
 
