@@ -13,6 +13,7 @@ final class ConsiderationViewModel: ObservableObject {
     @Published var posts = [PostModel]()
     @Published var isPostFetching = true
     @Published var pageOffset = 0
+    @Published var voteCount: Int?
     private let apiManager: NewApiManager
     private var page = 0
     private var isLastPage = false
@@ -74,5 +75,23 @@ final class ConsiderationViewModel: ObservableObject {
         }
         .store(in: &cancellables)
 
+    }
+
+    func votePost(postId: Int, choice: Bool) {
+        apiManager.request(.postService(.votePost(postId: postId, choice: choice)),
+                           decodingType: VoteCountsModel.self)
+        .compactMap(\.data)
+        .receive(on: DispatchQueue.main)
+        .sink { completion in
+            switch completion {
+            case .finished:
+                break
+            case .failure(let failure):
+                print(failure)
+            }
+        } receiveValue: { data in
+            self.voteCount = data.agreeCount + data.disagreeCount
+        }
+        .store(in: &cancellables)
     }
 }

@@ -13,6 +13,6 @@ struct CommentsModel: Codable, Identifiable {
     let createDate: String
     let modifiedDate: String
     let content: String
-    let author: Author
+    let author: AuthorModl
     let childComments: [CommentsModel]?
 }

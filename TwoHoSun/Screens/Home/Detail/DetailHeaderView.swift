@@ -57,7 +57,7 @@ enum ClosedPostStatus: Codable {
 
 struct DetailHeaderView: View {
     @State private var alertOn = false
-    var author: Author
+    var author: AuthorModl
     var postStatus: PostStatus
     var isMine: Bool?
     var hasReview: Bool?
@@ -78,7 +78,7 @@ struct DetailHeaderView: View {
         }
     }
 
-    private func activeVoteHeaderView(author: Author, isMine: Bool?) -> some View {
+    private func activeVoteHeaderView(author: AuthorModl, isMine: Bool?) -> some View {
         HStack(spacing: 0) {
             ProfileImageView(imageURL: author.profileImage)
                 .frame(width: 32, height: 32)
@@ -106,7 +106,7 @@ struct DetailHeaderView: View {
         .padding(.bottom, 13)
     }
 
-    private func closedVoteHeaderView(author: Author, closedState: ClosedPostStatus) -> some View {
+    private func closedVoteHeaderView(author: AuthorModl, closedState: ClosedPostStatus) -> some View {
         HStack(spacing: 0) {
             ProfileImageView(imageURL: author.profileImage)
                 .frame(width: 32, height: 32)
@@ -156,42 +156,42 @@ struct DetailHeaderView: View {
 
 #Preview {
     Group {
-        DetailHeaderView(author: Author(id: 0,
+        DetailHeaderView(author: AuthorModl(id: 0,
                                         nickname: "얄루",
                                         profileImage: nil,
                                         consumerType: ConsumerType.flexer.rawValue),
                          postStatus: PostStatus.active,
                          isMine: true,
                          hasReview: nil)
-        DetailHeaderView(author: Author(id: 0,
+        DetailHeaderView(author: AuthorModl(id: 0,
                                         nickname: "얄루",
                                         profileImage: nil,
                                         consumerType: ConsumerType.flexer.rawValue),
                          postStatus: PostStatus.active,
                          isMine: false,
                          hasReview: nil)
-        DetailHeaderView(author: Author(id: 0,
+        DetailHeaderView(author: AuthorModl(id: 0,
                                         nickname: "얄루",
                                         profileImage: nil,
                                         consumerType: ConsumerType.flexer.rawValue),
                          postStatus: PostStatus.closed,
                          isMine: true,
                          hasReview: true)
-        DetailHeaderView(author: Author(id: 0,
+        DetailHeaderView(author: AuthorModl(id: 0,
                                         nickname: "얄루",
                                         profileImage: nil,
                                         consumerType: ConsumerType.flexer.rawValue),
                          postStatus: PostStatus.closed,
                          isMine: true,
                          hasReview: false)
-        DetailHeaderView(author: Author(id: 0,
+        DetailHeaderView(author: AuthorModl(id: 0,
                                         nickname: "얄루",
                                         profileImage: nil,
                                         consumerType: ConsumerType.flexer.rawValue),
                          postStatus: PostStatus.closed,
                          isMine: false,
                          hasReview: false)
-        DetailHeaderView(author: Author(id: 0,
+        DetailHeaderView(author: AuthorModl(id: 0,
                                         nickname: "얄루",
                                         profileImage: nil,
                                         consumerType: ConsumerType.flexer.rawValue),

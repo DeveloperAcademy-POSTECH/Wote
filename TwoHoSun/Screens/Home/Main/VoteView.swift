@@ -11,7 +11,7 @@ struct VoteView: View {
     @State var postStatus: String
     @State var myChoice: Bool?
     @State var voteCount: Int
-    @State var voteCounts: VoteCounts
+    @State var voteCounts: VoteCountsModel
 
     var agreeVoteRatio: Double {
         return voteCount != 0 ? Double(voteCounts.agreeCount) / Double(voteCount) * 100 : 0
@@ -29,11 +29,9 @@ struct VoteView: View {
         VStack(spacing: 8) {
             if postStatus == PostStatus.closed.rawValue || myChoice != nil {
                 voteResultView(choice: true,
-                                    myChoice: myChoice,
-                                    voteRatio: agreeVoteRatio)
+                                voteRatio: agreeVoteRatio)
                 voteResultView(choice: false,
-                                    myChoice: myChoice,
-                                    voteRatio: disagreeVoteRatio)
+                                voteRatio: disagreeVoteRatio)
             } else {
                 incompletedVoteButton(true)
                 incompletedVoteButton(false)
@@ -65,7 +63,7 @@ extension VoteView {
         .frame(height: 48)
     }
 
-    private func voteResultView(choice: Bool, myChoice: Bool?, voteRatio: Double) -> some View {
+    private func voteResultView(choice: Bool, voteRatio: Double) -> some View {
         ZStack(alignment: .leading) {
             Capsule()
                 .foregroundStyle(Color.black100)
@@ -97,9 +95,5 @@ extension VoteView {
             .padding(.horizontal, 20)
         }
         .frame(height: 48)
-    }
-
-    private func getFirstDecimalNum(_ voteRatio: Double) -> Int {
-        return Int((voteRatio * 10).truncatingRemainder(dividingBy: 10))
     }
 }
