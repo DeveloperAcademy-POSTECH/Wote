@@ -7,10 +7,6 @@
 
 import SwiftUI
 
-struct VoteCreateRequest: Codable {
-    let votetype: PostCategoryType
-}
-
 enum VoteType: String, Codable {
     case agree = "AGREE"
     case disagree = "DISAGREE"

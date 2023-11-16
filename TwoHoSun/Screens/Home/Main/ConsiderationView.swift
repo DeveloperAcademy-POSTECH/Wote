@@ -88,7 +88,7 @@ extension ConsiderationView {
     
     private var createVoteButton: some View {
         NavigationLink {
-            VoteWriteView(viewModel: VoteWriteViewModel())
+            VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: selectedVisibilityScope, apiManager: loginState.serviceRoot.apimanager))
         } label: {
             HStack(spacing: 2) {
                 Image(systemName: "plus")
