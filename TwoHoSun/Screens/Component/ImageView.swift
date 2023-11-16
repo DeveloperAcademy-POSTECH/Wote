@@ -29,6 +29,7 @@ struct ImageView: View {
             KFImage(URL(string: imageURL))
                 .placeholder {
                     ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: Color.gray100))
                 }
                 .onFailure { _ in
                     isImageLoadFailed.toggle()

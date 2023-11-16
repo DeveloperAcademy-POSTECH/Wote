@@ -28,7 +28,6 @@ struct ConsiderationView: View {
                     }
                 }
                 Spacer()
-
             }
             createVoteButton
                 .padding(.bottom, 21)
