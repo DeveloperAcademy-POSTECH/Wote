@@ -32,7 +32,7 @@ enum UserVoteType {
 struct ConsiderationView: View {
     @State private var selectedVoteType = UserVoteType.agree
     @State private var currentVote = 0
-    @ObservedObject var viewModel: ConsiderationViewModel
+    @StateObject var viewModel: ConsiderationViewModel
     @Binding var selectedVisibilityScope: VisibilityScopeType
     @Environment(AppLoginState.self) private var loginState
     var body: some View {
@@ -42,7 +42,7 @@ struct ConsiderationView: View {
             VStack(spacing: 0) {
                 Spacer()
                 if viewModel.posts.isEmpty {
-                    NoVoteView()
+                    NoVoteView(selectedVisibilityScope: $selectedVisibilityScope)
                 } else {
                     votePagingView
                 }
@@ -87,7 +87,7 @@ extension ConsiderationView {
     
     private var createVoteButton: some View {
         NavigationLink {
-            VoteWriteView(viewModel: VoteWriteViewModel())
+            VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: selectedVisibilityScope, apiManager: loginState.serviceRoot.apimanager))
         } label: {
             HStack(spacing: 2) {
                 Image(systemName: "plus")

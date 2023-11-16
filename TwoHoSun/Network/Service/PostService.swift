@@ -5,13 +5,13 @@
 //  Created by 김민 on 11/13/23.
 //
 
-import Foundation
+import UIKit
 
 import Moya
 
 enum PostService {
     case getPosts(page: Int, size: Int, visibilityScope: String)
-    case createPost
+    case createPost(post: PostCreateModel)
     case getPostDetail
     case modifyPost
     case deletePost
@@ -35,6 +35,8 @@ extension PostService: TargetType {
         switch self {
         case .getPosts:
             return "/api/posts"
+        case .createPost:
+            return "/api/posts"
         default:
             return "/api/posts"
         }
@@ -46,6 +48,8 @@ extension PostService: TargetType {
             return ["page": page,
                     "size": size,
                     "visibilityScope": visibilityScope]
+        case .createPost:
+            return [:]
         default:
             return [:]
         }
@@ -55,6 +59,8 @@ extension PostService: TargetType {
         switch self {
         case .getPosts:
             return .get
+        case .createPost:
+            return .post
         default:
             return .get
         }
@@ -65,12 +71,39 @@ extension PostService: TargetType {
         case .getPosts:
             return .requestParameters(parameters: parameters,
                                       encoding: URLEncoding.queryString)
+        case .createPost(let post):
+            var formData: [MultipartFormData] = []
+            if let data = UIImage(data: post.image ?? Data())?.jpegData(compressionQuality: 0.3) {
+                let imageData = MultipartFormData(provider: .data(data), name: "imageFile", fileName: "temp.jpg", mimeType: "image/jpeg")
+                formData.append(imageData)
+            }
+            let postData: [String: Any] = [
+                "visibilityScope": post.visibilityScope.type,
+                "title": post.title,
+                "price": post.price ?? 0,
+                "contents": post.contents ?? "",
+                "externalURL": post.externalURL ?? ""
+            ]
+            do {
+                let json = try JSONSerialization.data(withJSONObject: postData)
+                let jsonString = String(data: json, encoding: .utf8)!
+                let stringData = MultipartFormData(provider: .data(jsonString.data(using: String.Encoding.utf8)!), name: "postRequest", mimeType: "application/json")
+                formData.append(stringData)
+            } catch {
+                print("error: \(error)")
+            }
+            return .uploadMultipart(formData)
         default:
             return .requestPlain
         }
     }
     
     var headers: [String : String]? {
-        return APIConstants.headerWithAuthorization
+        switch self {
+        case .createPost:
+            APIConstants.headerMultiPartForm
+        default:
+            APIConstants.headerWithAuthorization
+        }
     }
 }
