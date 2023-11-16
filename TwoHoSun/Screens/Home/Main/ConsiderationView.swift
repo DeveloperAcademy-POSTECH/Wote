@@ -32,11 +32,10 @@ enum UserVoteType {
 struct ConsiderationView: View {
     @State private var selectedVoteType = UserVoteType.agree
     @State private var currentVote = 0
-    @ObservedObject var viewModel: ConsiderationViewModel
+    @StateObject var viewModel: ConsiderationViewModel
     @Binding var selectedVisibilityScope: VisibilityScopeType
     @Environment(AppLoginState.self) private var loginState
-    @Environment(NavigationManager.self) private var pathManger
-//    @Binding var path: [MainNavigation]
+    @EnvironmentObject private var pathManger: NavigationManager//    @Binding var path: [MainNavigation]
 
     var body: some View {
             ZStack(alignment: .bottomTrailing) {
@@ -101,7 +100,9 @@ extension ConsiderationView {
     }
 
     private var createVoteButton: some View {
-        NavigationLink(value: MainNavigation.makeVoteView, label: {
+        Button {
+            pathManger.navigate(.makeVoteView)
+        } label: {
             HStack(spacing: 2) {
                 Image(systemName: "plus")
                 Text("투표만들기")
@@ -112,7 +113,8 @@ extension ConsiderationView {
             .padding(.vertical, 12)
             .background(Color.lightBlue)
             .clipShape(Capsule())
-        })
+        }
+
 
     }
         

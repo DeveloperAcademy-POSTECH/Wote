@@ -72,10 +72,10 @@ struct WoteTabView: View {
     @State private var isVoteCategoryButtonDidTap = false
     @Environment(AppLoginState.self) private var loginStateManager
     @Binding var path: [LoginNavigation]
-    @State private var pathManager: NavigationManager  = NavigationManager()
+    @StateObject private var navigatePath = NavigationManager()
 
     var body: some View {
-        NavigationStack(path: $pathManager.path) {
+        NavigationStack(path: $navigatePath.navigatePath) {
             ZStack(alignment: .topLeading) {
                 VStack(spacing: 0) {
                     navigationBar
@@ -89,6 +89,7 @@ struct WoteTabView: View {
                                 }
                         }
                     }
+
                 }
 
                 if isVoteCategoryButtonDidTap {
@@ -111,21 +112,42 @@ struct WoteTabView: View {
                         .offset(x: 16, y: 40)
                 }
 
+            }  .navigationDestination(for: AllNavigation.self) { destination in
+                switch destination {
+                case .detailView:
+                    DetailView(isDone: false)
+                case .makeVoteView:
+                    VoteWriteView(viewModel: VoteWriteViewModel())
+                case .testIntroView:
+                    TypeTestIntroView()
+                        .toolbar(.hidden, for: .navigationBar)
+                        .environmentObject(navigatePath)
+                case .testView:
+                    TypeTestView(viewModel: TypeTestViewModel())
+                        .environmentObject(navigatePath)
+                case .reveiwView:
+                    ReviewView()
+                case .writeReiview:
+                    VoteWriteView(viewModel: VoteWriteViewModel())
+                case .settingView:
+                    SettingView()
+                case .mypageView:
+                    MyPageView()
+                default:
+                    EmptyView()
+                }
             }
         }
         .onAppear {
+//            self.navigatePath = loginStateManager.serviceRoot.pathManager.navigatePath
             let appearance = UITabBarAppearance()
             appearance.configureWithOpaqueBackground()
             UITabBar.appearance().backgroundColor = .background
             UITabBar.appearance().unselectedItemTintColor = .gray400
             UITabBar.appearance().standardAppearance = appearance
         }
-        .onChange(of: pathManager.path, { oldValue, newValue in
-            print(newValue)
-        })
         .navigationTitle(selection.tabTitle)
         .toolbar(.hidden, for: .navigationBar)
-
         .tint(Color.accentBlue)
     }
 }
@@ -136,40 +158,42 @@ extension WoteTabView {
     private func tabDestinationView(for tab: WoteTabType) -> some View {
         switch tab {
         case .consider:
-            //            NavigationStack(path: $pathManager.mainPath) {
-
             ConsiderationView(viewModel: ConsiderationViewModel(apiManager: loginStateManager.serviceRoot.apimanager), selectedVisibilityScope: $selectedVisibilityScope)
-                .environment(pathManager)
-                .navigationDestination(for: MainNavigation.self) { destination in
+                .environmentObject(navigatePath)
 
-                    switch destination {
-                    case .makeVoteView:
-                        VoteWriteView(viewModel: VoteWriteViewModel())
-                    default:
-                        EmptyView()
-                    }
-                }
-
-
+//                .navigationDestination(for: MainNavigation.self) { destination in
+//                    switch destination {
+//                    case .makeVoteView:
+//                        VoteWriteView(viewModel: VoteWriteViewModel())
+//                    default:
+//                        EmptyView()
+//                    }
+//                }
         case .review:
-            //            NavigationStack(path: $pathManager.reviewPath) {
             ReviewView()
-                .environment(pathManager)
-                .navigationDestination(for: ReviewNavigation.self) { destination in
-                    switch destination {
-                    case .writeReview:
-                        ReviewWriteView()
-                    case .detailView:
-                        ReviewDetailView()
-                        
-                    }
-                }
-            //            }
+                .environmentObject(navigatePath)
+//                .navigationDestination(for: ReviewNavigation.self) { destination in
+//                    switch destination {
+//                    case .writeReview:
+//                        ReviewWriteView()
+//                    case .detailView:
+//                        ReviewDetailView()
+//                    }
+//                }
         case .myPage:
             MyPageView()
-                .environment(pathManager)
+                .environmentObject(navigatePath)
 
-            //            }
+//                .navigationDestination(for: MyPageNavigation.self) { destination in
+//                    switch destination {
+//                    case .settingView:
+//                        SettingView()
+//                    case .testIntroView:
+//                        TypeTestIntroView()
+//                    case .testView:
+//                        TypeTestView(viewModel: TypeTestViewModel())
+//                    }
+//                }
         }
     }
 

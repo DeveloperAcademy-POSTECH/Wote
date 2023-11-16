@@ -25,7 +25,8 @@ enum LoginNavigation {
 }
 enum MyPageNavigation {
     case settingView
-//    case 
+    case testView
+    case testIntroView
 }
 enum ReviewNavigation {
     case detailView
@@ -36,16 +37,46 @@ enum AlertNavigation {
     case voteView(id: String)
     case reviewView(id: String)
 }
+enum AllNavigation {
+    case writeReiview
+    case detailView
+    case reveiwView
+    case makeVoteView
+    case testIntroView
+    case testView
+    case settingView
+    case mypageView
+}
 
-@Observable
-final class NavigationManager {
-    var path = NavigationPath()
+//@Observable
+final class NavigationManager: ObservableObject {
+
+    @Published var path = NavigationPath() {
+        didSet {
+            print("path는?\(path.count) 개수 \(path)")
+        }
+    }
+    @Published var navigatePath = [AllNavigation]() {
+        didSet {
+            print("path는?\(navigatePath)")
+        }
+    }
 
     func popToRootView() {
         path.removeLast(path.count)
     }
     func printPath() {
         print(path)
+    }
+
+    func navigate(_ route: AllNavigation) {
+        navigatePath.append(route)
+    }
+    func back() {
+        navigatePath.removeLast()
+    }
+    func countPop(count: Int) {
+        navigatePath.removeLast(count)
     }
 
 //    func navigate(route: TabNavigation) {

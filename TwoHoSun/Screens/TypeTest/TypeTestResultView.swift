@@ -9,7 +9,8 @@ import SwiftUI
 
 struct TypeTestResultView: View {
     var spendType: SpendTitleType
-
+    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var pathManger: NavigationManager
     var body: some View {
         ZStack {
             Color.background
@@ -39,6 +40,9 @@ struct TypeTestResultView: View {
                 Spacer()
                 pushToHomeButton
                 dismissButton
+                    .onTapGesture {
+                        dismiss()
+                    }
                     .padding(.vertical, 35)
             }
             .padding(.horizontal, 24)
@@ -69,7 +73,9 @@ extension TypeTestResultView {
 
     private var pushToHomeButton: some View {
         Button {
-            print("screen transition to home")
+
+            pathManger.navigate(.writeReiview)
+//            pathManger.countPop(count: 3)
         } label: {
             Text("소비 고민 등록하러 가기")
                 .font(.system(size: 16, weight: .semibold))
@@ -82,9 +88,9 @@ extension TypeTestResultView {
     }
 
     private var dismissButton: some View {
-        Button {
-            print("close")
-        } label: {
+        Button(action: {
+            pathManger.countPop(count: 2)
+        }, label: {
             HStack(spacing: 7) {
                 Image(systemName: "xmark")
                     .font(.system(size: 16, weight: .medium))
@@ -92,7 +98,7 @@ extension TypeTestResultView {
                     .font(.system(size: 16, weight: .medium))
             }
             .foregroundStyle(Color.subGray1)
-        }
+        })
     }
 }
 

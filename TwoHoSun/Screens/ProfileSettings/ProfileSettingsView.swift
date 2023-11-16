@@ -391,7 +391,8 @@ extension ProfileSettingsView {
 
     private var goToTypeTestButton: some View {
         NavigationLink {
-            TypeTestIntroView()
+//            TypeTestIntroView()
+
         } label: {
             HStack(spacing: 0) {
                 Text("소비 성향 테스트하러가기")

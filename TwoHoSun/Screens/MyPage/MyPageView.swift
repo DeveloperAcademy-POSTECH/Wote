@@ -41,13 +41,8 @@ struct MyPageView: View {
     @State private var selectedMyReviewCategoryType = MyReviewCategoryType.all
     @State private var isMyVoteCategoryButtonDidTap = false
     @State private var isMyReviewCategoryButtonDidTap = false
-//    var apiManager: NewApiManager?
-//
-//    init(manager: NewApiManager) {
-//        self.apiManager = manager
-//    }
     @Environment(AppLoginState.self) private var loginState
-
+    @EnvironmentObject private var pathManger: NavigationManager
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {

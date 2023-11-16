@@ -7,12 +7,11 @@
 
 import Foundation
 
-@Observable
-final class TypeTestViewModel {
-    var testChoices = [-1, -1, -1, -1, -1, -1, -1]
-    var typeScores = [SpendTitleType: Int]()
-    var testProgressValue = 1.0
-    var userSpendType = SpendTitleType.adventurer
+final class TypeTestViewModel: ObservableObject {
+    @Published var testChoices = [-1, -1, -1, -1, -1, -1, -1]
+    @Published var typeScores = [SpendTitleType: Int]()
+    @Published var testProgressValue = 1.0
+    @Published var userSpendType = SpendTitleType.adventurer
 
     var questionNumber: Int {
         Int(testProgressValue)
