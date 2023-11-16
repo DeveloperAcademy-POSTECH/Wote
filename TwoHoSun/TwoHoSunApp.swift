@@ -26,10 +26,10 @@ struct TwoHoSunApp: App {
                 OnBoardingView(viewModel: LoginViewModel(appState: appState))
                     .environment(appState)
             case .loggedIn:
-                NavigationStack(path: $appState.serviceRoot.pathManager.navigationPath) {
+//                NavigationStack(path: $appState.serviceRoot.pathManager.navigationPath) {
                     WoteTabView(path: .constant([]))
                         .environment(appState)
-                }
+//                }
             }
         }
     }

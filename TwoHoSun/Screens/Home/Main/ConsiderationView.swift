@@ -35,34 +35,46 @@ struct ConsiderationView: View {
     @ObservedObject var viewModel: ConsiderationViewModel
     @Binding var selectedVisibilityScope: VisibilityScopeType
     @Environment(AppLoginState.self) private var loginState
+    @Environment(NavigationManager.self) private var pathManger
+//    @Binding var path: [MainNavigation]
 
     var body: some View {
-        ZStack(alignment: .bottomTrailing) {
-            Color.background
-                .ignoresSafeArea()
-            VStack(spacing: 0) {
-                Spacer()
-                if viewModel.posts.isEmpty {
-                    NoVoteView()
-                } else {
-                    votePagingView
+            ZStack(alignment: .bottomTrailing) {
+                Color.background
+                    .ignoresSafeArea()
+                VStack(spacing: 0) {
+                    Spacer()
+                    if viewModel.posts.isEmpty {
+                        NoVoteView()
+                    } else {
+                        votePagingView
+                    }
+                    Spacer()
                 }
-                Spacer()
+                createVoteButton
+                    .padding(.bottom, 21)
+                    .padding(.trailing, 24)
             }
-            createVoteButton
-                .padding(.bottom, 21)
-                .padding(.trailing, 24)
+            .onAppear {
+                viewModel.fetchPosts(visibilityScope: selectedVisibilityScope.type)
+                //            print(loginState.serviceRoot.apimanager.authenticator.)
+            }
+            .onChange(of: selectedVisibilityScope) { _, newScope in
+                viewModel.fetchPosts(visibilityScope: newScope.type)
+            }
         }
-        .onAppear {
-            viewModel.fetchPosts(visibilityScope: selectedVisibilityScope.type)
-//            print(loginState.serviceRoot.apimanager.authenticator.)
-        }
-        .onChange(of: selectedVisibilityScope) { _, newScope in
-            viewModel.fetchPosts(visibilityScope: newScope.type)
-        }
-   
+//        .navigationDestination(for: MainNavigation.self) { destination in
+//            switch destination {
+//            case .alertView:
+//            case .searchView:
+//            case .makeVoteView:
+//                VoteWriteView(viewModel: VoteWriteViewModel())
+//            default:
+//                print(destination)
+//            }
+//        }
     }
-}
+
 
 extension ConsiderationView {
 
@@ -87,10 +99,12 @@ extension ConsiderationView {
             .tabViewStyle(.page(indexDisplayMode: .never))
         }
     }
-    
+
     private var createVoteButton: some View {
-        NavigationLink {
-            VoteWriteView(viewModel: VoteWriteViewModel())
+        Button {
+//            VoteWriteView(viewModel: VoteWriteViewModel())
+            pathManger.navigate(route: .makeVoteView)
+//            path.append(.makeVoteView)
         } label: {
             HStack(spacing: 2) {
                 Image(systemName: "plus")
@@ -128,7 +142,7 @@ extension ConsiderationView {
             } label: {
                 // TODO: - 마지막 cell이면 화살표 버튼을 어떻게 처리할 것인가?
                 Image("icnCaretDown")
-//                    .opacity(currentVote != viewModel.posts.count - 1 ? 1 : 0)
+                //                    .opacity(currentVote != viewModel.posts.count - 1 ? 1 : 0)
             }
             Spacer()
         }

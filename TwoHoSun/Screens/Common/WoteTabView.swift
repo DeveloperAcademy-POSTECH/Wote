@@ -72,11 +72,10 @@ struct WoteTabView: View {
     @State private var isVoteCategoryButtonDidTap = false
     @Environment(AppLoginState.self) private var loginStateManager
     @Binding var path: [AllNavigation]
-    
+    @State private var pathManager: NavigationManager  = NavigationManager()
+
     var body: some View {
             ZStack(alignment: .topLeading) {
-                VStack(spacing: 0) {
-                    navigationBar
                     TabView(selection: $selection) {
                         ForEach(WoteTabType.allCases, id: \.self) { tab in
                             tabDestinationView(for: tab)
@@ -87,7 +86,6 @@ struct WoteTabView: View {
                                 }
                         }
                     }
-                }
 
                 if isVoteCategoryButtonDidTap {
                     Color.black
@@ -109,15 +107,15 @@ struct WoteTabView: View {
                         .offset(x: 16, y: 40)
                 }
             }
-            .onAppear {
-                let appearance = UITabBarAppearance()
-                appearance.configureWithOpaqueBackground()
-                UITabBar.appearance().backgroundColor = .background
-                UITabBar.appearance().unselectedItemTintColor = .gray400
-                UITabBar.appearance().standardAppearance = appearance
-            }
-            .navigationTitle(selection.tabTitle)
-            .toolbar(.hidden, for: .navigationBar)
+        .onAppear {
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            UITabBar.appearance().backgroundColor = .background
+            UITabBar.appearance().unselectedItemTintColor = .gray400
+            UITabBar.appearance().standardAppearance = appearance
+        }
+        .navigationTitle(selection.tabTitle)
+        .toolbar(.hidden, for: .navigationBar)
 
         .tint(Color.accentBlue)
     }
@@ -129,14 +127,30 @@ extension WoteTabView {
     private func tabDestinationView(for tab: WoteTabType) -> some View {
         switch tab {
         case .consider:
-            ConsiderationView(viewModel: ConsiderationViewModel(apiManager: loginStateManager.serviceRoot.apimanager), selectedVisibilityScope: $selectedVisibilityScope)
-//                .environment(navigationPath)
+            NavigationStack(path: $pathManager.mainPath) {
+                navigationBar
+                ConsiderationView(viewModel: ConsiderationViewModel(apiManager: loginStateManager.serviceRoot.apimanager), selectedVisibilityScope: $selectedVisibilityScope)
+                                .environment(pathManager)
+                                .navigationDestination(for: MainNavigation.self) { destination in
+                                    switch destination {
+                                    case .alertView:
+                                        NotificationView()
+                                    case .searchView:
+                                        SearchView()
+                                    case .makeVoteView:
+                                        VoteWriteView(viewModel: VoteWriteViewModel())
+                                    default:
+                                        EmptyView()
+                                    }
+                                }
+            }
+
         case .review:
             ReviewView()
-//                .environment(navigationPath)
+            //                .environment(navigationPath)
         case .myPage:
             MyPageView()
-//                .environment(navigationPath)
+            //                .environment(navigationPath)
         }
     }
 
@@ -169,8 +183,19 @@ extension WoteTabView {
     }
 
     private var notificationButton: some View {
-        NavigationLink {
-            NotificationView()
+        Button {
+            switch selection {
+            case .consider:
+                pathManager.navigate(route: .alertView)
+//                mainPath.append(.alertView)
+
+//            case .myPage:
+//            case .review:
+            default:
+               print("ㅡㅁㅡ")
+            }
+//            pathManager.next(route: .alertView)
+//            NotificationView()
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 6)
@@ -184,8 +209,17 @@ extension WoteTabView {
     }
 
     private var searchButton: some View {
-        NavigationLink {
-            SearchView()
+        Button {
+            switch selection {
+            case .consider:
+                pathManager.navigate(route: .searchView)
+//                mainPath.append(.searchView)
+//            case .review:
+            default:
+               print("ㅡㅁㅡ")
+            }
+
+//            SearchView()
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 6)
@@ -201,6 +235,7 @@ extension WoteTabView {
     private var settingButton: some View {
         NavigationLink {
             SettingView()
+
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 6)
