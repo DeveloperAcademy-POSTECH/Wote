@@ -80,8 +80,6 @@ final class DetailViewModel {
 
     func filterSelectedResult(voteInfoList: [VoteInfoModel]) -> (agree: [VoteInfoModel],
                                                                 disagree: [VoteInfoModel]) {
-        let agreeInfos = voteInfoList.filter { $0.isAgree }
-        let disagreeInfos = voteInfoList.filter { !$0.isAgree }
         return (voteInfoList.filter { $0.isAgree }, voteInfoList.filter { !$0.isAgree })
     }
 
