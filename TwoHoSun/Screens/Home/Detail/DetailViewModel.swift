@@ -7,15 +7,14 @@
 
 import Combine
 import SwiftUI
-import Observation
 
 @Observable
 final class DetailViewModel {
     var postDetailData: PostModel?
-    var agreeTopConsumerTypes: [ConsumerType] = []
-    var disagreeTopConsumerTypes: [ConsumerType] = []
-    var commentsDatas: [CommentsModel] = []
-    var isSendMessage: Bool = false
+    var agreeTopConsumerTypes = [ConsumerType]()
+    var disagreeTopConsumerTypes = [ConsumerType]()
+    var commentsDatas = [CommentsModel]()
+    var isSendMessage = false
     private let apiManager: NewApiManager
     var cancellables: Set<AnyCancellable> = []
 

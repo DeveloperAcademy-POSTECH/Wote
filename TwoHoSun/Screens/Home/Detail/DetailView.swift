@@ -54,36 +54,36 @@ struct DetailView: View {
             backgroundColor
                 .ignoresSafeArea()
 
-            if let postDetailData = viewModel.postDetailData {
+            if let data = viewModel.postDetailData {
                 ScrollView {
                     VStack(spacing: 0) {
-                        DetailHeaderView(author: postDetailData.author,
-                                         postStatus: PostStatus(rawValue: postDetailData.postStatus) ?? PostStatus.closed,
-                                         isMine: postDetailData.isMine,
-                                         hasReview: postDetailData.hasReview)
+                        DetailHeaderView(author: data.author,
+                                         postStatus: PostStatus(rawValue: data.postStatus) ?? PostStatus.closed,
+                                         isMine: data.isMine,
+                                         hasReview: data.hasReview)
                             .padding(.top, 18)
                         Divider()
                             .background(Color.disableGray)
                             .padding(.horizontal, 12)
-                        DetailContentCell(postDetailData: postDetailData)
+                        DetailContentCell(postDetailData: data)
                             .padding(.top, 27)
-                        VoteView(postStatus: postDetailData.postStatus,
-                                 myChoice: postDetailData.myChoice,
-                                 voteCount: postDetailData.voteCount,
-                                 voteCounts: postDetailData.voteCounts)
+                        VoteView(postStatus: data.postStatus,
+                                 myChoice: data.myChoice,
+                                 voteCount: data.voteCount,
+                                 voteCounts: data.voteCounts)
                             .padding(.horizontal, 24)
                         commentPreview
                             .padding(.horizontal, 24)
                             .padding(.vertical, 48)
                             .padding(.bottom, 34)
-                        if postDetailData.voteCount != 0 {
-                            if postDetailData.postStatus == "CLOSED" || postDetailData.myChoice != nil {
+                        if data.voteCount != 0 {
+                            if data.postStatus == "CLOSED" || data.myChoice != nil {
                                 voteResultView(.agree,
-                                               postDetailData: postDetailData,
+                                               postDetailData: data,
                                                topConsumerTypes: viewModel.agreeTopConsumerTypes)
                                     .padding(.bottom, 34)
                                 voteResultView(.disagree,
-                                               postDetailData: postDetailData,
+                                               postDetailData: data,
                                                topConsumerTypes: viewModel.disagreeTopConsumerTypes)
                             } else {
                                 hiddenResultView(for: .agree, 
