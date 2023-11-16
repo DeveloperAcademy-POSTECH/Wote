@@ -36,7 +36,9 @@ extension PostService: TargetType {
         case .getPosts:
             return "/api/posts"
         case .createPost:
+            return "/api/posts"
         case .getPostDetail(let postId):
+            return "/api/posts/\(postId)"
         default:
             return "/api/posts"
         }
@@ -48,8 +50,6 @@ extension PostService: TargetType {
             return ["page": page,
                     "size": size,
                     "visibilityScope": visibilityScope]
-        case .createPost:
-            return [:]
         default:
             return [:]
         }
@@ -61,6 +61,8 @@ extension PostService: TargetType {
             return .get
         case .createPost:
             return .post
+        case .getPostDetail:
+            return .get
         default:
             return .get
         }
@@ -70,9 +72,6 @@ extension PostService: TargetType {
         switch self {
         case .getPosts:
             return .requestParameters(parameters: parameters,
-                                      encoding: URLEncoding.queryString)
-        case .getPostDetail(let postId):
-            return .requestParameters(parameters: ["postId": [postId]],
                                       encoding: URLEncoding.queryString)
         case .createPost(let post):
             var formData: [MultipartFormData] = []
@@ -96,6 +95,9 @@ extension PostService: TargetType {
                 print("error: \(error)")
             }
             return .uploadMultipart(formData)
+        case .getPostDetail(let postId):
+            return .requestParameters(parameters: ["postId": [postId]],
+                                      encoding: URLEncoding.queryString)
         default:
             return .requestPlain
         }

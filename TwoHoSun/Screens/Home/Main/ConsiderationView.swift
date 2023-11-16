@@ -22,7 +22,7 @@ struct ConsiderationView: View {
                 Spacer()
                 if !viewModel.isPostFetching {
                     if viewModel.posts.isEmpty {
-                        NoVoteView()
+                        NoVoteView(selectedVisibilityScope: $selectedVisibilityScope)
                     } else {
                         votePagingView
                     }

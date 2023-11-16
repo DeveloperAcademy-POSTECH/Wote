@@ -38,13 +38,18 @@ struct PostModel: Codable, Identifiable {
     } 
 }
 
+struct VoteInfoModel: Codable, Hashable {
+    let isAgree: Bool
+    let consumerType: String
+}
+
 enum PostStatus: String, Codable {
     case active = "ACTIVE"
     case closed = "CLOSED"
     case review = "REVIEW"
 }
 
-enum VisibilityScopeType {
+enum VisibilityScopeType: Codable {
     case all, global, school
 
     var title: String {
