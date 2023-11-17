@@ -133,7 +133,7 @@ extension WoteTabView {
         case .review:
             ReviewView()
         case .myPage:
-            MyPageView()
+            MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
         }
     }
 

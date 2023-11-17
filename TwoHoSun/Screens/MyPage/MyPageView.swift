@@ -35,13 +35,15 @@ enum MyReviewCategoryType: String, CaseIterable, Hashable {
 }
 
 struct MyPageView: View {
-    private var isTypeTestCompleted = false
     @State private var selectedMyPageListType = MyPageListType.myVote
     @State private var selectedMyVoteCategoryType = MyVoteCategoryType.all
     @State private var selectedMyReviewCategoryType = MyReviewCategoryType.all
     @State private var isMyVoteCategoryButtonDidTap = false
     @State private var isMyReviewCategoryButtonDidTap = false
     @Environment(AppLoginState.self) private var loginState
+    
+    var isTypeTestCompleted = false
+    let viewModel: MyPageViewModel
 
     var body: some View {
         ScrollView {
