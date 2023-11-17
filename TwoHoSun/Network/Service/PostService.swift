@@ -34,6 +34,8 @@ extension PostService: TargetType {
     
     var path: String {
         switch self {
+        case .getPosts:
+            return "/posts"
         case .getPostDetail(let postId):
             return "/posts/\(postId)"
         case .createPost:
