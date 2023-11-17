@@ -52,8 +52,9 @@ class NewApiManager {
                     let errorType = NetworkError(divisionCode: networkError.divisionCode)
                     if errorType == .exipredJWT {
                         self.authenticator.authState = .allexpired
+                    } else if errorType == .notCompletedSignup {
+                        self.authenticator.authState = .unfinishRegister
                     }
-                    self.authenticator.authState = .unfinishRegister
                     return errorType
                 } else {
                     print(error)

@@ -37,16 +37,17 @@ class LoginViewModel {
                     print(failure)
                 }
             }, receiveValue: { response in
-                if response.message == "UNREGISTERED_USER" ||
-                    response.message == "Not Completed SignUp Exception" {
-                    self.appState.serviceRoot.auth.authState = .unfinishRegister
-                    self.showSheet = true
-                } else {
-                    guard let data = response.data else {return}
+                if let data = response.data {
                     self.appState.serviceRoot.auth.saveTokens(data.jwtToken)
-                    UserDefaults.standard.setValue(data.consumerTypeExist, forKey: "haveConsumerType")
-                    self.appState.serviceRoot.auth.authState = .loggedIn
-                    self.goMain = true
+                    if response.message == "Not Completed SignUp Exception" {
+                        UserDefaults.standard.setValue(false, forKey: "haveConsumerType")
+                        self.appState.serviceRoot.auth.authState = .unfinishRegister
+                        self.showSheet = true
+                    } else {
+                        UserDefaults.standard.setValue(data.consumerTypeExist, forKey: "haveConsumerType")
+                        self.appState.serviceRoot.auth.authState = .loggedIn
+                        self.goMain = true
+                    }
                 }
             })
             .store(in: &bag)
