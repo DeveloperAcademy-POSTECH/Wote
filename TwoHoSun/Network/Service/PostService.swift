@@ -23,6 +23,7 @@ enum PostService {
     case votePost
     case getReviews
     case getSearchResult
+    case getMyPosts(page: Int, size: Int, myVoteCategoryType: String)
 }
 
 extension PostService: TargetType {
@@ -37,6 +38,8 @@ extension PostService: TargetType {
             return "/api/posts"
         case .createPost:
             return "/api/posts"
+        case .getMyPosts:
+            return "/api/mypage/posts"
         default:
             return "/api/posts"
         }
@@ -50,6 +53,10 @@ extension PostService: TargetType {
                     "visibilityScope": visibilityScope]
         case .createPost:
             return [:]
+        case .getMyPosts(let page, let size, let myVoteCategoryType):
+            return ["page": page,
+                    "size": size,
+                    "myVoteCategoryType": myVoteCategoryType]
         default:
             return [:]
         }
@@ -61,6 +68,8 @@ extension PostService: TargetType {
             return .get
         case .createPost:
             return .post
+        case .getMyPosts:
+            return .get
         default:
             return .get
         }
@@ -93,6 +102,8 @@ extension PostService: TargetType {
                 print("error: \(error)")
             }
             return .uploadMultipart(formData)
+        case .getMyPosts:
+            return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         default:
             return .requestPlain
         }
@@ -102,6 +113,8 @@ extension PostService: TargetType {
         switch self {
         case .createPost:
             APIConstants.headerMultiPartForm
+        case .getMyPosts:
+            APIConstants.headerWithAuthorization
         default:
             APIConstants.headerWithAuthorization
         }
