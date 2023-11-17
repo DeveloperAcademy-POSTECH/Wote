@@ -102,7 +102,7 @@ struct WoteTabView: View {
                         .toolbar(.hidden, for: .navigationBar)
                         .environmentObject(navigatePath)
                 case .testView:
-                    TypeTestView(viewModel: TypeTestViewModel())
+                    TypeTestView(viewModel: TypeTestViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
                         .environmentObject(navigatePath)
                 case .reveiwView:
                     ReviewView()
