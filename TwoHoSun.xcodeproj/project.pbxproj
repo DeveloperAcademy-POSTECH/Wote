@@ -99,6 +99,7 @@
 		C7F1FD882ADDA39500C5A2A1 /* DesciptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F1FD872ADDA39500C5A2A1 /* DesciptionView.swift */; };
 		FD132BF22ADBE8FB00F31AAF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD132BF12ADBE8FB00F31AAF /* Assets.xcassets */; };
 		FD132BF52ADBE8FB00F31AAF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD132BF42ADBE8FB00F31AAF /* Preview Assets.xcassets */; };
+		FD2C7D8C2B0705DA00B5B494 /* CardImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2C7D8B2B0705DA00B5B494 /* CardImageView.swift */; };
 		FD3205682ADD5C0D00B0D5F6 /* TwoHoSunApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3205672ADD5C0D00B0D5F6 /* TwoHoSunApp.swift */; };
 		FD3646F52ADD8E2D0064DF94 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FD3646F42ADD8E2D0064DF94 /* Alamofire */; };
 		FD50A0482B01EBE000CF7F59 /* SettingNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD50A0472B01EBE000CF7F59 /* SettingNotificationView.swift */; };
@@ -111,6 +112,8 @@
 		FD7624A12AF954980079AEEF /* NicknameValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C768F1A22AE656570020F82C /* NicknameValidation.swift */; };
 		FD8D9F812ADC5FAD0072F4BA /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */; };
 		FD9C277E2AFA27E900702ACD /* ImageCropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9C277D2AFA27E900702ACD /* ImageCropView.swift */; };
+		FD9DDB6C2B06F746006D738A /* SummaryPostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9DDB6B2B06F746006D738A /* SummaryPostModel.swift */; };
+		FD9DDB6E2B06F76D006D738A /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9DDB6D2B06F76D006D738A /* MyPageViewModel.swift */; };
 		FDB4B1502AE68FC000720328 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB4B14F2AE68FC000720328 /* DetailView.swift */; };
 		FDD5829F2AFC175F0004DFC6 /* VoteWriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD5829E2AFC175F0004DFC6 /* VoteWriteView.swift */; };
 		FDDB990C2ADC1BEC00B1163F /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = FDDB990B2ADC1BEC00B1163F /* .swiftlint.yml */; };
@@ -214,6 +217,7 @@
 		FD132BEA2ADBE8FA00F31AAF /* TwoHoSun.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwoHoSun.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD132BF12ADBE8FB00F31AAF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FD132BF42ADBE8FB00F31AAF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		FD2C7D8B2B0705DA00B5B494 /* CardImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardImageView.swift; sourceTree = "<group>"; };
 		FD32055D2ADD16AC00B0D5F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FD3205672ADD5C0D00B0D5F6 /* TwoHoSunApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoHoSunApp.swift; sourceTree = "<group>"; };
 		FD4E75B52ADE9C20000C2277 /* ProfileSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingViewModel.swift; sourceTree = "<group>"; };
@@ -224,6 +228,8 @@
 		FD70B1F52B01C3080097B727 /* SettingBlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingBlockView.swift; sourceTree = "<group>"; };
 		FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		FD9C277D2AFA27E900702ACD /* ImageCropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropView.swift; sourceTree = "<group>"; };
+		FD9DDB6B2B06F746006D738A /* SummaryPostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryPostModel.swift; sourceTree = "<group>"; };
+		FD9DDB6D2B06F76D006D738A /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		FDB4B14F2AE68FC000720328 /* DetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		FDD5829E2AFC175F0004DFC6 /* VoteWriteView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoteWriteView.swift; sourceTree = "<group>"; };
 		FDDB99042ADBF37100B1163F /* TwoHoSun.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TwoHoSun.entitlements; sourceTree = "<group>"; };
@@ -354,6 +360,7 @@
 			isa = PBXGroup;
 			children = (
 				ABA1E84D2AFE9F9A009051E0 /* MyPageView.swift */,
+				FD9DDB6D2B06F76D006D738A /* MyPageViewModel.swift */,
 				FD70B1F72B01C31D0097B727 /* Setting */,
 			);
 			path = MyPage;
@@ -363,6 +370,7 @@
 			isa = PBXGroup;
 			children = (
 				AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */,
+				FD9DDB6B2B06F746006D738A /* SummaryPostModel.swift */,
 				ABB71D6D2AE2754300BE0671 /* PostModel.swift */,
 				ABBFB6312AE3EABD006CE8CA /* VoteCreateRequestModel.swift */,
 			);
@@ -590,6 +598,7 @@
 				AB7317F32AF94F31008B5E41 /* ReviewCardCell.swift */,
 				ABAFB6402AF978790070512F /* PurchaseLabel.swift */,
 				ABAFB6422AF979C80070512F /* CommentPreview.swift */,
+				FD2C7D8B2B0705DA00B5B494 /* CardImageView.swift */,
 				C7EFA7DC2AF94DD800C9BEA0 /* CustomAlertModalView.swift */,
 				ABA1E83D2AFD57A4009051E0 /* VoteCardCell.swift */,
 				FD9C277D2AFA27E900702ACD /* ImageCropView.swift */,
@@ -806,6 +815,7 @@
 				C7F1FD862ADDA37E00C5A2A1 /* BottomSheetView.swift in Sources */,
 				ABA1E84A2AFD5C0B009051E0 /* ReviewWriteViewModel.swift in Sources */,
 				FD50A04C2B02084600CF7F59 /* SettingQuestionsView.swift in Sources */,
+				FD2C7D8C2B0705DA00B5B494 /* CardImageView.swift in Sources */,
 				C782E7642AFED523006BCE59 /* ErrorResponse.swift in Sources */,
 				AB4522562ADDDBC400B69F24 /* SchoolResponseModel.swift in Sources */,
 				AB8770F62AFF8A5E00B272F2 /* NoReviewView.swift in Sources */,
@@ -823,6 +833,7 @@
 				ABA1E82D2AFD0CD5009051E0 /* VoteContentCell.swift in Sources */,
 				C768F1A32AE656570020F82C /* SchoolModel.swift in Sources */,
 				ABBBC67C2AE49CC800B1E614 /* PostCreateModel.swift in Sources */,
+				FD9DDB6C2B06F746006D738A /* SummaryPostModel.swift in Sources */,
 				AB6845B62AFC147D00C3F7C2 /* TypeTestViewModel.swift in Sources */,
 				5E5099732AFBE3AF0053E529 /* ParticleView.swift in Sources */,
 				AB4522532ADDD99500B69F24 /* SchoolSearchView.swift in Sources */,
@@ -850,6 +861,7 @@
 				ABA1E8542AFEA640009051E0 /* GoToTypeTestButton.swift in Sources */,
 				C77113712AF0E7D500BAB128 /* Color+.swift in Sources */,
 				AB6845B02AFC143700C3F7C2 /* TypeTestIntroView.swift in Sources */,
+				FD9DDB6E2B06F76D006D738A /* MyPageViewModel.swift in Sources */,
 				C7EFA7DD2AF94DD800C9BEA0 /* CustomAlertModalView.swift in Sources */,
 				C7A95F192B01FFEC00F8595A /* APIConstants.swift in Sources */,
 				AB03D73B2B0137D5000C927A /* PostService.swift in Sources */,
@@ -1005,6 +1017,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1042,6 +1055,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

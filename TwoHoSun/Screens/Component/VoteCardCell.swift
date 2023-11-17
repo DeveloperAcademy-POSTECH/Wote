@@ -25,6 +25,7 @@ struct VoteCardCell: View {
     var cellType: VoteCardCellType
     var progressType: VoteProgressType
     var voteResultType: VoteResultType?
+    var post: SummaryPostModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
@@ -52,31 +53,29 @@ struct VoteCardCell: View {
                                 .background(Color.black200)
                                 .clipShape(RoundedRectangle(cornerRadius: 3))
                         }
-                        Text("ACG 마운틴 플라이 살까 말까?sdffdsfsdfsdf")
+                        Text(post.title)
                             .font(.system(size: 16, weight: .bold))
                             .foregroundStyle(.white)
                             .lineLimit(1)
                     }
-                    Text("어쩌고저쩌고50자미만임~~asdfasadsafsdadsf")
+                    Text(post.contents ?? "")
                         .font(.system(size: 14, weight: .medium))
                         .foregroundStyle(.white)
                         .lineLimit(1)
                         .padding(.bottom, 9)
                     HStack(spacing: 0) {
-                        Text("가격: 120,000원")
-                        Text(" · ")
-                        Text("2020년 3월 12일")
+                        if let price = post.price {
+                            Text("가격: \(price)원")
+                            Text(" · ")
+                        }
+                        Text(post.createDate)
                     }
                     .font(.system(size: 14))
                     .foregroundStyle(Color.gray100)
                 }
                 Spacer()
                 ZStack {
-                    // TODO: Rectangle -> image 변경 필요
-                    Rectangle()
-                        .frame(width: 66, height: 66)
-                        .foregroundStyle(.gray)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                    CardImageView(imageURL: post.image)
                         .opacity(progressType == .end ? 0.5 : 1.0)
                     if progressType == .end {
                         Group {
@@ -122,8 +121,4 @@ struct VoteCardCell: View {
         .background(cellType != .myVote ? Color.disableGray : Color.clear)
         .clipShape(RoundedRectangle(cornerRadius: 16))
     }
-}
-
-#Preview {
-    VoteCardCell(cellType: .myVote, progressType: .progressing)
 }
