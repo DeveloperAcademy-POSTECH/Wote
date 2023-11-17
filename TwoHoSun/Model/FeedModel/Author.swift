@@ -10,6 +10,6 @@ import Foundation
 struct Author: Codable {
     let id: Int
     let nickname: String
-    let userProfileImage: String?
+    let profileImage: String?
     let consumerType: String
 }

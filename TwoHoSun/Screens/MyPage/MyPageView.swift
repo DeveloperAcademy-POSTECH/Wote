@@ -120,7 +120,7 @@ extension MyPageView {
                         Text("김보람")
                             .font(.system(size: 20, weight: .medium))
                             .padding(.trailing, 12)
-                        SpendTypeLabel(spendType: .flexer, usage: .standard)
+                        ConsumerTypeLabel(consumerType: .flexer, usage: .standard)
                         Spacer()
                         Image(systemName: "chevron.right")
                             .font(.system(size: 14))

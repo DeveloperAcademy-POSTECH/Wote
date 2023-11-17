@@ -11,7 +11,7 @@ struct TypeTestView: View {
     @State private var isTypeTestResultViewShown = false
     @Environment(\.dismiss) private var dismiss
     @Bindable var viewModel: TypeTestViewModel
-    @State var userSpendType: SpendTitleType?
+    @State var userSpendType: ConsumerType?
 
     var body: some View {
         ZStack {

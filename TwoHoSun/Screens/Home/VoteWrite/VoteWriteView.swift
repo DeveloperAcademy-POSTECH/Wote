@@ -22,7 +22,7 @@ struct VoteWriteView: View {
     @State private var showCropView: Bool = false
     @Bindable var viewModel: VoteWriteViewModel
     @Environment(\.dismiss) private var dismiss
-    
+
     var body: some View {
         ZStack {
             Color.background

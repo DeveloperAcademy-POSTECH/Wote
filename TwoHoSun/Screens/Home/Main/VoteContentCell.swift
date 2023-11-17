@@ -7,28 +7,27 @@
 
 import SwiftUI
 
+import Kingfisher
+
 struct VoteContentCell: View {
-//    @State var isVoted = false
-//    @State var postStatus = "ACTIVE"
-//    @State var selectedVoteType = UserVoteType.agree
-    @State var voteData: PostResponseDto
+    @State var postData: PostModel
+    @Environment(AppLoginState.self) private var loginState
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 8) {
-                // TODO: - 프로필 이미지 변경
-                Image("imgDefaultProfile")
+                ProfileImageView(imageURL: postData.author.profileImage)
                     .frame(width: 32, height: 32)
-                Text(voteData.author.nickname)
+                Text(postData.author.nickname)
                     .font(.system(size: 16, weight: .bold))
                     .foregroundStyle(.white)
                 Spacer()
-                // TODO: - 소비 성향 라벨 서버랑 맞추고 변경
-                SpendTypeLabel(spendType: .saving, usage: .standard)
+                ConsumerTypeLabel(consumerType: ConsumerType(rawValue: postData.author.consumerType) ?? .adventurer,
+                               usage: .standard)
             }
             .padding(.bottom, 10)
             HStack(spacing: 4) {
-                if voteData.postStatus == PostStatus.closed.rawValue {
+                if postData.postStatus == PostStatus.closed.rawValue {
                     Text("종료")
                         .font(.system(size: 12, weight: .medium))
                         .foregroundStyle(.white)
@@ -37,36 +36,36 @@ struct VoteContentCell: View {
                         .background(Color.disableGray)
                         .clipShape(RoundedRectangle(cornerRadius: 3))
                 }
-                Text(voteData.title)
+                Text(postData.title)
                     .font(.system(size: 16, weight: .bold))
                     .foregroundStyle(.white)
             }
-            Text(voteData.contents ?? "")
+            Text(postData.contents ?? "")
                 .font(.system(size: 14))
                 .foregroundStyle(.white)
                 .padding(.bottom, 8)
             HStack(spacing: 0) {
-                Text("가격: \(voteData.price)원")
-                Text(" · ")
-                Text("2020년 3월 12일")
+                if let price = postData.price {
+                    Text("가격: \(price)원")
+                    Text(" · ")
+                }
+                Text(postData.createDate.convertToStringDate() ?? "")
             }
             .font(.system(size: 14))
             .foregroundStyle(Color.gray100)
             .padding(.bottom, 10)
             HStack {
-                voteInfoButton(label: "\(voteData.voteCount)명 투표", icon: "person.2.fill")
+                voteInfoButton(label: "\(postData.voteCount)명 투표", icon: "person.2.fill")
                 Spacer()
-                voteInfoButton(label: "댓글 \(voteData.commentCount)개", icon: "message.fill")
+                voteInfoButton(label: "댓글 \(postData.commentCount)개", icon: "message.fill")
             }
             .padding(.bottom, 2)
-            RoundedRectangle(cornerRadius: 16)
-                .strokeBorder(Color.disableGray, lineWidth: 1)
-                .frame(maxWidth: .infinity)
-                .aspectRatio(1.5, contentMode: .fit)
+            voteImageView
             VStack(spacing: 10) {
-                VoteView(isVoted: voteData.isVoted,
-                         postStatus: voteData.postStatus,
-                         selectedVoteType: .agree) // TODO: 수정 필요
+                VoteView(postStatus: postData.postStatus,
+                         myChoice: postData.myChoice,
+                         voteCount: postData.voteCount,
+                         voteCounts: postData.voteCounts)
                 detailResultButton
             }
             .padding(.top, 2)
@@ -87,6 +86,19 @@ extension VoteContentCell {
             .clipShape(RoundedRectangle(cornerRadius: 3))
     }
 
+    @ViewBuilder
+    private var voteImageView: some View {
+        if let imageURL = postData.image {
+            ImageView(imageURL: imageURL)
+        } else {
+            Image("imgDummyVote\(postData.id % 3 + 1)")
+                .resizable()
+                .frame(maxWidth: .infinity)
+                .aspectRatio(1.5, contentMode: .fit)
+                .clipShape(.rect(cornerRadius: 16))
+        }
+    }
+
     private func voteInfoButton(label: String, icon: String) -> some View {
         HStack(spacing: 2) {
             Image(systemName: icon)
@@ -102,7 +114,10 @@ extension VoteContentCell {
 
     private var detailResultButton: some View {
         NavigationLink {
-            DetailView(isDone: false)
+//            DetailView(viewModel: DetailViewModel(apiManager: loginState.serviceRoot.apimanager),
+//                       postId: postData.id))
+            DetailView(viewModel: DetailViewModel(apiManager: loginState.serviceRoot.apimanager),
+                       postId: postData.id)
         } label: {
             Text("상세보기")
                 .font(.system(size: 16, weight: .bold))

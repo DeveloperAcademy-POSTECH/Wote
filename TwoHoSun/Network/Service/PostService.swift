@@ -12,7 +12,7 @@ import Moya
 enum PostService {
     case getPosts(page: Int, size: Int, visibilityScope: String)
     case createPost(post: PostCreateModel)
-    case getPostDetail
+    case getPostDetail(postId: Int)
     case modifyPost
     case deletePost
     case getReviewDetail
@@ -38,6 +38,8 @@ extension PostService: TargetType {
             return "/api/posts"
         case .createPost:
             return "/api/posts"
+        case .getPostDetail(let postId):
+            return "/api/posts/\(postId)"
         case .getMyPosts:
             return "/api/mypage/posts"
         default:
@@ -51,8 +53,6 @@ extension PostService: TargetType {
             return ["page": page,
                     "size": size,
                     "visibilityScope": visibilityScope]
-        case .createPost:
-            return [:]
         case .getMyPosts(let page, let size, let myVoteCategoryType):
             return ["page": page,
                     "size": size,
@@ -69,6 +69,8 @@ extension PostService: TargetType {
         case .createPost:
             return .post
         case .getMyPosts:
+            return .get
+        case .getPostDetail:
             return .get
         default:
             return .get
@@ -102,6 +104,9 @@ extension PostService: TargetType {
                 print("error: \(error)")
             }
             return .uploadMultipart(formData)
+        case .getPostDetail(let postId):
+            return .requestParameters(parameters: ["postId": [postId]],
+                                      encoding: URLEncoding.queryString)
         case .getMyPosts:
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         default:
