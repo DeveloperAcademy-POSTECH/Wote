@@ -26,6 +26,21 @@ enum MyVoteCategoryType: String, CaseIterable, Hashable {
     case mySchool = "우리 학교 투표"
     case progressing = "진행중인 투표"
     case end = "종료된 투표"
+    
+    var parameter: String {
+        switch self {
+        case .all:
+            return "ALL_VOTES"
+        case .allSchool:
+            return "GLOBAL_VOTES"
+        case .mySchool:
+            return "SCHOOL_VOTES"
+        case .progressing:
+            return "ACTIVE_VOTES"
+        case .end:
+            return "CLOSED_VOTES"
+        }
+    }
 }
 
 enum MyReviewCategoryType: String, CaseIterable, Hashable {
@@ -59,9 +74,16 @@ struct MyPageView: View {
                 ScrollViewReader { proxy in
                     LazyVStack(pinnedViews: .sectionHeaders) {
                         Section {
-                            myPageListTypeView
+                            if viewModel.isLoading {
+                                ProgressView()
+                            } else {
+                                myPageListTypeView
+                            }
                         } header: {
                             sectionHeaderView
+                        }
+                        .onAppear {
+                            viewModel.fetchPosts(myVoteCategoryType: selectedMyVoteCategoryType.parameter)
                         }
                         .id("myPageList")
                     }
