@@ -25,7 +25,7 @@ struct VoteCardCell: View {
     var cellType: VoteCardCellType
     var progressType: VoteProgressType
     var voteResultType: VoteResultType?
-    var post: MyPosts
+    var post: SummaryPostModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {

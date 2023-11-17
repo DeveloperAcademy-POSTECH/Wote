@@ -11,7 +11,7 @@ import SwiftUI
 @Observable
 final class MyPageViewModel {
     let apiManager: NewApiManager
-    var posts: [MyPosts] = []
+    var posts: [SummaryPostModel] = []
     var cacellabels: Set<AnyCancellable> = []
     var isLoading: Bool = false
     
