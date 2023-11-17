@@ -94,6 +94,7 @@
 		C7F1FD882ADDA39500C5A2A1 /* DesciptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F1FD872ADDA39500C5A2A1 /* DesciptionView.swift */; };
 		FD132BF22ADBE8FB00F31AAF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD132BF12ADBE8FB00F31AAF /* Assets.xcassets */; };
 		FD132BF52ADBE8FB00F31AAF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD132BF42ADBE8FB00F31AAF /* Preview Assets.xcassets */; };
+		FD2C7D8C2B0705DA00B5B494 /* CardImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2C7D8B2B0705DA00B5B494 /* CardImageView.swift */; };
 		FD3205682ADD5C0D00B0D5F6 /* TwoHoSunApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3205672ADD5C0D00B0D5F6 /* TwoHoSunApp.swift */; };
 		FD3646F52ADD8E2D0064DF94 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FD3646F42ADD8E2D0064DF94 /* Alamofire */; };
 		FD50A0482B01EBE000CF7F59 /* SettingNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD50A0472B01EBE000CF7F59 /* SettingNotificationView.swift */; };
@@ -206,6 +207,7 @@
 		FD132BEA2ADBE8FA00F31AAF /* TwoHoSun.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwoHoSun.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD132BF12ADBE8FB00F31AAF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FD132BF42ADBE8FB00F31AAF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		FD2C7D8B2B0705DA00B5B494 /* CardImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardImageView.swift; sourceTree = "<group>"; };
 		FD32055D2ADD16AC00B0D5F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FD3205672ADD5C0D00B0D5F6 /* TwoHoSunApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoHoSunApp.swift; sourceTree = "<group>"; };
 		FD4E75B52ADE9C20000C2277 /* ProfileSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingViewModel.swift; sourceTree = "<group>"; };
@@ -585,6 +587,7 @@
 				AB7317F32AF94F31008B5E41 /* ReviewCardCell.swift */,
 				ABAFB6402AF978790070512F /* PurchaseLabel.swift */,
 				ABAFB6422AF979C80070512F /* CommentPreview.swift */,
+				FD2C7D8B2B0705DA00B5B494 /* CardImageView.swift */,
 				C7EFA7DC2AF94DD800C9BEA0 /* CustomAlertModalView.swift */,
 				ABA1E83D2AFD57A4009051E0 /* VoteCardCell.swift */,
 				FD9C277D2AFA27E900702ACD /* ImageCropView.swift */,
@@ -794,6 +797,7 @@
 				C7F1FD862ADDA37E00C5A2A1 /* BottomSheetView.swift in Sources */,
 				ABA1E84A2AFD5C0B009051E0 /* ReviewWriteViewModel.swift in Sources */,
 				FD50A04C2B02084600CF7F59 /* SettingQuestionsView.swift in Sources */,
+				FD2C7D8C2B0705DA00B5B494 /* CardImageView.swift in Sources */,
 				C782E7642AFED523006BCE59 /* ErrorResponse.swift in Sources */,
 				AB4522562ADDDBC400B69F24 /* SchoolResponseModel.swift in Sources */,
 				AB8770F62AFF8A5E00B272F2 /* NoReviewView.swift in Sources */,

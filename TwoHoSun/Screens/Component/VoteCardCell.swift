@@ -73,11 +73,7 @@ struct VoteCardCell: View {
                 }
                 Spacer()
                 ZStack {
-                    // TODO: Rectangle -> image 변경 필요
-                    Rectangle()
-                        .frame(width: 66, height: 66)
-                        .foregroundStyle(.gray)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                    CardImageView(imageURL: post.image)
                         .opacity(progressType == .end ? 0.5 : 1.0)
                     if progressType == .end {
                         Group {
