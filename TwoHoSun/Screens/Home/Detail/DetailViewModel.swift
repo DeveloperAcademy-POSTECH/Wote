@@ -10,42 +10,42 @@ import SwiftUI
 
 @Observable
 final class DetailViewModel {
-    var postDetailData: PostModel?
+    var postDetailData: PostDetailModel?
     var agreeTopConsumerTypes = [ConsumerType]()
     var disagreeTopConsumerTypes = [ConsumerType]()
     var isSendMessage = false
     private let apiManager: NewApiManager
     var cancellables: Set<AnyCancellable> = []
 
-    var voteCount: Int {
-        postDetailData?.voteCount ?? 0
-    }
+//    var voteCount: Int {
+//        postDetailData?.voteCount ?? 0
+//    }
+//
+//    var agreeCount: Int {
+//        postDetailData?.voteCounts.agreeCount ?? 0
+//    }
+//
+//    var disagreeCount: Int {
+//        postDetailData?.voteCounts.disagreeCount ?? 0
+//    }
+//
+//    var agreeRatio: Double {
+//        guard voteCount != 0 else {
+//            return 0.0
+//        }
+//        return Double(agreeCount) / Double(voteCount) * 100
+//    }
+//
+//    var disagreeRatio: Double {
+//        guard voteCount != 0 else {
+//            return 0.0
+//        }
+//        return Double(disagreeCount) / Double(voteCount) * 100
+//    }
 
-    var agreeCount: Int {
-        postDetailData?.voteCounts.agreeCount ?? 0
-    }
-
-    var disagreeCount: Int {
-        postDetailData?.voteCounts.disagreeCount ?? 0
-    }
-
-    var agreeRatio: Double {
-        guard voteCount != 0 else {
-            return 0.0
-        }
-        return Double(agreeCount) / Double(voteCount) * 100
-    }
-
-    var disagreeRatio: Double {
-        guard voteCount != 0 else {
-            return 0.0
-        }
-        return Double(disagreeCount) / Double(voteCount) * 100
-    }
-
-    var isAgreeHigher: Bool {
-        agreeRatio > disagreeRatio
-    }
+//    var isAgreeHigher: Bool {
+//        agreeRatio > disagreeRatio
+//    }
 
     init(apiManager: NewApiManager) {
         self.apiManager = apiManager
@@ -53,7 +53,7 @@ final class DetailViewModel {
 
     func fetchPostDetail(postId: Int) {
         apiManager.request(.postService(.getPostDetail(postId: postId)),
-                           decodingType: PostModel.self)
+                           decodingType: PostDetailModel.self)
             .compactMap(\.data)
             .receive(on: DispatchQueue.main)
             .sink { completion in
@@ -65,17 +65,18 @@ final class DetailViewModel {
                 }
             } receiveValue: { data in
                 self.postDetailData = data
-                self.setTopConsumerTypes()
+//                self.setTopConsumerTypes()
+//                self.updatedatePostData()
             }
             .store(in: &cancellables)
     }
 
-    private func setTopConsumerTypes() {
-        guard let voteInfoList = postDetailData?.voteInfoList else { return }
-        let (agreeVoteInfos, disagreeVoteInfos) = filterSelectedResult(voteInfoList: voteInfoList)
-        agreeTopConsumerTypes = getTopConsumerTypes(for: agreeVoteInfos)
-        disagreeTopConsumerTypes = getTopConsumerTypes(for: disagreeVoteInfos)
-    }
+//    private func setTopConsumerTypes() {
+//        guard let voteInfoList = postDetailData?.voteInfoList else { return }
+//        let (agreeVoteInfos, disagreeVoteInfos) = filterSelectedResult(voteInfoList: voteInfoList)
+//        agreeTopConsumerTypes = getTopConsumerTypes(for: agreeVoteInfos)
+//        disagreeTopConsumerTypes = getTopConsumerTypes(for: disagreeVoteInfos)
+//    }
 
     func filterSelectedResult(voteInfoList: [VoteInfoModel]) -> (agree: [VoteInfoModel],
                                                                 disagree: [VoteInfoModel]) {

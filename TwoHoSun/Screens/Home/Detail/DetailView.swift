@@ -57,42 +57,42 @@ struct DetailView: View {
             if let data = viewModel.postDetailData {
                 ScrollView {
                     VStack(spacing: 0) {
-                        DetailHeaderView(author: data.author,
-                                         postStatus: PostStatus(rawValue: data.postStatus) ?? PostStatus.closed,
-                                         isMine: data.isMine,
-                                         hasReview: data.hasReview)
-                            .padding(.top, 18)
-                        Divider()
-                            .background(Color.disableGray)
-                            .padding(.horizontal, 12)
-                        DetailContentView(postDetailData: data)
-                            .padding(.top, 27)
-                        VoteView(postStatus: data.postStatus,
-                                 myChoice: data.myChoice,
-                                 voteCount: data.voteCount,
-                                 voteCounts: data.voteCounts)
-                            .padding(.horizontal, 24)
+//                        DetailHeaderView(author: data.author,
+//                                         postStatus: PostStatus(rawValue: data.postStatus) ?? PostStatus.closed,
+//                                         isMine: data.isMine,
+//                                         hasReview: data.hasReview)
+//                            .padding(.top, 18)
+//                        Divider()
+//                            .background(Color.disableGray)
+//                            .padding(.horizontal, 12)
+//                        DetailContentView(postDetailData: data)
+//                            .padding(.top, 27)
+//                        VoteView(postStatus: data.postStatus,
+//                                 myChoice: data.myChoice,
+//                                 voteCount: data.voteCount,
+//                                 voteCounts: data.voteCounts)
+//                            .padding(.horizontal, 24)
                         commentPreview
                             .padding(.horizontal, 24)
                             .padding(.vertical, 48)
                             .padding(.bottom, 34)
-                        if data.voteCount != 0 {
-                            if data.postStatus == "CLOSED" || data.myChoice != nil {
-                                voteResultView(.agree,
-                                               postDetailData: data,
-                                               topConsumerTypes: viewModel.agreeTopConsumerTypes)
-                                    .padding(.bottom, 34)
-                                voteResultView(.disagree,
-                                               postDetailData: data,
-                                               topConsumerTypes: viewModel.disagreeTopConsumerTypes)
-                            } else {
-                                hiddenResultView(for: .agree, 
-                                                 topConsumerTypesCount: viewModel.agreeTopConsumerTypes.count)
-                                    .padding(.bottom, 34)
-                                hiddenResultView(for: .disagree,
-                                                 topConsumerTypesCount: viewModel.disagreeTopConsumerTypes.count)
-                            }
-                        }
+//                        if data.voteCount != 0 {
+//                            if data.postStatus == "CLOSED" || data.myChoice != nil {
+//                                voteResultView(.agree,
+//                                               postDetailData: data,
+//                                               topConsumerTypes: viewModel.agreeTopConsumerTypes)
+//                                    .padding(.bottom, 34)
+//                                voteResultView(.disagree,
+//                                               postDetailData: data,
+//                                               topConsumerTypes: viewModel.disagreeTopConsumerTypes)
+//                            } else {
+//                                hiddenResultView(for: .agree, 
+//                                                 topConsumerTypesCount: viewModel.agreeTopConsumerTypes.count)
+//                                    .padding(.bottom, 34)
+//                                hiddenResultView(for: .disagree,
+//                                                 topConsumerTypesCount: viewModel.disagreeTopConsumerTypes.count)
+//                            }
+//                        }
                         Spacer()
                             .frame(height: 56)
                     }
@@ -171,62 +171,62 @@ extension DetailView {
             }
     }
 
-    private func hiddenResultView(for type: VoteType, topConsumerTypesCount: Int) -> some View {
-        VStack(spacing: 16) {
-            Text("투표 후 구매 \(type.title) 의견을 선택한 유형을 확인해봐요!")
-                .font(.system(size: 16, weight: .medium))
-                .foregroundStyle(Color.white)
-            HStack {
-                ForEach(0..<topConsumerTypesCount, id: \.self) { _ in
-                    hiddenTypeLabel
-                }
-            }
-            ProgressView(value: type.isAgree ? 1.0 : 0.0, total: 1.0)
-                .progressViewStyle(CustomProgressStyle(foregroundColor: type.isAgree ? Color.lightBlue : Color.gray200,
-                                                       height: 8))
-        }
-    }
+//    private func hiddenResultView(for type: VoteType, topConsumerTypesCount: Int) -> some View {
+//        VStack(spacing: 16) {
+//            Text("투표 후 구매 \(type.title) 의견을 선택한 유형을 확인해봐요!")
+//                .font(.system(size: 16, weight: .medium))
+//                .foregroundStyle(Color.white)
+//            HStack {
+//                ForEach(0..<topConsumerTypesCount, id: \.self) { _ in
+//                    hiddenTypeLabel
+//                }
+//            }
+//            ProgressView(value: type.isAgree ? 1.0 : 0.0, total: 1.0)
+//                .progressViewStyle(CustomProgressStyle(foregroundColor: type.isAgree ? Color.lightBlue : Color.gray200,
+//                                                       height: 8))
+//        }
+//    }
 
-    private var hiddenTypeLabel: some View {
-        HStack(spacing: 4) {
-            Image(systemName: "questionmark")
-                .font(.system(size: 14))
-                .foregroundStyle(.white)
-            Text("??????????")
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundStyle(Color.priceGray)
-        }
-        .padding(.vertical, 5)
-        .padding(.horizontal, 10)
-        .background(Color.gray200)
-        .clipShape(Capsule())
-    }
+//    private var hiddenTypeLabel: some View {
+//        HStack(spacing: 4) {
+//            Image(systemName: "questionmark")
+//                .font(.system(size: 14))
+//                .foregroundStyle(.white)
+//            Text("??????????")
+//                .font(.system(size: 14, weight: .semibold))
+//                .foregroundStyle(Color.priceGray)
+//        }
+//        .padding(.vertical, 5)
+//        .padding(.horizontal, 10)
+//        .background(Color.gray200)
+//        .clipShape(Capsule())
+//    }
 
-    private func voteResultView(_ type: VoteType, postDetailData: PostModel, topConsumerTypes: [ConsumerType]) -> some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text("구매 \(type.title) 의견")
-                .font(.system(size: 14))
-                .foregroundStyle(Color.priceGray)
-            HStack {
-                ForEach(topConsumerTypes, id: \.self) { consumerType in
-                    ConsumerTypeLabel(consumerType: consumerType, usage: .standard)
-                }
-            }
-            let ratio = type.isAgree ? viewModel.agreeRatio : viewModel.disagreeRatio
-            let isAgreeHigher = viewModel.isAgreeHigher && type.isAgree
-            let isDisagreeHigher = !viewModel.isAgreeHigher && !type.isAgree
-
-            Text(String(format: ratio.getFirstDecimalNum == 0 ? "%.0f" : "%.1f", ratio)
-                 + "%의 친구들이 \(type.subtitle) 것을 추천했어요!")
-                .font(.system(size: 16, weight: .medium))
-                .foregroundStyle(Color.white)
-            ProgressView(value: ratio, total: 100.0)
-                .progressViewStyle(CustomProgressStyle(foregroundColor: isAgreeHigher || isDisagreeHigher ? 
-                                                       Color.lightBlue : Color.gray200,
-                                                       height: 8))
-        }
-        .padding(.horizontal, 24)
-    }
+//    private func voteResultView(_ type: VoteType, postDetailData: PostModel, topConsumerTypes: [ConsumerType]) -> some View {
+//        VStack(alignment: .leading, spacing: 16) {
+//            Text("구매 \(type.title) 의견")
+//                .font(.system(size: 14))
+//                .foregroundStyle(Color.priceGray)
+//            HStack {
+//                ForEach(topConsumerTypes, id: \.self) { consumerType in
+//                    ConsumerTypeLabel(consumerType: consumerType, usage: .standard)
+//                }
+//            }
+//            let ratio = type.isAgree ? viewModel.agreeRatio : viewModel.disagreeRatio
+//            let isAgreeHigher = viewModel.isAgreeHigher && type.isAgree
+//            let isDisagreeHigher = !viewModel.isAgreeHigher && !type.isAgree
+//
+//            Text(String(format: ratio.getFirstDecimalNum == 0 ? "%.0f" : "%.1f", ratio)
+//                 + "%의 친구들이 \(type.subtitle) 것을 추천했어요!")
+//                .font(.system(size: 16, weight: .medium))
+//                .foregroundStyle(Color.white)
+//            ProgressView(value: ratio, total: 100.0)
+//                .progressViewStyle(CustomProgressStyle(foregroundColor: isAgreeHigher || isDisagreeHigher ? 
+//                                                       Color.lightBlue : Color.gray200,
+//                                                       height: 8))
+//        }
+//        .padding(.horizontal, 24)
+//    }
 }
 
 struct DetailContentView: View {

@@ -183,7 +183,7 @@ extension CommentsView {
             .animation(.easeInOut(duration: 0.3), value: commentText)
             if isFocus {
                 Button(action: {
-
+                    viewModel.postComment(content: commentText)
                 }, label: {
                     Image(systemName: "paperplane")
                         .foregroundStyle(commentText.isEmpty ?  Color.subGray1 : Color.white)

@@ -4,18 +4,21 @@
 //
 //  Created by 235 on 11/18/23.
 //
-
+import Combine
 import SwiftUI
+
 
 final class CommentsViewModel: ObservableObject {
     @Published var commentsDatas = [CommentsModel]()
 //    @Published var content: String = ""
     private var apiManager: NewApiManager
     private var postId: Int
+    var bag = Set<AnyCancellable>()
 
     init(apiManager: NewApiManager, postId: Int) {
         self.apiManager = apiManager
         self.postId = postId
+        self.getAllComments()
     }
 
     func getAllComments() {
@@ -25,6 +28,7 @@ final class CommentsViewModel: ObservableObject {
             } receiveValue: { response in
                 print(response)
             }
+            .store(in: &bag)
     }
 
     func postComment(content: String) {
@@ -34,6 +38,7 @@ final class CommentsViewModel: ObservableObject {
             } receiveValue: { response in
                 print(response)
             }
+            .store(in: &bag)
 
     }
 
