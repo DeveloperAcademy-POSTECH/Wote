@@ -10,7 +10,6 @@ import Foundation
 struct SchoolModel: Codable {
     let schoolName: String
     let schoolRegion: String
-    let schoolType: String
 }
 
 struct SchoolInfoModel: Identifiable {

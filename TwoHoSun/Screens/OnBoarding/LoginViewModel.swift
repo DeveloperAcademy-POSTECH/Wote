@@ -11,7 +11,7 @@ import Combine
 import Moya
 
 @Observable
-class LoginViewModel: ObservableObject {
+class LoginViewModel {
     var showSheet = false
     var authorization: String = ""
     var goMain = false
@@ -32,23 +32,24 @@ class LoginViewModel: ObservableObject {
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
-
                     break
                 case .failure(let failure):
                     print(failure)
                 }
-            }) { response in
+            }, receiveValue: { response in
                 if let data = response.data {
-                    self.appState.serviceRoot.auth.saveTokens(data)
+                    self.appState.serviceRoot.auth.saveTokens(data.jwtToken)
+                    if response.message == "Not Completed SignUp Exception" {
+                        UserDefaults.standard.setValue(false, forKey: "haveConsumerType")
+                        self.appState.serviceRoot.auth.authState = .unfinishRegister
+                        self.showSheet = true
+                    } else {
+                        UserDefaults.standard.setValue(data.consumerTypeExist, forKey: "haveConsumerType")
+                        self.appState.serviceRoot.auth.authState = .loggedIn
+                        self.goMain = true
+                    }
                 }
-                if response.message == "UNREGISTERED_USER" {
-                    self.appState.serviceRoot.auth.authState = .unfinishRegister
-                    self.showSheet = true
-                } else {
-                    self.appState.serviceRoot.auth.authState = .loggedIn
-                    self.goMain = true
-                }
-            }
+            })
             .store(in: &bag)
     }
 }

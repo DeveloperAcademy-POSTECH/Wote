@@ -57,16 +57,17 @@ struct MyPageView: View {
     @State private var isMyReviewCategoryButtonDidTap = false
     @State var viewModel: MyPageViewModel
     @Binding var selectedVisibilityScope: VisibilityScopeType
+    @AppStorage("haveConsumerType") var haveConsumerType: Bool = false
     @Environment(AppLoginState.self) private var loginState
-    var isTypeTestCompleted = false
+    @EnvironmentObject private var pathManger: NavigationManager
 
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
                 profileHeaderView
                     .padding(.top, 24)
-                    .padding(.bottom, isTypeTestCompleted ? 24 : 0)
-                if !isTypeTestCompleted {
+                    .padding(.bottom, haveConsumerType ? 24 : 0)
+                if !haveConsumerType {
                     GoToTypeTestButton()
                         .padding(.horizontal, 24)
                         .padding(.top, 24)
@@ -108,7 +109,7 @@ extension MyPageView {
     private var profileHeaderView: some View {
         NavigationLink {
             ProfileSettingsView(viewType: .modfiy,
-                                viewModel: ProfileSettingViewModel(apiManager: loginState.serviceRoot.apimanager, path: .constant([])))
+                                viewModel: ProfileSettingViewModel(appState: loginState))
         } label: {
             HStack {
                 Circle()

@@ -92,6 +92,8 @@ struct ProfileSettingsView: View {
     @State var viewType: ProfileSettingType
     @Bindable var viewModel: ProfileSettingViewModel
     @Environment(\.dismiss) private var dismiss
+    @Environment(AppLoginState.self) private var loginState
+    
     var body: some View {
         ZStack {
             Color.background
@@ -389,7 +391,8 @@ extension ProfileSettingsView {
 
     private var goToTypeTestButton: some View {
         NavigationLink {
-            TypeTestIntroView()
+//            TypeTestIntroView()
+
         } label: {
             HStack(spacing: 0) {
                 Text("소비 성향 테스트하러가기")
@@ -435,8 +438,3 @@ extension ProfileSettingsView {
         }
     }
 }
-
-//#Preview {
-//    ProfileSettingsView(viewType: .setting,
-//                        viewModel: ProfileSettingViewModel(path: .constant([])))
-//}
