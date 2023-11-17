@@ -8,9 +8,8 @@
 import Combine
 import SwiftUI
 
-@Observable
-final class DetailViewModel {
-    var postDetailData: PostModel?
+final class DetailViewModel: ObservableObject {
+    @Published var postDetailData: PostModel?
     var agreeTopConsumerTypes = [ConsumerType]()
     var disagreeTopConsumerTypes = [ConsumerType]()
     var commentsDatas = [CommentsModel]()
@@ -52,6 +51,14 @@ final class DetailViewModel {
         self.apiManager = apiManager
     }
 
+    func calculateVoteRatio(voteCount: Int,
+                            agreeCount: Int,
+                            disagreeCount: Int) -> (agree: Double, disagree: Double) {
+        guard voteCount != 0 else { return (0, 0)}
+        let agreeVoteRatio = Double(agreeCount) / Double(voteCount) * 100
+        return (agreeVoteRatio, 100.0 - agreeVoteRatio)
+    }
+
     func fetchPostDetail(postId: Int) {
         apiManager.request(.postService(.getPostDetail(postId: postId)),
                            decodingType: PostModel.self)
@@ -71,6 +78,26 @@ final class DetailViewModel {
             .store(in: &cancellables)
     }
 
+    func votePost(postId: Int, choice: Bool) {
+        apiManager.request(.postService(.votePost(postId: postId, choice: choice)),
+                           decodingType: VoteCountsModel.self)
+        .compactMap(\.data)
+        .receive(on: DispatchQueue.main)
+        .sink { completion in
+            switch completion {
+            case .finished:
+                break
+            case .failure(let failure):
+                print(failure)
+            }
+        } receiveValue: { data in
+            print(data)
+        }
+        .store(in: &cancellables)
+
+        fetchPostDetail(postId: postId)
+    }
+
     private func setTopConsumerTypes() {
         guard let voteInfoList = postDetailData?.voteInfoList else { return }
         let (agreeVoteInfos, disagreeVoteInfos) = filterSelectedResult(voteInfoList: voteInfoList)
@@ -80,8 +107,6 @@ final class DetailViewModel {
 
     func filterSelectedResult(voteInfoList: [VoteInfoModel]) -> (agree: [VoteInfoModel],
                                                                 disagree: [VoteInfoModel]) {
-        let agreeInfos = voteInfoList.filter { $0.isAgree }
-        let disagreeInfos = voteInfoList.filter { !$0.isAgree }
         return (voteInfoList.filter { $0.isAgree }, voteInfoList.filter { !$0.isAgree })
     }
 

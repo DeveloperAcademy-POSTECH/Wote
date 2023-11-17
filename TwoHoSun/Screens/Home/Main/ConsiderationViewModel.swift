@@ -17,11 +17,30 @@ final class ConsiderationViewModel: ObservableObject {
     private let apiManager: NewApiManager
     private var page = 0
     private var isLastPage = false
+    var agreeCount = 0
+    var disagreeCount = 0
     var cancellables: Set<AnyCancellable> = []
+
+    var agreeRatio: Double {
+        guard let voteCount else { return 1.0 }
+        return Double(agreeCount) / Double(voteCount) * 100
+    }
+
+    var disagreeRatio: Double {
+        return 100.0 - agreeRatio
+    }
 
     init(apiManager: NewApiManager) {
         self.apiManager = apiManager
         fetchPosts(visibilityScope: VisibilityScopeType.global.type)
+    }
+
+    func calculateVoteRatio(voteCount: Int,
+                            agreeCount: Int,
+                            disagreeCount: Int) -> (agree: Double, disagree: Double) {
+        guard voteCount != 0 else { return (0, 0)}
+        let agreeVoteRatio = Double(agreeCount) / Double(voteCount) * 10
+        return (agreeVoteRatio, 100.0 - agreeVoteRatio)
     }
 
     func resetPosts() {
@@ -90,7 +109,9 @@ final class ConsiderationViewModel: ObservableObject {
                 print(failure)
             }
         } receiveValue: { data in
-            self.voteCount = data.agreeCount + data.disagreeCount
+            self.agreeCount = data.agreeCount
+            self.disagreeCount = data.disagreeCount
+            self.voteCount = self.agreeCount + self.disagreeCount
         }
         .store(in: &cancellables)
     }

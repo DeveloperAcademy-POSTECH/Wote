@@ -10,7 +10,7 @@ import SwiftUI
 import Kingfisher
 
 struct VoteContentCell: View {
-    var postData: PostModel
+    @State var postData: PostModel
     @State var myChoice: Bool?
     @State var voteCount: Int
 //    @State var agreeCount: Int
@@ -193,7 +193,10 @@ extension VoteContentCell {
         NavigationLink {
 //            DetailView(viewModel: DetailViewModel(apiManager: loginState.serviceRoot.apimanager),
 //                       postId: postData.id))
-            DetailView(viewModel: DetailViewModel(apiManager: loginState.serviceRoot.apimanager),
+//            DetailView(viewModel: DetailViewModel(apiManager: loginState.serviceRoot.apimanager),
+//                       postId: postData.id)
+            DetailView(postData: $postData,
+                       viewModel: DetailViewModel(apiManager: loginState.serviceRoot.apimanager),
                        postId: postData.id)
         } label: {
             Text("상세보기")

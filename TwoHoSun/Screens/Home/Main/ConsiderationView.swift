@@ -47,7 +47,6 @@ extension ConsiderationView {
             TabView(selection: $currentVote) {
                 ForEach(Array(zip(viewModel.posts.indices, viewModel.posts)), id: \.0) { index, item in
                     VStack(spacing: 0) {
-//                        VoteContentCell(postData: item, viewModel: viewModel)
                         VoteContentCell(postData: item,
                                         voteCount: item.voteCount,
                                         viewModel: viewModel)

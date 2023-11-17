@@ -20,6 +20,7 @@
 		AB38A1032B0646F1004153B5 /* Double+.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1022B0646F1004153B5 /* Double+.swift */; };
 		AB38A1052B06757C004153B5 /* CustomProgressStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1042B06757C004153B5 /* CustomProgressStyle.swift */; };
 		AB38A1072B06AE8B004153B5 /* PostEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1062B06AE8B004153B5 /* PostEnums.swift */; };
+		AB38A10B2B077DEE004153B5 /* VoteResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A10A2B077DEE004153B5 /* VoteResultView.swift */; };
 		AB3BACFD2AF7A5FC00E792BE /* SearchTextFieldState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3BACFC2AF7A5FC00E792BE /* SearchTextFieldState.swift */; };
 		AB4522532ADDD99500B69F24 /* SchoolSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */; };
 		AB4522562ADDDBC400B69F24 /* SchoolResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */; };
@@ -131,6 +132,7 @@
 		AB38A1022B0646F1004153B5 /* Double+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+.swift"; sourceTree = "<group>"; };
 		AB38A1042B06757C004153B5 /* CustomProgressStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomProgressStyle.swift; sourceTree = "<group>"; };
 		AB38A1062B06AE8B004153B5 /* PostEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEnums.swift; sourceTree = "<group>"; };
+		AB38A10A2B077DEE004153B5 /* VoteResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteResultView.swift; sourceTree = "<group>"; };
 		AB3BACFC2AF7A5FC00E792BE /* SearchTextFieldState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTextFieldState.swift; sourceTree = "<group>"; };
 		AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolSearchView.swift; sourceTree = "<group>"; };
 		AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolResponseModel.swift; sourceTree = "<group>"; };
@@ -619,6 +621,7 @@
 		FD32055F2ADD1F6B00B0D5F6 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				AB38A10A2B077DEE004153B5 /* VoteResultView.swift */,
 				C7EFA7D72AF9272200C9BEA0 /* Complaint */,
 				C7E459D42AE01FE300ECD008 /* Main */,
 				C7DE44B92AE0BB4E001639CB /* Detail */,
@@ -780,6 +783,7 @@
 				FD50A04A2B01F16200CF7F59 /* SettingAnnouncementView.swift in Sources */,
 				FD9C277E2AFA27E900702ACD /* ImageCropView.swift in Sources */,
 				C73F8E902AE562FE001C6B07 /* Date+.swift in Sources */,
+				AB38A10B2B077DEE004153B5 /* VoteResultView.swift in Sources */,
 				ABA1E8402AFD5841009051E0 /* ConsiderationView.swift in Sources */,
 				C7719FE82AF28A7B00A520CB /* ConsumerTypeLabel.swift in Sources */,
 				FDDEC15B2AE3EABA004509EA /* SearchView.swift in Sources */,

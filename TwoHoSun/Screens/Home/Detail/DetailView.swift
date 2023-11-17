@@ -9,45 +9,14 @@ import SwiftUI
 
 struct DetailView: View {
     @Environment(\.dismiss) var dismiss
+    @Binding var postData: PostModel
     @State private var showDetailComments = false
     @State private var showconfirm = false
     @State private var backgroundColor: Color = .background
     @State private var showCustomAlert = false
     @State private var applyComplaint = false
-    var viewModel: DetailViewModel
+    @StateObject var viewModel: DetailViewModel
     var postId: Int
-    var isMine = false
-
-    enum VoteType {
-        case agree, disagree
-
-        var isAgree: Bool {
-            switch self {
-            case .agree:
-                return true
-            case .disagree:
-                return false
-            }
-        }
-
-        var title: String {
-            switch self {
-            case .agree:
-                return "추천"
-            case .disagree:
-                return "비추천"
-            }
-        }
-
-        var subtitle: String {
-            switch self {
-            case .agree:
-                return "사는"
-            case .disagree:
-                return "사지 않는"
-            }
-        }
-    }
 
     var body: some View {
         ZStack {
@@ -66,11 +35,25 @@ struct DetailView: View {
                             .padding(.horizontal, 12)
                         DetailContentView(postDetailData: data)
                             .padding(.top, 27)
-                        VoteView(postStatus: data.postStatus,
-                                 myChoice: data.myChoice,
-                                 voteCount: data.voteCount,
-                                 voteCounts: data.voteCounts)
-                            .padding(.horizontal, 24)
+                        VStack {
+                            if data.postStatus == "CLOSED" || data.myChoice != nil {
+                                let (agreeRatio, disagreeRatio) = viewModel.calculateVoteRatio(voteCount: data.voteCount,
+                                                                                               agreeCount: data.voteCounts.agreeCount,
+                                                                                               disagreeCount: data.voteCounts.disagreeCount)
+                                VoteResultView(myChoice: data.myChoice,
+                                               agreeRatio: agreeRatio,
+                                               disagreeRatio: disagreeRatio)
+
+                            } else {
+                                IncompletedVoteButton(choice: .agree) {
+                                    viewModel.votePost(postId: data.id, choice: true)
+                                }
+                                IncompletedVoteButton(choice: .disagree) {
+                                    viewModel.votePost(postId: data.id, choice: false)
+                                }
+                            }
+                        }
+                        .padding(.horizontal, 24)
                         commentPreview
                             .padding(.horizontal, 24)
                             .padding(.vertical, 48)
