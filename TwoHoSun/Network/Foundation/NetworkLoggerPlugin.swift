@@ -8,7 +8,6 @@ import Foundation
 
 import Moya
 
-
 struct NetworkLoggerPlugin: PluginType {
     func willSend(_ request: RequestType, target: TargetType) {
         guard let httpRequest = request.request else {

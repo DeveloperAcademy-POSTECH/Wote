@@ -60,7 +60,5 @@ final class TypeTestViewModel: ObservableObject {
                 self.succeedPutData.toggle()
                 cancellable?.cancel()
             }
-        
-
     }
 }

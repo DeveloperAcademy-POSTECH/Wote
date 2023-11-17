@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct TypeTestView: View {
-//    @State private var isTypeTestResultViewShown = false
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: TypeTestViewModel
     @State var successSpendType = false
@@ -178,10 +177,3 @@ struct ChoiceButtonStyle: ButtonStyle {
             .clipShape(.rect(cornerRadius: 10))
     }
 }
-
-//#Preview {
-//    NavigationStack {
-//        TypeTestView(viewModel: TypeTestViewModel())
-//            .toolbar(.visible, for: .navigationBar)
-//    }
-//}
