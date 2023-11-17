@@ -35,10 +35,10 @@ class Authenticator {
             .eraseToAnyPublisher()
      }
 
-    func updateAuthState(_ newState: TokenState) {
-        authState = newState
-        authStateSubject.send(newState)
-    }
+//    func updateAuthState(_ newState: TokenState) {
+//        authState = newState
+//        authStateSubject.send(newState)
+//    }
 
     func saveTokens(_ token: Tokens) {
         KeychainManager.shared.saveToken(key: "accessToken", token: token.accessToken)

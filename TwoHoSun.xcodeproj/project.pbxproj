@@ -86,6 +86,7 @@
 		C7A95F152B01FFDC00F8595A /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A95F142B01FFDC00F8595A /* NetworkError.swift */; };
 		C7A95F172B01FFE600F8595A /* NetworkLoggerPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A95F162B01FFE500F8595A /* NetworkLoggerPlugin.swift */; };
 		C7A95F192B01FFEC00F8595A /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A95F182B01FFEC00F8595A /* APIConstants.swift */; };
+		C7A95F1B2B03EB7B00F8595A /* NavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A95F1A2B03EB7B00F8595A /* NavigationManager.swift */; };
 		C7B5A8882B01641A00B73881 /* Authenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B5A8872B01641A00B73881 /* Authenticator.swift */; };
 		C7DE44BD2AE0DCE7001639CB /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DE44BC2AE0DCE7001639CB /* CommentCell.swift */; };
 		C7DE44C22AE26109001639CB /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DE44C12AE26109001639CB /* View+.swift */; };
@@ -198,6 +199,7 @@
 		C7A95F142B01FFDC00F8595A /* NetworkError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		C7A95F162B01FFE500F8595A /* NetworkLoggerPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkLoggerPlugin.swift; sourceTree = "<group>"; };
 		C7A95F182B01FFEC00F8595A /* APIConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
+		C7A95F1A2B03EB7B00F8595A /* NavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationManager.swift; sourceTree = "<group>"; };
 		C7B5A8872B01641A00B73881 /* Authenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authenticator.swift; sourceTree = "<group>"; };
 		C7DE44BC2AE0DCE7001639CB /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		C7DE44C12AE26109001639CB /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
@@ -604,6 +606,7 @@
 			children = (
 				AB3BACFC2AF7A5FC00E792BE /* SearchTextFieldState.swift */,
 				FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */,
+				C7A95F1A2B03EB7B00F8595A /* NavigationManager.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -829,6 +832,8 @@
 				C78E7D012AF6AF4C00C2E220 /* CommentsView.swift in Sources */,
 				AB03D7392B0137CC000C927A /* UserService.swift in Sources */,
 				C7E30E2B2ADC40E4001AE89B /* LoginViewModel.swift in Sources */,
+				C7719FE62AF2861000A520CB /* SpendTitleType.swift in Sources */,
+				C7A95F1B2B03EB7B00F8595A /* NavigationManager.swift in Sources */,
 				C7719FE62AF2861000A520CB /* ConsumerType.swift in Sources */,
 				ABA1E8502AFEA3AF009051E0 /* SettingView.swift in Sources */,
 				C7DE44C22AE26109001639CB /* View+.swift in Sources */,
@@ -985,10 +990,12 @@
 				BASE_URL = "https://test.hyunwoo.tech";
 				CODE_SIGN_ENTITLEMENTS = TwoHoSun/TwoHoSun.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"TwoHoSun/Preview Content\"";
-				DEVELOPMENT_TEAM = Q535Z3S7Z3;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = Q535Z3S7Z3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TwoHoSun/Info.plist;
@@ -1006,6 +1013,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.twohosun.TwoHoSun;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Sunday;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -21,8 +21,14 @@ struct VoteWriteView: View {
     @State private var isEditing: Bool = false
     @State private var showCropView: Bool = false
     @Bindable var viewModel: VoteWriteViewModel
-    @Environment(\.dismiss) private var dismiss
+    @Binding var tabselection: WoteTabType
 
+    init(viewModel: VoteWriteViewModel, tabselection: Binding<WoteTabType> = Binding.constant(.consider)) {
+        self.viewModel = viewModel
+        self._tabselection = tabselection
+    }
+
+    @Environment(\.dismiss) private var dismiss
     var body: some View {
         ZStack {
             Color.background
@@ -84,6 +90,9 @@ struct VoteWriteView: View {
                         .frame(maxWidth: .infinity)
                 }
             }
+        }
+        .onAppear {
+            tabselection = .consider
         }
     }
 }

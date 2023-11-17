@@ -18,7 +18,7 @@ enum CommentService {
 extension CommentService: TargetType {
     
     var baseURL: URL {
-        return URL(string: URLConst.baseURL)!
+        return URL(string: "\(URLConst.baseURL)/api/comments")!
     }
     
     var path: String {

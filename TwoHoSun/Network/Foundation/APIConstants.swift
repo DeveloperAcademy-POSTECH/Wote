@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 enum APIConstants {
     static let accept: String = "Accept"
     static let applicationXForm: String = "application/x-www-form-urlencoded; charset=UTF-8"

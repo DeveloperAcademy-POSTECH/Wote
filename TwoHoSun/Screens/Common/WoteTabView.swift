@@ -49,9 +49,11 @@ struct WoteTabView: View {
     @State private var selectedVisibilityScope = VisibilityScopeType.global
     @State private var isVoteCategoryButtonDidTap = false
     @Environment(AppLoginState.self) private var loginStateManager
-    @Binding var path: [Route]
+    @Binding var path: [LoginNavigation]
+    @StateObject private var navigatePath = NavigationManager()
 
     var body: some View {
+        NavigationStack(path: $navigatePath.navigatePath) {
             ZStack(alignment: .topLeading) {
                 VStack(spacing: 0) {
                     navigationBar
@@ -65,6 +67,7 @@ struct WoteTabView: View {
                                 }
                         }
                     }
+
                 }
 
                 if isVoteCategoryButtonDidTap {
@@ -86,33 +89,60 @@ struct WoteTabView: View {
                     voteCategoryMenu
                         .offset(x: 16, y: 40)
                 }
-            }
-            .onAppear {
-                let appearance = UITabBarAppearance()
-                appearance.configureWithOpaqueBackground()
-                UITabBar.appearance().backgroundColor = .background
-                UITabBar.appearance().unselectedItemTintColor = .gray400
-                UITabBar.appearance().standardAppearance = appearance
-            }
-            .navigationTitle(selection.tabTitle)
-            .toolbar(.hidden, for: .navigationBar)
 
+            }  .navigationDestination(for: AllNavigation.self) { destination in
+                switch destination {
+                case .detailView(let postId):
+                    DetailView(viewModel: DetailViewModel(apiManager: loginStateManager.serviceRoot.apimanager), postId: postId)
+                case .makeVoteView:
+                    VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: selectedVisibilityScope, 
+                                                                apiManager: loginStateManager.serviceRoot.apimanager), tabselection: $selection )
+                case .testIntroView:
+                    TypeTestIntroView()
+                        .toolbar(.hidden, for: .navigationBar)
+                        .environmentObject(navigatePath)
+                case .testView:
+                    TypeTestView(viewModel: TypeTestViewModel())
+                        .environmentObject(navigatePath)
+                case .reveiwView:
+                    ReviewView()
+                case .writeReiview:
+//                    VoteWriteView(viewModel: VoteWriteViewModel())
+                    Text("아직")
+                case .settingView:
+                    SettingView()
+                case .mypageView:
+                    MyPageView()
+                }
+            }
+        }
+
+        .onAppear {
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            UITabBar.appearance().backgroundColor = .background
+            UITabBar.appearance().unselectedItemTintColor = .gray400
+            UITabBar.appearance().standardAppearance = appearance
+        }
+        .navigationTitle(selection.tabTitle)
+        .toolbar(.hidden, for: .navigationBar)
         .tint(Color.accentBlue)
     }
 }
 
 extension WoteTabView {
-
     @ViewBuilder
     private func tabDestinationView(for tab: WoteTabType) -> some View {
         switch tab {
         case .consider:
-            ConsiderationView(selectedVisibilityScope: $selectedVisibilityScope,
-                              viewModel: ConsiderationViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
+            ConsiderationView(selectedVisibilityScope: $selectedVisibilityScope, viewModel: ConsiderationViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
+                .environmentObject(navigatePath)
         case .review:
             ReviewView()
+                .environmentObject(navigatePath)
         case .myPage:
             MyPageView()
+                .environmentObject(navigatePath)
         }
     }
 
@@ -187,7 +217,6 @@ extension WoteTabView {
                     .foregroundStyle(Color.woteWhite)
             }
         }
-
     }
 
     private var voteCategoryMenu: some View {

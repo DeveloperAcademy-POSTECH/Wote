@@ -51,11 +51,12 @@ class NewApiManager {
                 if let networkError = error as? ErrorResponse {
                     let errorType = NetworkError(divisionCode: networkError.divisionCode)
                     if errorType == .exipredJWT {
-                        self.authenticator.updateAuthState(.allexpired)
+                        self.authenticator.authState = .allexpired
                     }
-                    self.authenticator.updateAuthState(.unfinishRegister)
+                    self.authenticator.authState = .unfinishRegister
                     return errorType
                 } else {
+                    print(error)
                     return NetworkError(divisionCode: "unknown")
                 }
             }
