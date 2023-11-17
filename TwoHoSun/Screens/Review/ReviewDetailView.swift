@@ -94,10 +94,10 @@ extension ReviewDetailView {
                 // TODO: - postId 알맞게 변경
 //                DetailView(viewModel: DetailViewModel(apiManager: <#T##NewApiManager#>, postId: <#T##Int#>))
             } label: {
-                VoteCardCell(cellType: .simple,
-                             progressType: .end,
-                             voteResultType: .draw,
-                             post: MyPostModel(id: 1, createDate: "", modifiedDate: "", postStatus: "", voteResult: "", title: "", image: "", contents: "", price: 1000, hasReview: false))
+//                VoteCardCell(cellType: .simple,
+//                             progressType: .end,
+//                             voteResultType: .draw,
+//                             post: )
             }
         }
     }

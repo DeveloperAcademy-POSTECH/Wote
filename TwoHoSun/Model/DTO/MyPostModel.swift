@@ -7,16 +7,21 @@
 
 import Foundation
 
-struct MyPostModel: Codable, Identifiable {
+struct MyPostModel: Codable {
+    var total: Int
+    var posts: [MyPosts]
+}
+
+struct MyPosts: Codable, Identifiable {
     var id: Int
     var createDate: String
     var modifiedDate: String
     var postStatus: String
-    var voteResult: String
+    var voteResult: String?
     var title: String
-    var image: String
-    var contents: String
-    var price: Int
+    var image: String?
+    var contents: String?
+    var price: Int?
     var hasReview: Bool
     
     enum CodingKeys: String, CodingKey {

@@ -11,7 +11,7 @@ import SwiftUI
 @Observable
 final class MyPageViewModel {
     let apiManager: NewApiManager
-    var posts: [MyPostModel] = []
+    var posts: [MyPosts] = []
     var cacellabels: Set<AnyCancellable> = []
     var isLoading: Bool = false
     
@@ -31,8 +31,8 @@ final class MyPageViewModel {
                     print(error)
                 }
             } receiveValue: { data in
-                self.posts.append(data)
-                isLoading = false
+                self.posts.append(contentsOf: data.posts)
+                self.isLoading = false
             }
             .store(in: &cacellabels)
     }

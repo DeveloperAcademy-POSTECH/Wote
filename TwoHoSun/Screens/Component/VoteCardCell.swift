@@ -25,7 +25,7 @@ struct VoteCardCell: View {
     var cellType: VoteCardCellType
     var progressType: VoteProgressType
     var voteResultType: VoteResultType?
-    var post: MyPostModel
+    var post: MyPosts
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
@@ -58,14 +58,16 @@ struct VoteCardCell: View {
                             .foregroundStyle(.white)
                             .lineLimit(1)
                     }
-                    Text(post.contents)
+                    Text(post.contents ?? "")
                         .font(.system(size: 14, weight: .medium))
                         .foregroundStyle(.white)
                         .lineLimit(1)
                         .padding(.bottom, 9)
                     HStack(spacing: 0) {
-                        Text("가격: \(post.price)원")
-                        Text(" · ")
+                        if let price = post.price {
+                            Text("가격: \(price)원")
+                            Text(" · ")
+                        }
                         Text(post.createDate)
                     }
                     .font(.system(size: 14))

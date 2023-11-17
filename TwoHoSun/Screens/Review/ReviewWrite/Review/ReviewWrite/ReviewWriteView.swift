@@ -28,10 +28,10 @@ struct ReviewWriteView: View {
                 ScrollView {
                     VStack(spacing: 48) {
                         VStack(spacing: 12) {
-                            VoteCardCell(cellType: .simple,
-                                         progressType: .end,
-                                         voteResultType: .draw,
-                                         post: MyPostModel(id: 1, createDate: "", modifiedDate: "", postStatus: "", voteResult: "", title: "", image: "", contents: "", price: 1000, hasReview: false))
+//                            VoteCardCell(cellType: .simple,
+//                                         progressType: .end,
+//                                         voteResultType: .draw,
+//                                         post: )
                             buySelection
                         }
                         titleView
