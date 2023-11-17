@@ -8,10 +8,9 @@
 import SwiftUI
 
 struct TypeTestView: View {
-    @State private var isTypeTestResultViewShown = false
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: TypeTestViewModel
-    @State var userSpendType: ConsumerType?
+    @State var successSpendType = false
     @EnvironmentObject private var pathManger: NavigationManager
     var body: some View {
         ZStack {
@@ -47,9 +46,10 @@ struct TypeTestView: View {
                 backButton
             }
         }
-        .navigationDestination(isPresented: $isTypeTestResultViewShown) {
-            if let userSpendType = userSpendType {
-                TypeTestResultView(spendType: userSpendType)
+        .navigationDestination(isPresented:
+                                $viewModel.succeedPutData) {
+            if let userType = viewModel.userType {
+                TypeTestResultView(spendType: userType)
                     .environmentObject(pathManger)
             }
         }
@@ -138,9 +138,7 @@ extension TypeTestView {
                     viewModel.moveToNextQuestion()
                     return
                 }
-
-                isTypeTestResultViewShown = true
-                userSpendType = viewModel.setUserSpendType()
+                viewModel.putUserSpendType()
             }
         } label: {
             HStack {
@@ -177,12 +175,5 @@ struct ChoiceButtonStyle: ButtonStyle {
                 }
             )
             .clipShape(.rect(cornerRadius: 10))
-    }
-}
-
-#Preview {
-    NavigationStack {
-        TypeTestView(viewModel: TypeTestViewModel())
-            .toolbar(.visible, for: .navigationBar)
     }
 }

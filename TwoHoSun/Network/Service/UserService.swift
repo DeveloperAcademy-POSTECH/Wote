@@ -14,6 +14,7 @@ enum UserService {
     case checkNicknameValid(nickname: String)
     case postProfileSetting(profile: ProfileSetting)
     case refreshToken
+    case putConsumerType(consumertype: ConsumerType)
 }
 
 extension UserService: TargetType {
@@ -32,11 +33,18 @@ extension UserService: TargetType {
             return "/api/profiles"
         case .refreshToken:
             return "/api/auth/refresh"
+        case .putConsumerType:
+            return "/api/profiles/consumerType"
         }
     }
     
     var method: Moya.Method {
-        return .post
+        switch self {
+        case .putConsumerType:
+            return .put
+        default:
+            return .post
+        }
     }
 
     var parameters: [String: Any] {
@@ -51,6 +59,8 @@ extension UserService: TargetType {
         case .refreshToken:
             return ["refreshToken": KeychainManager.shared.readToken(key: "refreshToken")!,
                     "identifier": KeychainManager.shared.readToken(key: "identifier")!]
+        case .putConsumerType(let consumerType):
+            return ["consumerType": consumerType.rawValue]
         }
     }
 
@@ -88,6 +98,9 @@ extension UserService: TargetType {
                 print("error")
             }
             return .uploadMultipart(formData)
+        case .putConsumerType:
+            return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
+
         default:
             return .requestParameters(parameters: parameters,
                                       encoding: URLEncoding.default)
@@ -104,6 +117,8 @@ extension UserService: TargetType {
             APIConstants.headerMultiPartForm
         case .refreshToken:
             APIConstants.headerWithOutToken
+        case .putConsumerType:
+            APIConstants.headerWithAuthorization
         }
     }
 }

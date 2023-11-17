@@ -7,6 +7,11 @@
 
 import Foundation
 
+struct Users: Codable {
+    var consumerTypeExist: Bool?
+    var jwtToken : Tokens
+}
+
 struct Tokens: Codable {
     var accessToken: String
     var refreshToken: String
