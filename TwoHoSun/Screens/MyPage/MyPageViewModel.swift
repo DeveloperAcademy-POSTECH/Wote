@@ -13,7 +13,6 @@ final class MyPageViewModel {
     let apiManager: NewApiManager
     var posts: [SummaryPostModel] = []
     var cacellabels: Set<AnyCancellable> = []
-    var isFetchingPosts: Bool = false
     private var page: Int = 0
     private var isLastPage: Bool = false
     
@@ -22,7 +21,6 @@ final class MyPageViewModel {
     }
     
     func fetchPosts(myVoteCategoryType: String, isFirstFetch: Bool = true) {
-        isFetchingPosts = true
         if isFirstFetch {
             posts.removeAll()
             page = 0
@@ -43,7 +41,6 @@ final class MyPageViewModel {
                 if data.posts.isEmpty || self.posts.count % 10 != 0 {
                     self.isLastPage = true
                 }
-                self.isFetchingPosts = false
             }
             .store(in: &cacellabels)
     }

@@ -75,11 +75,7 @@ struct MyPageView: View {
                 ScrollViewReader { proxy in
                     LazyVStack(pinnedViews: .sectionHeaders) {
                         Section {
-                            if viewModel.isFetchingPosts {
-                                ProgressView()
-                            } else {
-                                myPageListTypeView
-                            }
+                            myPageListTypeView
                         } header: {
                             sectionHeaderView
                         }
@@ -241,7 +237,7 @@ extension MyPageView {
                         }
                     }
                     .onAppear {
-                        if index == viewModel.posts.count - 2 {
+                        if index == viewModel.posts.count - 5 {
                             viewModel.fetchMorePosts(selectedMyVoteCategoryType.parameter)
                         }
                     }
