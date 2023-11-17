@@ -55,11 +55,10 @@ struct MyPageView: View {
     @State private var selectedMyReviewCategoryType = MyReviewCategoryType.all
     @State private var isMyVoteCategoryButtonDidTap = false
     @State private var isMyReviewCategoryButtonDidTap = false
+    @State var viewModel: MyPageViewModel
     @Binding var selectedVisibilityScope: VisibilityScopeType
     @Environment(AppLoginState.self) private var loginState
-    
     var isTypeTestCompleted = false
-    let viewModel: MyPageViewModel
 
     var body: some View {
         ScrollView {
@@ -218,32 +217,27 @@ extension MyPageView {
     private var myPageListTypeView: some View {
         switch selectedMyPageListType {
         case .myVote:
-            if viewModel.posts.isEmpty {
-                NoVoteView(selectedVisibilityScope: $selectedVisibilityScope)
-                    .padding(.top, 52)
-            } else {
-                ForEach(Array(zip(viewModel.posts.indices, viewModel.posts)), id: \.0) { index, post in
-                    NavigationLink {
-                        Text("DetailView")
-                    } label: {
-                        VStack(spacing: 0) {
-                            VoteCardCell(cellType: .myVote,
-                                         progressType: .end,
-                                         voteResultType: .draw,
-                                         post: post)
-                            Divider()
-                                .background(Color.dividerGray)
-                                .padding(.horizontal, 8)
-                        }
-                    }
-                    .onAppear {
-                        if index == viewModel.posts.count - 5 {
-                            viewModel.fetchMorePosts(selectedMyVoteCategoryType.parameter)
-                        }
+            ForEach(Array(zip(viewModel.posts.indices, viewModel.posts)), id: \.0) { index, post in
+                NavigationLink {
+                    Text("DetailView")
+                } label: {
+                    VStack(spacing: 0) {
+                        VoteCardCell(cellType: .myVote,
+                                     progressType: .end,
+                                     voteResultType: .draw,
+                                     post: post)
+                        Divider()
+                            .background(Color.dividerGray)
+                            .padding(.horizontal, 8)
                     }
                 }
-                .padding(.horizontal, 8)
+                .onAppear {
+                    if index == viewModel.posts.count - 4 {
+                        viewModel.fetchMorePosts(selectedMyVoteCategoryType.parameter)
+                    }
+                }
             }
+            .padding(.horizontal, 8)
         case .myReview:
             ForEach(0..<30) { _ in
                 NavigationLink {

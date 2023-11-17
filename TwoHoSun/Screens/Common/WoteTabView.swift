@@ -112,7 +112,7 @@ extension WoteTabView {
         case .review:
             ReviewView()
         case .myPage:
-            MyPageView(selectedVisibilityScope: $selectedVisibilityScope, viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
+            MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager), selectedVisibilityScope: $selectedVisibilityScope)
         }
     }
 
