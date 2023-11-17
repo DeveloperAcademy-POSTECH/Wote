@@ -14,7 +14,7 @@ final class TypeTestViewModel: ObservableObject {
     @Published var succeedPutData = false
     @Published var userType: ConsumerType?
     private var apiManager: NewApiManager
-    @AppStorage("myConsumerType") var myConsumerType: ConsumerType?
+    @AppStorage("haveConsumerType") var haveConsumerType: Bool = false
 
     init(apiManager: NewApiManager) {
         self.apiManager = apiManager
@@ -58,7 +58,7 @@ final class TypeTestViewModel: ObservableObject {
             .sink { completion in
                 print(completion)
             } receiveValue: { response in
-                self.myConsumerType = userType
+                self.haveConsumerType = true
                 self.succeedPutData.toggle()
                 cancellable?.cancel()
             }

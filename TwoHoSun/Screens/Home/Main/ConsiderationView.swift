@@ -14,7 +14,8 @@ struct ConsiderationView: View {
     @EnvironmentObject private var pathManger: NavigationManager
     @State private var isRefreshing = false
     @StateObject var viewModel: ConsiderationViewModel
-    @AppStorage("myConsumerType") var myConsumerType: ConsumerType?
+    @AppStorage("haveConsumerType") var haveConsumerType: Bool = false
+
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             Color.background
@@ -38,10 +39,10 @@ struct ConsiderationView: View {
             currentVote = 0
             viewModel.fetchPosts(visibilityScope: newScope.type)
         }
-                    .onDisappear {
-                        viewModel.fetchPosts(visibilityScope: selectedVisibilityScope.type)
-                        currentVote = 0
-                    }
+        .onDisappear {
+            viewModel.fetchPosts(visibilityScope: selectedVisibilityScope.type)
+            currentVote = 0
+        }
     }
 }
 extension ConsiderationView {
@@ -92,11 +93,7 @@ extension ConsiderationView {
 
     private var createVoteButton: some View {
         Button {
-            if let myConsumerType {
-                pathManger.navigate(.makeVoteView)
-            } else {
-                pathManger.navigate(.testIntroView)
-            }
+            pathManger.navigate(haveConsumerType ? .makeVoteView : .testIntroView)
         } label: {
             HStack(spacing: 2) {
                 Image(systemName: "plus")

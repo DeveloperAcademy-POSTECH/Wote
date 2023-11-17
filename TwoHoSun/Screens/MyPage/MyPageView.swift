@@ -35,15 +35,12 @@ enum MyReviewCategoryType: String, CaseIterable, Hashable {
 }
 
 struct MyPageView: View {
-    private var isTypeTestCompleted: Bool {
-        return (UserDefaults.standard.value(forKey: "myConsumerType") != nil)
-    }
     @State private var selectedMyPageListType = MyPageListType.myVote
     @State private var selectedMyVoteCategoryType = MyVoteCategoryType.all
     @State private var selectedMyReviewCategoryType = MyReviewCategoryType.all
     @State private var isMyVoteCategoryButtonDidTap = false
     @State private var isMyReviewCategoryButtonDidTap = false
-
+    @AppStorage("haveConsumerType") var haveConsumerType: Bool = false
     @Environment(AppLoginState.self) private var loginState
     @EnvironmentObject private var pathManger: NavigationManager
 
@@ -52,8 +49,8 @@ struct MyPageView: View {
             VStack(spacing: 0) {
                 profileHeaderView
                     .padding(.top, 24)
-                    .padding(.bottom, isTypeTestCompleted ? 24 : 0)
-                if !isTypeTestCompleted {
+                    .padding(.bottom, haveConsumerType ? 24 : 0)
+                if !haveConsumerType {
                     GoToTypeTestButton()
                         .padding(.horizontal, 24)
                         .padding(.top, 24)

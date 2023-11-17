@@ -25,12 +25,12 @@ class NewApiManager {
             .eraseToAnyPublisher()
     }
 
-    func requestLogin(authorization: String) -> AnyPublisher<GeneralResponse<Tokens>, NetworkError> {
+    func requestLogin(authorization: String) -> AnyPublisher<GeneralResponse<Users>, NetworkError> {
         return provider
             .requestPublisher(.userService(
                 .postAuthorCode(authorization: authorization)))
             .tryMap { response in
-                try self.handleResponse(response, Tokens.self)
+                try self.handleResponse(response, Users.self)
             }
             .mapError { error in
                 if let networkError = error as? ErrorResponse {
@@ -42,7 +42,7 @@ class NewApiManager {
     }
 
     private func performRequest<T: Decodable>(_ request: CommonAPIService, decodingType: T.Type) -> AnyPublisher<GeneralResponse<T>, NetworkError> {
-        return provider
+            return provider
             .requestPublisher(request)
             .tryMap { response in
                 try self.handleResponse(response, decodingType)
