@@ -9,7 +9,7 @@ import SwiftUI
 
 final class CommentsViewModel: ObservableObject {
     @Published var commentsDatas = [CommentsModel]()
-    @Published var content: String = ""
+//    @Published var content: String = ""
     private var apiManager: NewApiManager
     private var postId: Int
 
@@ -27,8 +27,14 @@ final class CommentsViewModel: ObservableObject {
             }
     }
 
-//    func postComment() {
-//        apiManager.request(.commentService(.postComments(postComment: <#T##CommentPostModel#>)), decodingType: <#T##Decodable.Protocol#>)
-//    }
+    func postComment(content: String) {
+        apiManager.request(.commentService(.postComment(postId: postId, contents: content)), decodingType: NoData.self)
+            .sink { completion in
+                print(completion)
+            } receiveValue: { response in
+                print(response)
+            }
+
+    }
 
 }

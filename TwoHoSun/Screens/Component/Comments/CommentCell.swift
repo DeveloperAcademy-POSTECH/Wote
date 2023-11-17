@@ -38,9 +38,9 @@ struct CommentCell: View {
     @State private var isExpended = false
     var onConfirmDiaog: () -> Void
 //    @State private var showConfirm = false
-    var hasChildComments: Bool {
-        return !comment.childComments!.isEmpty
-    }
+//    var hasChildComments: Bool {
+//        return !comment.childComments!.isEmpty
+//    }
 
     //    var lastEdit: (String , Int) {
     //        return comment.modifiedDate.toDate()!.differenceCurrentTime()
@@ -59,7 +59,7 @@ struct CommentCell: View {
                     Text(comment.author.nickname)
                         .font(.system(size: 14, weight: .medium))
                         .foregroundStyle(Color.white)
-                    //                    Text("\(comment.modifiedDate)")
+                    Text("\(comment.modifiedDate)")
                     Text("1시간전")
                         .font(.system(size: 12))
                         .foregroundStyle(Color.subGray1)
@@ -74,7 +74,7 @@ struct CommentCell: View {
                 .padding(.bottom, 6)
                 HStack {
 //                    ExpandableTextView(comment.content, lineLimit: 3)
-                    Text("\(comment.content)")
+                    Text("\(comment.contents)")
                         .foregroundStyle(Color.white)
                         .font(.system(size: 14))
                         .lineLimit(isExpended ? nil : 3)

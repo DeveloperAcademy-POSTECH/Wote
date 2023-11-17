@@ -94,6 +94,7 @@ struct WoteTabView: View {
                 switch destination {
                 case .detailView(let postId):
                     DetailView(viewModel: DetailViewModel(apiManager: loginStateManager.serviceRoot.apimanager), postId: postId)
+                        .environmentObject(navigatePath)
                 case .makeVoteView:
                     VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: selectedVisibilityScope, 
                                                                 apiManager: loginStateManager.serviceRoot.apimanager), tabselection: $selection )

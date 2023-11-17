@@ -14,6 +14,7 @@ struct DetailView: View {
     @State private var backgroundColor: Color = .background
     @State private var showCustomAlert = false
     @State private var applyComplaint = false
+    @Environment(AppLoginState.self) private var loginStateManager
     var viewModel: DetailViewModel
     var postId: Int
     var isMine = false
@@ -150,7 +151,8 @@ struct DetailView: View {
         .toolbarBackground(Color.background, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .sheet(isPresented: $showDetailComments) {
-                CommentsView(showComplaint: $showCustomAlert, applyComplaint: $applyComplaint)
+            CommentsView(showComplaint: $showCustomAlert, applyComplaint: $applyComplaint,
+                         viewModel: CommentsViewModel(apiManager: loginStateManager.serviceRoot.apimanager, postId: postId))
                     .presentationDetents([.large,.fraction(0.9)])
                     .presentationContentInteraction(.scrolls)
         }

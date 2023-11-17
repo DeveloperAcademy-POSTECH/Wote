@@ -11,7 +11,7 @@ import Kingfisher
 
 struct VoteContentCell: View {
     @State var postData: PostModel
-    @Environment(AppLoginState.self) private var loginState
+    @Environment(AppLoginState.self) private var loginStateManager
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -116,7 +116,7 @@ extension VoteContentCell {
         NavigationLink {
 //            DetailView(viewModel: DetailViewModel(apiManager: loginState.serviceRoot.apimanager),
 //                       postId: postData.id))
-            DetailView(viewModel: DetailViewModel(apiManager: loginState.serviceRoot.apimanager),
+            DetailView(viewModel: DetailViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
                        postId: postData.id)
         } label: {
             Text("상세보기")

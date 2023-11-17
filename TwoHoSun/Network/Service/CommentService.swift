@@ -11,7 +11,7 @@ import Moya
 
 enum CommentService {
     case getComments(postId: Int)
-    case postComments(postComment: CommentPostModel)
+    case postComment(postId: Int, contents: String)
     case deleteComments(postId: Int, commentId: Int)
 }
 
@@ -23,12 +23,10 @@ extension CommentService: TargetType {
     
     var path: String {
         switch self {
-        case .getComments:
-            return "/api/comments"
-        case .postComments(let postComment):
-            return "/api/posts/\(postComment.postId)/comments"
         case .deleteComments(let postId, let commentId):
             return "/api/posts/\(postId)/comments/\(commentId)"
+        default:
+            return ""
         }
     }
     
@@ -36,6 +34,11 @@ extension CommentService: TargetType {
         switch self {
         case .getComments(let postId):
             return ["postId": postId]
+        case .postComment(let postId, let contents):
+            return [
+                "postId": postId,
+                "contents": contents
+            ]
         default:
             return [:]
         }
@@ -44,7 +47,7 @@ extension CommentService: TargetType {
         switch self {
         case .getComments:
             return .get
-        case .postComments:
+        case .postComment:
             return .post
         case .deleteComments:
             return .delete
@@ -56,10 +59,11 @@ extension CommentService: TargetType {
         switch self {
         case .getComments:
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
+        case .postComment:
+            return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         default:
             return .requestPlain
         }
-
     }
     
     var headers: [String : String]? {

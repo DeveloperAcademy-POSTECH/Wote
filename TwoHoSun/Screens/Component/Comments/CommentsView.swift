@@ -17,6 +17,7 @@ struct CommentsView: View {
     @Binding var showComplaint : Bool
     @Binding var applyComplaint: Bool
     let commentsModel: [CommentsModel] = []
+    @ObservedObject var viewModel: CommentsViewModel
 //    let commentsModel: [CommentsModel] = [CommentsModel(commentId: 1,
 //                                                        createDate: "2023-11-04T17:43:48.467Z",
 //                                                        modifiedDate: "2023-11-04T17:43:48.467Z",
@@ -181,9 +182,13 @@ extension CommentsView {
             .cornerRadius(12)
             .animation(.easeInOut(duration: 0.3), value: commentText)
             if isFocus {
-                Image(systemName: "paperplane")
-                    .foregroundStyle(commentText.isEmpty ?  Color.subGray1 : Color.white)
-                    .font(.system(size: 20))
+                Button(action: {
+
+                }, label: {
+                    Image(systemName: "paperplane")
+                        .foregroundStyle(commentText.isEmpty ?  Color.subGray1 : Color.white)
+                        .font(.system(size: 20))
+                })
             }
         }
         .frame(maxWidth: .infinity)
