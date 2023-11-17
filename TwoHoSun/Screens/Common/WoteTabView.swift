@@ -44,35 +44,13 @@ enum WoteTabType: Int, CaseIterable {
     }
 }
 
-enum VisibilityScopeType: Codable {
-    case global, school
-
-    var title: String {
-        switch self {
-        case .global:
-            return "전국 투표"
-        case .school:
-            return "OO고등학교 투표"
-        }
-    }
-
-    var type: String {
-        switch self {
-        case .global:
-            return "GLOBAL"
-        case .school:
-            return "SCHOOL"
-        }
-    }
-}
-
 struct WoteTabView: View {
     @State private var selection = WoteTabType.consider
     @State private var selectedVisibilityScope = VisibilityScopeType.global
     @State private var isVoteCategoryButtonDidTap = false
     @Environment(AppLoginState.self) private var loginStateManager
     @Binding var path: [Route]
-    
+
     var body: some View {
             ZStack(alignment: .topLeading) {
                 VStack(spacing: 0) {
@@ -129,7 +107,8 @@ extension WoteTabView {
     private func tabDestinationView(for tab: WoteTabType) -> some View {
         switch tab {
         case .consider:
-            ConsiderationView(viewModel: ConsiderationViewModel(apiManager: loginStateManager.serviceRoot.apimanager), selectedVisibilityScope: $selectedVisibilityScope)
+            ConsiderationView(selectedVisibilityScope: $selectedVisibilityScope,
+                              viewModel: ConsiderationViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
         case .review:
             ReviewView()
         case .myPage:

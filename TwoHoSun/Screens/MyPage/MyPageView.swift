@@ -101,7 +101,7 @@ extension MyPageView {
                         Text("김보람")
                             .font(.system(size: 20, weight: .medium))
                             .padding(.trailing, 12)
-                        SpendTypeLabel(spendType: .flexer, usage: .standard)
+                        ConsumerTypeLabel(consumerType: .flexer, usage: .standard)
                         Spacer()
                         Image(systemName: "chevron.right")
                             .font(.system(size: 14))
@@ -201,7 +201,8 @@ extension MyPageView {
         case .myVote:
             ForEach(0..<50) { _ in
                 NavigationLink {
-                    DetailView(isDone: false)
+                    // TODO: - postId 알맞게 변경
+//                    DetailView(postId: 0)
                 } label: {
                     VStack(spacing: 0) {
                         VoteCardCell(cellType: .myVote,

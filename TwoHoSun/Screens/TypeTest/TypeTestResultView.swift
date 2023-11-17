@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TypeTestResultView: View {
-    var spendType: SpendTitleType
+    var spendType: ConsumerType
 
     var body: some View {
         ZStack {
@@ -97,5 +97,5 @@ extension TypeTestResultView {
 }
 
 #Preview {
-    TypeTestResultView(spendType: .safetyShopper)
+    TypeTestResultView(spendType: .riskAverse)
 }

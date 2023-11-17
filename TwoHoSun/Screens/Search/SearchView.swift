@@ -208,9 +208,10 @@ extension SearchView {
                 switch selectedFilterType {
                 case .progressing:
                     ForEach(0..<5) { _ in
-                        listCell(cellType: VoteCardCell(cellType: .standard,
-                                                        progressType: .progressing),
-                                 destination: DetailView(isDone: false))
+//                        listCell(cellType: VoteCardCell(cellType: .standard,
+//                                                        progressType: .end,
+//                                                        voteResultType: .draw),
+//                                 destination: DetailView(viewModel: DetailViewModel(apiManager: <#T##NewApiManager#>, postId: <#T##Int#>)))
                     }
                     .listRowBackground(Color.clear)
                     .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
@@ -218,10 +219,10 @@ extension SearchView {
                     .id("searchResult")
                 case .end:
                     ForEach(0..<5) { _ in
-                        listCell(cellType: VoteCardCell(cellType: .standard,
-                                                        progressType: .end,
-                                                        voteResultType: .draw),
-                                 destination: DetailView(isDone: false))
+//                        listCell(cellType: VoteCardCell(cellType: .standard,
+//                                                        progressType: .end,
+//                                                        voteResultType: .draw),
+//                                 destination: DetailView(viewModel: DetailViewModel(apiManager: <#T##NewApiManager#>, postId: <#T##Int#>)))
                     }
                     .listRowBackground(Color.clear)
                     .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))

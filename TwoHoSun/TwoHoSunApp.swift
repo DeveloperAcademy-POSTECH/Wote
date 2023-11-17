@@ -30,6 +30,7 @@ struct TwoHoSunApp: App {
                     WoteTabView(path: .constant([]))
                         .environment(appState)
                 }
+                .tint(Color.accentBlue)
             }
         }
     }
