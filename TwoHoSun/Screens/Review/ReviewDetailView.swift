@@ -94,7 +94,8 @@ extension ReviewDetailView {
             } label: {
                 VoteCardCell(cellType: .simple,
                              progressType: .end,
-                             voteResultType: .draw)
+                             voteResultType: .draw,
+                             post: MyPostModel(id: 1, createDate: "", modifiedDate: "", postStatus: "", voteResult: "", title: "", image: "", contents: "", price: 1000, hasReview: false))
             }
         }
     }

@@ -209,7 +209,8 @@ extension SearchView {
                 case .progressing:
                     ForEach(0..<5) { _ in
                         listCell(cellType: VoteCardCell(cellType: .standard,
-                                                        progressType: .progressing),
+                                                        progressType: .progressing,
+                                                        post: MyPostModel(id: 1, createDate: "", modifiedDate: "", postStatus: "", voteResult: "", title: "", image: "", contents: "", price: 1000, hasReview: false)),
                                  destination: DetailView(isDone: false))
                     }
                     .listRowBackground(Color.clear)
@@ -220,7 +221,8 @@ extension SearchView {
                     ForEach(0..<5) { _ in
                         listCell(cellType: VoteCardCell(cellType: .standard,
                                                         progressType: .end,
-                                                        voteResultType: .draw),
+                                                        voteResultType: .draw,
+                                                        post: MyPostModel(id: 1, createDate: "", modifiedDate: "", postStatus: "", voteResult: "", title: "", image: "", contents: "", price: 1000, hasReview: false)),
                                  destination: DetailView(isDone: false))
                     }
                     .listRowBackground(Color.clear)

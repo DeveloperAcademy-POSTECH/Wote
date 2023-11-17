@@ -196,14 +196,15 @@ extension MyPageView {
     private var myPageListTypeView: some View {
         switch selectedMyPageListType {
         case .myVote:
-            ForEach(0..<50) { _ in
+            ForEach(viewModel.posts) { post in
                 NavigationLink {
-                    DetailView(isDone: false)
+                    Text("DetailView")
                 } label: {
                     VStack(spacing: 0) {
                         VoteCardCell(cellType: .myVote,
                                      progressType: .end,
-                                     voteResultType: .draw)
+                                     voteResultType: .draw,
+                                     post: post)
                         Divider()
                             .background(Color.dividerGray)
                             .padding(.horizontal, 8)

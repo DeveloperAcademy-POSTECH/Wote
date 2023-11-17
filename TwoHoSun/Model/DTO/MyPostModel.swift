@@ -7,10 +7,10 @@
 
 import Foundation
 
-struct MyPostModel: Codable {
+struct MyPostModel: Codable, Identifiable {
+    var id: Int
     var createDate: String
     var modifiedDate: String
-    var postId: Int
     var postStatus: String
     var voteResult: String
     var title: String
@@ -18,4 +18,9 @@ struct MyPostModel: Codable {
     var contents: String
     var price: Int
     var hasReview: Bool
+    
+    enum CodingKeys: String, CodingKey {
+        case id = "postId"
+        case createDate, modifiedDate, postStatus, voteResult, title, image, contents, price, hasReview
+    }
 }
