@@ -35,7 +35,9 @@ enum MyReviewCategoryType: String, CaseIterable, Hashable {
 }
 
 struct MyPageView: View {
-    private var isTypeTestCompleted = false
+    private var isTypeTestCompleted: Bool {
+        return (UserDefaults.standard.value(forKey: "myConsumerType") != nil)
+    }
     @State private var selectedMyPageListType = MyPageListType.myVote
     @State private var selectedMyVoteCategoryType = MyVoteCategoryType.all
     @State private var selectedMyReviewCategoryType = MyReviewCategoryType.all
