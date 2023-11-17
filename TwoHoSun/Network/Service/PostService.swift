@@ -24,6 +24,7 @@ enum PostService {
     case getReviews
     case getSearchResult
     case getMyPosts(page: Int, size: Int, myVoteCategoryType: String)
+    case getMyReviews(page: Int, size: Int, myReviewCategoryType: String)
 }
 
 extension PostService: TargetType {
@@ -42,6 +43,8 @@ extension PostService: TargetType {
             return "/posts"
         case .getMyPosts:
             return "mypage/posts"
+        case .getMyReviews:
+            return "mypage/reviews"
         default:
             return ""
         }
@@ -57,6 +60,10 @@ extension PostService: TargetType {
             return ["page": page,
                     "size": size,
                     "myVoteCategoryType": myVoteCategoryType]
+        case .getMyReviews(let page, let size, let myReviewCategoryType):
+            return ["page": page,
+                    "size": size,
+                    "myReviewCategoryType": myReviewCategoryType]
         default:
             return [:]
         }
@@ -71,6 +78,8 @@ extension PostService: TargetType {
         case .getMyPosts:
             return .get
         case .getPostDetail:
+            return .get
+        case .getMyReviews:
             return .get
         default:
             return .get
@@ -109,6 +118,8 @@ extension PostService: TargetType {
                                       encoding: URLEncoding.queryString)
         case .getMyPosts:
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
+        case .getMyReviews:
+            return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         default:
             return .requestPlain
         }
@@ -119,6 +130,8 @@ extension PostService: TargetType {
         case .createPost:
             APIConstants.headerMultiPartForm
         case .getMyPosts:
+            APIConstants.headerWithAuthorization
+        case .getMyReviews:
             APIConstants.headerWithAuthorization
         default:
             APIConstants.headerWithAuthorization
