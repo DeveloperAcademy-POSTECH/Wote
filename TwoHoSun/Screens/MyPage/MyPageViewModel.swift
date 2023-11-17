@@ -13,15 +13,23 @@ final class MyPageViewModel {
     let apiManager: NewApiManager
     var posts: [SummaryPostModel] = []
     var cacellabels: Set<AnyCancellable> = []
-    var isLoading: Bool = false
+    var isFetchingPosts: Bool = false
+    private var page: Int = 0
+    private var isLastPage: Bool = false
     
     init(apiManager: NewApiManager) {
         self.apiManager = apiManager
     }
     
-    func fetchPosts(myVoteCategoryType: String) {
-        isLoading = true
-        apiManager.request(.postService(.getMyPosts(page: 0, size: 10, myVoteCategoryType: myVoteCategoryType)), decodingType: MyPostModel.self)
+    func fetchPosts(myVoteCategoryType: String, isFirstFetch: Bool = true) {
+        isFetchingPosts = true
+        if isFirstFetch {
+            posts.removeAll()
+            page = 0
+            isLastPage = false
+        }
+        
+        apiManager.request(.postService(.getMyPosts(page: page, size: 10, myVoteCategoryType: myVoteCategoryType)), decodingType: MyPostModel.self)
             .compactMap(\.data)
             .sink { completion in
                 switch completion {
@@ -32,8 +40,17 @@ final class MyPageViewModel {
                 }
             } receiveValue: { data in
                 self.posts.append(contentsOf: data.posts)
-                self.isLoading = false
+                if data.posts.isEmpty || self.posts.count % 10 != 0 {
+                    self.isLastPage = true
+                }
+                self.isFetchingPosts = false
             }
             .store(in: &cacellabels)
+    }
+    
+    func fetchMorePosts(_ myVoteCategoryType: String) {
+        guard !isLastPage else { return }
+        page += 1
+        fetchPosts(myVoteCategoryType: myVoteCategoryType, isFirstFetch: false)
     }
 }

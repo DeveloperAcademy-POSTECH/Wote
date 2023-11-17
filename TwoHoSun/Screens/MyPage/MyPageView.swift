@@ -55,6 +55,7 @@ struct MyPageView: View {
     @State private var selectedMyReviewCategoryType = MyReviewCategoryType.all
     @State private var isMyVoteCategoryButtonDidTap = false
     @State private var isMyReviewCategoryButtonDidTap = false
+    @Binding var selectedVisibilityScope: VisibilityScopeType
     @Environment(AppLoginState.self) private var loginState
     
     var isTypeTestCompleted = false
@@ -74,7 +75,7 @@ struct MyPageView: View {
                 ScrollViewReader { proxy in
                     LazyVStack(pinnedViews: .sectionHeaders) {
                         Section {
-                            if viewModel.isLoading {
+                            if viewModel.isFetchingPosts {
                                 ProgressView()
                             } else {
                                 myPageListTypeView
@@ -82,10 +83,10 @@ struct MyPageView: View {
                         } header: {
                             sectionHeaderView
                         }
-                        .onAppear {
-                            viewModel.fetchPosts(myVoteCategoryType: selectedMyVoteCategoryType.parameter)
-                        }
                         .id("myPageList")
+                    }
+                    .onAppear {
+                        viewModel.fetchPosts(myVoteCategoryType: selectedMyVoteCategoryType.parameter)
                     }
                     .onChange(of: selectedMyPageListType) { _, _ in
                         isMyVoteCategoryButtonDidTap = false
@@ -100,6 +101,9 @@ struct MyPageView: View {
         .background(Color.background)
         .onTapGesture {
             isMyVoteCategoryButtonDidTap = false
+        }
+        .onChange(of: selectedMyVoteCategoryType) { _, newValue in
+            viewModel.fetchPosts(myVoteCategoryType: newValue.parameter)
         }
     }
 }
@@ -218,24 +222,27 @@ extension MyPageView {
     private var myPageListTypeView: some View {
         switch selectedMyPageListType {
         case .myVote:
-            ForEach(viewModel.posts) { post in
-                NavigationLink {
-                    Text("DetailView")
-                } label: {
-                    VStack(spacing: 0) {
-                        VoteCardCell(cellType: .myVote,
-                                     progressType: .end,
-                                     voteResultType: .draw,
-                                     post: post)
-                        Divider()
-                            .background(Color.dividerGray)
-                            .padding(.horizontal, 8)
+            if viewModel.posts.isEmpty {
+                NoVoteView(selectedVisibilityScope: $selectedVisibilityScope)
+                    .padding(.top, 52)
+            } else {
+                ForEach(viewModel.posts) { post in
+                    NavigationLink {
+                        Text("DetailView")
+                    } label: {
+                        VStack(spacing: 0) {
+                            VoteCardCell(cellType: .myVote,
+                                         progressType: .end,
+                                         voteResultType: .draw,
+                                         post: post)
+                            Divider()
+                                .background(Color.dividerGray)
+                                .padding(.horizontal, 8)
+                        }
                     }
                 }
+                .padding(.horizontal, 8)
             }
-            .padding(.horizontal, 8)
-//            NoVoteView()
-//                .padding(.top, 52)
         case .myReview:
             ForEach(0..<30) { _ in
                 NavigationLink {
