@@ -151,7 +151,7 @@ extension MyPageView {
                 .padding(.bottom, 9)
                 .padding(.horizontal, 24)
                 HStack {
-                    Text("0건")
+                    Text("\(viewModel.posts.count)건")
                         .font(.system(size: 14))
                         .foregroundStyle(.white)
                     Spacer()
@@ -226,7 +226,7 @@ extension MyPageView {
                 NoVoteView(selectedVisibilityScope: $selectedVisibilityScope)
                     .padding(.top, 52)
             } else {
-                ForEach(viewModel.posts) { post in
+                ForEach(Array(zip(viewModel.posts.indices, viewModel.posts)), id: \.0) { index, post in
                     NavigationLink {
                         Text("DetailView")
                     } label: {
@@ -238,6 +238,11 @@ extension MyPageView {
                             Divider()
                                 .background(Color.dividerGray)
                                 .padding(.horizontal, 8)
+                        }
+                    }
+                    .onAppear {
+                        if index == viewModel.posts.count - 2 {
+                            viewModel.fetchMorePosts(selectedMyVoteCategoryType.parameter)
                         }
                     }
                 }
