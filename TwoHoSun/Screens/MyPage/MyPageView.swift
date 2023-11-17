@@ -41,12 +41,9 @@ struct MyPageView: View {
     @State private var selectedMyReviewCategoryType = MyReviewCategoryType.all
     @State private var isMyVoteCategoryButtonDidTap = false
     @State private var isMyReviewCategoryButtonDidTap = false
-//    var apiManager: NewApiManager?
-//
-//    init(manager: NewApiManager) {
-//        self.apiManager = manager
-//    }
+
     @Environment(AppLoginState.self) private var loginState
+    @EnvironmentObject private var pathManger: NavigationManager
 
     var body: some View {
         ScrollView {
@@ -90,7 +87,7 @@ extension MyPageView {
     private var profileHeaderView: some View {
         NavigationLink {
             ProfileSettingsView(viewType: .modfiy,
-                                viewModel: ProfileSettingViewModel(apiManager: loginState.serviceRoot.apimanager, path: .constant([])))
+                                viewModel: ProfileSettingViewModel(appState: loginState))
         } label: {
             HStack {
                 Circle()

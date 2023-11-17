@@ -11,7 +11,6 @@ struct SchoolSearchView: View {
     @State private var searchWord = ""
     @Binding var selectedSchoolInfo: SchoolInfoModel?
     @Environment(\.dismiss) var dismiss
-
     @State private var textFieldState = SearchTextFieldState.inactive
     @StateObject private var viewModel = SchoolSearchViewModel()
     @FocusState private var isFocused: Bool
@@ -167,8 +166,7 @@ extension SchoolSearchView {
                 let schoolModel = school.school
                 selectedSchoolInfo = SchoolInfoModel(school: SchoolModel(schoolName: schoolModel.schoolName,
                                                                          schoolRegion: regionMapping[schoolModel.schoolRegion] 
-                                                                         ?? schoolModel.schoolRegion,
-                                                                         schoolType: schoolModel.schoolType),
+                                                                         ?? schoolModel.schoolRegion),
                                                      schoolAddress: school.schoolAddress)
                 dismiss()
             }
@@ -198,12 +196,12 @@ extension SchoolSearchView {
     }
 }
 
-#Preview {
-    NavigationView {
-        SchoolSearchView(selectedSchoolInfo:
-                .constant(SchoolInfoModel(school: SchoolModel(schoolName: "예문여고",
-                                                              schoolRegion: "부산",
-                                                              schoolType: SchoolDataType.highSchool.schoolType),
-                                          schoolAddress: "부산시 수영구")))
-    }
-}
+//#Preview {
+//    NavigationView {
+//        SchoolSearchView(selectedSchoolInfo:
+//                .constant(SchoolInfoModel(school: SchoolModel(schoolName: "예문여고",
+//                                                              schoolRegion: "부산",
+//                                                              schoolType: SchoolDataType.highSchool.schoolType),
+//                                          schoolAddress: "부산시 수영구")))
+//    }
+//}

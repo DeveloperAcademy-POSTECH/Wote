@@ -10,9 +10,9 @@ import SwiftUI
 struct TypeTestView: View {
     @State private var isTypeTestResultViewShown = false
     @Environment(\.dismiss) private var dismiss
-    @Bindable var viewModel: TypeTestViewModel
+    @StateObject var viewModel: TypeTestViewModel
     @State var userSpendType: ConsumerType?
-
+    @EnvironmentObject private var pathManger: NavigationManager
     var body: some View {
         ZStack {
             Color.background
@@ -50,6 +50,7 @@ struct TypeTestView: View {
         .navigationDestination(isPresented: $isTypeTestResultViewShown) {
             if let userSpendType = userSpendType {
                 TypeTestResultView(spendType: userSpendType)
+                    .environmentObject(pathManger)
             }
         }
     }
