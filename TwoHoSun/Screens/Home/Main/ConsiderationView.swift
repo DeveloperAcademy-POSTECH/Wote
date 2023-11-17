@@ -14,7 +14,7 @@ struct ConsiderationView: View {
     @EnvironmentObject private var pathManger: NavigationManager
     @State private var isRefreshing = false
     @StateObject var viewModel: ConsiderationViewModel
-
+    @AppStorage("myConsumerType") var myConsumerType: ConsumerType?
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             Color.background
@@ -92,8 +92,11 @@ extension ConsiderationView {
 
     private var createVoteButton: some View {
         Button {
-            pathManger.navigate(.makeVoteView)
-
+            if let myConsumerType {
+                pathManger.navigate(.makeVoteView)
+            } else {
+                pathManger.navigate(.testIntroView)
+            }
         } label: {
             HStack(spacing: 2) {
                 Image(systemName: "plus")

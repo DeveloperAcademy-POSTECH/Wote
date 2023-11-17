@@ -5,7 +5,7 @@
 //  Created by 김민 on 11/9/23.
 //
 import Combine
-import Foundation
+import SwiftUI
 
 final class TypeTestViewModel: ObservableObject {
     @Published var testChoices = [-1, -1, -1, -1, -1, -1, -1]
@@ -14,6 +14,7 @@ final class TypeTestViewModel: ObservableObject {
     @Published var succeedPutData = false
     @Published var userType: ConsumerType?
     private var apiManager: NewApiManager
+    @AppStorage("myConsumerType") var myConsumerType: ConsumerType?
 
     init(apiManager: NewApiManager) {
         self.apiManager = apiManager
@@ -57,6 +58,7 @@ final class TypeTestViewModel: ObservableObject {
             .sink { completion in
                 print(completion)
             } receiveValue: { response in
+                self.myConsumerType = userType
                 self.succeedPutData.toggle()
                 cancellable?.cancel()
             }
