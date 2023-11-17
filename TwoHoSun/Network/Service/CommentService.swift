@@ -23,8 +23,8 @@ extension CommentService: TargetType {
     
     var path: String {
         switch self {
-        case .getComments(let postId):
-            return "/api/posts/\(postId)/comments"
+        case .getComments:
+            return "/api/comments"
         case .postComments(let postComment):
             return "/api/posts/\(postComment.postId)/comments"
         case .deleteComments(let postId, let commentId):
@@ -32,6 +32,14 @@ extension CommentService: TargetType {
         }
     }
     
+    var parameters: [String: Any] {
+        switch self {
+        case .getComments(let postId):
+            return ["postId": postId]
+        default:
+            return [:]
+        }
+    }
     var method: Moya.Method {
         switch self {
         case .getComments:
@@ -45,7 +53,13 @@ extension CommentService: TargetType {
     
     // TODO: - 변경 필요
     var task: Moya.Task {
-        return .requestPlain
+        switch self {
+        case .getComments:
+            return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
+        default:
+            return .requestPlain
+        }
+
     }
     
     var headers: [String : String]? {

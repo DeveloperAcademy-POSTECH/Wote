@@ -61,6 +61,7 @@
 		ABDED8852B00B17F00D78BEA /* VoteWriteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBBC6772AE471B700B1E614 /* VoteWriteViewModel.swift */; };
 		ABE51ED12B054ED5009C6CA5 /* DetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABE51ED02B054ED5009C6CA5 /* DetailHeaderView.swift */; };
 		ABFE077C2AF37C98006CA743 /* VoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFE077B2AF37C98006CA743 /* VoteView.swift */; };
+		C721D5BB2B07CA8D00564EE0 /* CommentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C721D5BA2B07CA8D00564EE0 /* CommentsViewModel.swift */; };
 		C73F8E812AE54B24001C6B07 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73F8E802AE54B24001C6B07 /* DetailViewModel.swift */; };
 		C73F8E832AE54DD8001C6B07 /* CommentsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73F8E822AE54DD8001C6B07 /* CommentsModel.swift */; };
 		C73F8E882AE55101001C6B07 /* Author.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73F8E872AE55101001C6B07 /* Author.swift */; };
@@ -173,6 +174,7 @@
 		ABBFB6312AE3EABD006CE8CA /* VoteCreateRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteCreateRequestModel.swift; sourceTree = "<group>"; };
 		ABE51ED02B054ED5009C6CA5 /* DetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHeaderView.swift; sourceTree = "<group>"; };
 		ABFE077B2AF37C98006CA743 /* VoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteView.swift; sourceTree = "<group>"; };
+		C721D5BA2B07CA8D00564EE0 /* CommentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewModel.swift; sourceTree = "<group>"; };
 		C73F8E802AE54B24001C6B07 /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
 		C73F8E822AE54DD8001C6B07 /* CommentsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsModel.swift; sourceTree = "<group>"; };
 		C73F8E872AE55101001C6B07 /* Author.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Author.swift; sourceTree = "<group>"; };
@@ -396,6 +398,17 @@
 			path = Notification;
 			sourceTree = "<group>";
 		};
+		C721D5B92B07C80000564EE0 /* Comments */ = {
+			isa = PBXGroup;
+			children = (
+				C7DE44BC2AE0DCE7001639CB /* CommentCell.swift */,
+				ABAFB6422AF979C80070512F /* CommentPreview.swift */,
+				C78E7D002AF6AF4C00C2E220 /* CommentsView.swift */,
+				C721D5BA2B07CA8D00564EE0 /* CommentsViewModel.swift */,
+			);
+			path = Comments;
+			sourceTree = "<group>";
+		};
 		C73F8E842AE54F78001C6B07 /* LoginModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -439,8 +452,6 @@
 			children = (
 				FDB4B14F2AE68FC000720328 /* DetailView.swift */,
 				C73F8E802AE54B24001C6B07 /* DetailViewModel.swift */,
-				C7DE44BC2AE0DCE7001639CB /* CommentCell.swift */,
-				C78E7D002AF6AF4C00C2E220 /* CommentsView.swift */,
 				ABE51ED02B054ED5009C6CA5 /* DetailHeaderView.swift */,
 			);
 			path = Detail;
@@ -583,13 +594,13 @@
 		FD1DEBA92ADC212500588CE6 /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				C721D5B92B07C80000564EE0 /* Comments */,
 				C77113722AF2114800BAB128 /* CustomConfirmModifier.swift */,
 				C7719FE72AF28A7B00A520CB /* ConsumerTypeLabel.swift */,
 				C78E7D092AF8C53000C2E220 /* ExpandableTextView.swift */,
 				AB7317EE2AF9178C008B5E41 /* FilterButton.swift */,
 				AB7317F32AF94F31008B5E41 /* ReviewCardCell.swift */,
 				ABAFB6402AF978790070512F /* PurchaseLabel.swift */,
-				ABAFB6422AF979C80070512F /* CommentPreview.swift */,
 				C7EFA7DC2AF94DD800C9BEA0 /* CustomAlertModalView.swift */,
 				ABA1E83D2AFD57A4009051E0 /* VoteCardCell.swift */,
 				FD9C277D2AFA27E900702ACD /* ImageCropView.swift */,
@@ -789,6 +800,7 @@
 				C73F8E902AE562FE001C6B07 /* Date+.swift in Sources */,
 				ABA1E8402AFD5841009051E0 /* ConsiderationView.swift in Sources */,
 				C7719FE82AF28A7B00A520CB /* ConsumerTypeLabel.swift in Sources */,
+				C721D5BB2B07CA8D00564EE0 /* CommentsViewModel.swift in Sources */,
 				FDDEC15B2AE3EABA004509EA /* SearchView.swift in Sources */,
 				ABAFB6412AF978790070512F /* PurchaseLabel.swift in Sources */,
 				FD50A0482B01EBE000CF7F59 /* SettingNotificationView.swift in Sources */,
@@ -987,7 +999,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				BASE_URL = "https://test.hyunwoo.tech";
+				BASE_URL = "https://www.wote.social";
 				CODE_SIGN_ENTITLEMENTS = TwoHoSun/TwoHoSun.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1026,7 +1038,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				BASE_URL = "https://test.hyunwoo.tech";
+				BASE_URL = "https://www.wote.social";
 				CODE_SIGN_ENTITLEMENTS = TwoHoSun/TwoHoSun.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
