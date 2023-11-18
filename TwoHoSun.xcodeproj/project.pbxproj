@@ -24,6 +24,8 @@
 		AB38A10D2B07D914004153B5 /* PostDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A10C2B07D914004153B5 /* PostDetailModel.swift */; };
 		AB38A10F2B07DF49004153B5 /* InfoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A10E2B07DF49004153B5 /* InfoButton.swift */; };
 		AB38A1152B08FDD1004153B5 /* EndLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1142B08FDD1004153B5 /* EndLabel.swift */; };
+		AB38A1172B0919C9004153B5 /* ReviewTabModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1162B0919C9004153B5 /* ReviewTabModel.swift */; };
+		AB38A1192B091BA9004153B5 /* ReviewTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1182B091BA9004153B5 /* ReviewTabViewModel.swift */; };
 		AB3BACFD2AF7A5FC00E792BE /* SearchTextFieldState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3BACFC2AF7A5FC00E792BE /* SearchTextFieldState.swift */; };
 		AB4522532ADDD99500B69F24 /* SchoolSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */; };
 		AB4522562ADDDBC400B69F24 /* SchoolResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */; };
@@ -141,6 +143,8 @@
 		AB38A10C2B07D914004153B5 /* PostDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailModel.swift; sourceTree = "<group>"; };
 		AB38A10E2B07DF49004153B5 /* InfoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoButton.swift; sourceTree = "<group>"; };
 		AB38A1142B08FDD1004153B5 /* EndLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndLabel.swift; sourceTree = "<group>"; };
+		AB38A1162B0919C9004153B5 /* ReviewTabModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewTabModel.swift; sourceTree = "<group>"; };
+		AB38A1182B091BA9004153B5 /* ReviewTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewTabViewModel.swift; sourceTree = "<group>"; };
 		AB3BACFC2AF7A5FC00E792BE /* SearchTextFieldState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTextFieldState.swift; sourceTree = "<group>"; };
 		AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolSearchView.swift; sourceTree = "<group>"; };
 		AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolResponseModel.swift; sourceTree = "<group>"; };
@@ -334,6 +338,7 @@
 			children = (
 				ABA1E8352AFD576A009051E0 /* ReviewView.swift */,
 				ABA1E8342AFD576A009051E0 /* ReviewDetailView.swift */,
+				AB38A1182B091BA9004153B5 /* ReviewTabViewModel.swift */,
 				ABA1E8442AFD5C0B009051E0 /* ReviewWrite */,
 			);
 			name = Review;
@@ -376,6 +381,7 @@
 				ABB71D6D2AE2754300BE0671 /* PostModel.swift */,
 				ABBFB6312AE3EABD006CE8CA /* VoteCreateRequestModel.swift */,
 				AB38A10C2B07D914004153B5 /* PostDetailModel.swift */,
+				AB38A1162B0919C9004153B5 /* ReviewTabModel.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -827,6 +833,7 @@
 				C73F8E8C2AE5527B001C6B07 /* CommonModel.swift in Sources */,
 				ABBFB6322AE3EABD006CE8CA /* VoteCreateRequestModel.swift in Sources */,
 				AB45225A2ADDDC9E00B69F24 /* SchoolSearchViewModel.swift in Sources */,
+				AB38A1192B091BA9004153B5 /* ReviewTabViewModel.swift in Sources */,
 				FD3205682ADD5C0D00B0D5F6 /* TwoHoSunApp.swift in Sources */,
 				C77113732AF2114800BAB128 /* CustomConfirmModifier.swift in Sources */,
 				FDB4B1502AE68FC000720328 /* DetailView.swift in Sources */,
@@ -846,6 +853,7 @@
 				AB8770F42AFF897100B272F2 /* NoVoteView.swift in Sources */,
 				AB38A1032B0646F1004153B5 /* Double+.swift in Sources */,
 				C78E7D012AF6AF4C00C2E220 /* CommentsView.swift in Sources */,
+				AB38A1172B0919C9004153B5 /* ReviewTabModel.swift in Sources */,
 				AB03D7392B0137CC000C927A /* UserService.swift in Sources */,
 				C7E30E2B2ADC40E4001AE89B /* LoginViewModel.swift in Sources */,
 				C7719FE62AF2861000A520CB /* ConsumerType.swift in Sources */,

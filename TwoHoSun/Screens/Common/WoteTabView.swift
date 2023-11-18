@@ -94,9 +94,6 @@ struct WoteTabView: View {
             .navigationDestination(for: AllNavigation.self) { destination in
                 switch destination {
                 case .detailView(let postId, let index):
-//                    DetailView(viewModel: DetailViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
-//                               postId: postId,
-//                               index: index)
                     DetailView(viewModel: VoteViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
                                postId: postId,
                                index: index)
@@ -111,7 +108,7 @@ struct WoteTabView: View {
                     TypeTestView(viewModel: TypeTestViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
                         .environmentObject(navigatePath)
                 case .reveiwView:
-                    ReviewView()
+                    ReviewView(viewModel: ReviewTabViewModel(apiManger: loginStateManager.serviceRoot.apimanager))
                 case .writeReiview:
 //                    VoteWriteView(viewModel: VoteWriteViewModel())
                     Text("아직")
@@ -146,10 +143,11 @@ extension WoteTabView {
                               viewModel: VoteViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
                 .environmentObject(navigatePath)
         case .review:
-            ReviewView()
+            ReviewView(viewModel: ReviewTabViewModel(apiManger: loginStateManager.serviceRoot.apimanager))
                 .environmentObject(navigatePath)
         case .myPage:
-            MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager), selectedVisibilityScope: $selectedVisibilityScope)
+            MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
+                       selectedVisibilityScope: $selectedVisibilityScope)
                 .environmentObject(navigatePath)
         }
     }
