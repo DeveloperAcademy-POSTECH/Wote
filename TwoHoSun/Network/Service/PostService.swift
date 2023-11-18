@@ -24,6 +24,7 @@ enum PostService {
     case getReviews
     case getSearchResult
     case getMyPosts(page: Int, size: Int, myVoteCategoryType: String)
+    case closeVote(postId: Int)
 }
 
 extension PostService: TargetType {
@@ -46,6 +47,8 @@ extension PostService: TargetType {
             return "mypage/posts"
         case .deletePost(let postId):
             return "/posts/\(postId)"
+        case .closeVote(let postId):
+            return "/posts/\(postId)/complete"
         default:
             return ""
         }
@@ -80,6 +83,8 @@ extension PostService: TargetType {
             return .post
         case .deletePost:
             return .delete
+        case .closeVote:
+            return .post
         default:
             return .get
         }
@@ -124,6 +129,9 @@ extension PostService: TargetType {
         case .getMyPosts:
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case .deletePost(let postId):
+            return .requestParameters(parameters: ["postId": postId],
+                                      encoding: URLEncoding.queryString)
+        case .closeVote(let postId):
             return .requestParameters(parameters: ["postId": postId],
                                       encoding: URLEncoding.queryString)
         default:

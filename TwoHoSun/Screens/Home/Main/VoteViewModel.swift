@@ -30,14 +30,6 @@ final class VoteViewModel: ObservableObject {
         fetchPosts(visibilityScope: VisibilityScopeType.global.type)
     }
 
-    func calculateVoteRatio(voteCount: Int,
-                            agreeCount: Int,
-                            disagreeCount: Int) -> (agree: Double, disagree: Double) {
-        guard voteCount != 0 else { return (0, 0)}
-        let agreeVoteRatio = Double(agreeCount) / Double(voteCount) * 100
-        return (agreeVoteRatio, 100.0 - agreeVoteRatio)
-    }
-
     func updatePost(index: Int) {
         posts[index].myChoice = myChoice
         posts[index].voteCount = agreeCount + disagreeCount
@@ -156,7 +148,33 @@ final class VoteViewModel: ObservableObject {
             }
             .store(in: &cancellables)
 
-        self.posts.remove(at: index)
+        posts.remove(at: index)
+    }
+
+    func closeVote(postId: Int, index: Int) {
+        apiManager.request(.postService(.closeVote(postId: postId)),
+                           decodingType: NoData.self)
+            .compactMap(\.data)
+            .sink { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    print("error: \(error)")
+                }
+            } receiveValue: { _ in
+            }
+            .store(in: &cancellables)
+
+        posts[index].postStatus = PostStatus.closed.rawValue
+    }
+
+    func calculateVoteRatio(voteCount: Int,
+                            agreeCount: Int,
+                            disagreeCount: Int) -> (agree: Double, disagree: Double) {
+        guard voteCount != 0 else { return (0, 0)}
+        let agreeVoteRatio = Double(agreeCount) / Double(voteCount) * 100
+        return (agreeVoteRatio, 100.0 - agreeVoteRatio)
     }
 
     private func setTopConsumerTypes() {
@@ -179,3 +197,5 @@ final class VoteViewModel: ObservableObject {
             .compactMap { $0 }
     }
 }
+
+

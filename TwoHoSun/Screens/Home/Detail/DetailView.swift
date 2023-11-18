@@ -107,8 +107,9 @@ struct DetailView: View {
                                          isPresented: $showCustomAlert) {
                         switch currentAlert {
                         case .closeVote:
-//                          // TODO: - 투표 마감 API
-                            print("마감")
+                            viewModel.closeVote(postId: postId, index: index)
+                            showCustomAlert.toggle()
+                            viewModel.fetchPostDetail(postId: postId)
                         case .deleteVote:
                             viewModel.deletePost(postId: postId, index: index)
                             showCustomAlert.toggle()
