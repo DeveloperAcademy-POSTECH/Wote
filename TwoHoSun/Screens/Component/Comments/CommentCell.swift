@@ -102,6 +102,7 @@ struct CommentCell: View {
                         .font(.system(size: 12))
                         .foregroundStyle(Color.subGray1)
                 })
+                moreCommentButton
             }
         }
     }
@@ -118,5 +119,25 @@ extension CommentCell {
         return Text("\(lastEdit.1)"+lastEdit.0 + isEdited)
             .font(.system(size: 12, weight: .regular))
             .foregroundStyle(Color.subGray1)
+    }
+
+    @ViewBuilder
+    var moreCommentButton: some View {
+        if let subcomments = comment.subComments {
+            Button(action: {
+                isOpenComment.toggle()
+            }, label: {
+                HStack {
+                    Rectangle()
+                        .fill(.gray)
+                        .frame(width: 29, height: 1)
+                    Text("답글 \(subcomments.count)개 더보기")
+                        .font(.system(size: 12))
+                        .foregroundStyle(.gray)
+                }
+            })
+            .padding(.top, 18)
+    }
+
     }
 }

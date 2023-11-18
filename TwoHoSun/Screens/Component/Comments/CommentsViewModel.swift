@@ -9,7 +9,7 @@ import SwiftUI
 
 final class CommentsViewModel: ObservableObject {
     @Published var comments: String = ""
-    @Published var commentsDatas = [CommentsModel](){
+    @Published var commentsDatas = [CommentsModel]() {
         didSet {
             print(commentsDatas)
         }
@@ -36,7 +36,8 @@ final class CommentsViewModel: ObservableObject {
             }
             .store(in: &bag)
     }
-
+    
+    
     func postComment() {
         apiManager.request(.commentService(.postComment(postId: postId, contents: comments)), decodingType: NoData.self)
             .sink { completion in
@@ -55,7 +56,21 @@ final class CommentsViewModel: ObservableObject {
             .sink { completion in
                 print(completion)
             } receiveValue: { res in
+                self.comments = ""
+                self.getAllComments()
                 print("success")
             }
+    }
+
+    func postReply(commentId: Int) {
+        apiManager.request(.commentService(.postReply(commentId: commentId, contents: comments)), decodingType: NoData.self)
+            .sink { completion in
+                print(completion)
+            } receiveValue: { res in
+                self.comments = ""
+                self.getAllComments()
+                print("success")
+            }
+            .store(in: &bag)
     }
 }

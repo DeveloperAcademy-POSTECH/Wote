@@ -105,7 +105,10 @@ extension CommentsView {
                         }){
                             showConfirm = true
                         }
-                        //                            .id(comment.commentId)
+//                        .id(comment.commentId)
+//                        if let subComments = comment.subComments {
+////                            subComment
+//                        }
                         //                            makeChildComments(comment: comment)
                     }
                     .onChange(of: scrollSpot) { _, _ in
@@ -117,6 +120,7 @@ extension CommentsView {
         .padding(.horizontal, 24)
     }
 
+    
     var commentInputView: some View {
         HStack {
             Image("defaultProfile")
@@ -145,7 +149,7 @@ extension CommentsView {
             .animation(.easeInOut(duration: 0.3), value: viewModel.comments)
             if isFocus {
                 Button(action: {
-                    viewModel.postComment()
+                    replyForAnotherName != nil ? viewModel.postReply(commentId: scrollSpot) : viewModel.postComment()
                 }, label: {
                     Image(systemName: "paperplane")
                         .foregroundStyle(viewModel.comments.isEmpty ?  Color.subGray1 : Color.white)
@@ -162,7 +166,6 @@ extension CommentsView {
     var forReplyLabel: some View {
         // TODO: 추후에 유저 닉네임 가져오기
         if let replyname = replyForAnotherName  {
-            //             if let nickName = viewModel.getNicknameForComment(commentId: scrollSpot) {
             HStack {
                 Text("\(replyname)님에게 답글달기")
                     .font(.system(size: 14))
@@ -180,6 +183,5 @@ extension CommentsView {
             .padding(.horizontal, 24)
             .background(Divider().background(Color.subGray1), alignment: .top)
         }
-        //         }
     }
 }
