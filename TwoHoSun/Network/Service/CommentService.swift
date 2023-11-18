@@ -71,7 +71,7 @@ extension CommentService: TargetType {
         case .postComment:
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         case .deleteComments:
-            return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
+            return .requestPlain
         case .postReply:
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         default:

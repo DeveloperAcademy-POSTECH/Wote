@@ -10,7 +10,6 @@ import SwiftUI
 struct CommentsView: View {
     @State private var scrollSpot: Int = 0
     @FocusState private var isFocus: Bool
-    @State private var presentAlert = false
     //MARK: eclips버튼눌렸을떄 관련된 변수들
     @State private var ismyCellconfirm = false {
         didSet {
@@ -41,11 +40,11 @@ struct CommentsView: View {
                 forReplyLabel
                 commentInputView
             }
-            if presentAlert {
+            if viewModel.presentAlert {
                 ZStack {
                     Color.black.opacity(0.7)
                         .ignoresSafeArea()
-                    CustomAlertModalView(alertType: ismyCellconfirm ? .erase : .ban(nickname: "선호"), isPresented: $presentAlert) {
+                    CustomAlertModalView(alertType: ismyCellconfirm ? .erase : .ban(nickname: "선호"), isPresented: $viewModel.presentAlert) {
                         if ismyCellconfirm {
                             viewModel.deleteComments(commentId: scrollSpot)
                         }
@@ -93,7 +92,7 @@ struct CommentsView: View {
                     .background(Color.gray300)
             }
             Button {
-                presentAlert.toggle()
+                viewModel.presentAlert.toggle()
                 showConfirm.toggle()
             } label: {
                 Text(ismine ? "삭제하기" : "차단하기")
@@ -115,6 +114,7 @@ extension CommentsView {
                             replyForAnotherName =  comment.author.nickname
                             isFocus = true
                         }){ ismine in
+                            scrollSpot = comment.commentId
                             isFocus = false
                             ismyCellconfirm = ismine
                             showConfirm.toggle()

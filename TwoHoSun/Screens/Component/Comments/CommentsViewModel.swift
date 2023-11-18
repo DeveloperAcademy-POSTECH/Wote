@@ -14,6 +14,7 @@ final class CommentsViewModel: ObservableObject {
             print(commentsDatas)
         }
     }
+    @Published var presentAlert = false
 //    @Published var content: String = ""
     private var apiManager: NewApiManager
     private var postId: Int
@@ -37,7 +38,6 @@ final class CommentsViewModel: ObservableObject {
             .store(in: &bag)
     }
     
-    
     func postComment() {
         apiManager.request(.commentService(.postComment(postId: postId, contents: comments)), decodingType: NoData.self)
             .sink { completion in
@@ -46,7 +46,6 @@ final class CommentsViewModel: ObservableObject {
                 print(response)
                 self.comments = ""
                 self.getAllComments()
-
             }
             .store(in: &bag)
     }
@@ -58,8 +57,9 @@ final class CommentsViewModel: ObservableObject {
             } receiveValue: { res in
                 self.comments = ""
                 self.getAllComments()
-                print("success")
+                self.presentAlert.toggle()
             }
+            .store(in: &bag)
     }
 
     func postReply(commentId: Int) {
