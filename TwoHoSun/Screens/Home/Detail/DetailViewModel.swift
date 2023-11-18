@@ -9,7 +9,7 @@ import Combine
 import SwiftUI
 
 final class DetailViewModel: ObservableObject {
-    @Published var postDetailData: PostModel?
+    @Published var postDetailData: PostDetailModel?
     var agreeTopConsumerTypes = [ConsumerType]()
     var disagreeTopConsumerTypes = [ConsumerType]()
     var commentsDatas = [CommentsModel]()
@@ -17,16 +17,20 @@ final class DetailViewModel: ObservableObject {
     private let apiManager: NewApiManager
     var cancellables: Set<AnyCancellable> = []
 
+    init(apiManager: NewApiManager) {
+        self.apiManager = apiManager
+    }
+
     var voteCount: Int {
-        postDetailData?.voteCount ?? 0
+        postDetailData?.post.voteCount ?? 0
     }
 
     var agreeCount: Int {
-        postDetailData?.voteCounts.agreeCount ?? 0
+        postDetailData?.post.voteCounts.agreeCount ?? 0
     }
 
     var disagreeCount: Int {
-        postDetailData?.voteCounts.disagreeCount ?? 0
+        postDetailData?.post.voteCounts.disagreeCount ?? 0
     }
 
     var agreeRatio: Double {
@@ -47,9 +51,12 @@ final class DetailViewModel: ObservableObject {
         agreeRatio > disagreeRatio
     }
 
-    init(apiManager: NewApiManager) {
-        self.apiManager = apiManager
-    }
+//    func updatedatePostData() {
+//        guard let postDetailData = postDetailData else { return }
+//        postData.myChoice = postDetailData.post.myChoice
+//        postData.voteCount = postDetailData.post.voteCount
+//        postData.voteCounts = postDetailData.post.voteCounts
+//    }
 
     func calculateVoteRatio(voteCount: Int,
                             agreeCount: Int,
@@ -61,7 +68,7 @@ final class DetailViewModel: ObservableObject {
 
     func fetchPostDetail(postId: Int) {
         apiManager.request(.postService(.getPostDetail(postId: postId)),
-                           decodingType: PostModel.self)
+                           decodingType: PostDetailModel.self)
             .compactMap(\.data)
             .receive(on: DispatchQueue.main)
             .sink { completion in
@@ -74,6 +81,7 @@ final class DetailViewModel: ObservableObject {
             } receiveValue: { data in
                 self.postDetailData = data
                 self.setTopConsumerTypes()
+//                self.updatedatePostData()
             }
             .store(in: &cancellables)
     }
@@ -99,7 +107,7 @@ final class DetailViewModel: ObservableObject {
     }
 
     private func setTopConsumerTypes() {
-        guard let voteInfoList = postDetailData?.voteInfoList else { return }
+        guard let voteInfoList = postDetailData?.post.voteInfoList else { return }
         let (agreeVoteInfos, disagreeVoteInfos) = filterSelectedResult(voteInfoList: voteInfoList)
         agreeTopConsumerTypes = getTopConsumerTypes(for: agreeVoteInfos)
         disagreeTopConsumerTypes = getTopConsumerTypes(for: disagreeVoteInfos)

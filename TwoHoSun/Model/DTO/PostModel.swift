@@ -13,7 +13,7 @@ struct PostModel: Codable, Identifiable {
     var modifiedDate: String
     var visibilityScope: String
     var postStatus: String
-    var author: AuthorModl
+    var author: AuthorModel
     var title: String
     var contents: String?
     var image: String?
@@ -38,7 +38,7 @@ struct PostModel: Codable, Identifiable {
     } 
 }
 
-struct AuthorModl: Codable {
+struct AuthorModel: Codable {
     let id: Int
     let nickname: String
     let profileImage: String?

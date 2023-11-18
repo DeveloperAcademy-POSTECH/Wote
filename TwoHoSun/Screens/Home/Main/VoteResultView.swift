@@ -39,23 +39,27 @@ struct VoteResultView: View {
 
     var body: some View {
         VStack {
-            voteBar(ratio: agreeRatio, isHighlighted: agreeRatio > disagreeRatio)
-            voteBar(ratio: disagreeRatio, isHighlighted: disagreeRatio > agreeRatio)
+            voteBar(for: .agree, 
+                    ratio: agreeRatio,
+                    isHighlighted: agreeRatio >= disagreeRatio)
+            voteBar(for: .disagree,
+                    ratio: disagreeRatio,
+                    isHighlighted: disagreeRatio >= agreeRatio)
         }
     }
 
-    private func voteBar(ratio: Double, isHighlighted: Bool) -> some View {
+    private func voteBar(for type: VoteType, ratio: Double, isHighlighted: Bool) -> some View {
         ZStack(alignment: .leading) {
             Capsule()
                 .foregroundStyle(Color.black100)
                 .overlay(alignment: .leading) {
                     let voteButtonWidth = UIScreen.main.bounds.width - 48
                     Rectangle()
-                        .frame(width: voteButtonWidth * ratio)
+                        .frame(width: voteButtonWidth * ratio * 0.01)
                         .foregroundStyle(isHighlighted ? Color.lightBlue : Color.gray200)
                 }
                 .overlay {
-                    if isHighlighted {
+                    if myChoice == type.isAgree {
                         Capsule()
                             .strokeBorder(Color.lightBlue, lineWidth: 1)
                     }
@@ -63,8 +67,8 @@ struct VoteResultView: View {
                 .clipShape(Capsule())
 
             HStack(spacing: 4) {
-                Image(systemName: "circle")
-                Text("산다")
+                Image(systemName: type.isAgree ? "circle" : "xmark")
+                Text(type.isAgree ? "산다": "안 산다")
                     .fontWeight(.bold)
                 Spacer()
                 Text(String(format: ratio.getFirstDecimalNum == 0 ? "%.0f" : "%.1f", ratio) + "%")

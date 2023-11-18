@@ -12,7 +12,7 @@ struct ConsiderationView: View {
     @Binding var selectedVisibilityScope: VisibilityScopeType
     @Environment(AppLoginState.self) private var loginState
     @State private var isRefreshing = false
-    @StateObject var viewModel: ConsiderationViewModel
+    @StateObject var viewModel: VoteViewModel
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
@@ -47,9 +47,9 @@ extension ConsiderationView {
             TabView(selection: $currentVote) {
                 ForEach(Array(zip(viewModel.posts.indices, viewModel.posts)), id: \.0) { index, item in
                     VStack(spacing: 0) {
-                        VoteContentCell(postData: item,
-                                        voteCount: item.voteCount,
-                                        viewModel: viewModel)
+                        VoteContentCell(viewModel: viewModel,
+                                        index: currentVote,
+                                        postId: item.id)
                         nextVoteButton
                             .padding(.top, 16)
                     }

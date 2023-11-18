@@ -9,26 +9,20 @@ import SwiftUI
 
 import Combine
 
-final class ConsiderationViewModel: ObservableObject {
+final class VoteViewModel: ObservableObject {
     @Published var posts = [PostModel]()
+    @Published var postData: PostDetailModel?
     @Published var isPostFetching = true
     @Published var pageOffset = 0
-    @Published var voteCount: Int?
+    var agreeCount = 0
+    var disagreeCount = 0
+    var myChoice = true
+    var agreeTopConsumerTypes = [ConsumerType]()
+    var disagreeTopConsumerTypes = [ConsumerType]()
+    var cancellables: Set<AnyCancellable> = []
     private let apiManager: NewApiManager
     private var page = 0
     private var isLastPage = false
-    var agreeCount = 0
-    var disagreeCount = 0
-    var cancellables: Set<AnyCancellable> = []
-
-    var agreeRatio: Double {
-        guard let voteCount else { return 1.0 }
-        return Double(agreeCount) / Double(voteCount) * 100
-    }
-
-    var disagreeRatio: Double {
-        return 100.0 - agreeRatio
-    }
 
     init(apiManager: NewApiManager) {
         self.apiManager = apiManager
@@ -39,8 +33,15 @@ final class ConsiderationViewModel: ObservableObject {
                             agreeCount: Int,
                             disagreeCount: Int) -> (agree: Double, disagree: Double) {
         guard voteCount != 0 else { return (0, 0)}
-        let agreeVoteRatio = Double(agreeCount) / Double(voteCount) * 10
+        let agreeVoteRatio = Double(agreeCount) / Double(voteCount) * 100
         return (agreeVoteRatio, 100.0 - agreeVoteRatio)
+    }
+
+    func updatePost(index: Int) {
+        posts[index].myChoice = myChoice
+        posts[index].voteCount = agreeCount + disagreeCount
+        posts[index].voteCounts = VoteCountsModel(agreeCount: agreeCount,
+                                                  disagreeCount: disagreeCount)
     }
 
     func resetPosts() {
@@ -49,7 +50,7 @@ final class ConsiderationViewModel: ObservableObject {
         isLastPage = false
         isPostFetching = true
     }
-
+    
     func fetchMorePosts(_ visibilityScope: String) {
         guard !isLastPage else { return }
 
@@ -96,7 +97,7 @@ final class ConsiderationViewModel: ObservableObject {
 
     }
 
-    func votePost(postId: Int, choice: Bool) {
+    func votePost(postId: Int, choice: Bool, index: Int) {
         apiManager.request(.postService(.votePost(postId: postId, choice: choice)),
                            decodingType: VoteCountsModel.self)
         .compactMap(\.data)
@@ -111,8 +112,49 @@ final class ConsiderationViewModel: ObservableObject {
         } receiveValue: { data in
             self.agreeCount = data.agreeCount
             self.disagreeCount = data.disagreeCount
-            self.voteCount = self.agreeCount + self.disagreeCount
+            self.myChoice = choice
+            self.updatePost(index: index)
+            self.fetchPostDetail(postId: postId)
         }
         .store(in: &cancellables)
+    }
+
+    func fetchPostDetail(postId: Int) {
+        apiManager.request(.postService(.getPostDetail(postId: postId)),
+                           decodingType: PostDetailModel.self)
+        .compactMap(\.data)
+        .receive(on: DispatchQueue.main)
+        .sink { completion in
+            switch completion {
+            case .finished:
+                break
+            case .failure(let failure):
+                print(failure)
+            }
+        } receiveValue: { data in
+            self.postData = data
+            self.setTopConsumerTypes()
+        }
+        .store(in: &cancellables)
+    }
+
+    private func setTopConsumerTypes() {
+        guard let voteInfoList = postData?.post.voteInfoList else { return }
+        let (agreeVoteInfos, disagreeVoteInfos) = filterSelectedResult(voteInfoList: voteInfoList)
+        agreeTopConsumerTypes = getTopConsumerTypes(for: agreeVoteInfos)
+        disagreeTopConsumerTypes = getTopConsumerTypes(for: disagreeVoteInfos)
+    }
+
+    private func filterSelectedResult(voteInfoList: [VoteInfoModel]) -> (agree: [VoteInfoModel],
+                                                                disagree: [VoteInfoModel]) {
+        return (voteInfoList.filter { $0.isAgree }, voteInfoList.filter { !$0.isAgree })
+    }
+
+    private func getTopConsumerTypes(for votes: [VoteInfoModel]) -> [ConsumerType] {
+        return Dictionary(grouping: votes, by: { $0.consumerType })
+            .sorted { $0.value.count > $1.value.count }
+            .prefix(2)
+            .map { ConsumerType(rawValue: $0.key) }
+            .compactMap { $0 }
     }
 }

@@ -108,7 +108,7 @@ extension WoteTabView {
         switch tab {
         case .consider:
             ConsiderationView(selectedVisibilityScope: $selectedVisibilityScope,
-                              viewModel: ConsiderationViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
+                              viewModel: VoteViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
         case .review:
             ReviewView()
         case .myPage:
