@@ -147,22 +147,22 @@ struct ProfileSettingsView: View {
         .toolbarBackground(Color.background, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .photosPicker(isPresented: $retryProfileImage, selection: $selectedPhoto)
-        .customConfirmDialog(isPresented: $isProfileSheetShowed) {
-            Button("프로필 삭제하기", role: .destructive) {
-                selectedPhoto = nil
-                viewModel.selectedImageData = nil
-                isProfileSheetShowed.toggle()
-            }
-            .frame(height: 42)
-            Divider()
-            Button("프로필 재설정하기") {
-                retryProfileImage = true
-            }
-            .frame(height: 42)
-            .navigationTitle("프로필 설정")
-            .toolbar(.hidden, for: .navigationBar)
-            .navigationBarBackButtonHidden()
-        }
+//        .customConfirmDialog(isPresented: $isProfileSheetShowed) {
+//            Button("프로필 삭제하기", role: .destructive) {
+//                selectedPhoto = nil
+//                viewModel.selectedImageData = nil
+//                isProfileSheetShowed.toggle()
+//            }
+//            .frame(height: 42)
+//            Divider()
+//            Button("프로필 재설정하기") {
+//                retryProfileImage = true
+//            }
+//            .frame(height: 42)
+//            .navigationTitle("프로필 설정")
+//            .toolbar(.hidden, for: .navigationBar)
+//            .navigationBarBackButtonHidden()
+//        }
         //        .onChange(of: viewModel.isSucccedPost) { _, newValue in
         //            if newValue == true {
         //                navigationPath.removeFirst()

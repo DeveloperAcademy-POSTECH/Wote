@@ -25,80 +25,82 @@ struct CommentsView: View {
     @State private var replyForAnotherName: String?
 
     var body: some View {
-            ZStack {
-                Color.lightGray
-                    .ignoresSafeArea()
-                VStack(spacing: 0) {
-                    Text("댓글")
-                        .foregroundStyle(.white)
-                        .font(.system(size: 15, weight: .medium))
-                        .frame(maxWidth: .infinity)
-                        .padding(.bottom, 13)
-                        .padding(.top, 38)
-                        .overlay(Divider().background(Color.subGray1), alignment: .bottom)
-                        .padding(.bottom, 13)
-                    comments
-                    forReplyLabel
-                    commentInputView
-                }
-                if presentAlert {
-                    ZStack {
-                        Color.black.opacity(0.7)
-                            .ignoresSafeArea()
-                        CustomAlertModalView(alertType: ismyCellconfirm ? .erase : .ban(nickname: "선호"), isPresented: $presentAlert) {
-                            if ismyCellconfirm {
-                                viewModel.deleteComments(commentId: scrollSpot)
-                            }
-                            print("신고접수됐습니다.")
+        ZStack {
+            Color.lightGray
+                .ignoresSafeArea()
+            VStack(spacing: 0) {
+                Text("댓글")
+                    .foregroundStyle(.white)
+                    .font(.system(size: 15, weight: .medium))
+                    .frame(maxWidth: .infinity)
+                    .padding(.bottom, 13)
+                    .padding(.top, 38)
+                    .overlay(Divider().background(Color.subGray1), alignment: .bottom)
+                    .padding(.bottom, 13)
+                comments
+                forReplyLabel
+                commentInputView
+            }
+            if presentAlert {
+                ZStack {
+                    Color.black.opacity(0.7)
+                        .ignoresSafeArea()
+                    CustomAlertModalView(alertType: ismyCellconfirm ? .erase : .ban(nickname: "선호"), isPresented: $presentAlert) {
+                        if ismyCellconfirm {
+                            viewModel.deleteComments(commentId: scrollSpot)
                         }
-                        .padding(.bottom, UIScreen.main.bounds.height * 0.05)
+                        print("신고접수됐습니다.")
                     }
-                }
-                if applyComplaint {
-                    ZStack {
-                        Color.black.opacity(0.7)
-                            .ignoresSafeArea()
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .fill(Color.lightBlue)
-                                .frame(width: 283, height: 36)
-                            Text("신고해주셔서 감사합니다.")
-                                .foregroundStyle(.white)
-                                .font(.system(size: 16, weight: .semibold))
-                        }
-                        .padding(.bottom, UIScreen.main.bounds.height * 0.05)
-                    }
-                    .onTapGesture {
-                            applyComplaint.toggle()
-                    }
+                    .padding(.bottom, UIScreen.main.bounds.height * 0.05)
                 }
             }
-            .fullScreenCover(isPresented: $showComplaint, content: {
-                NavigationStack {
-                    ComplaintView(isSheet: $showComplaint, isComplaintApply: $applyComplaint)
-                }
-            })
-            .customConfirmDialog(isPresented: $showConfirm, actions: {
-                // TODO: 내꺼인지 판별한 후 그 후 종료하기 등 버튼을 구현예정
-                if !ismyCellconfirm {
-                    Button {
-                        showComplaint.toggle()
-                        showConfirm.toggle()
-                    } label: {
-                        Text("신고하기")
-                            .frame(maxWidth: .infinity)
+            if applyComplaint {
+                ZStack {
+                    Color.black.opacity(0.7)
+                        .ignoresSafeArea()
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.lightBlue)
+                            .frame(width: 283, height: 36)
+                        Text("신고해주셔서 감사합니다.")
+                            .foregroundStyle(.white)
+                            .font(.system(size: 16, weight: .semibold))
                     }
-                    Divider()
-                        .background(Color.gray300)
+                    .padding(.bottom, UIScreen.main.bounds.height * 0.05)
                 }
+                .onTapGesture {
+                    applyComplaint.toggle()
+                }
+            }
+        }
+        .fullScreenCover(isPresented: $showComplaint, content: {
+            NavigationStack {
+                ComplaintView(isSheet: $showComplaint, isComplaintApply: $applyComplaint)
+            }
+        })
+        .customConfirmDialog(isPresented: $showConfirm, isMine: $ismyCellconfirm, actions: { bindismine in
+            // TODO: 내꺼인지 판별한 후 그 후 종료하기 등 버튼을 구현예정
+            var ismine = bindismine.wrappedValue
+            if !ismine {
                 Button {
-                    presentAlert.toggle()
+                    showComplaint.toggle()
                     showConfirm.toggle()
                 } label: {
-                    Text(self.ismyCellconfirm ? "삭제하기" : "차단하기")
+                    Text("신고하기")
                         .frame(maxWidth: .infinity)
                 }
-            })
+                Divider()
+                    .background(Color.gray300)
+            }
+            Button {
+                presentAlert.toggle()
+                showConfirm.toggle()
+            } label: {
+                Text(ismine ? "삭제하기" : "차단하기")
+                    .frame(maxWidth: .infinity)
+            }
+        }
+        )
     }
 }
 
@@ -114,14 +116,13 @@ extension CommentsView {
                             isFocus = true
                         }){ ismine in
                             isFocus = false
-                            self.ismyCellconfirm = true
-
-                            self.showConfirm = true
+                            ismyCellconfirm = ismine
+                            showConfirm.toggle()
                         }
-//                        .id(comment.commentId)
-//                        if let subComments = comment.subComments {
-////                            subComment
-//                        }
+                        //                        .id(comment.commentId)
+                        //                        if let subComments = comment.subComments {
+                        ////                            subComment
+                        //                        }
                         //                            makeChildComments(comment: comment)
                     }
                     .onChange(of: scrollSpot) { _, _ in
@@ -133,7 +134,7 @@ extension CommentsView {
         .padding(.horizontal, 24)
     }
 
-    
+
     var commentInputView: some View {
         HStack {
             Image("defaultProfile")
