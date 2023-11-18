@@ -23,26 +23,32 @@ enum PostService {
     case votePost(postId: Int, choice: Bool)
     case getReviews
     case getSearchResult
+    case getMyPosts(page: Int, size: Int, myVoteCategoryType: String)
 }
 
 extension PostService: TargetType {
     
     var baseURL: URL {
-        return URL(string: URLConst.baseURL)!
+        return URL(string: "\(URLConst.baseURL)/api")!
     }
     
     var path: String {
         switch self {
         case .getPosts:
-            return "/api/posts"
+            return "/posts"
+        case .getPostDetail(let postId):
+            return "/posts/\(postId)"
         case .createPost:
             return "/api/posts"
         case .getPostDetail(let postId):
             return "/api/posts/\(postId)"
         case .votePost(let postId, _):
             return "/api/posts/\(postId)/votes"
+            return "/posts"
+        case .getMyPosts:
+            return "mypage/posts"
         default:
-            return "/api/posts"
+            return ""
         }
     }
 
@@ -54,6 +60,10 @@ extension PostService: TargetType {
                     "visibilityScope": visibilityScope]
         case .votePost(_, let choice):
             return ["choice": choice]
+        case .getMyPosts(let page, let size, let myVoteCategoryType):
+            return ["page": page,
+                    "size": size,
+                    "myVoteCategoryType": myVoteCategoryType]
         default:
             return [:]
         }
@@ -65,6 +75,8 @@ extension PostService: TargetType {
             return .get
         case .createPost:
             return .post
+        case .getMyPosts:
+            return .get
         case .getPostDetail:
             return .get
         case .votePost:
@@ -110,6 +122,8 @@ extension PostService: TargetType {
             return .requestCompositeParameters(bodyParameters: ["myChoice": choice],
                                                bodyEncoding: JSONEncoding.default,
                                                urlParameters: ["postId": postId])
+        case .getMyPosts:
+            return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         default:
             return .requestPlain
         }
@@ -119,6 +133,8 @@ extension PostService: TargetType {
         switch self {
         case .createPost:
             APIConstants.headerMultiPartForm
+        case .getMyPosts:
+            APIConstants.headerWithAuthorization
         default:
             APIConstants.headerWithAuthorization
         }

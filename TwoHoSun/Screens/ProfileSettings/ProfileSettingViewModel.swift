@@ -23,19 +23,18 @@ final class ProfileSettingViewModel {
     var isFormValid = true
     var model: ProfileSetting? 
     private let forbiddenWord = ["금지어1", "금지어2"]
-    private var apiManager: NewApiManager
     var bag = Set<AnyCancellable>()
-    var path: Binding<[Route]>
+
+    private var appState: AppLoginState
+    init(appState: AppLoginState) {
+        self.appState = appState
+    }
     var isSchoolFilled: Bool {
         return selectedSchoolInfo != nil
     }
     var isAllInputValid: Bool {
         return nicknameValidationType == .valid
         && isSchoolFilled
-    }
-    init(apiManager: NewApiManager , path: Binding<[Route]>) {
-        self.apiManager = apiManager
-        self.path = path
     }
 
     private func isNicknameLengthValid(_ text: String) -> Bool {
@@ -55,7 +54,6 @@ final class ProfileSettingViewModel {
     
     func checkNicknameValidation(_ text: String) {
         isNicknameDuplicated = false
-        
         if !isNicknameLengthValid(text) {
             nicknameValidationType = .length
         } else if isNicknameIncludeForbiddenWord(text) {
@@ -76,14 +74,14 @@ final class ProfileSettingViewModel {
     
     func setProfile() {
         guard let school = selectedSchoolInfo?.school else { return }
-        model = ProfileSetting(userProfileImage: selectedImageData ?? Data(),
-                               userNickname: nickname,
+        model = ProfileSetting(imageFile: selectedImageData ?? Data(),
+                               nickname: nickname,
                                school: school)
         postProfileSetting()
     }
     
     func postNickname() {
-        apiManager.request(.userService(.checkNicknameValid(nickname: nickname)),
+        appState.serviceRoot.apimanager.request(.userService(.checkNicknameValid(nickname: nickname)),
                            decodingType: NicknameValidation.self)
         .compactMap(\.data)
             .sink { completion in
@@ -102,20 +100,15 @@ final class ProfileSettingViewModel {
     
     func postProfileSetting() {
         guard let model = model else { return }
-        apiManager.request(.userService(.postProfileSetting(profile: model)),
+        var cancellable: AnyCancellable?
+        cancellable = appState.serviceRoot.apimanager.request(.userService(.postProfileSetting(profile: model)),
                            decodingType: NoData.self)
             .sink { completion in
-                switch completion {
-                case .finished:
-                    var array = self.path.wrappedValue
-                    array.removeFirst()
-                    array.append(.mainTabView)
-                    self.path.wrappedValue = array
-                case .failure(let error):
-                    print(error)
-                }
-            } receiveValue: { response in
-                print(response)
+                print("끝남? \(completion)")
+            } receiveValue: { _ in
+                self.appState.serviceRoot.auth.authState = .loggedIn
+                cancellable?.cancel()
             }
+
     }
 }

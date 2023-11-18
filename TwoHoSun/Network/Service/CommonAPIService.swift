@@ -18,7 +18,14 @@ enum CommonAPIService {
 
 extension CommonAPIService: TargetType {
     var baseURL: URL {
-        return URL(string: URLConst.baseURL)!
+        switch self {
+        case .userService(let userAPI):
+            return userAPI.baseURL
+        case .postService(let postAPI):
+            return postAPI.baseURL
+        case .commentService(let commentAPI):
+            return commentAPI.baseURL
+        }
     }
 
     var path: String {
