@@ -40,11 +40,8 @@ extension PostService: TargetType {
             return "/posts/\(postId)"
         case .createPost:
             return "/api/posts"
-        case .getPostDetail(let postId):
-            return "/api/posts/\(postId)"
         case .votePost(let postId, _):
             return "/api/posts/\(postId)/votes"
-            return "/posts"
         case .getMyPosts:
             return "mypage/posts"
         default:

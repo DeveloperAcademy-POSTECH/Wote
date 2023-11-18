@@ -16,7 +16,7 @@ struct SummaryPostModel: Codable, Identifiable {
     var id: Int
     var createDate: String
     var modifiedDate: String
-    var author: Author?
+    var author: AuthorModel?
     var postStatus: String
     var viewCount: Int?
     var voteCount: Int?
