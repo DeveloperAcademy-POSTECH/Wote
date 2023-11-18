@@ -10,12 +10,8 @@ import SwiftUI
 struct CommentsView: View {
     @State private var scrollSpot: Int = 0
     @FocusState private var isFocus: Bool
-    //MARK: eclips버튼눌렸을떄 관련된 변수들
-    @State private var ismyCellconfirm = false {
-        didSet {
-            print(ismyCellconfirm)
-        }
-    }
+    // MARK: eclips버튼눌렸을떄 관련된 변수들
+    @State private var ismyCellconfirm = false
     @State private var showConfirm = false
     @Binding var showComplaint : Bool
     @Binding var applyComplaint: Bool
@@ -119,6 +115,25 @@ extension CommentsView {
                             ismyCellconfirm = ismine
                             showConfirm.toggle()
                         }
+                            if let subComments = comment.subComments {
+                                
+                                ParentCellView(parentComments: subComments)
+                            }
+                        //                        if let subComments = comment.subComments {
+                        //                            Button(action: {
+                        //                                /*moreButtonClick*/()
+                        //                            }, label: {
+                        //                                HStack {
+                        //                                    Rectangle()
+                        //                                        .fill(.gray)
+                        //                                        .frame(width: 29, height: 1)
+                        //                                    Text("답글 \(subComments.count)개 더보기")
+                        //                                        .font(.system(size: 12))
+                        //                                        .foregroundStyle(.gray)
+                        //                                }
+                        //                            })
+                        //                            .padding(.top, 18)
+                        //                        }
                         //                        .id(comment.commentId)
                         //                        if let subComments = comment.subComments {
                         ////                            subComment
@@ -197,5 +212,45 @@ extension CommentsView {
             .padding(.horizontal, 24)
             .background(Divider().background(Color.subGray1), alignment: .top)
         }
+    }
+}
+
+struct ParentCellView: View {
+    @Binding var parentComments: [CommentsModel]
+    @State private var moreButtonClick = false
+    
+    var body: some View {
+        if !moreButtonClick {
+            Button(action: {
+                moreButtonClick.toggle()
+            }, label: {
+                HStack {
+                    Rectangle()
+                        .fill(.gray)
+                        .frame(width: 29, height: 1)
+                    Text("답글 \(parentComments.count)개 더보기")
+                        .font(.system(size: 12))
+                        .foregroundStyle(.gray)
+                }
+            })
+            .padding(.top, 18)
+        } else {
+            ForEach(parentComments, id: \.commentId) { comment in
+                     CommentCell(comment: comment, onReplyButtonTapped: {
+     //                    scrollSpot = comment.commentId
+     //                    replyForAnotherName =  comment.author.nickname
+     //                    isFocus = true
+                     }){ ismine in
+     //                    scrollSpot = comment.commentId
+     //                    isFocus = false
+     //                    ismyCellconfirm = ismine
+     //                    showConfirm.toggle()
+                     }
+                 }
+        }
+//            if let subcomments = comment.subComments, !isOpenComment {
+
+//            }
+
     }
 }

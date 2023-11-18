@@ -15,7 +15,6 @@ final class CommentsViewModel: ObservableObject {
         }
     }
     @Published var presentAlert = false
-//    @Published var content: String = ""
     private var apiManager: NewApiManager
     private var postId: Int
     var bag = Set<AnyCancellable>()
