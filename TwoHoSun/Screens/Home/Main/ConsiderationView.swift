@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ConsiderationView: View {
     @State private var currentVote = 0
-    @Binding var selectedVisibilityScope: VisibilityScopeType
+    @Binding var visibilityScope: VisibilityScopeType
     @Environment(AppLoginState.self) private var loginState
     @EnvironmentObject private var pathManger: NavigationManager
     @State private var isRefreshing = false
@@ -24,7 +24,7 @@ struct ConsiderationView: View {
                 Spacer()
                 if !viewModel.isPostFetching {
                     if viewModel.posts.isEmpty {
-                        NoVoteView(selectedVisibilityScope: $selectedVisibilityScope)
+                        NoVoteView(selectedVisibilityScope: $visibilityScope)
                     } else {
                         votePagingView
                     }
@@ -35,9 +35,9 @@ struct ConsiderationView: View {
                 .padding(.bottom, 21)
                 .padding(.trailing, 24)
         }
-        .onChange(of: selectedVisibilityScope) { _, newScope in
+        .onChange(of: visibilityScope) { _, newScope in
             currentVote = 0
-            viewModel.fetchPosts(visibilityScope: newScope.type)
+            viewModel.fetchPosts(visibilityScope: newScope.rawValue)
         }
     }
 }
@@ -58,7 +58,7 @@ extension ConsiderationView {
                     .tag(index)
                     .onAppear {
                         if (index == viewModel.posts.count - 2) {
-                            viewModel.fetchMorePosts(selectedVisibilityScope.type)
+                            viewModel.fetchMorePosts(visibilityScope.rawValue)
                         }
                     }
                 }
@@ -75,7 +75,7 @@ extension ConsiderationView {
                         if currentVote == 0 && value.translation.height > 0 {
                             isRefreshing = true
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                                viewModel.fetchPosts(visibilityScope: selectedVisibilityScope.type)
+                                viewModel.fetchPosts(visibilityScope: visibilityScope.rawValue)
                                 isRefreshing = false
                             }
                         }
@@ -92,10 +92,10 @@ extension ConsiderationView {
 
     private var createVoteButton: some View {
         NavigationLink {
-            VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: selectedVisibilityScope,
+            VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: visibilityScope,
                                                         apiManager: loginState.serviceRoot.apimanager))
             .onDisappear {
-                viewModel.fetchPosts(visibilityScope: selectedVisibilityScope.type)
+                viewModel.fetchPosts(visibilityScope: visibilityScope.rawValue)
                 currentVote = 0
             }
         } label: {

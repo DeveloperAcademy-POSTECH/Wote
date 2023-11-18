@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct ReviewView: View {
-    @State private var selectedReviewType = ReviewType.all
+    @Binding var visibilityScopeType: VisibilityScopeType
+    @State private var reviewType = ReviewType.all
     @StateObject var viewModel: ReviewTabViewModel
 
     var body: some View {
@@ -21,20 +22,24 @@ struct ReviewView: View {
                             .padding(.bottom, 20)
                             .padding(.leading, 24)
                     }
-                    ScrollViewReader { proxy in
-                        LazyVStack(pinnedViews: .sectionHeaders) {
-                            Section {
-                                reviewListView(datas: viewModel.reviews)
-                                    .padding(.leading, 16)
-                                    .padding(.trailing, 8)
-                            } header: {
-                                reviewFilterView
+                    if !viewModel.reviews.isEmpty {
+                        ScrollViewReader { proxy in
+                            LazyVStack(pinnedViews: .sectionHeaders) {
+                                Section {
+                                    reviewListView(datas: viewModel.reviews)
+                                        .padding(.leading, 16)
+                                        .padding(.trailing, 8)
+                                } header: {
+                                    reviewFilterView
+                                }
+                                .id("reviewTypeSection")
                             }
-                            .id("reviewTypeSection")
+                            .onChange(of: reviewType) { _, _ in
+                                proxy.scrollTo("reviewTypeSection", anchor: .top)
+                            }
                         }
-                        .onChange(of: selectedReviewType) { _, _ in
-                            proxy.scrollTo("reviewTypeSection", anchor: .top)
-                        }
+                    } else {
+                        NoReviewView()
                     }
                 }
             }
@@ -43,7 +48,7 @@ struct ReviewView: View {
         .background(Color.background)
         .toolbarBackground(Color.background, for: .tabBar)
         .scrollIndicators(.hidden)
-        .onChange(of: selectedReviewType) { _, newScope in
+        .onChange(of: reviewType) { _, newScope in
             viewModel.fetchReviews(for: .global, type: newScope)
         }
     }
@@ -105,10 +110,10 @@ extension ReviewView {
         HStack(spacing: 8) {
             ForEach(ReviewType.allCases, id: \.self) { reviewType in
                 FilterButton(title: reviewType.title,
-                             isSelected: selectedReviewType == reviewType,
+                             isSelected: self.reviewType == reviewType,
                              selectedBackgroundColor: Color.white,
                              selectedForegroundColor: Color.black) {
-                    selectedReviewType = reviewType
+                    self.reviewType = reviewType
                 }
             }
             Spacer()

@@ -46,7 +46,7 @@ enum WoteTabType: Int, CaseIterable {
 
 struct WoteTabView: View {
     @State private var selection = WoteTabType.consider
-    @State private var selectedVisibilityScope = VisibilityScopeType.global
+    @State private var visibilityScope = VisibilityScopeType.global
     @State private var isVoteCategoryButtonDidTap = false
     @Environment(AppLoginState.self) private var loginStateManager
     @Binding var path: [LoginNavigation]
@@ -98,7 +98,7 @@ struct WoteTabView: View {
                                postId: postId,
                                index: index)
                 case .makeVoteView:
-                    VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: selectedVisibilityScope, 
+                    VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: visibilityScope, 
                                                                 apiManager: loginStateManager.serviceRoot.apimanager), tabselection: $selection )
                 case .testIntroView:
                     TypeTestIntroView()
@@ -108,7 +108,8 @@ struct WoteTabView: View {
                     TypeTestView(viewModel: TypeTestViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
                         .environmentObject(navigatePath)
                 case .reveiwView:
-                    ReviewView(viewModel: ReviewTabViewModel(apiManger: loginStateManager.serviceRoot.apimanager))
+                    ReviewView(visibilityScopeType: $visibilityScope,
+                               viewModel: ReviewTabViewModel(apiManger: loginStateManager.serviceRoot.apimanager))
                 case .writeReiview:
 //                    VoteWriteView(viewModel: VoteWriteViewModel())
                     Text("아직")
@@ -116,7 +117,7 @@ struct WoteTabView: View {
                     SettingView()
                 case .mypageView:
                     MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager), 
-                               selectedVisibilityScope: $selectedVisibilityScope)
+                               selectedVisibilityScope: $visibilityScope)
                         .environmentObject(navigatePath)
                 }
             }
@@ -140,15 +141,16 @@ extension WoteTabView {
     private func tabDestinationView(for tab: WoteTabType) -> some View {
         switch tab {
         case .consider:
-            ConsiderationView(selectedVisibilityScope: $selectedVisibilityScope, 
+            ConsiderationView(visibilityScope: $visibilityScope,
                               viewModel: VoteViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
                 .environmentObject(navigatePath)
         case .review:
-            ReviewView(viewModel: ReviewTabViewModel(apiManger: loginStateManager.serviceRoot.apimanager))
+            ReviewView(visibilityScopeType: $visibilityScope, 
+                       viewModel: ReviewTabViewModel(apiManger: loginStateManager.serviceRoot.apimanager))
                 .environmentObject(navigatePath)
         case .myPage:
             MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
-                       selectedVisibilityScope: $selectedVisibilityScope)
+                       selectedVisibilityScope: $visibilityScope)
                 .environmentObject(navigatePath)
         }
     }
@@ -229,7 +231,7 @@ extension WoteTabView {
     private var voteCategoryMenu: some View {
         VStack(alignment: .leading, spacing: 0) {
             Button {
-                selectedVisibilityScope = .global
+                visibilityScope = .global
                 isVoteCategoryButtonDidTap = false
             } label: {
                 Text("전국 투표")
@@ -241,7 +243,7 @@ extension WoteTabView {
             Divider()
                 .background(Color.gray300)
             Button {
-                selectedVisibilityScope = .school
+                visibilityScope = .school
                 isVoteCategoryButtonDidTap = false
             } label: {
                 Text("우리 학교 투표")
@@ -266,7 +268,7 @@ extension WoteTabView {
                 isVoteCategoryButtonDidTap.toggle()
             } label: {
                 HStack(spacing: 5) {
-                    Text(selectedVisibilityScope.title)
+                    Text(visibilityScope.title)
                         .font(.system(size: 20, weight: .bold))
                         .foregroundStyle(.white)
                     Image(systemName: "chevron.down")

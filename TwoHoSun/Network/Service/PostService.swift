@@ -105,7 +105,7 @@ extension PostService: TargetType {
                 formData.append(imageData)
             }
             let postData: [String: Any] = [
-                "visibilityScope": post.visibilityScope.type,
+                "visibilityScope": post.visibilityScope.rawValue,
                 "title": post.title,
                 "price": post.price ?? 0,
                 "contents": post.contents ?? "",

@@ -24,12 +24,11 @@ final class ReviewTabViewModel: ObservableObject {
                       type reviewType: ReviewType,
                       page: Int = 0,
                       size: Int = 5) {
-        // TODO: - type들 rawValue로 할 거니... type으로 할 거니 하나만 정해
         reviews.removeAll()
         recentReviews.removeAll()
         isFetching = true
 
-        apiManager.request(.postService(.getReviews(visibilityScope: visibilityScope.type,
+        apiManager.request(.postService(.getReviews(visibilityScope: visibilityScope.rawValue,
                                                     reviewType: reviewType.rawValue,
                                                     page: page,
                                                     size: size)),
