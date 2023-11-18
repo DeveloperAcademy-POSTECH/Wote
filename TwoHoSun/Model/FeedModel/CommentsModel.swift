@@ -15,4 +15,5 @@ struct CommentsModel: Codable {
     let content: String
     let author: Author
     let subComments: [CommentsModel]?
+    let isMine: Bool
 }

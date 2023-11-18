@@ -36,7 +36,7 @@ struct CommentCell: View {
     var onReplyButtonTapped: () -> Void
     @State private var isOpenComment: Bool = false
     @State private var isExpended = false
-    var onConfirmDiaog: () -> Void
+    var onConfirmDiaog: (Bool) -> Void
 //    @State private var showConfirm = false
 //    var hasChildComments: Bool {
 //        return !comment.childComments!.isEmpty
@@ -59,7 +59,7 @@ struct CommentCell: View {
                     lastEditTimeText
                     Spacer()
                     Button(action: {
-                        onConfirmDiaog()
+                        onConfirmDiaog(comment.isMine)
                     }, label: {
                         Image(systemName: "ellipsis")
                             .foregroundStyle(Color.subGray1)

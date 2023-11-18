@@ -8,13 +8,19 @@
 import SwiftUI
 
 struct CommentsView: View {
-    @State private var isReplyButtonTap = false
     @State private var scrollSpot: Int = 0
-    @State private var showConfirm = false
     @FocusState private var isFocus: Bool
     @State private var presentAlert = false
+    //MARK: eclips버튼눌렸을떄 관련된 변수들
+    @State private var ismyCellconfirm = false {
+        didSet {
+            print(ismyCellconfirm)
+        }
+    }
+    @State private var showConfirm = false
     @Binding var showComplaint : Bool
     @Binding var applyComplaint: Bool
+
     @ObservedObject var viewModel: CommentsViewModel
     @State private var replyForAnotherName: String?
 
@@ -39,7 +45,10 @@ struct CommentsView: View {
                     ZStack {
                         Color.black.opacity(0.7)
                             .ignoresSafeArea()
-                        CustomAlertModalView(alertType: .ban(nickname: "선호"), isPresented: $presentAlert) {
+                        CustomAlertModalView(alertType: ismyCellconfirm ? .erase : .ban(nickname: "선호"), isPresented: $presentAlert) {
+                            if ismyCellconfirm {
+                                viewModel.deleteComments(commentId: scrollSpot)
+                            }
                             print("신고접수됐습니다.")
                         }
                         .padding(.bottom, UIScreen.main.bounds.height * 0.05)
@@ -71,20 +80,22 @@ struct CommentsView: View {
             })
             .customConfirmDialog(isPresented: $showConfirm, actions: {
                 // TODO: 내꺼인지 판별한 후 그 후 종료하기 등 버튼을 구현예정
-                Button {
-                    showComplaint.toggle()
-                    showConfirm.toggle()
-                } label: {
-                    Text("신고하기")
-                        .frame(maxWidth: .infinity)
+                if !ismyCellconfirm {
+                    Button {
+                        showComplaint.toggle()
+                        showConfirm.toggle()
+                    } label: {
+                        Text("신고하기")
+                            .frame(maxWidth: .infinity)
+                    }
+                    Divider()
+                        .background(Color.gray300)
                 }
-                Divider()
-                    .background(Color.gray300)
                 Button {
-                    showConfirm.toggle()
                     presentAlert.toggle()
+                    showConfirm.toggle()
                 } label: {
-                    Text("차단하기")
+                    Text(self.ismyCellconfirm ? "삭제하기" : "차단하기")
                         .frame(maxWidth: .infinity)
                 }
             })
@@ -100,10 +111,12 @@ extension CommentsView {
                         CommentCell(comment: comment, onReplyButtonTapped: {
                             scrollSpot = comment.commentId
                             replyForAnotherName =  comment.author.nickname
-                            isReplyButtonTap = true
                             isFocus = true
-                        }){
-                            showConfirm = true
+                        }){ ismine in
+                            isFocus = false
+                            self.ismyCellconfirm = true
+
+                            self.showConfirm = true
                         }
 //                        .id(comment.commentId)
 //                        if let subComments = comment.subComments {
