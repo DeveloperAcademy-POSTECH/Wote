@@ -10,6 +10,7 @@ import SwiftUI
 
 final class DetailViewModel: ObservableObject {
     @Published var postDetailData: PostDetailModel?
+    @Published var isMine = false
     var agreeTopConsumerTypes = [ConsumerType]()
     var disagreeTopConsumerTypes = [ConsumerType]()
     var commentsDatas = [CommentsModel]()
@@ -81,7 +82,6 @@ final class DetailViewModel: ObservableObject {
             } receiveValue: { data in
                 self.postDetailData = data
                 self.setTopConsumerTypes()
-//                self.updatedatePostData()
             }
             .store(in: &cancellables)
     }

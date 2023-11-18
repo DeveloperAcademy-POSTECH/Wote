@@ -15,6 +15,7 @@ struct DetailView: View {
     @State private var showCustomAlert = false
     @State private var applyComplaint = false
     @StateObject var viewModel: VoteViewModel
+
     var postId: Int
     var index: Int
 
@@ -146,6 +147,49 @@ struct DetailView: View {
                 CommentsView(showComplaint: $showCustomAlert, applyComplaint: $applyComplaint)
                     .presentationDetents([.large,.fraction(0.9)])
                     .presentationContentInteraction(.scrolls)
+        }
+        .customConfirmDialog(isPresented: $showconfirm, isMine: $viewModel.isMine) { _ in
+            if viewModel.isMine {
+                VStack(spacing: 15) {
+                    if viewModel.postData?.post.postStatus != PostStatus.closed.rawValue {
+                        Button {
+                            // TODO: - 투표 즉시 종료 API
+                            showconfirm.toggle()
+                        } label: {
+                            Text("투표 지금 종료하기")
+                                .frame(maxWidth: .infinity)
+                        }
+                        Divider()
+                            .background(Color.gray300)
+                    }
+                    Button {
+                        // TODO: - 투표 삭제 API
+                        showconfirm.toggle()
+                    } label: {
+                        Text("삭제하기")
+                            .frame(maxWidth: .infinity)
+                    }
+                }
+                .padding(.vertical, 15)
+            } else {
+                VStack(spacing: 15) {
+                    Button {
+                        showconfirm.toggle()
+                    } label: {
+                        Text("신고하기")
+                            .frame(maxWidth: .infinity)
+                    }
+                    Divider()
+                        .background(Color.gray300)
+                    Button {
+                        showconfirm.toggle()
+                    } label: {
+                        Text("차단하기")
+                            .frame(maxWidth: .infinity)
+                    }
+                }
+                .padding(.vertical, 15)
+            }
         }
         .onAppear {
             viewModel.postData = nil

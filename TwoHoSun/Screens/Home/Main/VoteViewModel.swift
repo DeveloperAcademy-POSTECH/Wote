@@ -14,6 +14,7 @@ final class VoteViewModel: ObservableObject {
     @Published var postData: PostDetailModel?
     @Published var isPostFetching = true
     @Published var pageOffset = 0
+    @Published var isMine = false
     var agreeCount = 0
     var disagreeCount = 0
     var myChoice = true
@@ -133,6 +134,8 @@ final class VoteViewModel: ObservableObject {
             }
         } receiveValue: { data in
             self.postData = data
+            guard let isMine = data.post.isMine else { return }
+            self.isMine = isMine
             self.setTopConsumerTypes()
         }
         .store(in: &cancellables)

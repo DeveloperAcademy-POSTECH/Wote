@@ -108,25 +108,25 @@ struct CommentsView: View {
                     ComplaintView(isSheet: $showComplaint, isComplaintApply: $applyComplaint)
                 }
             })
-            .customConfirmDialog(isPresented: $showConfirm, actions: {
-                // TODO: 내꺼인지 판별한 후 그 후 종료하기 등 버튼을 구현예정
-                Button {
-                    showComplaint.toggle()
-                    showConfirm.toggle()
-                } label: {
-                    Text("신고하기")
-                        .frame(maxWidth: .infinity)
-                }
-                Divider()
-                    .background(Color.gray300)
-                Button {
-                    showConfirm.toggle()
-                    presentAlert.toggle()
-                } label: {
-                    Text("차단하기")
-                        .frame(maxWidth: .infinity)
-                }
-            })
+//            .customConfirmDialog(isPresented: $showConfirm, actions: {
+//                // TODO: 내꺼인지 판별한 후 그 후 종료하기 등 버튼을 구현예정
+//                Button {
+//                    showComplaint.toggle()
+//                    showConfirm.toggle()
+//                } label: {
+//                    Text("신고하기")
+//                        .frame(maxWidth: .infinity)
+//                }
+//                Divider()
+//                    .background(Color.gray300)
+//                Button {
+//                    showConfirm.toggle()
+//                    presentAlert.toggle()
+//                } label: {
+//                    Text("차단하기")
+//                        .frame(maxWidth: .infinity)
+//                }
+//            })
     }
 }
 
