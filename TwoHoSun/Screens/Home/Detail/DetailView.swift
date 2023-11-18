@@ -14,6 +14,7 @@ struct DetailView: View {
     @State private var backgroundColor: Color = .background
     @State private var showCustomAlert = false
     @State private var applyComplaint = false
+    @State private var currentAlert = AlertType.closeVote
     @StateObject var viewModel: VoteViewModel
 
     var postId: Int
@@ -103,8 +104,19 @@ struct DetailView: View {
                 ZStack {
                     Color.black.opacity(0.7)
                         .ignoresSafeArea()
-                    CustomAlertModalView(alertType: .ban(nickname: "선호"), isPresented: $showCustomAlert) {
-                        print("신고접수됐습니다.")
+                    CustomAlertModalView(alertType: currentAlert,
+                                         isPresented: $showCustomAlert) {
+                        switch currentAlert {
+                        case .closeVote:
+                            // TODO: - 투표 종료 API
+                            print("투표 종료")
+                        case .deleteVote:
+                            // TODO: - 투표 삭제 API
+                            print("투표 삭제")
+                        default:
+                            break
+                        }
+                        showCustomAlert.toggle()
                     }
                 }
             }
@@ -133,12 +145,12 @@ struct DetailView: View {
                     .foregroundStyle(Color.white)
             }
             ToolbarItem(placement: .topBarTrailing) {
-                Button(action: {
+                Button {
                     showconfirm.toggle()
-                }, label: {
+                } label: {
                     Image(systemName: "ellipsis")
                         .foregroundStyle(Color.subGray1)
-                })
+                }
             }
         }
         .toolbarBackground(Color.background, for: .navigationBar)
@@ -153,7 +165,8 @@ struct DetailView: View {
                 VStack(spacing: 15) {
                     if viewModel.postData?.post.postStatus != PostStatus.closed.rawValue {
                         Button {
-                            // TODO: - 투표 즉시 종료 API
+                            currentAlert = .closeVote
+                            showCustomAlert.toggle()
                             showconfirm.toggle()
                         } label: {
                             Text("투표 지금 종료하기")
@@ -163,7 +176,8 @@ struct DetailView: View {
                             .background(Color.gray300)
                     }
                     Button {
-                        // TODO: - 투표 삭제 API
+                        currentAlert = .deleteVote
+                        showCustomAlert.toggle()
                         showconfirm.toggle()
                     } label: {
                         Text("삭제하기")
