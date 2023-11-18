@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct CommentsView: View {
-    @State private var commentText = ""
     @State private var isReplyButtonTap = false
     @State private var scrollSpot: Int = 0
     @State private var showConfirm = false
@@ -16,48 +15,8 @@ struct CommentsView: View {
     @State private var presentAlert = false
     @Binding var showComplaint : Bool
     @Binding var applyComplaint: Bool
-    let commentsModel: [CommentsModel] = []
     @ObservedObject var viewModel: CommentsViewModel
-//    let commentsModel: [CommentsModel] = [CommentsModel(commentId: 1,
-//                                                        createDate: "2023-11-04T17:43:48.467Z",
-//                                                        modifiedDate: "2023-11-04T17:43:48.467Z",
-//                                                        content: """
-//                                                        와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와
-//                                                        이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와
-//                                                        이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와
-//                                                        이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어와 이걸 안먹어?
-//                                                        """,
-//                                                        author: Author(id: 2, userNickname: "우왕 ㅋ", userProfileImage: nil),
-//                                                        childComments: nil),
-//                                          CommentsModel(commentId: 2,
-//                                                        createDate: "2023-11-04T17:43:48.467Z",
-//                                                        modifiedDate: "2023-11-04T17:43:48.467Z",
-//                                                        content: "와 이?",
-//                                                        author: Author(id: 3, userNickname: "ㅓㅓㅗ", userProfileImage: nil),
-//                                                        childComments: nil),
-//                                          CommentsModel(commentId: 3,
-//                                                        createDate: "2023-11-04T17:43:48.467Z",
-//                                                        modifiedDate: "2023-11-04T17:43:48.467Z",
-//                                                        content: "먹어?", author: Author(id: 4, userNickname: "ㅎ ㅋ", userProfileImage: nil),
-//                                                        childComments: nil),
-//                                          CommentsModel(commentId: 4,
-//                                                        createDate: "2023-11-04T17:43:48.467Z",
-//                                                        modifiedDate: "2023-11-04T17:43:48.467Z",
-//                                                        content: "와 이걸 안먹어?",
-//                                                        author: Author(id: 2, userNickname: "우왕 ㅋ", userProfileImage: nil),
-//                                                        childComments: nil),
-//                                          CommentsModel(commentId: 5,
-//                                                        createDate: "2023-11-04T17:43:48.467Z",
-//                                                        modifiedDate: "2023-11-04T17:43:48.467Z",
-//                                                        content: "와 이?",
-//                                                        author: Author(id: 3, userNickname: "ㅓㅓㅗ", userProfileImage: nil),
-//                                                        childComments: nil),
-//                                          CommentsModel(commentId: 6,
-//                                                        createDate: "2023-11-04T17:43:48.467Z",
-//                                                        modifiedDate: "2023-11-04T17:43:48.467Z",
-//                                                        content: "먹어?",
-//                                                        author: Author(id: 4, userNickname: "ㅎ ㅋ", userProfileImage: nil),
-//                                                        childComments: nil)]
+
     var body: some View {
             ZStack {
                 Color.lightGray
@@ -136,7 +95,7 @@ extension CommentsView {
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 28) {
-                    ForEach(commentsModel, id: \.commentId) { comment in
+                    ForEach(viewModel.commentsDatas, id: \.commentId) { comment in
                         CommentCell(comment: comment, onReplyButtonTapped: {
                             scrollSpot = comment.commentId
                             isReplyButtonTap = true
@@ -162,8 +121,8 @@ extension CommentsView {
                 .resizable()
                 .frame(width: 32, height: 32)
             withAnimation(.easeInOut) {
-                TextField("", text: $commentText, prompt: Text("소비고민을 함께 나누어 보세요")
-                    .foregroundStyle(Color.white)
+                TextField("", text: $viewModel.comments, prompt: Text("소비고민을 함께 나누어 보세요")
+                    .foregroundStyle(viewModel.comments.isEmpty ? Color.subGray1 :Color.white)
                     .font(.system(size: 14)) ,axis: .vertical)
                 .font(.system(size: 14))
                 .foregroundStyle(Color.white)
@@ -180,13 +139,13 @@ extension CommentsView {
                 }
             }
             .cornerRadius(12)
-            .animation(.easeInOut(duration: 0.3), value: commentText)
+            .animation(.easeInOut(duration: 0.3), value: viewModel.comments)
             if isFocus {
                 Button(action: {
-                    viewModel.postComment(content: commentText)
+                    viewModel.postComment()
                 }, label: {
                     Image(systemName: "paperplane")
-                        .foregroundStyle(commentText.isEmpty ?  Color.subGray1 : Color.white)
+                        .foregroundStyle(viewModel.comments.isEmpty ?  Color.subGray1 : Color.white)
                         .font(.system(size: 20))
                 })
             }

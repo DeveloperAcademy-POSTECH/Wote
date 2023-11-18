@@ -74,7 +74,7 @@ struct CommentCell: View {
                 .padding(.bottom, 6)
                 HStack {
 //                    ExpandableTextView(comment.content, lineLimit: 3)
-                    Text("\(comment.contents)")
+                    Text("\(comment.content)")
                         .foregroundStyle(Color.white)
                         .font(.system(size: 14))
                         .lineLimit(isExpended ? nil : 3)

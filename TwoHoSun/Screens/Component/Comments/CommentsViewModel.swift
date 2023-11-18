@@ -7,9 +7,13 @@
 import Combine
 import SwiftUI
 
-
 final class CommentsViewModel: ObservableObject {
-    @Published var commentsDatas = [CommentsModel]()
+    @Published var comments: String = ""
+    @Published var commentsDatas = [CommentsModel](){
+        didSet {
+            print(commentsDatas)
+        }
+    }
 //    @Published var content: String = ""
     private var apiManager: NewApiManager
     private var postId: Int
@@ -22,24 +26,30 @@ final class CommentsViewModel: ObservableObject {
     }
 
     func getAllComments() {
-        apiManager.request(.commentService(.getComments(postId: postId)), decodingType: CommentsModel.self )
+        apiManager.request(.commentService(.getComments(postId: postId)), decodingType: [CommentsModel].self)
+            .compactMap(\.data)
+            .receive(on: DispatchQueue.main)
             .sink { completion in
                 print(completion)
-            } receiveValue: { response in
-                print(response)
+            } receiveValue: { data in
+                print(data)
             }
             .store(in: &bag)
     }
 
-    func postComment(content: String) {
-        apiManager.request(.commentService(.postComment(postId: postId, contents: content)), decodingType: NoData.self)
+    func postComment() {
+        apiManager.request(.commentService(.postComment(postId: postId, contents: comments)), decodingType: NoData.self)
             .sink { completion in
                 print(completion)
             } receiveValue: { response in
                 print(response)
+                self.comments = ""
+                self.getAllComments()
+
             }
             .store(in: &bag)
-
     }
+
+    
 
 }

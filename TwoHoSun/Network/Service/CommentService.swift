@@ -58,7 +58,7 @@ extension CommentService: TargetType {
     var task: Moya.Task {
         switch self {
         case .getComments:
-            return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
+            return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case .postComment:
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         default:
