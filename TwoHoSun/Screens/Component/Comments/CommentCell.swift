@@ -41,10 +41,7 @@ struct CommentCell: View {
 //    var hasChildComments: Bool {
 //        return !comment.childComments!.isEmpty
 //    }
-
-    //    var lastEdit: (String , Int) {
-    //        return comment.modifiedDate.toDate()!.differenceCurrentTime()
-    //    }
+  
 
     var body: some View {
         HStack(alignment: .top) {
@@ -59,10 +56,7 @@ struct CommentCell: View {
                     Text(comment.author.nickname)
                         .font(.system(size: 14, weight: .medium))
                         .foregroundStyle(Color.white)
-                    Text("\(comment.modifiedDate)")
-                    Text("1시간전")
-                        .font(.system(size: 12))
-                        .foregroundStyle(Color.subGray1)
+                    lastEditTimeText
                     Spacer()
                     Button(action: {
                         onConfirmDiaog()
@@ -72,7 +66,6 @@ struct CommentCell: View {
                     })
                 }
                 .padding(.bottom, 6)
-                HStack {
 //                    ExpandableTextView(comment.content, lineLimit: 3)
                     Text("\(comment.content)")
                         .foregroundStyle(Color.white)
@@ -103,7 +96,7 @@ struct CommentCell: View {
 //                                .frame(width: proxy.size.width, height: proxy.size.height, alignment: .bottomTrailing)
 //                            }
 //                        )
-                }
+
                 Button(action: {onReplyButtonTapped()}, label: {
                     Text("답글달기")
                         .font(.system(size: 12))
@@ -111,5 +104,19 @@ struct CommentCell: View {
                 })
             }
         }
+    }
+}
+
+extension CommentCell {
+    var lastEditTimeText: some View {
+        var isEdited: String {
+            return comment.modifiedDate != comment.createDate ? "수정됨" : ""
+        }
+        var lastEdit: (String , Int) {
+            return comment.modifiedDate.toDate()!.differenceCurrentTime()
+        }
+        return Text("\(lastEdit.1)"+lastEdit.0 + isEdited)
+            .font(.system(size: 12, weight: .regular))
+            .foregroundStyle(Color.subGray1)
     }
 }

@@ -32,7 +32,7 @@ final class CommentsViewModel: ObservableObject {
             .sink { completion in
                 print(completion)
             } receiveValue: { data in
-                print(data)
+                self.commentsDatas = data
             }
             .store(in: &bag)
     }

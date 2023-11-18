@@ -16,6 +16,7 @@ struct CommentsView: View {
     @Binding var showComplaint : Bool
     @Binding var applyComplaint: Bool
     @ObservedObject var viewModel: CommentsViewModel
+    @State private var replyForAnotherName: String?
 
     var body: some View {
             ZStack {
@@ -98,6 +99,7 @@ extension CommentsView {
                     ForEach(viewModel.commentsDatas, id: \.commentId) { comment in
                         CommentCell(comment: comment, onReplyButtonTapped: {
                             scrollSpot = comment.commentId
+                            replyForAnotherName =  comment.author.nickname
                             isReplyButtonTap = true
                             isFocus = true
                         }){
@@ -137,6 +139,7 @@ extension CommentsView {
                             .background(isFocus ? Color.darkblue2325 : Color.textFieldGray)
                     }
                 }
+
             }
             .cornerRadius(12)
             .animation(.easeInOut(duration: 0.3), value: viewModel.comments)
@@ -158,15 +161,15 @@ extension CommentsView {
     @ViewBuilder
     var forReplyLabel: some View {
         // TODO: 추후에 유저 닉네임 가져오기
-        if isReplyButtonTap {
+        if let replyname = replyForAnotherName  {
             //             if let nickName = viewModel.getNicknameForComment(commentId: scrollSpot) {
             HStack {
-                Text("선ㅋ호ㅋ님에게 답글달기")
+                Text("\(replyname)님에게 답글달기")
                     .font(.system(size: 14))
                     .foregroundStyle(Color.grayC4C4)
                 Spacer()
                 Button {
-                    isReplyButtonTap = false
+                    replyForAnotherName = nil
                 } label: {
                     Image(systemName: "xmark")
                         .foregroundStyle(.white)
