@@ -34,12 +34,12 @@ import SwiftUI
 struct CommentCell: View {
     let comment: CommentsModel
     var onReplyButtonTapped: () -> Void
-    var onConfirmDiaog: (Bool) -> Void
+    var onConfirmDiaog: (Bool, Int) -> Void
     var childComments: [CommentsModel]?
     @State private var isOpenComment: Bool = false
     @State private var isExpended = false
     @State private var canExpended = false
-    init(comment: CommentsModel, onReplyButtonTapped: @escaping () -> Void, onConfirmDiaog: @escaping (Bool) -> Void) {
+    init(comment: CommentsModel, onReplyButtonTapped: @escaping () -> Void, onConfirmDiaog: @escaping (Bool, Int) -> Void) {
         self.comment = comment
         self.onReplyButtonTapped = onReplyButtonTapped
         self.onConfirmDiaog = onConfirmDiaog
@@ -102,7 +102,7 @@ extension CommentCell {
                     lastEditTimeText
                     Spacer()
                     Button(action: {
-                        onConfirmDiaog(comment.isMine)
+                        onConfirmDiaog(comment.isMine, comment.commentId)
                     }, label: {
                         Image(systemName: "ellipsis")
                             .foregroundStyle(Color.subGray1)
@@ -116,7 +116,7 @@ extension CommentCell {
                     .padding(.bottom, 4)
                     .padding(.trailing, 20)
                     .background {
-                        ViewThatFits(in: .horizontal) {
+                        ViewThatFits(in: .vertical) {
                             Text("\(comment.content)")
                                 .hidden()
                             Color.clear

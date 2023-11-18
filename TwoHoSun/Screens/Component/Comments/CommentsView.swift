@@ -111,8 +111,8 @@ extension CommentsView {
                             scrollSpot = comment.commentId
                             replyForAnotherName =  comment.author.nickname
                             isFocus = true
-                        }){ ismine in
-                            scrollSpot = comment.commentId
+                        }) {ismine, commentId in
+                            scrollSpot = commentId
                             isFocus = false
                             ismyCellconfirm = ismine
                             showConfirm.toggle()
@@ -155,7 +155,12 @@ extension CommentsView {
             .animation(.easeInOut(duration: 0.3), value: viewModel.comments)
             if isFocus {
                 Button(action: {
-                    replyForAnotherName != nil ? viewModel.postReply(commentId: scrollSpot) : viewModel.postComment()
+                    if let replyForAnotherName = replyForAnotherName {
+                        viewModel.postReply(commentId: scrollSpot)
+                    } else {
+                        viewModel.postComment()
+                    }
+                    isFocus = false
                 }, label: {
                     Image(systemName: "paperplane")
                         .foregroundStyle(viewModel.comments.isEmpty ?  Color.subGray1 : Color.white)
@@ -167,7 +172,6 @@ extension CommentsView {
         .padding(EdgeInsets(top: 11, leading: 24, bottom: 9, trailing: 24))
         .overlay(Divider().background(Color.subGray1), alignment: .top)
     }
-
     @ViewBuilder
     var forReplyLabel: some View {
         // TODO: 추후에 유저 닉네임 가져오기
