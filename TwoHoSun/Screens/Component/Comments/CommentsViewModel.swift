@@ -9,11 +9,7 @@ import SwiftUI
 
 final class CommentsViewModel: ObservableObject {
     @Published var comments: String = ""
-    @Published var commentsDatas = [CommentsModel]() {
-        didSet {
-            print(commentsDatas)
-        }
-    }
+    @Published var commentsDatas = [CommentsModel]()
     @Published var presentAlert = false
     private var apiManager: NewApiManager
     private var postId: Int
@@ -41,8 +37,7 @@ final class CommentsViewModel: ObservableObject {
         apiManager.request(.commentService(.postComment(postId: postId, contents: comments)), decodingType: NoData.self)
             .sink { completion in
                 print(completion)
-            } receiveValue: { response in
-                print(response)
+            } receiveValue: { _ in
                 self.comments = ""
                 self.getAllComments()
             }
@@ -53,7 +48,7 @@ final class CommentsViewModel: ObservableObject {
         apiManager.request(.commentService(.deleteComments(commentId: commentId)), decodingType: NoData.self)
             .sink { completion in
                 print(completion)
-            } receiveValue: { res in
+            } receiveValue: { _ in
                 self.comments = ""
                 self.getAllComments()
                 self.presentAlert.toggle()
@@ -65,10 +60,9 @@ final class CommentsViewModel: ObservableObject {
         apiManager.request(.commentService(.postReply(commentId: commentId, contents: comments)), decodingType: NoData.self)
             .sink { completion in
                 print(completion)
-            } receiveValue: { res in
+            } receiveValue: { _ in
                 self.comments = ""
                 self.getAllComments()
-                print("success")
             }
             .store(in: &bag)
     }
