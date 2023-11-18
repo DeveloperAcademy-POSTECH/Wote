@@ -50,6 +50,12 @@ final class CommentsViewModel: ObservableObject {
             .store(in: &bag)
     }
 
-    
-
+    func deleteComments(commentId: Int) {
+        apiManager.request(.commentService(.deleteComments(commentId: commentId)), decodingType: NoData.self)
+            .sink { completion in
+                print(completion)
+            } receiveValue: { res in
+                print("success")
+            }
+    }
 }
