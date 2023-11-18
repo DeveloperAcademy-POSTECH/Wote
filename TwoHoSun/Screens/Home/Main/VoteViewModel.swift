@@ -50,7 +50,7 @@ final class VoteViewModel: ObservableObject {
         isLastPage = false
         isPostFetching = true
     }
-    
+
     func fetchMorePosts(_ visibilityScope: String) {
         guard !isLastPage else { return }
 

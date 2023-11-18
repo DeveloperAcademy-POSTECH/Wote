@@ -10,16 +10,30 @@ import Foundation
 extension String {
 
     func toDate() -> Date? {
+        let dateFormats = [
+            "yyyy-MM-dd'T'HH:mm:ss.SSSSS",
+            "yyyy-MM-dd'T'HH:mm:ss"
+        ]
+
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSS"
         dateFormatter.timeZone = TimeZone(identifier: "KST")
-        return dateFormatter.date(from: self)
+
+        for format in dateFormats {
+            dateFormatter.dateFormat = format
+            if let date = dateFormatter.date(from: self) {
+                return date
+            }
+        }
+        return Date()
     }
 
     func convertToStringDate() -> String? {
+        guard let date = self.toDate() else {
+            return nil
+        }
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy년 M월 d일"
-        let dateString = dateFormatter.string(from: self.toDate()!)
+        let dateString = dateFormatter.string(from: date)
         return dateString
     }
 }

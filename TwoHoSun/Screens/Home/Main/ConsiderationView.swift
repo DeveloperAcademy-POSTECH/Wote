@@ -39,12 +39,9 @@ struct ConsiderationView: View {
             currentVote = 0
             viewModel.fetchPosts(visibilityScope: newScope.type)
         }
-        .onDisappear {
-            viewModel.fetchPosts(visibilityScope: selectedVisibilityScope.type)
-            currentVote = 0
-        }
     }
 }
+
 extension ConsiderationView {
 
     private var votePagingView: some View {
@@ -94,8 +91,13 @@ extension ConsiderationView {
     }
 
     private var createVoteButton: some View {
-        Button {
-            pathManger.navigate(haveConsumerType ? .makeVoteView : .testIntroView)
+        NavigationLink {
+            VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: selectedVisibilityScope,
+                                                        apiManager: loginState.serviceRoot.apimanager))
+            .onDisappear {
+                viewModel.fetchPosts(visibilityScope: selectedVisibilityScope.type)
+                currentVote = 0
+            }
         } label: {
             HStack(spacing: 2) {
                 Image(systemName: "plus")

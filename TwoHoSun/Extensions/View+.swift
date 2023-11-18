@@ -15,5 +15,4 @@ extension View {
     func customConfirmDialog<A: View>(isPresented: Binding<Bool>, @ViewBuilder actions: @escaping () -> A) -> some View {
         return self.modifier(CustomConfirmModifier(isPresented: isPresented, actions: actions))
     }
-
 }

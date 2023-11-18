@@ -239,9 +239,14 @@ struct DetailContentView: View {
             VStack(alignment: .leading, spacing: 13) {
                 ConsumerTypeLabel(consumerType: ConsumerType(rawValue: postDetailData.author.consumerType) ?? .adventurer, 
                                usage: .standard)
-                Text(postDetailData.title)
-                    .foregroundStyle(Color.white)
-                    .font(.system(size: 18, weight: .bold))
+                HStack(spacing: 6) {
+                    if postDetailData.postStatus == PostStatus.closed.rawValue {
+                        EndLabel()
+                    }
+                    Text(postDetailData.title)
+                        .foregroundStyle(Color.white)
+                        .font(.system(size: 18, weight: .bold))
+                }
                 if let contents = postDetailData.contents {
                     Text(contents)
                         .frame(maxWidth: .infinity, alignment: .leading)
