@@ -12,6 +12,7 @@ import Kingfisher
 struct ImageView: View {
     var imageURL: String
     var ratio: Double = 1.5
+    var cornerRadius: CGFloat = 16
     @State private var isImageLoadFailed = false
 
     var body: some View {
@@ -38,7 +39,7 @@ struct ImageView: View {
                 .resizable()
                 .aspectRatio(ratio, contentMode: .fit)
                 .frame(maxWidth: .infinity)
-                .clipShape(.rect(cornerRadius: 16))
+                .clipShape(.rect(cornerRadius: cornerRadius))
         }
     }
 }

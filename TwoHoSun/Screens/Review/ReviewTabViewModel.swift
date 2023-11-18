@@ -9,8 +9,8 @@ import Combine
 import SwiftUI
 
 final class ReviewTabViewModel: ObservableObject {
-    @Published var recentReviews = [SummaryPostModel]()
     @Published var reviews = [SummaryPostModel]()
+    @Published var recentReviews = [SummaryPostModel]()
     @Published var isFetching = true
     private var apiManager: NewApiManager
     private var cancellable = Set<AnyCancellable>()
@@ -25,6 +25,10 @@ final class ReviewTabViewModel: ObservableObject {
                       page: Int = 0,
                       size: Int = 5) {
         // TODO: - type들 rawValue로 할 거니... type으로 할 거니 하나만 정해
+        reviews.removeAll()
+        recentReviews.removeAll()
+        isFetching = true
+
         apiManager.request(.postService(.getReviews(visibilityScope: visibilityScope.type,
                                                     reviewType: reviewType.rawValue,
                                                     page: page,
@@ -40,6 +44,7 @@ final class ReviewTabViewModel: ObservableObject {
             }
         } receiveValue: { data in
             self.recentReviews.append(contentsOf: data.recentReviews)
+            self.reviews.append(contentsOf: data.reviews)
             self.isFetching = false
         }
         .store(in: &cancellable)

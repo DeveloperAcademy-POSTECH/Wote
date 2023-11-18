@@ -115,7 +115,8 @@ struct WoteTabView: View {
                 case .settingView:
                     SettingView()
                 case .mypageView:
-                    MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager), selectedVisibilityScope: $selectedVisibilityScope)
+                    MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager), 
+                               selectedVisibilityScope: $selectedVisibilityScope)
                         .environmentObject(navigatePath)
                 }
             }

@@ -16,7 +16,7 @@ struct ReviewTabModel: Codable {
 enum ReviewType: String, CaseIterable {
     case all = "ALL"
     case purchased = "PURCHASED"
-    case notPurchased = "NOTPURCHASED"
+    case notPurchased = "NOT_PURCHASED"
 
     var title: String {
         switch self {

@@ -245,7 +245,9 @@ extension MyPageView {
                     ReviewDetailView()
                 } label: {
                     VStack(spacing: 0) {
-                        ReviewCardCell(cellType: .myReview, isPurchased: Bool.random())
+//                        ReviewCardCell(cellType: .myReview, 
+//                                       isPurchased: Bool.random(),
+//                                       data: <#SummaryPostModel#>)
                         Divider()
                             .background(Color.dividerGray)
                             .padding(.horizontal, 8)

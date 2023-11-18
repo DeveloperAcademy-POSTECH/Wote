@@ -229,8 +229,10 @@ extension SearchView {
                     .id("searchResult")
                 case .review:
                     ForEach(0..<5) { _ in
-                        listCell(cellType: ReviewCardCell(cellType: .search, isPurchased: false),
-                                 destination: ReviewDetailView())
+//                        listCell(cellType: ReviewCardCell(cellType: .search, 
+//                                                          isPurchased: false,
+//                                                          data: <#SummaryPostModel#>),
+//                                 destination: ReviewDetailView())
                     }
                     .listRowBackground(Color.clear)
                     .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
