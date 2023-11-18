@@ -16,7 +16,6 @@ struct DetailView: View {
     @State private var applyComplaint = false
     @State private var currentAlert = AlertType.closeVote
     @StateObject var viewModel: VoteViewModel
-
     var postId: Int
     var index: Int
 
@@ -108,15 +107,15 @@ struct DetailView: View {
                                          isPresented: $showCustomAlert) {
                         switch currentAlert {
                         case .closeVote:
-                            // TODO: - 투표 종료 API
-                            print("투표 종료")
+//                          // TODO: - 투표 마감 API
+                            print("마감")
                         case .deleteVote:
-                            // TODO: - 투표 삭제 API
-                            print("투표 삭제")
+                            viewModel.deletePost(postId: postId, index: index)
+                            showCustomAlert.toggle()
+                            dismiss()
                         default:
                             break
                         }
-                        showCustomAlert.toggle()
                     }
                 }
             }
