@@ -30,13 +30,6 @@ final class VoteViewModel: ObservableObject {
         fetchPosts(visibilityScope: VisibilityScopeType.global.type)
     }
 
-    func updatePost(index: Int) {
-        posts[index].myChoice = myChoice
-        posts[index].voteCount = agreeCount + disagreeCount
-        posts[index].voteCounts = VoteCountsModel(agreeCount: agreeCount,
-                                                  disagreeCount: disagreeCount)
-    }
-
     func resetPosts() {
         posts.removeAll()
         page = 0
@@ -212,5 +205,3 @@ final class VoteViewModel: ObservableObject {
             .compactMap { $0 }
     }
 }
-
-
