@@ -23,10 +23,11 @@ enum PostService {
     case votePost(postId: Int, choice: Bool)
     case getSearchResult
     case getMyPosts(page: Int, size: Int, myVoteCategoryType: String)
-    case getReviews(visibilityScope: String,
-                      reviewType: String,
-                      page: Int,
-                      size: Int)
+//    case getReviews(visibilityScope: String,
+//                      reviewType: String,
+//                      page: Int,
+//                      size: Int)
+    case getReviews(visibilityScope: String)
 }
 
 extension PostService: TargetType {
@@ -66,11 +67,11 @@ extension PostService: TargetType {
             return ["page": page,
                     "size": size,
                     "myVoteCategoryType": myVoteCategoryType]
-        case .getReviews(let visibilityScope, let reviewType, let page, let size):
-            return ["visibilityScope": visibilityScope,
-                    "reviewType": reviewType,
-                    "page": page,
-                    "size": size]
+//        case .getReviews(let visibilityScope, let reviewType, let page, let size):
+//            return ["visibilityScope": visibilityScope,
+//                    "reviewType": reviewType,
+//                    "page": page,
+//                    "size": size]
         default:
             return [:]
         }
@@ -131,8 +132,9 @@ extension PostService: TargetType {
                                                urlParameters: ["postId": postId])
         case .getMyPosts:
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
-        case .getReviews:
-            return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
+        case .getReviews(let scope):
+            return .requestParameters(parameters: ["visibilitySccope": scope],
+                                      encoding: URLEncoding.queryString)
         default:
             return .requestPlain
         }

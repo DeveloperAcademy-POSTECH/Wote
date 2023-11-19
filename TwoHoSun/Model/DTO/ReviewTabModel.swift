@@ -8,9 +8,11 @@
 import Foundation
 
 struct ReviewTabModel: Codable {
+    let myConsumerType: String?
     let recentReviews: [SummaryPostModel]
-    let reviewType: String
-    let reviews: [SummaryPostModel]
+    let allReviews: [SummaryPostModel]
+    let purchasedReviews: [SummaryPostModel]
+    let notPurchasedReviews: [SummaryPostModel]
 }
 
 enum ReviewType: String, CaseIterable {

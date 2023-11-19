@@ -15,7 +15,6 @@ enum ReviewCardCellType {
 
 struct ReviewCardCell: View {
     var cellType: ReviewCardCellType
-    var isPurchased: Bool
     var data: SummaryPostModel
 
     var body: some View {

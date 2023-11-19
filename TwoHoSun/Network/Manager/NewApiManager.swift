@@ -4,7 +4,7 @@ import Moya
 
 @Observable
 class NewApiManager {
-    var provider = MoyaProvider<CommonAPIService>(plugins: [])
+    var provider = MoyaProvider<CommonAPIService>(plugins: [NetworkLoggerPlugin()])
     var authenticator: Authenticator
 
     init(authenticator: Authenticator) {

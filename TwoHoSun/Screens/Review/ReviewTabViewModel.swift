@@ -9,30 +9,21 @@ import Combine
 import SwiftUI
 
 final class ReviewTabViewModel: ObservableObject {
-    @Published var reviews = [SummaryPostModel]()
-    @Published var recentReviews = [SummaryPostModel]()
+    @Published var consumerType: ConsumerType? = nil
+    @Published var reviews: ReviewTabModel? = nil
     @Published var isFetching = true
     private var apiManager: NewApiManager
     private var cancellable = Set<AnyCancellable>()
 
     init(apiManger: NewApiManager) {
         self.apiManager = apiManger
-        fetchReviews(for: .global, type: .all)
+        fetchReviews(for: .global)
     }
 
-    func fetchReviews(for visibilityScope: VisibilityScopeType,
-                      type reviewType: ReviewType,
-                      page: Int = 0,
-                      size: Int = 5) {
-        reviews.removeAll()
-        recentReviews.removeAll()
+    func fetchReviews(for visibilityScope: VisibilityScopeType) {
         isFetching = true
 
-        apiManager.request(.postService(.getReviews(visibilityScope: visibilityScope.rawValue,
-                                                    reviewType: reviewType.rawValue,
-                                                    page: page,
-                                                    size: size)),
-                           decodingType: ReviewTabModel.self)
+        apiManager.request(.postService(.getReviews(visibilityScope: visibilityScope.rawValue)), decodingType: ReviewTabModel.self)
         .compactMap(\.data)
         .sink { completion in
             switch completion {
@@ -42,8 +33,7 @@ final class ReviewTabViewModel: ObservableObject {
                 print(error)
             }
         } receiveValue: { data in
-            self.recentReviews.append(contentsOf: data.recentReviews)
-            self.reviews.append(contentsOf: data.reviews)
+            self.reviews = data
             self.isFetching = false
         }
         .store(in: &cancellable)

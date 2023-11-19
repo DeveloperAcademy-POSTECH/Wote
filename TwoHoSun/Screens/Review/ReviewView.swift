@@ -16,30 +16,32 @@ struct ReviewView: View {
         ScrollView {
             VStack(spacing: 0) {
                 if !viewModel.isFetching {
-                    if !viewModel.recentReviews.isEmpty {
-                        sameSpendTypeReviewView(datas: viewModel.recentReviews)
-                            .padding(.top, 24)
-                            .padding(.bottom, 20)
-                            .padding(.leading, 24)
-                    }
-                    if !viewModel.reviews.isEmpty {
-                        ScrollViewReader { proxy in
-                            LazyVStack(pinnedViews: .sectionHeaders) {
-                                Section {
-                                    reviewListView(datas: viewModel.reviews)
-                                        .padding(.leading, 16)
-                                        .padding(.trailing, 8)
-                                } header: {
-                                    reviewFilterView
+                    sameSpendTypeReviewView(datas: viewModel.reviews?.recentReviews,
+                                            consumerType: viewModel.reviews?.myConsumerType)
+                        .padding(.top, 24)
+                        .padding(.bottom, 20)
+                        .padding(.leading, 24)
+                    ScrollViewReader { proxy in
+                        LazyVStack(pinnedViews: .sectionHeaders) {
+                            Section {
+                                if let reviews = viewModel.reviews {
+                                    if reviews.recentReviews.isEmpty {
+                                        NoVoteView(selectedVisibilityScope: $visibilityScopeType)
+                                            .padding(.top, 70)
+                                    } else {
+                                        reviewListView(for: reviewType)
+                                            .padding(.leading, 16)
+                                            .padding(.trailing, 8)
+                                    }
                                 }
-                                .id("reviewTypeSection")
+                            } header: {
+                                reviewFilterView
                             }
-                            .onChange(of: reviewType) { _, _ in
-                                proxy.scrollTo("reviewTypeSection", anchor: .top)
-                            }
+                            .id("reviewTypeSection")
                         }
-                    } else {
-                        NoReviewView()
+                        .onChange(of: reviewType) { _, _ in
+                            proxy.scrollTo("reviewTypeSection", anchor: .top)
+                        }
                     }
                 }
             }
@@ -48,38 +50,39 @@ struct ReviewView: View {
         .background(Color.background)
         .toolbarBackground(Color.background, for: .tabBar)
         .scrollIndicators(.hidden)
-        .onChange(of: reviewType) { _, newScope in
-            viewModel.fetchReviews(for: .global, type: newScope)
-        }
     }
 }
 
 extension ReviewView {
 
-    private func sameSpendTypeReviewView(datas: [SummaryPostModel]) -> some View {
-        VStack(spacing: 18) {
-            HStack(spacing: 6) {
-                // TODO: - 내 소비 성향 붙이기
-                ConsumerTypeLabel(consumerType: .beautyLover, usage: .standard)
-                Text("나와 같은 성향의 소비 후기")
-                    .font(.system(size: 16, weight: .bold))
-                    .foregroundStyle(.white)
-                Spacer()
-            }
-            ScrollView(.horizontal) {
-                HStack(spacing: 10) {
-                    ForEach(datas) { data in
-                        NavigationLink {
-                            // TODO: - isPurchased 수정
-                            ReviewDetailView(isPurchased: Bool.random())
-                        } label: {
-                            simpleReviewCell(title: data.title,
-                                             content: data.contents ?? "")
+    @ViewBuilder
+    private func sameSpendTypeReviewView(datas: [SummaryPostModel]?,
+                                         consumerType: String?) -> some View {
+        if let datas = datas, let consumerType = consumerType {
+            VStack(spacing: 18) {
+                HStack(spacing: 6) {
+                    ConsumerTypeLabel(consumerType: ConsumerType(rawValue: consumerType) ?? .adventurer,
+                                      usage: .standard)
+                    Text("나와 같은 성향의 소비 후기")
+                        .font(.system(size: 16, weight: .bold))
+                        .foregroundStyle(.white)
+                    Spacer()
+                }
+                ScrollView(.horizontal) {
+                    HStack(spacing: 10) {
+                        ForEach(datas) { data in
+                            NavigationLink {
+                                // TODO: - isPurchased 수정, postId 수정
+                                ReviewDetailView(isPurchased: Bool.random())
+                            } label: {
+                                simpleReviewCell(title: data.title,
+                                                 content: data.contents ?? "")
+                            }
                         }
                     }
                 }
+                .scrollIndicators(.hidden)
             }
-            .scrollIndicators(.hidden)
         }
     }
 
@@ -123,19 +126,28 @@ extension ReviewView {
         .background(Color.background)
     }
 
-    private func reviewListView(datas: [SummaryPostModel]) -> some View {
-        ForEach(datas) { data in
+    private func reviewListView(for type: ReviewType) -> some View {
+        let datas = switch type {
+                    case .all:
+                    viewModel.reviews?.allReviews
+                    case .purchased:
+                    viewModel.reviews?.purchasedReviews
+                    case .notPurchased:
+                    viewModel.reviews?.notPurchasedReviews
+                    }
+
+        return ForEach(datas ?? []) { data in
             NavigationLink {
                 ReviewDetailView()
             } label: {
                 VStack(spacing: 6) {
                     Divider()
                         .background(Color.dividerGray)
-                    ReviewCardCell(cellType: .otherReview, 
-                                   isPurchased: Bool.random(),
+                    ReviewCardCell(cellType: .otherReview,
                                    data: data)
                 }
             }
         }
+
     }
 }
