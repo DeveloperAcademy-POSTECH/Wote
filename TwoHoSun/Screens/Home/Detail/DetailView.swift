@@ -38,9 +38,7 @@ struct DetailView: View {
                             .padding(.top, 27)
                         VStack {
                             if data.post.postStatus == "CLOSED" || data.post.myChoice != nil {
-                                let (agreeRatio, disagreeRatio) = viewModel.calculateVoteRatio(voteCount: data.post.voteCount,
-                                                                                               agreeCount: data.post.voteCounts.agreeCount,
-                                                                                               disagreeCount: data.post.voteCounts.disagreeCount)
+                                let (agreeRatio, disagreeRatio) = viewModel.calculatVoteRatio(voteCounts: data.post.voteCounts)
                                 VoteResultView(myChoice: data.post.myChoice,
                                                agreeRatio: agreeRatio,
                                                disagreeRatio: disagreeRatio)
@@ -66,9 +64,7 @@ struct DetailView: View {
 
                         if data.post.voteCount != 0 {
                             if data.post.postStatus == "CLOSED" || data.post.myChoice != nil {
-                                let (agreeRatio, disagreeRatio) = viewModel.calculateVoteRatio(voteCount: data.post.voteCount,
-                                                                                               agreeCount: data.post.voteCounts.agreeCount,
-                                                                                               disagreeCount: data.post.voteCounts.disagreeCount)
+                                let (agreeRatio, disagreeRatio) = viewModel.calculatVoteRatio(voteCounts: data.post.voteCounts)
                                 consumerTypeLabels(.agree, topConsumerTypes: viewModel.agreeTopConsumerTypes)
                                 resultProgressView(.agree,
                                                    ratio: agreeRatio,

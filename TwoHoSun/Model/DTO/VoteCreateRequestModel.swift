@@ -37,35 +37,3 @@ enum VoteType {
         }
     }
 }
-
-//enum VoteType: String, Codable {
-//    case agree = "AGREE"
-//    case disagree = "DISAGREE"
-//
-//    var title: String {
-//        switch self {
-//        case .agree:
-//            return "산다"
-//        case .disagree:
-//            return "안산다"
-//        }
-//    }
-//
-//    var color: Color {
-//        switch self {
-//        case .agree:
-//            return Color("agreeColor")
-//        case .disagree:
-//            return Color("disagreeColor")
-//        }
-//    }
-//
-//    var subtitle: String {
-//        switch self {
-//        case .agree:
-//            return "사는"
-//        case .disagree:
-//            return "사지 않는"
-//        }
-//    }
-//}
