@@ -22,12 +22,14 @@ enum PostService {
     case subscribeReview
     case votePost(postId: Int, choice: Bool)
     case getSearchResult
-    case getMyPosts(page: Int, size: Int, myVoteCategoryType: String)
-//    case getReviews(visibilityScope: String,
-//                      reviewType: String,
-//                      page: Int,
-//                      size: Int)
+    case getMyPosts(page: Int,
+                    size: Int,
+                    myVoteCategoryType: String)
     case getReviews(visibilityScope: String)
+    case getMoreReviews(visibilityScope: String,
+                        page: Int,
+                        size: Int,
+                        reviewType: String)
 }
 
 extension PostService: TargetType {
@@ -50,6 +52,8 @@ extension PostService: TargetType {
             return "mypage/posts"
         case .getReviews:
             return "/reviews"
+        case .getMoreReviews(_, _, _, let reviewType):
+            return "reviews/\(reviewType)"
         default:
             return ""
         }
@@ -67,11 +71,14 @@ extension PostService: TargetType {
             return ["page": page,
                     "size": size,
                     "myVoteCategoryType": myVoteCategoryType]
-//        case .getReviews(let visibilityScope, let reviewType, let page, let size):
-//            return ["visibilityScope": visibilityScope,
-//                    "reviewType": reviewType,
-//                    "page": page,
-//                    "size": size]
+        case .getMoreReviews(let visibilityScope,
+                             let page,
+                             let size,
+                             let reviewType):
+            return ["visibilityScope": visibilityScope,
+                    "page": page,
+                    "size": size,
+                    "reviewType": reviewType]
         default:
             return [:]
         }
@@ -134,6 +141,9 @@ extension PostService: TargetType {
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case .getReviews(let scope):
             return .requestParameters(parameters: ["visibilitySccope": scope],
+                                      encoding: URLEncoding.queryString)
+        case .getMoreReviews:
+            return .requestParameters(parameters: parameters,
                                       encoding: URLEncoding.queryString)
         default:
             return .requestPlain

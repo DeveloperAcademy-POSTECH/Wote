@@ -50,6 +50,13 @@ struct ReviewView: View {
         .background(Color.background)
         .toolbarBackground(Color.background, for: .tabBar)
         .scrollIndicators(.hidden)
+        .refreshable {
+            viewModel.fetchReviews(for: visibilityScopeType)
+        }
+        .onAppear {
+            viewModel.fetchMoreReviews(for: visibilityScopeType,
+                                       filter: reviewType)
+        }
     }
 }
 
@@ -76,7 +83,8 @@ extension ReviewView {
                                 ReviewDetailView(isPurchased: Bool.random())
                             } label: {
                                 simpleReviewCell(title: data.title,
-                                                 content: data.contents ?? "")
+                                                 content: data.contents,
+                                                 isPurchased: data.isPurchased)
                             }
                         }
                     }
@@ -86,10 +94,12 @@ extension ReviewView {
         }
     }
 
-    private func simpleReviewCell(title: String, content: String) -> some View {
+    private func simpleReviewCell(title: String,
+                                  content: String?,
+                                  isPurchased: Bool?) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 4) {
-                PurchaseLabel(isPurchased: Bool.random())
+                PurchaseLabel(isPurchased: isPurchased ?? false)
                 Text(title)
                     .font(.system(size: 16, weight: .bold))
                     .foregroundStyle(.white)
@@ -97,7 +107,7 @@ extension ReviewView {
                 Spacer() 
             }
             .padding(.horizontal, 20)
-            Text(content)
+            Text(content ?? "")
                 .font(.system(size: 14, weight: .medium))
                 .foregroundStyle(.white)
                 .lineLimit(1)
@@ -126,17 +136,16 @@ extension ReviewView {
         .background(Color.background)
     }
 
-    private func reviewListView(for type: ReviewType) -> some View {
-        let datas = switch type {
+    private func reviewListView(for filter: ReviewType) -> some View {
+        let datas = switch filter {
                     case .all:
-                    viewModel.reviews?.allReviews
+                    viewModel.reviews?.allReviews ?? []
                     case .purchased:
-                    viewModel.reviews?.purchasedReviews
+                    viewModel.reviews?.purchasedReviews ?? []
                     case .notPurchased:
-                    viewModel.reviews?.notPurchasedReviews
+                    viewModel.reviews?.notPurchasedReviews ?? []
                     }
-
-        return ForEach(datas ?? []) { data in
+        return ForEach(Array(zip(datas.indices, datas)), id: \.0) { index, data in
             NavigationLink {
                 ReviewDetailView()
             } label: {
@@ -145,6 +154,12 @@ extension ReviewView {
                         .background(Color.dividerGray)
                     ReviewCardCell(cellType: .otherReview,
                                    data: data)
+                }
+                .onAppear {
+                    if index == datas.count - 2 {
+                        viewModel.fetchMoreReviews(for: visibilityScopeType,
+                                                   filter: filter)
+                    }
                 }
             }
         }
