@@ -108,7 +108,7 @@ struct WoteTabView: View {
                     TypeTestView(viewModel: TypeTestViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
                         .environmentObject(navigatePath)
                 case .reveiwView:
-                    ReviewView(visibilityScopeType: $visibilityScope,
+                    ReviewView(visibilityScope: $visibilityScope,
                                viewModel: ReviewTabViewModel(apiManger: loginStateManager.serviceRoot.apimanager))
                 case .writeReiview:
 //                    VoteWriteView(viewModel: VoteWriteViewModel())
@@ -145,7 +145,7 @@ extension WoteTabView {
                               viewModel: VoteViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
                 .environmentObject(navigatePath)
         case .review:
-            ReviewView(visibilityScopeType: $visibilityScope, 
+            ReviewView(visibilityScope: $visibilityScope, 
                        viewModel: ReviewTabViewModel(apiManger: loginStateManager.serviceRoot.apimanager))
                 .environmentObject(navigatePath)
         case .myPage:

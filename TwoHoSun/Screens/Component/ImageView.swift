@@ -21,9 +21,9 @@ struct ImageView: View {
                 RoundedRectangle(cornerRadius: 16)
                     .frame(maxWidth: .infinity)
                     .foregroundStyle(Color.lightGray)
-                    .aspectRatio(1.5, contentMode: .fit)
-                Text("이미지 로딩에 실패했습니다")
-                    .font(.system(size: 13))
+                    .aspectRatio(ratio, contentMode: .fit)
+                Image(systemName: "exclamationmark.square")
+                    .font(.system(size: 15))
                     .foregroundStyle(.white)
             }
         } else {

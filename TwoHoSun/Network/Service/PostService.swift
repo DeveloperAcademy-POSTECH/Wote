@@ -140,7 +140,7 @@ extension PostService: TargetType {
         case .getMyPosts:
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case .getReviews(let scope):
-            return .requestParameters(parameters: ["visibilitySccope": scope],
+            return .requestParameters(parameters: ["visibilityScope": scope],
                                       encoding: URLEncoding.queryString)
         case .getMoreReviews:
             return .requestParameters(parameters: parameters,

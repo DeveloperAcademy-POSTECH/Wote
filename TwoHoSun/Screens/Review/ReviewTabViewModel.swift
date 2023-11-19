@@ -33,10 +33,21 @@ final class ReviewTabViewModel: ObservableObject {
         fetchReviews(for: .global)
     }
 
+    func resetReviews() {
+        allTypePagination.resetPagination()
+        purchasedTypePagination.resetPagination()
+        notPurchasedTypePagination.resetPagination()
+        reviews?.allReviews.removeAll()
+        reviews?.purchasedReviews.removeAll()
+        reviews?.notPurchasedReviews.removeAll()
+    }
+
     func fetchReviews(for visibilityScope: VisibilityScopeType) {
         isFetching = true
-
-        apiManager.request(.postService(.getReviews(visibilityScope: visibilityScope.rawValue)), decodingType: ReviewTabModel.self)
+        resetReviews()
+        
+        apiManager.request(.postService(.getReviews(visibilityScope: visibilityScope.rawValue)),
+                           decodingType: ReviewTabModel.self)
         .compactMap(\.data)
         .sink { completion in
             switch completion {

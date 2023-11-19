@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ReviewView: View {
-    @Binding var visibilityScopeType: VisibilityScopeType
+    @Binding var visibilityScope: VisibilityScopeType
     @State private var reviewType = ReviewType.all
     @StateObject var viewModel: ReviewTabViewModel
 
@@ -25,14 +25,17 @@ struct ReviewView: View {
                         LazyVStack(pinnedViews: .sectionHeaders) {
                             Section {
                                 if let reviews = viewModel.reviews {
-                                    if reviews.recentReviews.isEmpty {
-                                        NoVoteView(selectedVisibilityScope: $visibilityScopeType)
-                                            .padding(.top, 70)
-                                    } else {
-                                        reviewListView(for: reviewType)
-                                            .padding(.leading, 16)
-                                            .padding(.trailing, 8)
-                                    }
+//                                    if reviews.allReviews.isEmpty {
+//                                        NoVoteView(selectedVisibilityScope: $visibilityScope)
+//                                            .padding(.top, 70)
+//                                    } else {
+//                                        reviewListView(for: reviewType)
+//                                            .padding(.leading, 16)
+//                                            .padding(.trailing, 8)
+//                                    }
+                                    reviewListView(for: reviewType)
+                                        .padding(.leading, 16)
+                                        .padding(.trailing, 8)
                                 }
                             } header: {
                                 reviewFilterView
@@ -51,11 +54,11 @@ struct ReviewView: View {
         .toolbarBackground(Color.background, for: .tabBar)
         .scrollIndicators(.hidden)
         .refreshable {
-            viewModel.fetchReviews(for: visibilityScopeType)
+            viewModel.fetchReviews(for: visibilityScope)
         }
-        .onAppear {
-            viewModel.fetchMoreReviews(for: visibilityScopeType,
-                                       filter: reviewType)
+        .onChange(of: visibilityScope) { _, newScope in
+            viewModel.fetchReviews(for: newScope)
+            reviewType = .all
         }
     }
 }
@@ -136,6 +139,7 @@ extension ReviewView {
         .background(Color.background)
     }
 
+    @ViewBuilder
     private func reviewListView(for filter: ReviewType) -> some View {
         let datas = switch filter {
                     case .all:
@@ -145,24 +149,28 @@ extension ReviewView {
                     case .notPurchased:
                     viewModel.reviews?.notPurchasedReviews ?? []
                     }
-        return ForEach(Array(zip(datas.indices, datas)), id: \.0) { index, data in
-            NavigationLink {
-                ReviewDetailView()
-            } label: {
-                VStack(spacing: 6) {
-                    Divider()
-                        .background(Color.dividerGray)
-                    ReviewCardCell(cellType: .otherReview,
-                                   data: data)
-                }
-                .onAppear {
-                    if index == datas.count - 2 {
-                        viewModel.fetchMoreReviews(for: visibilityScopeType,
-                                                   filter: filter)
+        if datas.isEmpty {
+            NoReviewView()
+                .padding(.top, 70)
+        } else {
+            ForEach(Array(zip(datas.indices, datas)), id: \.0) { index, data in
+                NavigationLink {
+                    ReviewDetailView()
+                } label: {
+                    VStack(spacing: 6) {
+                        Divider()
+                            .background(Color.dividerGray)
+                        ReviewCardCell(cellType: .otherReview,
+                                       data: data)
+                    }
+                    .onAppear {
+                        if index == datas.count - 2 {
+                            viewModel.fetchMoreReviews(for: visibilityScope,
+                                                       filter: filter)
+                        }
                     }
                 }
             }
         }
-
     }
 }
