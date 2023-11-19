@@ -24,19 +24,9 @@ struct ReviewView: View {
                     ScrollViewReader { proxy in
                         LazyVStack(pinnedViews: .sectionHeaders) {
                             Section {
-                                if let reviews = viewModel.reviews {
-//                                    if reviews.allReviews.isEmpty {
-//                                        NoVoteView(selectedVisibilityScope: $visibilityScope)
-//                                            .padding(.top, 70)
-//                                    } else {
-//                                        reviewListView(for: reviewType)
-//                                            .padding(.leading, 16)
-//                                            .padding(.trailing, 8)
-//                                    }
-                                    reviewListView(for: reviewType)
-                                        .padding(.leading, 16)
-                                        .padding(.trailing, 8)
-                                }
+                                reviewListView(for: reviewType)
+                                    .padding(.leading, 16)
+                                    .padding(.trailing, 8)
                             } header: {
                                 reviewFilterView
                             }
