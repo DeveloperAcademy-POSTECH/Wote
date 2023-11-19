@@ -17,7 +17,7 @@ enum AlertNavigation {
 }
 enum AllNavigation: Hashable, Decodable {
     case writeReiview
-    case detailView(postId: Int)
+    case detailView(postId: Int, index: Int)
     case reveiwView
     case makeVoteView
     case testIntroView
