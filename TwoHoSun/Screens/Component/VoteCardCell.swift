@@ -68,7 +68,7 @@ struct VoteCardCell: View {
                             Text("가격: \(price)원")
                             Text(" · ")
                         }
-                        Text(post.createDate)
+                        Text(post.createDate.convertToStringDate() ?? "")
                     }
                     .font(.system(size: 14))
                     .foregroundStyle(Color.gray100)

@@ -59,11 +59,11 @@ extension PostService: TargetType {
         case .getMyPosts(let page, let size, let myVoteCategoryType):
             return ["page": page,
                     "size": size,
-                    "myVoteCategoryType": myVoteCategoryType]
+                    "visibilityScope": myVoteCategoryType]
         case .getMyReviews(let page, let size, let myReviewCategoryType):
             return ["page": page,
                     "size": size,
-                    "myReviewCategoryType": myReviewCategoryType]
+                    "visibilityScope": myReviewCategoryType]
         default:
             return [:]
         }

@@ -96,6 +96,7 @@ struct MyPageView: View {
                         isMyVoteCategoryButtonDidTap = false
                         isMyReviewCategoryButtonDidTap = false
                         proxy.scrollTo("myPageList", anchor: .top)
+                        viewModel.fetchPosts()
                     }
                 }
             }
@@ -106,7 +107,10 @@ struct MyPageView: View {
         .onTapGesture {
             isMyVoteCategoryButtonDidTap = false
         }
-        .onChange(of: viewModel.selectedMyVoteCategoryType) { _, newValue in
+        .onChange(of: viewModel.selectedMyVoteCategoryType) { _, _ in
+            viewModel.fetchPosts()
+        }
+        .onChange(of: viewModel.selectedMyReviewCategoryType) { _, _ in
             viewModel.fetchPosts()
         }
     }
@@ -248,21 +252,24 @@ extension MyPageView {
             }
             .padding(.horizontal, 8)
         case .myReview:
-            ForEach(0..<30) { _ in
+            ForEach(Array(zip(viewModel.posts.indices, viewModel.posts)), id: \.0) { index, post in
                 NavigationLink {
                     ReviewDetailView()
                 } label: {
                     VStack(spacing: 0) {
-                        ReviewCardCell(cellType: .myReview, isPurchased: Bool.random())
+                        ReviewCardCell(cellType: .myReview, post: post)
                         Divider()
                             .background(Color.dividerGray)
                             .padding(.horizontal, 8)
                     }
                 }
+                .onAppear {
+                    if index == viewModel.posts.count - 4 {
+                        viewModel.fetchMorePosts()
+                    }
+                }
             }
             .padding(.horizontal, 8)
-//            NoReviewView()
-//                .padding(.top, 60)
         }
     }
 
