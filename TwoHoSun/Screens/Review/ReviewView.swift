@@ -14,31 +14,26 @@ struct ReviewView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                if !viewModel.isFetching {
-                    if !viewModel.recentReviews.isEmpty {
-                        sameSpendTypeReviewView(datas: viewModel.recentReviews)
-                            .padding(.top, 24)
-                            .padding(.bottom, 20)
-                            .padding(.leading, 24)
+                if !viewModel.recentReviews.isEmpty {
+                    sameSpendTypeReviewView(datas: viewModel.recentReviews)
+                        .padding(.top, 24)
+                        .padding(.bottom, 20)
+                        .padding(.leading, 24)
+                }
+                ScrollViewReader { proxy in
+                    LazyVStack(pinnedViews: .sectionHeaders) {
+                        Section {
+                            reviewTypeView
+                                .padding(.leading, 16)
+                                .padding(.trailing, 8)
+                        } header: {
+                            reviewFilterView
+                        }
+                        .id("reviewTypeSection")
                     }
-//                    ScrollViewReader { proxy in
-//                        LazyVStack(pinnedViews: .sectionHeaders) {
-//                            Section {
-//                                reviewTypeView
-//                                    .padding(.leading, 16)
-//                                    .padding(.trailing, 8)
-//                            } header: {
-//                                reviewFilterView
-//                            }
-//                            .id("reviewTypeSection")
-//                        }
-//                        .onChange(of: selectedReviewType) { _, _ in
-//                            proxy.scrollTo("reviewTypeSection", anchor: .top)
-//                        }
-//                    }
-                } else {
-                    ProgressView()
-                        .progressViewStyle(.circular)
+                    .onChange(of: selectedReviewType) { _, _ in
+                        proxy.scrollTo("reviewTypeSection", anchor: .top)
+                    }
                 }
             }
         }
