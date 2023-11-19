@@ -10,7 +10,7 @@ import SwiftUI
 struct ConsiderationView: View {
     @State private var currentVote = 0
     @Binding var selectedVisibilityScope: VisibilityScopeType
-    @Environment(AppLoginState.self) private var loginState
+    @Environment(AppLoginState.self) private var loginStateManager
     @EnvironmentObject private var pathManger: NavigationManager
     @State private var isRefreshing = false
     @StateObject var viewModel: VoteViewModel
@@ -93,7 +93,7 @@ extension ConsiderationView {
     private var createVoteButton: some View {
         NavigationLink {
             VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: selectedVisibilityScope,
-                                                        apiManager: loginState.serviceRoot.apimanager))
+                                                        apiManager: loginStateManager.serviceRoot.apimanager))
             .onDisappear {
                 viewModel.fetchPosts(visibilityScope: selectedVisibilityScope.type)
                 currentVote = 0
