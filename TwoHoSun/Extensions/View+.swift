@@ -16,5 +16,4 @@ extension View {
                                       @ViewBuilder actions: @escaping  (Binding<Bool>) -> A) -> some View {
         return self.modifier(CustomConfirmModifier(isPresented: isPresented, actions: actions, isMine: isMine))
     }
-
 }

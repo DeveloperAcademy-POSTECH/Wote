@@ -13,7 +13,7 @@ struct CommentsModel: Codable {
     let createDate: String
     let modifiedDate: String
     let content: String
-    let author: Author
     let subComments: [CommentsModel]?
     let isMine: Bool
+    let author: AuthorModel
 }

@@ -90,11 +90,13 @@ struct WoteTabView: View {
                         .offset(x: 16, y: 40)
                 }
 
-            }  .navigationDestination(for: AllNavigation.self) { destination in
+            }  
+            .navigationDestination(for: AllNavigation.self) { destination in
                 switch destination {
-                case .detailView(let postId):
-                    DetailView(viewModel: DetailViewModel(apiManager: loginStateManager.serviceRoot.apimanager), postId: postId)
-                        .environmentObject(navigatePath)
+                case .detailView(let postId, let index):
+                    DetailView(viewModel: VoteViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
+                               postId: postId,
+                               index: index)
                 case .makeVoteView:
                     VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: selectedVisibilityScope, 
                                                                 apiManager: loginStateManager.serviceRoot.apimanager), tabselection: $selection )
@@ -106,7 +108,7 @@ struct WoteTabView: View {
                     TypeTestView(viewModel: TypeTestViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
                         .environmentObject(navigatePath)
                 case .reveiwView:
-                    ReviewView()
+                    ReviewView(viewModel: ReviewTabViewModel(apiManger: loginStateManager.serviceRoot.apimanager))
                 case .writeReiview:
 //                    VoteWriteView(viewModel: VoteWriteViewModel())
                     Text("아직")
@@ -138,13 +140,14 @@ extension WoteTabView {
         switch tab {
         case .consider:
             ConsiderationView(selectedVisibilityScope: $selectedVisibilityScope, 
-                              viewModel: ConsiderationViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
+                              viewModel: VoteViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
                 .environmentObject(navigatePath)
         case .review:
-            ReviewView()
+            ReviewView(viewModel: ReviewTabViewModel(apiManger: loginStateManager.serviceRoot.apimanager))
                 .environmentObject(navigatePath)
         case .myPage:
-            MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager), selectedVisibilityScope: $selectedVisibilityScope)
+            MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
+                       selectedVisibilityScope: $selectedVisibilityScope)
                 .environmentObject(navigatePath)
         }
     }
