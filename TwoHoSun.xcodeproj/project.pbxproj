@@ -113,6 +113,7 @@
 		FD76249E2AF954670079AEEF /* LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB71D792AE2A64300BE0671 /* LinkView.swift */; };
 		FD7624A02AF954980079AEEF /* GeneralResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C768F19D2AE656430020F82C /* GeneralResponse.swift */; };
 		FD7624A12AF954980079AEEF /* NicknameValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C768F1A22AE656570020F82C /* NicknameValidation.swift */; };
+		FD84A6962B0A859A00F6EBB7 /* UserProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD84A6952B0A859A00F6EBB7 /* UserProfileModel.swift */; };
 		FD8D9F812ADC5FAD0072F4BA /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */; };
 		FD9C277E2AFA27E900702ACD /* ImageCropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9C277D2AFA27E900702ACD /* ImageCropView.swift */; };
 		FD9DDB6C2B06F746006D738A /* SummaryPostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9DDB6B2B06F746006D738A /* SummaryPostModel.swift */; };
@@ -232,6 +233,7 @@
 		FD50A04B2B02084600CF7F59 /* SettingQuestionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingQuestionsView.swift; sourceTree = "<group>"; };
 		FD50A04D2B021B7200CF7F59 /* SettingTermsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTermsView.swift; sourceTree = "<group>"; };
 		FD70B1F52B01C3080097B727 /* SettingBlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingBlockView.swift; sourceTree = "<group>"; };
+		FD84A6952B0A859A00F6EBB7 /* UserProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileModel.swift; sourceTree = "<group>"; };
 		FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		FD9C277D2AFA27E900702ACD /* ImageCropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropView.swift; sourceTree = "<group>"; };
 		FD9DDB6B2B06F746006D738A /* SummaryPostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryPostModel.swift; sourceTree = "<group>"; };
@@ -371,19 +373,6 @@
 				FD70B1F72B01C31D0097B727 /* Setting */,
 			);
 			path = MyPage;
-			sourceTree = "<group>";
-		};
-		ABB71D6C2AE2753800BE0671 /* DTO */ = {
-			isa = PBXGroup;
-			children = (
-				AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */,
-				FD9DDB6B2B06F746006D738A /* SummaryPostModel.swift */,
-				ABB71D6D2AE2754300BE0671 /* PostModel.swift */,
-				ABBFB6312AE3EABD006CE8CA /* VoteCreateRequestModel.swift */,
-				AB38A10C2B07D914004153B5 /* PostDetailModel.swift */,
-				AB38A1162B0919C9004153B5 /* ReviewTabModel.swift */,
-			);
-			path = DTO;
 			sourceTree = "<group>";
 		};
 		ABBFB6332AE43561006CE8CA /* VoteWrite */ = {
@@ -567,9 +556,15 @@
 			isa = PBXGroup;
 			children = (
 				C7719FE42AF2769E00A520CB /* EnumType */,
-				ABB71D6C2AE2753800BE0671 /* DTO */,
 				FDF2D6CD2AE5DAD90027EE8F /* VoteInfoModel.swift */,
 				FDF2D6CF2AE5E62B0027EE8F /* ChartModel.swift */,
+				AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */,
+				FD9DDB6B2B06F746006D738A /* SummaryPostModel.swift */,
+				ABB71D6D2AE2754300BE0671 /* PostModel.swift */,
+				ABBFB6312AE3EABD006CE8CA /* VoteCreateRequestModel.swift */,
+				AB38A10C2B07D914004153B5 /* PostDetailModel.swift */,
+				AB38A1162B0919C9004153B5 /* ReviewTabModel.swift */,
+				FD84A6952B0A859A00F6EBB7 /* UserProfileModel.swift */,
 				C73F8E842AE54F78001C6B07 /* LoginModel */,
 				C73F8E852AE55014001C6B07 /* FeedModel */,
 				C73F8E862AE550E4001C6B07 /* CommonModel */,
@@ -835,6 +830,7 @@
 				AB45225A2ADDDC9E00B69F24 /* SchoolSearchViewModel.swift in Sources */,
 				AB38A1192B091BA9004153B5 /* ReviewTabViewModel.swift in Sources */,
 				FD3205682ADD5C0D00B0D5F6 /* TwoHoSunApp.swift in Sources */,
+				FD84A6962B0A859A00F6EBB7 /* UserProfileModel.swift in Sources */,
 				C77113732AF2114800BAB128 /* CustomConfirmModifier.swift in Sources */,
 				FDB4B1502AE68FC000720328 /* DetailView.swift in Sources */,
 				C7A95F132B01FFD600F8595A /* MoyaPublisher.swift in Sources */,
