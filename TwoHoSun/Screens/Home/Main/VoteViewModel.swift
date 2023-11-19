@@ -29,14 +29,6 @@ final class VoteViewModel: ObservableObject {
         fetchPosts(visibilityScope: VisibilityScopeType.global.type)
     }
 
-    func calculateVoteRatio(voteCount: Int,
-                            agreeCount: Int,
-                            disagreeCount: Int) -> (agree: Double, disagree: Double) {
-        guard voteCount != 0 else { return (0, 0)}
-        let agreeVoteRatio = Double(agreeCount) / Double(voteCount) * 100
-        return (agreeVoteRatio, 100.0 - agreeVoteRatio)
-    }
-
     func updatePost(index: Int) {
         posts[index].myChoice = myChoice
         posts[index].voteCount = agreeCount + disagreeCount
@@ -136,6 +128,13 @@ final class VoteViewModel: ObservableObject {
             self.setTopConsumerTypes()
         }
         .store(in: &cancellables)
+    }
+
+    func calculatVoteRatio(voteCounts: VoteCountsModel) -> (agree: Double, disagree: Double) {
+        let voteCount = voteCounts.agreeCount + voteCounts.disagreeCount
+        guard voteCount != 0 else { return (0, 0) }
+        let agreeRatio = Double(voteCounts.agreeCount) / Double(voteCount) * 100
+        return (agreeRatio, 100 - agreeRatio)
     }
 
     private func setTopConsumerTypes() {

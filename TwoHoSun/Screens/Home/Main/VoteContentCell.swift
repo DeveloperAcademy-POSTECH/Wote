@@ -76,10 +76,7 @@ struct VoteContentCell: View {
                 VStack(spacing: 10) {
                     VStack {
                         if data.postStatus == "CLOSED" || data.myChoice != nil {
-                            let (agreeRatio, disagreeRatio) = viewModel.calculateVoteRatio(voteCount: data.voteCounts.agreeCount 
-                                                                                           + data.voteCounts.disagreeCount,
-                                                                                           agreeCount: data.voteCounts.agreeCount,
-                                                                                           disagreeCount: data.voteCounts.disagreeCount)
+                            let (agreeRatio, disagreeRatio) = viewModel.calculatVoteRatio(voteCounts: data.voteCounts)
                             VoteResultView(myChoice: data.myChoice,
                                            agreeRatio: agreeRatio,
                                            disagreeRatio: disagreeRatio)
