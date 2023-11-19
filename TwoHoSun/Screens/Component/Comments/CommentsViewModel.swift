@@ -21,6 +21,11 @@ final class CommentsViewModel: ObservableObject {
         self.getAllComments()
     }
 
+    func refreshComments() {
+        self.comments = ""
+        self.getAllComments()
+    }
+
     func getAllComments() {
         apiManager.request(.commentService(.getComments(postId: postId)), decodingType: [CommentsModel].self)
             .compactMap(\.data)
@@ -38,8 +43,7 @@ final class CommentsViewModel: ObservableObject {
             .sink { completion in
                 print(completion)
             } receiveValue: { _ in
-                self.comments = ""
-                self.getAllComments()
+                self.refreshComments()
             }
             .store(in: &bag)
     }
@@ -49,8 +53,7 @@ final class CommentsViewModel: ObservableObject {
             .sink { completion in
                 print(completion)
             } receiveValue: { _ in
-                self.comments = ""
-                self.getAllComments()
+                self.refreshComments()
                 self.presentAlert.toggle()
             }
             .store(in: &bag)
@@ -61,8 +64,7 @@ final class CommentsViewModel: ObservableObject {
             .sink { completion in
                 print(completion)
             } receiveValue: { _ in
-                self.comments = ""
-                self.getAllComments()
+                self.refreshComments()
             }
             .store(in: &bag)
     }

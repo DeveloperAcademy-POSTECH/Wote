@@ -38,7 +38,8 @@ struct CommentCell: View {
     var childComments: [CommentsModel]?
     @State private var isOpenComment: Bool = false
     @State private var isExpended = false
-    @State private var canExpended = false
+    @State private var canExpended: Bool?
+
     init(comment: CommentsModel, onReplyButtonTapped: @escaping () -> Void, onConfirmDiaog: @escaping (Bool, Int) -> Void) {
         self.comment = comment
         self.onReplyButtonTapped = onReplyButtonTapped
@@ -74,7 +75,7 @@ struct CommentCell: View {
 }
 
 extension CommentCell {
-    var lastEditTimeText: some View {
+    func lastEditTimeText(comment: CommentsModel) -> some View {
         var isEdited: String {
             return comment.modifiedDate != comment.createDate ? "수정됨" : ""
         }
@@ -99,7 +100,7 @@ extension CommentCell {
                     Text(comment.author.nickname)
                         .font(.system(size: 14, weight: .medium))
                         .foregroundStyle(Color.white)
-                    lastEditTimeText
+                    lastEditTimeText(comment: comment)
                     Spacer()
                     Button(action: {
                         onConfirmDiaog(comment.isMine, comment.commentId)
@@ -116,13 +117,11 @@ extension CommentCell {
                     .padding(.bottom, 4)
                     .padding(.trailing, 20)
                     .background {
-                        ViewThatFits(in: .vertical) {
-                            Text("\(comment.content)")
-                                .hidden()
-                            Color.clear
-                                .onAppear {
-                                    canExpended = true
-                                }
+                        Color.clear
+                            .onAppear {
+                            if comment.content.count > 75 {
+                                canExpended = true
+                            }
                         }
                     }
                 HStack {
@@ -133,7 +132,7 @@ extension CommentCell {
                                 .foregroundStyle(Color.subGray1)
                         })
                         Spacer()
-                        if canExpended {
+                        if canExpended != nil {
                             Button {
                                 withAnimation(nil) {
                                     isExpended.toggle()

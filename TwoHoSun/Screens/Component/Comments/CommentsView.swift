@@ -15,7 +15,6 @@ struct CommentsView: View {
     @State private var showConfirm = false
     @Binding var showComplaint : Bool
     @Binding var applyComplaint: Bool
-
     @ObservedObject var viewModel: CommentsViewModel
     @State private var replyForAnotherName: String?
 
@@ -77,7 +76,7 @@ struct CommentsView: View {
             }
         })
         .customConfirmDialog(isPresented: $showConfirm, isMine: $ismyCellconfirm, actions: { bindismine in
-            var ismine = bindismine.wrappedValue
+            let ismine = bindismine.wrappedValue
             if !ismine {
                 Button {
                     showComplaint.toggle()
@@ -107,11 +106,11 @@ extension CommentsView {
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 28) {
                     ForEach(viewModel.commentsDatas, id: \.commentId) { comment in
-                        CommentCell(comment: comment, onReplyButtonTapped: {
+                        CommentCell(comment: comment) {
                             scrollSpot = comment.commentId
-                            replyForAnotherName =  comment.author.nickname
+                            replyForAnotherName = comment.author.nickname
                             isFocus = true
-                        }) {ismine, commentId in
+                        } onConfirmDiaog: { ismine, commentId in
                             scrollSpot = commentId
                             isFocus = false
                             ismyCellconfirm = ismine
@@ -174,8 +173,7 @@ extension CommentsView {
     }
     @ViewBuilder
     var forReplyLabel: some View {
-        // TODO: 추후에 유저 닉네임 가져오기
-        if let replyname = replyForAnotherName  {
+        if let replyname = replyForAnotherName {
             HStack {
                 Text("\(replyname)님에게 답글달기")
                     .font(.system(size: 14))
