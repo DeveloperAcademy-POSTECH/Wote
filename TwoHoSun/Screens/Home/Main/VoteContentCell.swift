@@ -10,94 +10,100 @@ import SwiftUI
 import Kingfisher
 
 struct VoteContentCell: View {
-    @State var postData: PostModel
     @Environment(AppLoginState.self) private var loginState
+    @StateObject var viewModel: VoteViewModel
+    var index: Int
+    var postId: Int
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack(spacing: 8) {
-                ProfileImageView(imageURL: postData.author.profileImage)
-                    .frame(width: 32, height: 32)
-                Text(postData.author.nickname)
-                    .font(.system(size: 16, weight: .bold))
-                    .foregroundStyle(.white)
-                Spacer()
-                ConsumerTypeLabel(consumerType: ConsumerType(rawValue: postData.author.consumerType) ?? .adventurer,
-                               usage: .standard)
-            }
-            .padding(.bottom, 10)
-            HStack(spacing: 4) {
-                if postData.postStatus == PostStatus.closed.rawValue {
-                    Text("종료")
-                        .font(.system(size: 12, weight: .medium))
+        if !viewModel.isPostFetching {
+            let data = viewModel.posts[index]
+            VStack(alignment: .leading, spacing: 6) {
+                HStack(spacing: 8) {
+                    ProfileImageView(imageURL: data.author.profileImage)
+                        .frame(width: 32, height: 32)
+                    Text(data.author.nickname)
+                        .font(.system(size: 16, weight: .bold))
                         .foregroundStyle(.white)
-                        .padding(.vertical, 4)
-                        .padding(.horizontal, 5)
-                        .background(Color.disableGray)
-                        .clipShape(RoundedRectangle(cornerRadius: 3))
+                    Spacer()
+                    ConsumerTypeLabel(consumerType: ConsumerType(rawValue: data.author.consumerType) ?? .adventurer,
+                                   usage: .standard)
                 }
-                Text(postData.title)
-                    .font(.system(size: 16, weight: .bold))
+                .padding(.bottom, 10)
+                HStack(spacing: 4) {
+                    if data.postStatus == PostStatus.closed.rawValue {
+                        Text("종료")
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundStyle(.white)
+                            .padding(.vertical, 4)
+                            .padding(.horizontal, 5)
+                            .background(Color.disableGray)
+                            .clipShape(RoundedRectangle(cornerRadius: 3))
+                    }
+                    Text(data.title)
+                        .font(.system(size: 16, weight: .bold))
+                        .foregroundStyle(.white)
+                }
+                Text(data.contents ?? "")
+                    .font(.system(size: 14))
                     .foregroundStyle(.white)
-            }
-            Text(postData.contents ?? "")
-                .font(.system(size: 14))
-                .foregroundStyle(.white)
-                .padding(.bottom, 8)
-            HStack(spacing: 0) {
-                if let price = postData.price {
-                    Text("가격: \(price)원")
-                    Text(" · ")
+                    .padding(.bottom, 8)
+                HStack(spacing: 0) {
+                    if let price = data.price {
+                        Text("가격: \(price)원")
+                        Text(" · ")
+                    }
+                    Text(data.createDate.convertToStringDate() ?? "")
                 }
-                Text(postData.createDate.convertToStringDate() ?? "")
+                .font(.system(size: 14))
+                .foregroundStyle(Color.gray100)
+                .padding(.bottom, 10)
+                HStack {
+                    InfoButton(label: "\(data.voteCount)명 투표", icon: "person.2.fill")
+                    Spacer()
+                    voteInfoButton(label: "댓글 \(data.commentCount)개", icon: "message.fill")
+                }
+                .padding(.bottom, 2)
+                if let imageURL = data.image {
+                    ImageView(imageURL: imageURL)
+                } else {
+                    Image("imgDummyVote\(data.id % 3 + 1)")
+                        .resizable()
+                        .frame(maxWidth: .infinity)
+                        .aspectRatio(1.5, contentMode: .fit)
+                        .clipShape(.rect(cornerRadius: 16))
+                }
+                VStack(spacing: 10) {
+                    VStack {
+                        if data.postStatus == "CLOSED" || data.myChoice != nil {
+                            let (agreeRatio, disagreeRatio) = viewModel.calculatVoteRatio(voteCounts: data.voteCounts)
+                            VoteResultView(myChoice: data.myChoice,
+                                           agreeRatio: agreeRatio,
+                                           disagreeRatio: disagreeRatio)
+
+                        } else {
+                            IncompletedVoteButton(choice: .agree) {
+                                viewModel.votePost(postId: data.id,
+                                                   choice: true,
+                                                   index: index)
+                            }
+                            IncompletedVoteButton(choice: .disagree) {
+                                viewModel.votePost(postId: data.id,
+                                                   choice: false,
+                                                   index: index)
+                            }
+                        }
+                    }
+                    detailResultButton
+                }
+                .padding(.top, 2)
             }
-            .font(.system(size: 14))
-            .foregroundStyle(Color.gray100)
-            .padding(.bottom, 10)
-            HStack {
-                voteInfoButton(label: "\(postData.voteCount)명 투표", icon: "person.2.fill")
-                Spacer()
-                voteInfoButton(label: "댓글 \(postData.commentCount)개", icon: "message.fill")
-            }
-            .padding(.bottom, 2)
-            voteImageView
-            VStack(spacing: 10) {
-                VoteView(postStatus: postData.postStatus,
-                         myChoice: postData.myChoice,
-                         voteCount: postData.voteCount,
-                         voteCounts: postData.voteCounts)
-                detailResultButton
-            }
-            .padding(.top, 2)
+            .padding(.horizontal, 24)
         }
-        .padding(.horizontal, 24)
     }
 }
 
 extension VoteContentCell {
-    
-    private var endLabel: some View {
-        Text("종료")
-            .font(.system(size: 12, weight: .medium))
-            .foregroundStyle(.white)
-            .padding(.vertical, 4)
-            .padding(.horizontal, 5)
-            .background(Color.disableGray)
-            .clipShape(RoundedRectangle(cornerRadius: 3))
-    }
-
-    @ViewBuilder
-    private var voteImageView: some View {
-        if let imageURL = postData.image {
-            ImageView(imageURL: imageURL)
-        } else {
-            Image("imgDummyVote\(postData.id % 3 + 1)")
-                .resizable()
-                .frame(maxWidth: .infinity)
-                .aspectRatio(1.5, contentMode: .fit)
-                .clipShape(.rect(cornerRadius: 16))
-        }
-    }
 
     private func voteInfoButton(label: String, icon: String) -> some View {
         HStack(spacing: 2) {
@@ -114,10 +120,9 @@ extension VoteContentCell {
 
     private var detailResultButton: some View {
         NavigationLink {
-//            DetailView(viewModel: DetailViewModel(apiManager: loginState.serviceRoot.apimanager),
-//                       postId: postData.id))
-            DetailView(viewModel: DetailViewModel(apiManager: loginState.serviceRoot.apimanager),
-                       postId: postData.id)
+            DetailView(viewModel: viewModel,
+                       postId: postId,
+                       index: index)
         } label: {
             Text("상세보기")
                 .font(.system(size: 16, weight: .bold))

@@ -20,8 +20,7 @@ enum PostService {
     case createReview
     case deleteReview
     case subscribeReview
-    case votePost
-    case getReviews
+    case votePost(postId: Int, choice: Bool)
     case getSearchResult
     case getMyPosts(page: Int, size: Int, myVoteCategoryType: String)
     case getMyReviews(page: Int, size: Int, myReviewCategoryType: String)
@@ -41,6 +40,8 @@ extension PostService: TargetType {
             return "/posts/\(postId)"
         case .createPost:
             return "/posts"
+        case .votePost(let postId, _):
+            return "/posts/\(postId)/votes"
         case .getMyPosts:
             return "mypage/posts"
         case .getMyReviews:
@@ -56,6 +57,8 @@ extension PostService: TargetType {
             return ["page": page,
                     "size": size,
                     "visibilityScope": visibilityScope]
+        case .votePost(_, let choice):
+            return ["choice": choice]
         case .getMyPosts(let page, let size, let myVoteCategoryType):
             return ["page": page,
                     "size": size,
@@ -107,15 +110,21 @@ extension PostService: TargetType {
             do {
                 let json = try JSONSerialization.data(withJSONObject: postData)
                 let jsonString = String(data: json, encoding: .utf8)!
-                let stringData = MultipartFormData(provider: .data(jsonString.data(using: String.Encoding.utf8)!), name: "postRequest", mimeType: "application/json")
+                let stringData = MultipartFormData(provider: .data(jsonString.data(using: String.Encoding.utf8)!), 
+                                                   name: "postRequest",
+                                                   mimeType: "application/json")
                 formData.append(stringData)
             } catch {
                 print("error: \(error)")
             }
             return .uploadMultipart(formData)
         case .getPostDetail(let postId):
-            return .requestParameters(parameters: ["postId": [postId]],
+            return .requestParameters(parameters: ["postId": postId],
                                       encoding: URLEncoding.queryString)
+        case .votePost(let postId, let choice):
+            return .requestCompositeParameters(bodyParameters: ["myChoice": choice],
+                                               bodyEncoding: JSONEncoding.default,
+                                               urlParameters: ["postId": postId])
         case .getMyPosts:
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case .getMyReviews:

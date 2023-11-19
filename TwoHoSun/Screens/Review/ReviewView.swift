@@ -7,32 +7,19 @@
 
 import SwiftUI
 
-enum ReviewType: Int, CaseIterable {
-    case all, purchased, notPurchased
-
-    var title: String {
-        switch self {
-        case .all:
-            return "모두"
-        case .purchased:
-            return "샀다"
-        case .notPurchased:
-            return "안샀다"
-        }
-    }
-}
-
 struct ReviewView: View {
     @State private var selectedReviewType = ReviewType.all
+    @StateObject var viewModel: ReviewTabViewModel
 
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                // TODO: - 후기가 존재할 시에만 나타나도록 처리하기
-                sameSpendTypeReviewView
-                    .padding(.top, 24)
-                    .padding(.bottom, 20)
-                    .padding(.leading, 24)
+                if !viewModel.recentReviews.isEmpty {
+                    sameSpendTypeReviewView(datas: viewModel.recentReviews)
+                        .padding(.top, 24)
+                        .padding(.bottom, 20)
+                        .padding(.leading, 24)
+                }
                 ScrollViewReader { proxy in
                     LazyVStack(pinnedViews: .sectionHeaders) {
                         Section {
@@ -50,6 +37,7 @@ struct ReviewView: View {
                 }
             }
         }
+        .frame(maxWidth: .infinity)
         .background(Color.background)
         .toolbarBackground(Color.background, for: .tabBar)
         .scrollIndicators(.hidden)
@@ -58,7 +46,7 @@ struct ReviewView: View {
 
 extension ReviewView {
 
-    private var sameSpendTypeReviewView: some View {
+    private func sameSpendTypeReviewView(datas: [SummaryPostModel]) -> some View {
         VStack(spacing: 18) {
             HStack(spacing: 6) {
                 ConsumerTypeLabel(consumerType: .beautyLover, usage: .standard)
@@ -69,12 +57,13 @@ extension ReviewView {
             }
             ScrollView(.horizontal) {
                 HStack(spacing: 10) {
-                    ForEach(0..<3) { _ in
+                    ForEach(datas) { data in
                         NavigationLink {
+                            // TODO: - isPurchased 수정
                             ReviewDetailView(isPurchased: Bool.random())
                         } label: {
-                            simpleReviewCell(title: "ACG 마운틴 플라이 살까 말까?",
-                                             content: "어쩌고저쩌고저쩌고??????????????????????????")
+                            simpleReviewCell(title: data.title,
+                                             content: data.contents ?? "")
                         }
                     }
                 }
@@ -91,6 +80,7 @@ extension ReviewView {
                     .font(.system(size: 16, weight: .bold))
                     .foregroundStyle(.white)
                     .lineLimit(1)
+                Spacer() 
             }
             .padding(.horizontal, 20)
             Text(content)

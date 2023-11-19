@@ -14,8 +14,10 @@ extension String {
             "yyyy-MM-dd'T'HH:mm:ss.SSSSS",
             "yyyy-MM-dd'T'HH:mm:ss"
         ]
+
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(identifier: "KST")
+
         for format in dateFormats {
             dateFormatter.dateFormat = format
             if let date = dateFormatter.date(from: self) {
