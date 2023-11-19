@@ -14,6 +14,7 @@ struct DetailView: View {
     @State private var backgroundColor: Color = .background
     @State private var showCustomAlert = false
     @State private var applyComplaint = false
+    @State private var currentAlert = AlertType.closeVote
     @StateObject var viewModel: VoteViewModel
     var postId: Int
     var index: Int
@@ -98,8 +99,20 @@ struct DetailView: View {
                 ZStack {
                     Color.black.opacity(0.7)
                         .ignoresSafeArea()
-                    CustomAlertModalView(alertType: .ban(nickname: "선호"), isPresented: $showCustomAlert) {
-                        print("신고접수됐습니다.")
+                    CustomAlertModalView(alertType: currentAlert,
+                                         isPresented: $showCustomAlert) {
+                        switch currentAlert {
+                        case .closeVote:
+                            viewModel.closeVote(postId: postId, index: index)
+                            showCustomAlert.toggle()
+                            viewModel.fetchPostDetail(postId: postId)
+                        case .deleteVote:
+                            viewModel.deletePost(postId: postId, index: index)
+                            showCustomAlert.toggle()
+                            dismiss()
+                        default:
+                            break
+                        }
                     }
                 }
             }
@@ -128,12 +141,12 @@ struct DetailView: View {
                     .foregroundStyle(Color.white)
             }
             ToolbarItem(placement: .topBarTrailing) {
-                Button(action: {
+                Button {
                     showconfirm.toggle()
-                }, label: {
+                } label: {
                     Image(systemName: "ellipsis")
                         .foregroundStyle(Color.subGray1)
-                })
+                }
             }
         }
         .toolbarBackground(Color.background, for: .navigationBar)
@@ -142,6 +155,51 @@ struct DetailView: View {
                 CommentsView(showComplaint: $showCustomAlert, applyComplaint: $applyComplaint)
                     .presentationDetents([.large,.fraction(0.9)])
                     .presentationContentInteraction(.scrolls)
+        }
+        .customConfirmDialog(isPresented: $showconfirm, isMine: $viewModel.isMine) { _ in
+            if viewModel.isMine {
+                VStack(spacing: 15) {
+                    if viewModel.postData?.post.postStatus != PostStatus.closed.rawValue {
+                        Button {
+                            currentAlert = .closeVote
+                            showCustomAlert.toggle()
+                            showconfirm.toggle()
+                        } label: {
+                            Text("투표 지금 종료하기")
+                                .frame(maxWidth: .infinity)
+                        }
+                        Divider()
+                            .background(Color.gray300)
+                    }
+                    Button {
+                        currentAlert = .deleteVote
+                        showCustomAlert.toggle()
+                        showconfirm.toggle()
+                    } label: {
+                        Text("삭제하기")
+                            .frame(maxWidth: .infinity)
+                    }
+                }
+                .padding(.vertical, 15)
+            } else {
+                VStack(spacing: 15) {
+                    Button {
+                        showconfirm.toggle()
+                    } label: {
+                        Text("신고하기")
+                            .frame(maxWidth: .infinity)
+                    }
+                    Divider()
+                        .background(Color.gray300)
+                    Button {
+                        showconfirm.toggle()
+                    } label: {
+                        Text("차단하기")
+                            .frame(maxWidth: .infinity)
+                    }
+                }
+                .padding(.vertical, 15)
+            }
         }
         .onAppear {
             viewModel.postData = nil

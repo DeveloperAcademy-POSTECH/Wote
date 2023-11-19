@@ -61,33 +61,33 @@ struct ReviewWriteView: View {
             .onTapGesture {
                 dismissKeyboard()
             }
-            .customConfirmDialog(isPresented: $isEditing) {
-                Button {
-                    showCropView.toggle()
-                    isEditing = false
-                } label: {
-                    Text("수정하기")
-                        .frame(maxWidth: .infinity)
-                }
-                Divider()
-                    .foregroundStyle(Color.gray300)
-                Button {
-                    showPicker.toggle()
-                    isEditing = false
-                } label: {
-                    Text("다른 상품사진 선택하기")
-                        .frame(maxWidth: .infinity)
-                }
-                Divider()
-                    .foregroundStyle(Color.gray300)
-                Button {
-                    croppedImage = nil
-                    isEditing = false
-                } label: {
-                    Text("삭제하기")
-                        .frame(maxWidth: .infinity)
-                }
-            }
+//            .customConfirmDialog(isPresented: $isEditing) {
+//                Button {
+//                    showCropView.toggle()
+//                    isEditing = false
+//                } label: {
+//                    Text("수정하기")
+//                        .frame(maxWidth: .infinity)
+//                }
+//                Divider()
+//                    .foregroundStyle(Color.gray300)
+//                Button {
+//                    showPicker.toggle()
+//                    isEditing = false
+//                } label: {
+//                    Text("다른 상품사진 선택하기")
+//                        .frame(maxWidth: .infinity)
+//                }
+//                Divider()
+//                    .foregroundStyle(Color.gray300)
+//                Button {
+//                    croppedImage = nil
+//                    isEditing = false
+//                } label: {
+//                    Text("삭제하기")
+//                        .frame(maxWidth: .infinity)
+//                }
+//            }
         }
     }
 }
