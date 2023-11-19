@@ -14,26 +14,20 @@ final class VoteViewModel: ObservableObject {
     @Published var postData: PostDetailModel?
     @Published var isPostFetching = true
     @Published var pageOffset = 0
-    var agreeCount = 0
-    var disagreeCount = 0
-    var myChoice = true
-    var agreeTopConsumerTypes = [ConsumerType]()
-    var disagreeTopConsumerTypes = [ConsumerType]()
-    var cancellables: Set<AnyCancellable> = []
+    @Published var isMine = false
+    @Published var agreeTopConsumerTypes = [ConsumerType]()
+    @Published var disagreeTopConsumerTypes = [ConsumerType]()
     private let apiManager: NewApiManager
     private var page = 0
     private var isLastPage = false
+    private var agreeCount = 0
+    private var disagreeCount = 0
+    private var myChoice = true
+    var cancellables: Set<AnyCancellable> = []
 
     init(apiManager: NewApiManager) {
         self.apiManager = apiManager
         fetchPosts(visibilityScope: VisibilityScopeType.global.type)
-    }
-
-    func updatePost(index: Int) {
-        posts[index].myChoice = myChoice
-        posts[index].voteCount = agreeCount + disagreeCount
-        posts[index].voteCounts = VoteCountsModel(agreeCount: agreeCount,
-                                                  disagreeCount: disagreeCount)
     }
 
     func resetPosts() {
@@ -102,13 +96,29 @@ final class VoteViewModel: ObservableObject {
                 print(failure)
             }
         } receiveValue: { data in
-            self.agreeCount = data.agreeCount
-            self.disagreeCount = data.disagreeCount
-            self.myChoice = choice
-            self.updatePost(index: index)
-            self.fetchPostDetail(postId: postId)
+            self.handleVoteResult(data,
+                             choice: choice,
+                             index: index,
+                             postId: postId)
         }
         .store(in: &cancellables)
+    }
+
+    func updatePost(index: Int) {
+        posts[index].myChoice = myChoice
+        posts[index].voteCount = agreeCount + disagreeCount
+        posts[index].voteCounts = VoteCountsModel(agreeCount: agreeCount,
+                                                  disagreeCount: disagreeCount)
+    }
+
+    private func handleVoteResult(_ data: VoteCountsModel,
+                                  choice: Bool,
+                                  index: Int, postId: Int) {
+        self.agreeCount = data.agreeCount
+        self.disagreeCount = data.disagreeCount
+        self.myChoice = choice
+        self.updatePost(index: index)
+        self.fetchPostDetail(postId: postId)
     }
 
     func fetchPostDetail(postId: Int) {
@@ -125,6 +135,8 @@ final class VoteViewModel: ObservableObject {
             }
         } receiveValue: { data in
             self.postData = data
+            guard let isMine = data.post.isMine else { return }
+            self.isMine = isMine
             self.setTopConsumerTypes()
         }
         .store(in: &cancellables)
