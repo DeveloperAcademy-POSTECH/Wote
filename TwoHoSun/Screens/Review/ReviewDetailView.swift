@@ -45,11 +45,11 @@ struct ReviewDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.background, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
-        .sheet(isPresented: $isDetailCommentShown) {
-            CommentsView(showComplaint: $showCustomAlert, applyComplaint: $applyComplaint)
-            .presentationDetents([.large,.fraction(0.9)])
-                .presentationContentInteraction(.scrolls)
-        }
+//        .sheet(isPresented: $isDetailCommentShown) {
+//            CommentsView(showComplaint: $showCustomAlert, applyComplaint: $applyComplaint, viewModel: CommentsViewModel(apiManager: <#T##NewApiManager#>, postId: ))
+//            .presentationDetents([.large,.fraction(0.9)])
+//                .presentationContentInteraction(.scrolls)
+//        }
     }
 }
 

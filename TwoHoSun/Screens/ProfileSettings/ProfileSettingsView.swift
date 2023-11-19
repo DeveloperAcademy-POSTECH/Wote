@@ -92,7 +92,7 @@ struct ProfileSettingsView: View {
     @State var viewType: ProfileSettingType
     @Bindable var viewModel: ProfileSettingViewModel
     @Environment(\.dismiss) private var dismiss
-    @Environment(AppLoginState.self) private var loginState
+    @Environment(AppLoginState.self) private var loginStateManager
     
     var body: some View {
         ZStack {

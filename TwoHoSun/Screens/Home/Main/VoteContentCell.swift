@@ -10,7 +10,7 @@ import SwiftUI
 import Kingfisher
 
 struct VoteContentCell: View {
-    @Environment(AppLoginState.self) private var loginState
+    @Environment(AppLoginState.self) private var loginStateManager
     @StateObject var viewModel: VoteViewModel
     var index: Int
     var postId: Int

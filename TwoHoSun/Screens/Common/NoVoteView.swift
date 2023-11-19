@@ -9,7 +9,7 @@ import SwiftUI
 
 struct NoVoteView: View {
     @Binding var selectedVisibilityScope: VisibilityScopeType
-    @Environment(AppLoginState.self) private var loginState
+    @Environment(AppLoginState.self) private var loginStateManager
 
     var body: some View {
         HStack {
@@ -21,7 +21,7 @@ struct NoVoteView: View {
                     .multilineTextAlignment(.center)
                     .padding(.top, 8)
                 NavigationLink {
-                    VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: selectedVisibilityScope, apiManager: loginState.serviceRoot.apimanager))
+                    VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: selectedVisibilityScope, apiManager: loginStateManager.serviceRoot.apimanager))
                 } label: {
                     Text("고민 등록하러 가기")
                         .font(.system(size: 16, weight: .semibold))

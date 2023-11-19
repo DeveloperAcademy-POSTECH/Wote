@@ -13,7 +13,6 @@ final class DetailViewModel: ObservableObject {
     @Published var isMine = false
     var agreeTopConsumerTypes = [ConsumerType]()
     var disagreeTopConsumerTypes = [ConsumerType]()
-    var commentsDatas = [CommentsModel]()
     var isSendMessage = false
     private let apiManager: NewApiManager
     var cancellables: Set<AnyCancellable> = []
@@ -81,7 +80,8 @@ final class DetailViewModel: ObservableObject {
                 }
             } receiveValue: { data in
                 self.postDetailData = data
-                self.setTopConsumerTypes()
+//                self.setTopConsumerTypes()
+//                self.updatedatePostData()
             }
             .store(in: &cancellables)
     }
