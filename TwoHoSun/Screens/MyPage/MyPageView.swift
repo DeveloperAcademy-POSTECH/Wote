@@ -26,6 +26,21 @@ enum MyVoteCategoryType: String, CaseIterable, Hashable {
     case mySchool = "우리 학교 투표"
     case progressing = "진행중인 투표"
     case end = "종료된 투표"
+    
+    var parameter: String {
+        switch self {
+        case .all:
+            return "ALL_VOTES"
+        case .allSchool:
+            return "GLOBAL_VOTES"
+        case .mySchool:
+            return "SCHOOL_VOTES"
+        case .progressing:
+            return "ACTIVE_VOTES"
+        case .end:
+            return "CLOSED_VOTES"
+        }
+    }
 }
 
 enum MyReviewCategoryType: String, CaseIterable, Hashable {
@@ -40,6 +55,8 @@ struct MyPageView: View {
     @State private var selectedMyReviewCategoryType = MyReviewCategoryType.all
     @State private var isMyVoteCategoryButtonDidTap = false
     @State private var isMyReviewCategoryButtonDidTap = false
+    @State var viewModel: MyPageViewModel
+    @Binding var selectedVisibilityScope: VisibilityScopeType
     @AppStorage("haveConsumerType") var haveConsumerType: Bool = false
     @Environment(AppLoginState.self) private var loginStateManager
     @EnvironmentObject private var pathManger: NavigationManager
@@ -64,6 +81,9 @@ struct MyPageView: View {
                         }
                         .id("myPageList")
                     }
+                    .onAppear {
+                        viewModel.fetchPosts(myVoteCategoryType: selectedMyVoteCategoryType.parameter)
+                    }
                     .onChange(of: selectedMyPageListType) { _, _ in
                         isMyVoteCategoryButtonDidTap = false
                         isMyReviewCategoryButtonDidTap = false
@@ -77,6 +97,9 @@ struct MyPageView: View {
         .background(Color.background)
         .onTapGesture {
             isMyVoteCategoryButtonDidTap = false
+        }
+        .onChange(of: selectedMyVoteCategoryType) { _, newValue in
+            viewModel.fetchPosts(myVoteCategoryType: newValue.parameter)
         }
     }
 }
@@ -124,7 +147,7 @@ extension MyPageView {
                 .padding(.bottom, 9)
                 .padding(.horizontal, 24)
                 HStack {
-                    Text("0건")
+                    Text("\(viewModel.posts.count)건")
                         .font(.system(size: 14))
                         .foregroundStyle(.white)
                     Spacer()
@@ -195,24 +218,27 @@ extension MyPageView {
     private var myPageListTypeView: some View {
         switch selectedMyPageListType {
         case .myVote:
-            ForEach(0..<50) { _ in
+            ForEach(Array(zip(viewModel.posts.indices, viewModel.posts)), id: \.0) { index, post in
                 NavigationLink {
-                    // TODO: - postId 알맞게 변경
-//                    DetailView(postId: 0)
+                    Text("DetailView")
                 } label: {
                     VStack(spacing: 0) {
                         VoteCardCell(cellType: .myVote,
                                      progressType: .end,
-                                     voteResultType: .draw)
+                                     voteResultType: .draw,
+                                     post: post)
                         Divider()
                             .background(Color.dividerGray)
                             .padding(.horizontal, 8)
                     }
                 }
+                .onAppear {
+                    if index == viewModel.posts.count - 4 {
+                        viewModel.fetchMorePosts(selectedMyVoteCategoryType.parameter)
+                    }
+                }
             }
             .padding(.horizontal, 8)
-//            NoVoteView()
-//                .padding(.top, 52)
         case .myReview:
             ForEach(0..<30) { _ in
                 NavigationLink {

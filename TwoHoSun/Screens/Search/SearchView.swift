@@ -209,9 +209,8 @@ extension SearchView {
                 case .progressing:
                     ForEach(0..<5) { _ in
 //                        listCell(cellType: VoteCardCell(cellType: .standard,
-//                                                        progressType: .end,
-//                                                        voteResultType: .draw),
-//                                 destination: DetailView(viewModel: DetailViewModel(apiManager: <#T##NewApiManager#>, postId: <#T##Int#>)))
+//                                                        progressType: .progressing,
+//                                                        post: )
                     }
                     .listRowBackground(Color.clear)
                     .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
@@ -221,8 +220,8 @@ extension SearchView {
                     ForEach(0..<5) { _ in
 //                        listCell(cellType: VoteCardCell(cellType: .standard,
 //                                                        progressType: .end,
-//                                                        voteResultType: .draw),
-//                                 destination: DetailView(viewModel: DetailViewModel(apiManager: <#T##NewApiManager#>, postId: <#T##Int#>)))
+//                                                        voteResultType: .draw,
+//                                                        post: )
                     }
                     .listRowBackground(Color.clear)
                     .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
