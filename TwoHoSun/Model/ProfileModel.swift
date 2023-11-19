@@ -12,7 +12,7 @@ struct ProfileModel: Codable {
     var modifiedDate: String
     var lastSchoolRegisterDate: String
     var nickname: String
-    var profileImage: String
+    var profileImage: String?
     var consumerType: ConsumerType
     var schoolName: String
 }
