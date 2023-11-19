@@ -15,12 +15,14 @@ final class MyPageViewModel {
     var selectedMyReviewCategoryType = MyReviewCategoryType.all
     let apiManager: NewApiManager
     var posts: [SummaryPostModel] = []
+    var profile: ProfileModel?
     var cacellabels: Set<AnyCancellable> = []
     private var page: Int = 0
     private var isLastPage: Bool = false
     
     init(apiManager: NewApiManager) {
         self.apiManager = apiManager
+        self.fetchProfile()
     }
     
     func requestPosts(postType: PostService) {
@@ -61,5 +63,21 @@ final class MyPageViewModel {
         guard !isLastPage else { return }
         page += 1
         fetchPosts(isFirstFetch: false)
+    }
+    
+    func fetchProfile() {
+        apiManager.request(.userService(.getProfile), decodingType: ProfileModel.self)
+            .compactMap(\.data)
+            .sink { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    print(error)
+                }
+            } receiveValue: { data in
+                self.profile = data
+            }
+            .store(in: &cacellabels)
     }
 }

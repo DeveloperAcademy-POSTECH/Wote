@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UserProfileModel {
+struct ProfileModel: Codable {
     var createDate: String
     var modifiedDate: String
     var lastSchoolRegisterDate: String

@@ -108,7 +108,7 @@ extension UserService: TargetType {
         case .putConsumerType:
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         case .getProfile:
-            return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
+            return .requestPlain
         default:
             return .requestParameters(parameters: parameters,
                                       encoding: URLEncoding.default)
