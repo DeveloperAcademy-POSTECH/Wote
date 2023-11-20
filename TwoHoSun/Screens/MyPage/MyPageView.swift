@@ -120,25 +120,29 @@ extension MyPageView {
 
     private var profileHeaderView: some View {
         NavigationLink {
-            ProfileSettingsView(viewType: .modfiy,
-                                viewModel: ProfileSettingViewModel(appState: loginStateManager))
+            ProfileSettingsView(viewType: .modfiy, viewModel: ProfileSettingViewModel(appState: loginStateManager), profile: viewModel.profile)
         } label: {
-            HStack {
-                Circle()
-                    .frame(width: 103, height: 103)
-                    .foregroundStyle(.gray)
-                VStack(alignment: .leading, spacing: 16) {
+            HStack(spacing: 14) {
+                if let image = viewModel.profile?.profileImage {
+                    ProfileImageView(imageURL: image)
+                        .frame(width: 103, height: 103)
+                } else {
+                    Image("defaultProfile")
+                        .resizable()
+                        .frame(width: 103, height: 103)
+                }
+                VStack(alignment: .leading, spacing: 8) {
                     HStack(spacing: 0) {
-                        Text("김보람")
+                        Text(viewModel.profile?.nickname ?? "")
                             .font(.system(size: 20, weight: .medium))
                             .padding(.trailing, 12)
-                        ConsumerTypeLabel(consumerType: .flexer, usage: .standard)
+                        ConsumerTypeLabel(consumerType: viewModel.profile?.consumerType ?? .adventurer, usage: .standard)
                         Spacer()
                         Image(systemName: "chevron.right")
                             .font(.system(size: 14))
                             .foregroundStyle(Color.subGray1)
                     }
-                    Text("서현고등학교")
+                    Text(viewModel.profile?.school.schoolName ?? "")
                         .font(.system(size: 14))
                 }
                 .foregroundStyle(.white)

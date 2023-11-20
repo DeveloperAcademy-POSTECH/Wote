@@ -25,23 +25,23 @@ final class ReviewTabViewModel: ObservableObject {
                       page: Int = 0,
                       size: Int = 5) {
         // TODO: - type들 rawValue로 할 거니... type으로 할 거니 하나만 정해
-        apiManager.request(.postService(.getReviews(visibilityScope: visibilityScope.type,
-                                                    reviewType: reviewType.rawValue,
-                                                    page: page,
-                                                    size: size)),
-                           decodingType: ReviewTabModel.self)
-        .compactMap(\.data)
-        .sink { completion in
-            switch completion {
-            case .finished:
-                break
-            case .failure(let error):
-                print(error)
-            }
-        } receiveValue: { data in
-            self.recentReviews.append(contentsOf: data.recentReviews)
-            self.isFetching = false
-        }
-        .store(in: &cancellable)
+//        apiManager.request(.postService(.getReviews(visibilityScope: visibilityScope.type,
+//                                                    reviewType: reviewType.rawValue,
+//                                                    page: page,
+//                                                    size: size)),
+//                           decodingType: ReviewTabModel.self)
+//        .compactMap(\.data)
+//        .sink { completion in
+//            switch completion {
+//            case .finished:
+//                break
+//            case .failure(let error):
+//                print(error)
+//            }
+//        } receiveValue: { data in
+//            self.recentReviews.append(contentsOf: data.recentReviews)
+//            self.isFetching = false
+//        }
+//        .store(in: &cancellable)
     }
 }
