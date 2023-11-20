@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct CommentsModel: Codable, Identifiable {
-    var id = UUID()
+struct CommentsModel: Codable {
     let commentId: Int
     let createDate: String
     let modifiedDate: String
     let content: String
-    let author: Author
-    let childComments: [CommentsModel]?
+    let subComments: [CommentsModel]?
+    let isMine: Bool
+    let author: AuthorModel
 }

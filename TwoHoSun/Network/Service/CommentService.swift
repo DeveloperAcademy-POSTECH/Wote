@@ -11,8 +11,9 @@ import Moya
 
 enum CommentService {
     case getComments(postId: Int)
-    case postComments(postComment: CommentPostModel)
-    case deleteComments(postId: Int, commentId: Int)
+    case postComment(postId: Int, contents: String)
+    case deleteComments(commentId: Int)
+    case postReply(commentId: Int, contents: String)
 }
 
 extension CommentService: TargetType {
@@ -23,29 +24,59 @@ extension CommentService: TargetType {
     
     var path: String {
         switch self {
-        case .getComments(let postId):
-            return "/api/posts/\(postId)/comments"
-        case .postComments(let postComment):
-            return "/api/posts/\(postComment.postId)/comments"
-        case .deleteComments(let postId, let commentId):
-            return "/api/posts/\(postId)/comments/\(commentId)"
+        case .deleteComments(let commentId):
+            return "/\(commentId)"
+        case .postReply(let commentId, _):
+            return "/\(commentId)"
+        default:
+            return ""
         }
     }
     
+    var parameters: [String: Any] {
+        switch self {
+        case .getComments(let postId):
+            return ["postId": postId]
+        case .postComment(let postId, let contents):
+            return [
+                "postId": postId,
+                "contents": contents
+            ]
+        case .deleteComments(let commentId):
+            return ["commentId" : commentId]
+        case .postReply(_, let contents):
+            return ["contents" : contents]
+        default:
+            return [:]
+        }
+    }
     var method: Moya.Method {
         switch self {
         case .getComments:
             return .get
-        case .postComments:
+        case .postComment:
             return .post
         case .deleteComments:
             return .delete
+        case .postReply:
+            return .post
         }
     }
     
     // TODO: - 변경 필요
     var task: Moya.Task {
-        return .requestPlain
+        switch self {
+        case .getComments:
+            return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
+        case .postComment:
+            return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
+        case .deleteComments:
+            return .requestPlain
+        case .postReply:
+            return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
+        default:
+            return .requestPlain
+        }
     }
     
     var headers: [String : String]? {

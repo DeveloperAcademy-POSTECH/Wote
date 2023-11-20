@@ -17,7 +17,7 @@ enum AlertNavigation {
 }
 enum AllNavigation: Hashable, Decodable {
     case writeReiview
-    case detailView(postId: Int)
+    case detailView(postId: Int, index: Int)
     case reveiwView
     case makeVoteView
     case testIntroView
@@ -32,15 +32,19 @@ final class NavigationManager: ObservableObject {
             print("path는?\(navigatePath)")
         }
     }
+
     func navigate(_ route: AllNavigation) {
         navigatePath.append(route)
     }
+
     func back() {
         navigatePath.removeLast()
     }
+
     func countPop(count: Int) {
         navigatePath.removeLast(count)
     }
+    
     func countDeque(count: Int) {
         navigatePath.removeFirst(count)
     }

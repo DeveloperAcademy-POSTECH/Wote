@@ -10,10 +10,10 @@ import SwiftUI
 struct ConsiderationView: View {
     @State private var currentVote = 0
     @Binding var selectedVisibilityScope: VisibilityScopeType
-    @Environment(AppLoginState.self) private var loginState
+    @Environment(AppLoginState.self) private var loginStateManager
     @EnvironmentObject private var pathManger: NavigationManager
     @State private var isRefreshing = false
-    @StateObject var viewModel: ConsiderationViewModel
+    @StateObject var viewModel: VoteViewModel
     @AppStorage("haveConsumerType") var haveConsumerType: Bool = false
 
     var body: some View {
@@ -39,12 +39,9 @@ struct ConsiderationView: View {
             currentVote = 0
             viewModel.fetchPosts(visibilityScope: newScope.type)
         }
-        .onDisappear {
-            viewModel.fetchPosts(visibilityScope: selectedVisibilityScope.type)
-            currentVote = 0
-        }
     }
 }
+
 extension ConsiderationView {
 
     private var votePagingView: some View {
@@ -52,7 +49,9 @@ extension ConsiderationView {
             TabView(selection: $currentVote) {
                 ForEach(Array(zip(viewModel.posts.indices, viewModel.posts)), id: \.0) { index, item in
                     VStack(spacing: 0) {
-                        VoteContentCell(postData: item)
+                        VoteContentCell(viewModel: viewModel,
+                                        index: currentVote,
+                                        postId: item.id)
                         nextVoteButton
                             .padding(.top, 16)
                     }
@@ -92,8 +91,13 @@ extension ConsiderationView {
     }
 
     private var createVoteButton: some View {
-        Button {
-            pathManger.navigate(haveConsumerType ? .makeVoteView : .testIntroView)
+        NavigationLink {
+            VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: selectedVisibilityScope,
+                                                        apiManager: loginStateManager.serviceRoot.apimanager))
+            .onDisappear {
+                viewModel.fetchPosts(visibilityScope: selectedVisibilityScope.type)
+                currentVote = 0
+            }
         } label: {
             HStack(spacing: 2) {
                 Image(systemName: "plus")

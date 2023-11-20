@@ -61,7 +61,7 @@ final class SearchViewModel {
             print(completion)
         } receiveValue: { data in
             print(data)
-            self.searchedDatas = data
+            self.searchedDatas.append(contentsOf: data)
             self.isFetching = false
             self.addRecentSearch(searchWord: keyword)
         }

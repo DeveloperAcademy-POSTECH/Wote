@@ -180,24 +180,17 @@ extension SearchView {
         }
     }
 
-    private func listCell(cellType: some View, destination: some View) -> some View {
-        ZStack {
-
-            NavigationLink(destination: destination) {
-                cellType
-            }
-//                .opacity(0.0)
-        }
-    }
 
     private var searchResultView: some View {
         ScrollViewReader { proxy in
             List {
-                ForEach(viewModel.searchedDatas, id: \.id) { data in
-                    listCell(cellType: VoteCardCell(cellType: .standard, 
-                                                    progressType: viewModel.selectedFilterType, post: data),
-                             destination: DetailView(viewModel:
-                                                        DetailViewModel(apiManager: loginState.serviceRoot.apimanager), postId: data.id))
+                ForEach(Array(viewModel.searchedDatas.enumerated()), id: \.offset) { index, data in
+                    NavigationLink {
+                        DetailView(viewModel: VoteViewModel(apiManager: loginState.serviceRoot.apimanager), postId: data.id, index: index)
+                    } label: {
+                        VoteCardCell(cellType: .standard,
+                                                        progressType: viewModel.selectedFilterType, post: data)
+                    }
                 }
                 .listRowBackground(Color.clear)
                 .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))

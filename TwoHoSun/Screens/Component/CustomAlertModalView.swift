@@ -11,6 +11,8 @@ enum AlertType {
     case erase
     case withdrawal
     case logOut
+    case closeVote
+    case deleteVote
 
     var title: String {
         switch self {
@@ -22,6 +24,10 @@ enum AlertType {
             return "탈퇴"
         case .logOut:
             return ""
+        case .closeVote:
+            return "마감"
+        case .deleteVote:
+            return "삭제"
         }
     }
 
@@ -35,17 +41,17 @@ enum AlertType {
             return "계정을 삭제하면 투표, 후기 등 모든 활동 정보가\n삭제 되며 7일간 다시 가입할 수 없어요."
         case .logOut:
             return "로그아웃하면 재 로그인 할 때까지 Wote의\n콘텐츠들을 이용하기 어려워요."
+        case .closeVote:
+            return "지금 투표를 마감하면 다른 친구들의 의견을\n더 들을 수 없어요."
+        case .deleteVote:
+            return "지금 투표를 삭제하면 해당 게시물이\n영구히 삭제됩니다."
         }
     }
     var optionalDescription: String {
         switch self {
         case .ban:
             return "(‘마이페이지 > 앱 설정 > 사용자 차단 목록'에서 취소할 수 \n있습니다.)"
-        case .erase:
-            return ""
-        case .withdrawal:
-            return ""
-        case .logOut:
+        default:
             return ""
         }
     }
@@ -60,19 +66,21 @@ enum AlertType {
             return "탈퇴"
         case .logOut:
             return "로그아웃"
+        case .closeVote:
+            return "종료하기"
+        case .deleteVote:
+            return "삭제하기"
         }
     }
     
     var rightButtonLabel: String {
         switch self {
-        case .ban:
-            return "취소"
-        case .erase:
-            return "취소"
         case .withdrawal:
             return "유지하기"
         case .logOut:
             return "유지하기"
+        default:
+            return "취소"
         }
     }
 }
@@ -80,6 +88,7 @@ struct CustomAlertModalView: View {
     let alertType: AlertType
     @Binding var isPresented: Bool
     var leftButtonAction: () -> Void
+
     var titleText: String {
         switch alertType {
         case .ban(let nickname):
@@ -90,6 +99,10 @@ struct CustomAlertModalView: View {
             return "정말 Wote를 "
         case .logOut:
             return "로그아웃 "
+        case .closeVote:
+            return "투표를 "
+        case .deleteVote:
+            return "투표를 "
         }
     }
 
@@ -151,7 +164,3 @@ struct CustomAlertModalView: View {
         }
     }
 }
-
-//#Preview {
-//    CustomAlertModalView(alertType: .ban(nickname: "선호"))
-//}

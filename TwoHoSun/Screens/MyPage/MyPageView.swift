@@ -58,7 +58,7 @@ struct MyPageView: View {
     @State var viewModel: MyPageViewModel
     @Binding var selectedVisibilityScope: VisibilityScopeType
     @AppStorage("haveConsumerType") var haveConsumerType: Bool = false
-    @Environment(AppLoginState.self) private var loginState
+    @Environment(AppLoginState.self) private var loginStateManager
     @EnvironmentObject private var pathManger: NavigationManager
 
     var body: some View {
@@ -109,7 +109,7 @@ extension MyPageView {
     private var profileHeaderView: some View {
         NavigationLink {
             ProfileSettingsView(viewType: .modfiy,
-                                viewModel: ProfileSettingViewModel(appState: loginState))
+                                viewModel: ProfileSettingViewModel(appState: loginStateManager))
         } label: {
             HStack {
                 Circle()

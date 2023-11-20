@@ -14,16 +14,20 @@ enum PostService {
     case createPost(post: PostCreateModel)
     case getPostDetail(postId: Int)
     case modifyPost
-    case deletePost
+    case deletePost(postId: Int)
     case getReviewDetail
     case modifyReview
     case createReview
     case deleteReview
     case subscribeReview
-    case votePost
-    case getReviews
+    case votePost(postId: Int, choice: Bool)
     case getSearchResult(postStatus: PostStatus, visibilityScopeType: VisibilityScopeType, page: Int, size: Int, keyword: String)
     case getMyPosts(page: Int, size: Int, myVoteCategoryType: String)
+    case closeVote(postId: Int)
+    case getReviews(visibilityScope: String,
+                      reviewType: String,
+                      page: Int,
+                      size: Int)
 }
 
 extension PostService: TargetType {
@@ -40,10 +44,18 @@ extension PostService: TargetType {
             return "/posts/\(postId)"
         case .createPost:
             return "/posts"
+        case .votePost(let postId, _):
+            return "/posts/\(postId)/votes"
         case .getMyPosts:
             return "mypage/posts"
         case .getSearchResult:
             return "/search"
+        case .deletePost(let postId):
+            return "/posts/\(postId)"
+        case .closeVote(let postId):
+            return "/posts/\(postId)/complete"
+        case .getReviews:
+            return "/reviews"
         default:
             return ""
         }
@@ -67,6 +79,11 @@ extension PostService: TargetType {
                 "size": size,
                 "keyword": keyword
             ]
+        case .getReviews(let visibilityScope, let reviewType, let page, let size):
+            return ["visibilityScope": visibilityScope,
+                    "reviewType": reviewType,
+                    "page": page,
+                    "size": size]
         default:
             return [:]
         }
@@ -82,6 +99,12 @@ extension PostService: TargetType {
             return .get
         case .getPostDetail:
             return .get
+        case .votePost:
+            return .post
+        case .deletePost:
+            return .delete
+        case .closeVote:
+            return .post
         default:
             return .get
         }
@@ -108,18 +131,32 @@ extension PostService: TargetType {
             do {
                 let json = try JSONSerialization.data(withJSONObject: postData)
                 let jsonString = String(data: json, encoding: .utf8)!
-                let stringData = MultipartFormData(provider: .data(jsonString.data(using: String.Encoding.utf8)!), name: "postRequest", mimeType: "application/json")
+                let stringData = MultipartFormData(provider: .data(jsonString.data(using: String.Encoding.utf8)!), 
+                                                   name: "postRequest",
+                                                   mimeType: "application/json")
                 formData.append(stringData)
             } catch {
                 print("error: \(error)")
             }
             return .uploadMultipart(formData)
         case .getPostDetail(let postId):
-            return .requestParameters(parameters: ["postId": [postId]],
+            return .requestParameters(parameters: ["postId": postId],
                                       encoding: URLEncoding.queryString)
+        case .votePost(let postId, let choice):
+            return .requestCompositeParameters(bodyParameters: ["myChoice": choice],
+                                               bodyEncoding: JSONEncoding.default,
+                                               urlParameters: ["postId": postId])
         case .getMyPosts:
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case .getSearchResult:
+            return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
+        case .deletePost(let postId):
+            return .requestParameters(parameters: ["postId": postId],
+                                      encoding: URLEncoding.queryString)
+        case .closeVote(let postId):
+            return .requestParameters(parameters: ["postId": postId],
+                                      encoding: URLEncoding.queryString)
+        case .getReviews:
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         default:
             return .requestPlain
