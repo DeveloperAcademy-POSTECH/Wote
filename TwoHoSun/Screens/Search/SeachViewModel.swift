@@ -9,9 +9,6 @@ import Foundation
 
 
 final class SearchViewModel: ObservableObject {
-    enum SearchState {
-        case noData, first, haveData
-    }
     @Published var searchHistory = [String]()
     var isFetching = false
     @Published var searchedDatas: [SummaryPostModel] = [] {
@@ -23,7 +20,6 @@ final class SearchViewModel: ObservableObject {
     @Published var selectedFilterType = PostStatus.active
     @Published var page = 0
     @Published var showEmptyView = false
-    var searchState: SearchState = .first
     var selectedVisibilityScope: VisibilityScopeType
     private var bag = Set<AnyCancellable>()
     init(apiManager: NewApiManager, selectedVisibilityScope: VisibilityScopeType) {
@@ -59,7 +55,7 @@ final class SearchViewModel: ObservableObject {
         UserDefaults.standard.set(searchHistory, forKey: "RecentSearch")
     }
     // TODO: - fetching result data
-    func fetchSearchedData(size: Int = 5, keyword: String, reset: Bool = false) {
+    func fetchSearchedData(size: Int = 5, keyword: String, reset: Bool = false, save: Bool = false) {
         isFetching = true
         if reset {
             page = 0
@@ -77,10 +73,9 @@ final class SearchViewModel: ObservableObject {
         } receiveValue: { data in
             self.searchedDatas.append(contentsOf: data)
             self.isFetching = false
-            self.addRecentSearch(searchWord: keyword)
-//            if self.searchedDatas.isEmpty {
-//                self.searchState = .noData
-//            }
+            if save {
+                self.addRecentSearch(searchWord: keyword)
+            }
             self.showEmptyView = self.searchedDatas.isEmpty
             self.page += 1
             cancellable?.cancel()

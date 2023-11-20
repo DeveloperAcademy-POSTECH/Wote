@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct SearchView: View {
-
-
     @Environment(AppLoginState.self) private var loginState
     @Environment(\.dismiss) private var dismiss
     @State private var searchText = ""
@@ -44,9 +42,9 @@ struct SearchView: View {
                             }
                             recentSearchView
                         } else {
-                                searchFilterView
-                                    .padding(.bottom, 24)
-                                searchResultView
+                            searchFilterView
+                                .padding(.bottom, 24)
+                            searchResultView
 
                         }
                     }
@@ -95,7 +93,7 @@ extension SearchView {
             }
             .onSubmit {
                 searchTextFieldState = .submitted
-                viewModel.fetchSearchedData(keyword: searchText, reset: true)
+                viewModel.fetchSearchedData(keyword: searchText, reset: true, save: true)
                 isSearchResultViewShown = true
             }
             Spacer()
@@ -144,28 +142,38 @@ extension SearchView {
     }
 
     private func recentSearchCell(word: String, index: Int) -> some View {
+
         HStack(spacing: 0) {
-            ZStack {
-                Circle()
-                    .strokeBorder(Color.purpleStroke, lineWidth: 1)
-                    .frame(width: 28, height: 28)
-                    .foregroundStyle(.clear)
-                Image(systemName: "clock.arrow.circlepath")
-                    .font(.system(size: 18, weight: .light))
-                    .foregroundStyle(Color.darkGray)
+            HStack {
+                ZStack {
+                    Circle()
+                        .strokeBorder(Color.purpleStroke, lineWidth: 1)
+                        .frame(width: 28, height: 28)
+                        .foregroundStyle(.clear)
+                    Image(systemName: "clock.arrow.circlepath")
+                        .font(.system(size: 18, weight: .light))
+                        .foregroundStyle(Color.darkGray)
+                }
+
+                Text(word)
+                    .font(.system(size: 16))
+                    .foregroundStyle(Color.woteWhite)
+                    .padding(.leading, 16)
+                    .multilineTextAlignment(.leading)
+                Spacer()
             }
-            Text(word)
-                .font(.system(size: 16))
-                .foregroundStyle(Color.woteWhite)
-                .padding(.leading, 16)
-            Spacer()
-            Button {
-                viewModel.removeRecentSearch(at: index)
-            } label: {
-                Image(systemName: "xmark")
-                    .font(.system(size: 14))
-                    .foregroundStyle(Color.darkGray)
+            .onTapGesture {
+                searchText = word
+                viewModel.fetchSearchedData(keyword: word)
+                isFocused.toggle()
             }
+            Image(systemName: "xmark")
+                .font(.system(size: 14))
+                .foregroundStyle(Color.darkGray)
+                .padding(15)
+                .onTapGesture {
+                    viewModel.removeRecentSearch(at: index)
+                }
         }
     }
 
