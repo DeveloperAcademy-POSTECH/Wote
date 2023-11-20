@@ -54,8 +54,12 @@ final class SearchViewModel: ObservableObject {
         UserDefaults.standard.set(searchHistory, forKey: "RecentSearch")
     }
     // TODO: - fetching result data
-    func fetchSearchedData(size: Int = 5, keyword: String) {
+    func fetchSearchedData(size: Int = 5, keyword: String, reset: Bool = false) {
         isFetching = true
+        if reset {
+            page = 0
+            self.searchedDatas = []
+        }
         var cancellable: AnyCancellable?
         cancellable =  apiManager.request(.postService(
             .getSearchResult(postStatus: selectedFilterType,

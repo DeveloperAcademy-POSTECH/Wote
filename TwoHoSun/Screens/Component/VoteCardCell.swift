@@ -14,7 +14,18 @@ struct VoteCardCell: View {
     }
 
     enum VoteResultType {
-        case buy, draw, notBuy
+        case buy, draw, notbuy
+        
+        var stampImage: Image {
+            switch self {
+            case .buy:
+                Image("imgBuy")
+            case .draw:
+                Image("imgDraw")
+            case .notbuy:
+                Image("imgNotBuy")
+            }
+        }
     }
 
     enum VoteProgressType {
@@ -23,7 +34,18 @@ struct VoteCardCell: View {
 
     var cellType: VoteCardCellType
     var progressType: PostStatus
-    var voteResultType: VoteResultType?
+    var voteResultType: VoteResultType? {
+        if let voteresult = post.voteResult {
+            if voteresult == "DRAW" {
+                return .draw
+            } else if voteresult == "NOT_BUY" {
+                return .notbuy
+            } else {
+                return .buy
+            }
+        }
+        return nil
+    }
     var post: SummaryPostModel
 
     var body: some View {
@@ -40,7 +62,6 @@ struct VoteCardCell: View {
                     if let consumerType = post.author?.consumerType {
                         ConsumerTypeLabel(consumerType: ConsumerType(rawValue: consumerType) ?? .ecoWarrior ,usage: .cell)
                     }
-
                 }
             }
             HStack {
@@ -59,7 +80,6 @@ struct VoteCardCell: View {
                                 PurchaseLabel(isPurchased: isPurchased)
                             }
                         }
-
                         Text(post.title)
                             .font(.system(size: 16, weight: .bold))
                             .foregroundStyle(.white)
@@ -85,23 +105,11 @@ struct VoteCardCell: View {
                     CardImageView(imageURL: post.image)
                         .opacity(progressType == .closed ? 0.5 : 1.0 )
                     if progressType == .closed {
-                        Group {
-                            switch voteResultType {
-                            case .buy:
-                                Image("imgBuy")
-                            case .draw:
-                                Image("imgDraw")
-                            case .notBuy:
-                                Image("imgNotBuy")
-                            case .none:
-                                EmptyView()
-                            }
-                        }
+                        voteResultType?.stampImage
                         .offset(x: -10, y: 10)
                     }
                 }
             }
-
             // TODO: - 후기를 작성한 투표라면 숨기기
             if progressType == .closed && cellType == .myVote {
                 NavigationLink {

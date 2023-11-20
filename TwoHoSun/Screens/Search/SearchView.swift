@@ -83,7 +83,7 @@ extension SearchView {
             }
             .onSubmit {
                 searchTextFieldState = .submitted
-                viewModel.fetchSearchedData(keyword: searchText)
+                viewModel.fetchSearchedData(keyword: searchText, reset: true)
                 isSearchResultViewShown = true
             }
             Spacer()
@@ -199,9 +199,7 @@ extension SearchView {
                     }
                     .id("searchResult")
                     .onChange(of: viewModel.selectedFilterType) { _, _ in
-                        viewModel.searchedDatas = []
-                        viewModel.page = 0
-                        viewModel.fetchSearchedData(keyword: searchText  )
+                        viewModel.fetchSearchedData(keyword: searchText, reset: true  )
                         proxy.scrollTo("searchResult", anchor: .top)
                     }
                 }
