@@ -11,11 +11,7 @@ import Foundation
 final class SearchViewModel: ObservableObject {
     @Published var searchHistory = [String]()
     var isFetching = false
-    @Published var searchedDatas: [SummaryPostModel] = [] {
-        didSet {
-            print("사리추가요")
-        }
-    }
+    @Published var searchedDatas: [SummaryPostModel] = []
     private var apiManager: NewApiManager
     @Published var selectedFilterType = PostStatus.active
     @Published var page = 0
@@ -56,7 +52,7 @@ final class SearchViewModel: ObservableObject {
     }
     // TODO: - fetching result data
     func fetchSearchedData(size: Int = 5, keyword: String, reset: Bool = false, save: Bool = false) {
-        isFetching = true
+        isFetching.toggle()
         if reset {
             page = 0
             self.searchedDatas = []
@@ -72,7 +68,7 @@ final class SearchViewModel: ObservableObject {
             print(completion)
         } receiveValue: { data in
             self.searchedDatas.append(contentsOf: data)
-            self.isFetching = false
+            self.isFetching.toggle()
             if save {
                 self.addRecentSearch(searchWord: keyword)
             }

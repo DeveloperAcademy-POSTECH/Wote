@@ -22,6 +22,9 @@ struct SearchView: View {
         ZStack {
             Color.background
                 .ignoresSafeArea()
+            if viewModel.isFetching {
+                ProgressView()
+            }
             if viewModel.showEmptyView {
                 emptyResultView
             }
@@ -45,7 +48,6 @@ struct SearchView: View {
                             searchFilterView
                                 .padding(.bottom, 24)
                             searchResultView
-
                         }
                     }
                     .padding(.top, 24)
@@ -142,7 +144,6 @@ extension SearchView {
     }
 
     private func recentSearchCell(word: String, index: Int) -> some View {
-
         HStack(spacing: 0) {
             HStack {
                 ZStack {
@@ -154,7 +155,6 @@ extension SearchView {
                         .font(.system(size: 18, weight: .light))
                         .foregroundStyle(Color.darkGray)
                 }
-
                 Text(word)
                     .font(.system(size: 16))
                     .foregroundStyle(Color.woteWhite)
@@ -162,6 +162,7 @@ extension SearchView {
                     .multilineTextAlignment(.leading)
                 Spacer()
             }
+            .background(Color.background.opacity(0.01))
             .onTapGesture {
                 searchText = word
                 viewModel.fetchSearchedData(keyword: word)
@@ -214,7 +215,8 @@ extension SearchView {
                         .onAppear {
                             if index == viewModel.searchedDatas.count - 4 {
                                 viewModel.fetchSearchedData(keyword: searchText)
-                            }                        }
+                            }
+                        }
                     }
                     .id("searchResult")
                     .onChange(of: viewModel.selectedFilterType) { _, _ in
