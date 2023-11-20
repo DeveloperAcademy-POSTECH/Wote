@@ -224,7 +224,7 @@ extension MyPageView {
                 } label: {
                     VStack(spacing: 0) {
                         VoteCardCell(cellType: .myVote,
-                                     progressType: .end,
+                                     progressType: .closed,
                                      voteResultType: .draw,
                                      post: post)
                         Divider()
