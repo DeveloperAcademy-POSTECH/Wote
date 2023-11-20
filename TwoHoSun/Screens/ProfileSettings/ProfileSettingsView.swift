@@ -97,11 +97,7 @@ struct ProfileSettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(AppLoginState.self) private var loginStateManager
     
-    var profileImage: String?
-    var nickname: String?
-    var school: SchoolModel?
-    var consumerType: ConsumerType?
-    var lastSchoolRegisterDate: String?
+    var profile: ProfileModel?
     
     var body: some View {
         ZStack {
@@ -114,7 +110,7 @@ struct ProfileSettingsView: View {
                         .padding(.top, 40)
                 case .modfiy:
                     HStack {
-                        ConsumerTypeLabel(consumerType: consumerType ?? .adventurer, usage: .standard)
+                        ConsumerTypeLabel(consumerType: profile?.consumerType ?? .adventurer, usage: .standard)
                         Spacer()
                     }
                     .padding(.top, 30)
@@ -126,14 +122,14 @@ struct ProfileSettingsView: View {
                     .padding(.bottom, 34)
                 schoolInputView
                     .onAppear {
-                        if let school = school {
+                        if let school = profile?.school {
                             if viewModel.selectedSchoolInfo == nil {
                                 viewModel.selectedSchoolInfo = SchoolInfoModel(school: school, schoolAddress: nil)
                             }
                         }
                     }
                     .onAppear {
-                        if let lastSchoolRegisterDate = lastSchoolRegisterDate {
+                        if let lastSchoolRegisterDate = profile?.lastSchoolRegisterDate {
                             isRestricted = viewModel.checkSchoolRegisterDate(lastSchoolRegisterDate)
                         }
                     }
@@ -233,7 +229,7 @@ extension ProfileSettingsView {
                     .clipShape(Circle())
             } else {
                 photoPickerView {
-                    if let profileImage = profileImage {
+                    if let profileImage = profile?.profileImage {
                         ProfileImageView(imageURL: profileImage)
                             .frame(width: 130, height: 130)
                     } else {
@@ -309,7 +305,7 @@ extension ProfileSettingsView {
                     }
                 }
                 .onAppear {
-                    if let nickname = nickname {
+                    if let nickname = profile?.nickname {
                         viewModel.nickname = nickname
                     }
                 }

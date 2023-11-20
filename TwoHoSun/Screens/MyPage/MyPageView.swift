@@ -120,7 +120,7 @@ extension MyPageView {
 
     private var profileHeaderView: some View {
         NavigationLink {
-            ProfileSettingsView(viewType: .modfiy, viewModel: ProfileSettingViewModel(appState: loginStateManager), profileImage: viewModel.profile?.profileImage, nickname: viewModel.profile?.nickname, school: viewModel.profile?.school, consumerType: viewModel.profile?.consumerType, lastSchoolRegisterDate: viewModel.profile?.lastSchoolRegisterDate)
+            ProfileSettingsView(viewType: .modfiy, viewModel: ProfileSettingViewModel(appState: loginStateManager), profile: viewModel.profile)
         } label: {
             HStack(spacing: 14) {
                 if let image = viewModel.profile?.profileImage {
