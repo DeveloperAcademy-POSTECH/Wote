@@ -12,21 +12,28 @@ struct ReviewDetailView: View {
     @State private var isDetailCommentShown = false
     @State private var showCustomAlert = false
     @State private var applyComplaint = false
-    var postId: Int
+    @State var viewModel: ReviewDetailViewModel
+    var reviewId: Int
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 0) {
-                detailHeaderView
-                    .padding(.top, 24)
-                    .padding(.horizontal, 24)
-                Divider()
-                    .background(Color.disableGray)
-                    .padding(.horizontal, 12)
-                    .padding(.top, 12)
-                detailReviewCell
-                    .padding(.horizontal, 24)
-                    .padding(.vertical, 30)
+            if let data = viewModel.reviewData {
+                VStack(spacing: 0) {
+                    detailHeaderView(data.originalPost)
+                        .padding(.top, 24)
+                        .padding(.horizontal, 24)
+                    Divider()
+                        .background(Color.disableGray)
+                        .padding(.horizontal, 12)
+                        .padding(.top, 12)
+                    detailReviewCell(data.reviewPost)
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 30)
+                }
+            } else {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: Color.gray100))
+                    .scaleEffect(1.3, anchor: .center)
             }
         }
         .frame(maxWidth: .infinity)
@@ -51,6 +58,7 @@ struct ReviewDetailView: View {
                 .presentationContentInteraction(.scrolls)
         }
         .onAppear {
+            viewModel.fetchReviewDetail(id: reviewId)
         }
     }
 }
@@ -66,14 +74,13 @@ extension ReviewDetailView {
         }
     }
 
-    private var detailHeaderView: some View {
+    private func detailHeaderView(_ data: SummaryPostModel) -> some View {
         VStack(spacing: 11) {
-            HStack {
-                Image("defaultProfile")
-                    .resizable()
+            HStack(spacing: 3) {
+                ProfileImageView(imageURL: data.author?.profileImage)
                     .frame(width: 32, height: 32)
-                    .padding(.trailing, 2)
-                Text("얄루")
+                    .padding(.trailing, 7)
+                Text(data.author?.nickname ?? "")
                     .font(.system(size: 16, weight: .medium))
                     .foregroundStyle(Color.woteWhite)
                 Text("님의 소비 고민")
@@ -81,9 +88,9 @@ extension ReviewDetailView {
                     .foregroundStyle(Color.woteWhite)
                 Spacer()
                 NavigationLink {
-                    // TODO: - postId 알맞게 변경
                     DetailView(viewModel: VoteViewModel(apiManager: loginState.serviceRoot.apimanager),
-                               postId: 5205)
+                               isShowingHeader: false,
+                               postId: data.id)
                 } label: {
                     HStack(spacing: 2) {
                         Text("바로가기")
@@ -94,51 +101,53 @@ extension ReviewDetailView {
                 }
             }
             NavigationLink {
-                // TODO: - postId 알맞게 변경
                 DetailView(viewModel: VoteViewModel(apiManager: loginState.serviceRoot.apimanager),
-                           postId: 5205)
+                           isShowingHeader: false,
+                           postId: data.id)
             } label: {
-                // TODO: - 모델 넘겨주기
                 VoteCardCell(cellType: .simple,
                              progressType: .end,
-                             post: SummaryPostModel(id: 313,
-                                                    createDate: "2023-11-19T07:13:22.281617",
-                                                    modifiedDate: "2023-11-19T07:13:22.281617",
-                                                    postStatus: "CLOSED",
-                                                    title: "제목"))
+                             data: data)
             }
         }
     }
 
-    private var detailReviewCell: some View {
+    private func detailReviewCell(_ data: PostModel) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            ConsumerTypeLabel(consumerType: .budgetKeeper, usage: .cell)
+            ConsumerTypeLabel(consumerType: ConsumerType(rawValue: data.author.consumerType) ?? .adventurer,
+                              usage: .cell)
                 .padding(.bottom, 12)
             HStack(spacing: 4) {
-                PurchaseLabel(isPurchased: Bool.random())
-                Text("ACG 마운틴 플라이 결국 샀다 ㅋ")
+                if let isPurchased = data.isPurchased {
+                    PurchaseLabel(isPurchased: isPurchased)
+                }
+                Text(data.title)
                     .font(.system(size: 18, weight: .bold))
                     .foregroundStyle(Color.white)
             }
             .padding(.bottom, 5)
-            Text("안뇽안뇽내용임내용임")
+            Text(data.contents ?? "")
                 .lineLimit(3)
                 .multilineTextAlignment(.leading)
                 .font(.system(size: 16, weight: .medium))
                 .foregroundStyle(Color.whiteGray)
                 .padding(.bottom, 8)
             HStack(spacing: 0) {
-                Text("가격: 120,000원")
-                Text(" · ")
-                Text("2020년 3월 12일")
+                if let price = data.price {
+                    Text("가격: \(price)원")
+                    Text(" · ")
+                }
+                Text(data.createDate.convertToStringDate() ?? "")
             }
             .font(.system(size: 14))
             .foregroundStyle(Color.gray100)
-            .padding(.bottom, 24)
-            ImageView(imageURL: "https://picsum.photos/200")
-                .padding(.bottom, 28)
+            .padding(.bottom, 20)
             shareButton
-            .padding(.bottom, 4)
+                .padding(.bottom, 4)
+            if let image = data.image {
+                ImageView(imageURL: image)
+                    .padding(.bottom, 28)
+            }
             CommentPreview()
                 .onTapGesture {
                     isDetailCommentShown.toggle()
@@ -166,7 +175,10 @@ extension ReviewDetailView {
 
 #Preview {
     NavigationStack {
-        ReviewDetailView(postId: 3030)
+        @Environment(AppLoginState.self) var loginState
+
+        ReviewDetailView(viewModel: ReviewDetailViewModel(apiManager: loginState.serviceRoot.apimanager), 
+                         reviewId: 3030)
             .environment(AppLoginState())
     }
 }

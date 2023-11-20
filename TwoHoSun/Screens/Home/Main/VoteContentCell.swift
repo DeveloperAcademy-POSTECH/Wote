@@ -59,9 +59,9 @@ struct VoteContentCell: View {
                 .foregroundStyle(Color.gray100)
                 .padding(.bottom, 10)
                 HStack {
-                    InfoButton(label: "\(data.voteCount)명 투표", icon: "person.2.fill")
+                    InfoButton(label: "\(data.voteCount ?? 0)명 투표", icon: "person.2.fill")
                     Spacer()
-                    voteInfoButton(label: "댓글 \(data.commentCount)개", icon: "message.fill")
+                    voteInfoButton(label: "댓글 \(data.commentCount ?? 0)개", icon: "message.fill")
                 }
                 .padding(.bottom, 2)
                 if let imageURL = data.image {

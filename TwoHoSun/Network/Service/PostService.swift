@@ -15,7 +15,7 @@ enum PostService {
     case getPostDetail(postId: Int)
     case modifyPost
     case deletePost
-    case getReviewDetail
+    case getReviewDetail(reviewId: Int)
     case modifyReview
     case createReview
     case deleteReview
@@ -54,6 +54,8 @@ extension PostService: TargetType {
             return "/reviews"
         case .getMoreReviews(_, _, _, let reviewType):
             return "reviews/\(reviewType)"
+        case .getReviewDetail(let reviewId):
+            return "/reviews/\(reviewId)/detail"
         default:
             return ""
         }
@@ -144,6 +146,9 @@ extension PostService: TargetType {
                                       encoding: URLEncoding.queryString)
         case .getMoreReviews:
             return .requestParameters(parameters: parameters,
+                                      encoding: URLEncoding.queryString)
+        case .getReviewDetail(let reviewId):
+            return .requestParameters(parameters: ["reviewId": reviewId],
                                       encoding: URLEncoding.queryString)
         default:
             return .requestPlain

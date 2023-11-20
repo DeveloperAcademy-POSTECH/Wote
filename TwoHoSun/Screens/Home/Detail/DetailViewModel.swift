@@ -26,11 +26,11 @@ final class DetailViewModel: ObservableObject {
     }
 
     var agreeCount: Int {
-        postDetailData?.post.voteCounts.agreeCount ?? 0
+        postDetailData?.post.voteCounts?.agreeCount ?? 0
     }
 
     var disagreeCount: Int {
-        postDetailData?.post.voteCounts.disagreeCount ?? 0
+        postDetailData?.post.voteCounts?.disagreeCount ?? 0
     }
 
     var agreeRatio: Double {

@@ -10,6 +10,7 @@ import SwiftUI
 struct ReviewView: View {
     @Binding var visibilityScope: VisibilityScopeType
     @State private var reviewType = ReviewType.all
+    @Environment(AppLoginState.self) private var loginState
     @StateObject var viewModel: ReviewTabViewModel
 
     var body: some View {
@@ -72,8 +73,8 @@ extension ReviewView {
                     HStack(spacing: 10) {
                         ForEach(datas) { data in
                             NavigationLink {
-                                // TODO: Post Id 연결
-                                ReviewDetailView(postId: 3030)
+                                ReviewDetailView(viewModel: ReviewDetailViewModel(apiManager: loginState.serviceRoot.apimanager),
+                                                 reviewId: data.id)
                             } label: {
                                 simpleReviewCell(title: data.title,
                                                  content: data.contents,
@@ -145,8 +146,8 @@ extension ReviewView {
         } else {
             ForEach(Array(zip(datas.indices, datas)), id: \.0) { index, data in
                 NavigationLink {
-                    // TODO: - postId 연결
-                    ReviewDetailView(postId: 3030)
+                    ReviewDetailView(viewModel: ReviewDetailViewModel(apiManager: loginState.serviceRoot.apimanager), 
+                                     reviewId: data.id)
                 } label: {
                     VStack(spacing: 6) {
                         Divider()

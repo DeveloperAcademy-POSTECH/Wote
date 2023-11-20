@@ -31,7 +31,7 @@ enum ClosedPostStatus: Codable {
     var description: String {
         switch self {
         case .myPostWithReview:
-            return "님의 소비후기"
+            return "님의 소비 후기"
         case .myPostWithoutReview:
             return "님! 상품에 대한 후기를 들려주세요!"
         case .othersPostWithReview:
@@ -56,6 +56,7 @@ enum ClosedPostStatus: Codable {
 }
 
 struct DetailHeaderView: View {
+    @Environment(AppLoginState.self) private var loginState
     @State private var alertOn = false
     var author: AuthorModel
     var postStatus: PostStatus
@@ -79,22 +80,22 @@ struct DetailHeaderView: View {
     }
 
     private func activeVoteHeaderView(author: AuthorModel, isMine: Bool?) -> some View {
-        HStack(spacing: 0) {
+        HStack(spacing: 3) {
             ProfileImageView(imageURL: author.profileImage)
                 .frame(width: 32, height: 32)
-                .padding(.trailing, 10)
+                .padding(.trailing, 7)
             Text(author.nickname)
                 .font(.system(size: 16, weight: .medium))
                 .foregroundStyle(Color.whiteGray)
             if let isMine = isMine {
                 if isMine {
-                    Text("님의 소비고민")
-                        .font(.system(size: 13))
+                    Text("님의 소비 고민")
+                        .font(.system(size: 14))
                         .foregroundStyle(Color.whiteGray)
                     Spacer()
                 } else {
                     Text("님의 구매후기 받기")
-                        .font(.system(size: 13))
+                        .font(.system(size: 14))
                         .foregroundStyle(Color.whiteGray)
                     Spacer()
                     Toggle("", isOn: $alertOn)
@@ -107,15 +108,15 @@ struct DetailHeaderView: View {
     }
 
     private func closedVoteHeaderView(author: AuthorModel, closedState: ClosedPostStatus) -> some View {
-        HStack(spacing: 0) {
+        HStack(spacing: 3) {
             ProfileImageView(imageURL: author.profileImage)
                 .frame(width: 32, height: 32)
-                .padding(.trailing, 10)
+                .padding(.trailing, 7)
             Text(author.nickname)
                 .font(.system(size: 16, weight: .medium))
                 .foregroundStyle(Color.whiteGray)
             Text(closedState.description)
-                .font(.system(size: 13))
+                .font(.system(size: 14))
                 .foregroundStyle(Color.whiteGray)
             Spacer()
             NavigationLink {
@@ -150,7 +151,8 @@ struct DetailHeaderView: View {
             EmptyView()
         default:
             // TODO: - post Id 수정
-            ReviewDetailView(postId: 3030)
+            ReviewDetailView(viewModel: ReviewDetailViewModel(apiManager: loginState.serviceRoot.apimanager),
+                             reviewId: 3030)
         }
     }
 }

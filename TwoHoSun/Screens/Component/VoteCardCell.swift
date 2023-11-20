@@ -37,8 +37,7 @@ enum VoteProgressType {
 struct VoteCardCell: View {
     var cellType: VoteCardCellType
     var progressType: VoteProgressType
-    var voteResultType: VoteResultType?
-    var post: SummaryPostModel
+    var data: SummaryPostModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
@@ -66,41 +65,41 @@ struct VoteCardCell: View {
                                 .background(Color.black200)
                                 .clipShape(RoundedRectangle(cornerRadius: 3))
                         }
-                        Text(post.title)
+                        Text(data.title)
                             .font(.system(size: 16, weight: .bold))
                             .foregroundStyle(.white)
                             .lineLimit(1)
                     }
-                    Text(post.contents ?? "")
+                    Text(data.contents ?? "")
                         .font(.system(size: 14, weight: .medium))
                         .foregroundStyle(.white)
                         .lineLimit(1)
                         .padding(.bottom, 9)
                     HStack(spacing: 0) {
-                        if let price = post.price {
+                        if let price = data.price {
                             Text("가격: \(price)원")
                             Text(" · ")
                         }
-                        Text(post.createDate)
+                        Text(data.createDate.convertToStringDate() ?? "")
                     }
                     .font(.system(size: 14))
                     .foregroundStyle(Color.gray100)
                 }
                 Spacer()
                 ZStack {
-                    CardImageView(imageURL: post.image)
+                    CardImageView(imageURL: data.image)
                         .opacity(progressType == .end ? 0.5 : 1.0)
                     if progressType == .end {
                         Group {
-                            switch voteResultType {
-                            case .buy:
-                                Image("imgBuy")
-                            case .draw:
-                                Image("imgDraw")
-                            case .notBuy:
-                                Image("imgNotBuy")
-                            case .none:
-                                EmptyView()
+                            if let voteResult = data.voteResult {
+                                switch VoteResultType(voteResult: voteResult) {
+                                case .buy:
+                                    Image("imgBuy")
+                                case .draw:
+                                    Image("imgDraw")
+                                case .notBuy:
+                                    Image("imgNotBuy")
+                                }
                             }
                         }
                         .offset(x: -10, y: 10)
@@ -126,7 +125,6 @@ struct VoteCardCell: View {
                         .padding(.top, 6)
                         .padding(.bottom, -6)
                 }
-
             }
         }
         .padding(.horizontal, 16)

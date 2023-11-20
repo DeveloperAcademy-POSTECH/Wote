@@ -15,6 +15,7 @@ struct DetailView: View {
     @State private var showCustomAlert = false
     @State private var applyComplaint = false
     @StateObject var viewModel: VoteViewModel
+    var isShowingHeader = true
     var postId: Int
     var index: Int?
 
@@ -25,14 +26,16 @@ struct DetailView: View {
             if let data = viewModel.postData {
                 ScrollView {
                     VStack(spacing: 0) {
-                        DetailHeaderView(author: data.post.author,
-                                         postStatus: PostStatus(rawValue: data.post.postStatus) ?? PostStatus.closed,
-                                         isMine: data.post.isMine,
-                                         hasReview: data.post.hasReview)
-                            .padding(.top, 18)
-                        Divider()
-                            .background(Color.disableGray)
-                            .padding(.horizontal, 12)
+                        if isShowingHeader {
+                            DetailHeaderView(author: data.post.author,
+                                             postStatus: PostStatus(rawValue: data.post.postStatus) ?? PostStatus.closed,
+                                             isMine: data.post.isMine,
+                                             hasReview: data.post.hasReview)
+                                .padding(.top, 18)
+                            Divider()
+                                .background(Color.disableGray)
+                                .padding(.horizontal, 12)
+                        }
                         DetailContentView(postDetailData: data.post)
                             .padding(.top, 27)
                         VStack {
@@ -125,6 +128,7 @@ struct DetailView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text("상세보기")
+                    .font(.system(size: 18, weight: .medium))
                     .foregroundStyle(Color.white)
             }
             ToolbarItem(placement: .topBarTrailing) {
@@ -264,7 +268,7 @@ struct DetailContentView: View {
             .padding(.bottom, 16)
 
             HStack {
-                Label("\(postDetailData.voteCount)명 투표", systemImage: "person.2.fill")
+                Label("\(postDetailData.voteCount ?? 0)명 투표", systemImage: "person.2.fill")
                     .font(.system(size: 14))
                     .foregroundStyle(Color.white)
                     .frame(width: 94, height: 29)
@@ -298,6 +302,7 @@ struct DetailContentView: View {
                         .background(Color.lightGray)
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                 })
+                .padding(.bottom, 4)
             }
 
             Group {

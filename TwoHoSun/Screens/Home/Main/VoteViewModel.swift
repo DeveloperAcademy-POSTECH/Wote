@@ -141,7 +141,8 @@ final class VoteViewModel: ObservableObject {
         .store(in: &cancellables)
     }
 
-    func calculatVoteRatio(voteCounts: VoteCountsModel) -> (agree: Double, disagree: Double) {
+    func calculatVoteRatio(voteCounts: VoteCountsModel?) -> (agree: Double, disagree: Double) {
+        guard let voteCounts = voteCounts else { return (0.0, 0.0) }
         let voteCount = voteCounts.agreeCount + voteCounts.disagreeCount
         guard voteCount != 0 else { return (0, 0) }
         let agreeRatio = Double(voteCounts.agreeCount) / Double(voteCount) * 100
