@@ -93,12 +93,12 @@ struct DetailHeaderView: View {
             if let isMine = isMine {
                 if isMine {
                     Text("님의 소비 고민")
-                        .font(.system(size: 14))
+                        .font(.system(size: 13))
                         .foregroundStyle(Color.whiteGray)
                     Spacer()
                 } else {
                     Text("님의 구매후기 받기")
-                        .font(.system(size: 14))
+                        .font(.system(size: 13))
                         .foregroundStyle(Color.whiteGray)
                     Spacer()
                     Toggle("", isOn: $alertOn)
@@ -119,7 +119,7 @@ struct DetailHeaderView: View {
                 .font(.system(size: 16, weight: .medium))
                 .foregroundStyle(Color.whiteGray)
             Text(closedState.description)
-                .font(.system(size: 14))
+                .font(.system(size: 13))
                 .foregroundStyle(Color.whiteGray)
             Spacer()
             NavigationLink {

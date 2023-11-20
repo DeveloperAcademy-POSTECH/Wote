@@ -53,9 +53,12 @@ struct ReviewDetailView: View {
         .toolbarBackground(Color.background, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .sheet(isPresented: $isDetailCommentShown) {
-            CommentsView(showComplaint: $showCustomAlert, applyComplaint: $applyComplaint)
-            .presentationDetents([.large,.fraction(0.9)])
-                .presentationContentInteraction(.scrolls)
+//            CommentsView(showComplaint: $showCustomAlert,
+//                         applyComplaint: $applyComplaint,
+//                         viewModel: CommentsViewModel(apiManager: <#T##NewApiManager#>,
+//                                                      postId: ㄱ))
+//            .presentationDetents([.large,.fraction(0.9)])
+//                .presentationContentInteraction(.scrolls)
         }
         .onAppear {
             viewModel.fetchReviewDetail(id: reviewId)
@@ -84,26 +87,28 @@ extension ReviewDetailView {
                     .font(.system(size: 16, weight: .medium))
                     .foregroundStyle(Color.woteWhite)
                 Text("님의 소비 고민")
-                    .font(.system(size: 14))
+                    .font(.system(size: 13))
                     .foregroundStyle(Color.woteWhite)
                 Spacer()
                 NavigationLink {
                     DetailView(viewModel: VoteViewModel(apiManager: loginState.serviceRoot.apimanager),
                                isShowingHeader: false,
-                               postId: data.id)
+                               postId: data.id, 
+                               index: 0)
                 } label: {
                     HStack(spacing: 2) {
                         Text("바로가기")
                         Image(systemName: "chevron.right")
                     }
-                    .font(.system(size: 14, weight: .medium))
+                    .font(.system(size: 13, weight: .medium))
                     .foregroundStyle(Color.accentBlue)
                 }
             }
             NavigationLink {
                 DetailView(viewModel: VoteViewModel(apiManager: loginState.serviceRoot.apimanager),
                            isShowingHeader: false,
-                           postId: data.id)
+                           postId: data.id, 
+                           index: 0)
             } label: {
                 VoteCardCell(cellType: .simple,
                              progressType: .end,

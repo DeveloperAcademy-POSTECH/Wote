@@ -19,7 +19,7 @@ struct DetailView: View {
     @State private var currentAlert = AlertType.closeVote
     var isShowingHeader = true
     var postId: Int
-    var index: Int?
+    var index: Int
 
     var body: some View {
         ZStack {
@@ -48,12 +48,12 @@ struct DetailView: View {
                                 IncompletedVoteButton(choice: .agree) {
                                     viewModel.votePost(postId: data.post.id, 
                                                        choice: true,
-                                                       index: index ?? 0)
+                                                       index: index)
                                 }
                                 IncompletedVoteButton(choice: .disagree) {
                                     viewModel.votePost(postId: data.post.id,
                                                        choice: false,
-                                                       index: index ?? 0)
+                                                       index: index)
                                 }
                             }
                         }
@@ -104,11 +104,13 @@ struct DetailView: View {
                                          isPresented: $showCustomAlert) {
                         switch currentAlert {
                         case .closeVote:
-                            viewModel.closeVote(postId: postId, index: index)
+                            viewModel.closeVote(postId: postId, 
+                                                index: index)
                             showCustomAlert.toggle()
                             viewModel.fetchPostDetail(postId: postId)
                         case .deleteVote:
-                            viewModel.deletePost(postId: postId, index: index)
+                            viewModel.deletePost(postId: postId, 
+                                                 index: index)
                             showCustomAlert.toggle()
                             dismiss()
                         default:
