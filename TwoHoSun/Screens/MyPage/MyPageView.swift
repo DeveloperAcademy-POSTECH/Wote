@@ -66,7 +66,7 @@ struct MyPageView: View {
     @State var viewModel: MyPageViewModel
     @Binding var selectedVisibilityScope: VisibilityScopeType
     @AppStorage("haveConsumerType") var haveConsumerType: Bool = false
-    @Environment(AppLoginState.self) private var loginState
+    @Environment(AppLoginState.self) private var loginStateManager
     @EnvironmentObject private var pathManger: NavigationManager
 
     var body: some View {
@@ -120,7 +120,7 @@ extension MyPageView {
 
     private var profileHeaderView: some View {
         NavigationLink {
-            ProfileSettingsView(viewType: .modfiy, viewModel: ProfileSettingViewModel(appState: loginState), profileImage: viewModel.profile?.profileImage, nickname: viewModel.profile?.nickname, school: viewModel.profile?.school, consumerType: viewModel.profile?.consumerType, lastSchoolRegisterDate: viewModel.profile?.lastSchoolRegisterDate)
+            ProfileSettingsView(viewType: .modfiy, viewModel: ProfileSettingViewModel(appState: loginStateManager), profileImage: viewModel.profile?.profileImage, nickname: viewModel.profile?.nickname, school: viewModel.profile?.school, consumerType: viewModel.profile?.consumerType, lastSchoolRegisterDate: viewModel.profile?.lastSchoolRegisterDate)
         } label: {
             HStack(spacing: 14) {
                 if let image = viewModel.profile?.profileImage {

@@ -54,6 +54,8 @@ class NewApiManager {
                         self.authenticator.authState = .allexpired
                     } else if errorType == .notCompletedSignup {
                         self.authenticator.authState = .unfinishRegister
+                    } else if errorType == .noMember {
+                        self.authenticator.authState = .none
                     }
                     return errorType
                 } else {

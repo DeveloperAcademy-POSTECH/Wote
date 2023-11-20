@@ -13,7 +13,7 @@ import Combine
 struct OnBoardingView : View {
     @State private var goProfileView = false
     @State var viewModel: LoginViewModel
-    @Environment(AppLoginState.self) private var loginState
+    @Environment(AppLoginState.self) private var loginStateManager
     @State private var navigationPath: [LoginNavigation] = []
     init(viewModel: LoginViewModel) {
         self.viewModel = viewModel
@@ -67,7 +67,7 @@ struct OnBoardingView : View {
                     WoteTabView(path: $navigationPath)
                 case .profileView:
                     ProfileSettingsView(viewType: .setting, 
-                                        viewModel: ProfileSettingViewModel(appState: loginState))
+                                        viewModel: ProfileSettingViewModel(appState: loginStateManager))
                 }
             }
         }
