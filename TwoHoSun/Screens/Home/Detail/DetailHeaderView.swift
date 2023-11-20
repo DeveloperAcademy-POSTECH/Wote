@@ -58,10 +58,6 @@ enum ClosedPostStatus: Codable {
 struct DetailHeaderView: View {
     @Environment(AppLoginState.self) private var loginState
     @State private var alertOn = false
-//    var author: AuthorModel
-//    var postStatus: PostStatus
-//    var isMine: Bool?
-//    var hasReview: Bool?
     var data: PostDetailModel
 
     var body: some View {
@@ -73,7 +69,8 @@ struct DetailHeaderView: View {
                 let hasReview = data.post.hasReview {
                 let closedPostState = ClosedPostStatus(isMine: isMine, hasReview: hasReview)!
                 closedVoteHeaderView(author: data.post.author,
-                                     closedState: closedPostState)
+                                     closedState: closedPostState,
+                                     postId: data.post.id)
             } else {
                 EmptyView()
             }
@@ -88,7 +85,7 @@ struct DetailHeaderView: View {
                 .frame(width: 32, height: 32)
                 .padding(.trailing, 7)
             Text(author.nickname)
-                .font(.system(size: 16, weight: .medium))
+                .font(.system(size: 15, weight: .medium))
                 .foregroundStyle(Color.whiteGray)
             if let isMine = isMine {
                 if isMine {
@@ -110,7 +107,7 @@ struct DetailHeaderView: View {
         .padding(.bottom, 13)
     }
 
-    private func closedVoteHeaderView(author: AuthorModel, closedState: ClosedPostStatus) -> some View {
+    private func closedVoteHeaderView(author: AuthorModel, closedState: ClosedPostStatus, postId: Int) -> some View {
         HStack(spacing: 3) {
             ProfileImageView(imageURL: author.profileImage)
                 .frame(width: 32, height: 32)
@@ -123,7 +120,7 @@ struct DetailHeaderView: View {
                 .foregroundStyle(Color.whiteGray)
             Spacer()
             NavigationLink {
-//                destinationForHeaderButton(closedState)
+                destinationForHeaderButton(closedState, postId: postId)
             } label: {
                 if closedState != ClosedPostStatus.othersPostWithoutReview {
                     headerButton(closedState.buttonView)
@@ -146,16 +143,16 @@ struct DetailHeaderView: View {
     }
 
     @ViewBuilder
-    private func destinationForHeaderButton(_ closedPostState: ClosedPostStatus, id: Int) -> some View {
+    private func destinationForHeaderButton(_ closedPostState: ClosedPostStatus, postId: Int) -> some View {
         switch closedPostState {
         case .myPostWithoutReview:
             ReviewWriteView()
         case .othersPostWithoutReview:
             EmptyView()
         default:
-            // TODO: - post Id 수정
             ReviewDetailView(viewModel: ReviewDetailViewModel(apiManager: loginState.serviceRoot.apimanager),
-                             reviewId: id)
+                             isShowingHeader: false,
+                             postId: postId)
         }
     }
 }

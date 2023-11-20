@@ -18,8 +18,25 @@ final class ReviewDetailViewModel {
         self.apiManager = apiManager
     }
 
-    func fetchReviewDetail(id: Int) {
-        apiManager.request(.postService(.getReviewDetail(reviewId: id)),
+    func fetchReviewDetail(reviewId: Int) {
+        apiManager.request(.postService(.getReviewDetailWithReviewId(reviewId: reviewId)),
+                           decodingType: ReviewDetailModel.self)
+        .compactMap(\.data)
+        .sink { completion in
+            switch completion {
+            case .finished:
+                break
+            case .failure(let failure):
+                print(failure)
+            }
+        } receiveValue: { data in
+            self.reviewData = data
+        }
+        .store(in: &cancellable)
+    }
+
+    func fetchReviewDetail(postId: Int) {
+        apiManager.request(.postService(.getReviewDetailWithPostId(postId: postId)),
                            decodingType: ReviewDetailModel.self)
         .compactMap(\.data)
         .sink { completion in

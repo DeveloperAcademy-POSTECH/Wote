@@ -13,19 +13,23 @@ struct ReviewDetailView: View {
     @State private var showCustomAlert = false
     @State private var applyComplaint = false
     @State var viewModel: ReviewDetailViewModel
-    var reviewId: Int
+    var isShowingHeader = true
+    var postId: Int?
+    var reviewId: Int?
 
     var body: some View {
         ScrollView {
             if let data = viewModel.reviewData {
                 VStack(spacing: 0) {
-                    detailHeaderView(data.originalPost)
-                        .padding(.top, 24)
-                        .padding(.horizontal, 24)
-                    Divider()
-                        .background(Color.disableGray)
-                        .padding(.horizontal, 12)
-                        .padding(.top, 12)
+                    if isShowingHeader {
+                        detailHeaderView(data.originalPost)
+                            .padding(.top, 24)
+                            .padding(.horizontal, 24)
+                        Divider()
+                            .background(Color.disableGray)
+                            .padding(.horizontal, 12)
+                            .padding(.top, 12)
+                    }
                     detailReviewCell(data.reviewPost)
                         .padding(.horizontal, 24)
                         .padding(.vertical, 30)
@@ -56,12 +60,18 @@ struct ReviewDetailView: View {
 //            CommentsView(showComplaint: $showCustomAlert,
 //                         applyComplaint: $applyComplaint,
 //                         viewModel: CommentsViewModel(apiManager: <#T##NewApiManager#>,
-//                                                      postId: ㄱ))
+//                                                      postId: ))
 //            .presentationDetents([.large,.fraction(0.9)])
 //                .presentationContentInteraction(.scrolls)
         }
         .onAppear {
-            viewModel.fetchReviewDetail(id: reviewId)
+            if let reviewId = reviewId {
+                viewModel.fetchReviewDetail(reviewId: reviewId)
+            }
+
+            if let postId = postId {
+                viewModel.fetchReviewDetail(postId: postId)
+            }
         }
     }
 }
@@ -84,7 +94,7 @@ extension ReviewDetailView {
                     .frame(width: 32, height: 32)
                     .padding(.trailing, 7)
                 Text(data.author?.nickname ?? "")
-                    .font(.system(size: 16, weight: .medium))
+                    .font(.system(size: 15, weight: .medium))
                     .foregroundStyle(Color.woteWhite)
                 Text("님의 소비 고민")
                     .font(.system(size: 13))
