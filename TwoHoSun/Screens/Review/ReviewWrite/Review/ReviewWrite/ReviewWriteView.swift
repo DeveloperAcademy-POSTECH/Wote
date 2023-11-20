@@ -18,7 +18,7 @@ struct ReviewWriteView: View {
     @State private var isEditing: Bool = false
     @State private var placeholderText = "욕설,비방,광고 등 소비 고민과 관련없는 내용은 통보 없이 삭제될 수 있습니다."
     @State private var showCropView: Bool = false
-    @Bindable private var viewModel: ReviewWriteViewModel = ReviewWriteViewModel()
+    @Bindable var viewModel: ReviewWriteViewModel
     
     var body: some View {
         ZStack {
@@ -32,7 +32,7 @@ struct ReviewWriteView: View {
                             buySelection
                         }
                         titleView
-                        if viewModel.isBuy {
+                        if viewModel.isPurchased {
                             priceView
                             imageView
                         }
@@ -98,14 +98,14 @@ extension ReviewWriteView {
                 HStack(spacing: 0) {
                     Button {
                         withAnimation(.easeInOut(duration: 0.3)) {
-                            viewModel.isBuy = true
+                            viewModel.isPurchased = true
                         }
                     } label: {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(viewModel.isBuy ? Color.lightBlue : .clear)
+                                .foregroundStyle(viewModel.isPurchased ? Color.lightBlue : .clear)
                             Text("샀다")
-                                .font(.system(size: 16, weight: viewModel.isBuy ? .bold : .medium))
+                                .font(.system(size: 16, weight: viewModel.isPurchased ? .bold : .medium))
                                 .foregroundStyle(.white)
                         }
                     }
@@ -113,14 +113,14 @@ extension ReviewWriteView {
                     .contentShape(Rectangle())
                     Button {
                         withAnimation(.easeInOut(duration: 0.3)) {
-                            viewModel.isBuy = false
+                            viewModel.isPurchased = false
                         }
                     } label: {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(viewModel.isBuy ? .clear : Color.lightBlue)
+                                .foregroundStyle(viewModel.isPurchased ? .clear : Color.lightBlue)
                             Text("안샀다")
-                                .font(.system(size: 16, weight: viewModel.isBuy ? .bold : .medium))
+                                .font(.system(size: 16, weight: viewModel.isPurchased ? .bold : .medium))
                                 .foregroundStyle(.white)
                         }
                     }
@@ -319,11 +319,5 @@ extension ReviewWriteView {
     
     private func dismissKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-    }
-}
-
-#Preview {
-    NavigationStack {
-        ReviewWriteView()
     }
 }

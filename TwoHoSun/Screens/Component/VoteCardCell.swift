@@ -26,6 +26,7 @@ struct VoteCardCell: View {
     var progressType: VoteProgressType
     var voteResultType: VoteResultType?
     var post: SummaryPostModel
+    @Environment(AppLoginState.self) private var loginStateManager
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
@@ -98,7 +99,7 @@ struct VoteCardCell: View {
             // TODO: - 후기를 작성한 투표라면 숨기기
             if progressType == .end && cellType == .myVote {
                 NavigationLink {
-                    ReviewWriteView()
+                    ReviewWriteView(viewModel: ReviewWriteViewModel(post: post, apiManager: loginStateManager.serviceRoot.apimanager))
                 } label: {
                     Text("후기 작성하기")
                         .font(.system(size: 16, weight: .semibold))
