@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct SearchView: View {
+
+
     @Environment(AppLoginState.self) private var loginState
     @Environment(\.dismiss) private var dismiss
     @State private var searchText = ""
@@ -19,33 +21,42 @@ struct SearchView: View {
     @StateObject var viewModel: SearchViewModel
 
     var body: some View {
-        ZStack(alignment: .top) {
+        ZStack {
             Color.background
                 .ignoresSafeArea()
-            VStack( spacing: 0) {
-                HStack(spacing: 8) {
-                    backButton
-                    searchField
-                        .padding(.horizontal, 8)
-                }
-                .padding(.horizontal, 8)
-                VStack(alignment: .leading) {
-                    if isSearchResultViewShown {
-                        searchFilterView
-                            .padding(.bottom, 24)
-                        searchResultView
-                    } else {
-                        HStack {
-                            recentSearchLabel
-                            Spacer()
-                            deleteAllButton
-                        }
-                        recentSearchView
-                    }
-                }
-                .padding(.top, 24)
-                .padding(.horizontal, 16)
+            if viewModel.showEmptyView {
+                emptyResultView
             }
+            ZStack(alignment: .top) {
+                VStack( spacing: 0) {
+                    HStack(spacing: 8) {
+                        backButton
+                        searchField
+                            .padding(.horizontal, 8)
+                    }
+                    .padding(.horizontal, 8)
+                    VStack(alignment: .leading) {
+                        if isFocused {
+                            HStack {
+                                recentSearchLabel
+                                Spacer()
+                                deleteAllButton
+                            }
+                            recentSearchView
+                        } else {
+                                searchFilterView
+                                    .padding(.bottom, 24)
+                                searchResultView
+
+                        }
+                    }
+                    .padding(.top, 24)
+                    .padding(.horizontal, 16)
+                }
+            }
+        }
+        .onAppear {
+            isFocused = true
         }
         .toolbar(.hidden, for: .navigationBar)
     }
@@ -79,6 +90,7 @@ extension SearchView {
             .onChange(of: isFocused) { _, isFocused in
                 if isFocused {
                     searchTextFieldState = .active
+                    viewModel.showEmptyView = false
                 }
             }
             .onSubmit {
@@ -180,7 +192,6 @@ extension SearchView {
         }
     }
 
-
     private var searchResultView: some View {
         ScrollView {
             ScrollViewReader { proxy in
@@ -207,8 +218,6 @@ extension SearchView {
         }
         .scrollIndicators(.hidden)
     }
-
-
 
     private var emptyResultView: some View {
         VStack(spacing: 20) {

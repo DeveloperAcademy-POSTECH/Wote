@@ -9,6 +9,9 @@ import Foundation
 
 
 final class SearchViewModel: ObservableObject {
+    enum SearchState {
+        case noData, first, haveData
+    }
     @Published var searchHistory = [String]()
     var isFetching = false
     @Published var searchedDatas: [SummaryPostModel] = [] {
@@ -19,6 +22,8 @@ final class SearchViewModel: ObservableObject {
     private var apiManager: NewApiManager
     @Published var selectedFilterType = PostStatus.active
     @Published var page = 0
+    @Published var showEmptyView = false
+    var searchState: SearchState = .first
     var selectedVisibilityScope: VisibilityScopeType
     private var bag = Set<AnyCancellable>()
     init(apiManager: NewApiManager, selectedVisibilityScope: VisibilityScopeType) {
@@ -73,6 +78,10 @@ final class SearchViewModel: ObservableObject {
             self.searchedDatas.append(contentsOf: data)
             self.isFetching = false
             self.addRecentSearch(searchWord: keyword)
+//            if self.searchedDatas.isEmpty {
+//                self.searchState = .noData
+//            }
+            self.showEmptyView = self.searchedDatas.isEmpty
             self.page += 1
             cancellable?.cancel()
         }
