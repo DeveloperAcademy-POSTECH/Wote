@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ConsiderationView: View {
+    @State private var didFinishSetup = false
     @State private var currentVote = 0
     @Binding var visibilityScope: VisibilityScopeType
     @Environment(AppLoginState.self) private var loginState
@@ -38,6 +39,12 @@ struct ConsiderationView: View {
         .onChange(of: visibilityScope) { _, newScope in
             currentVote = 0
             viewModel.fetchPosts(visibilityScope: newScope.rawValue)
+        }
+        .onAppear {
+            if !didFinishSetup {
+                viewModel.fetchPosts(visibilityScope: VisibilityScopeType.global.rawValue)
+                didFinishSetup = true
+            }
         }
     }
 }

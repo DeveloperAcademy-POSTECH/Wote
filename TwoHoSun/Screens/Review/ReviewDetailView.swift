@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct ReviewDetailView: View {
-    // TODO: - Model 만들기 전이라 임의로 isPurchased를 만들어두었음
-    @State var isPurchased = true
+    @Environment(AppLoginState.self) private var loginState
     @State private var isDetailCommentShown = false
     @State private var showCustomAlert = false
     @State private var applyComplaint = false
+    var postId: Int
 
     var body: some View {
         ScrollView {
@@ -50,6 +50,8 @@ struct ReviewDetailView: View {
             .presentationDetents([.large,.fraction(0.9)])
                 .presentationContentInteraction(.scrolls)
         }
+        .onAppear {
+        }
     }
 }
 
@@ -66,7 +68,7 @@ extension ReviewDetailView {
 
     private var detailHeaderView: some View {
         VStack(spacing: 11) {
-            HStack(spacing: 8) {
+            HStack {
                 Image("defaultProfile")
                     .resizable()
                     .frame(width: 32, height: 32)
@@ -80,7 +82,8 @@ extension ReviewDetailView {
                 Spacer()
                 NavigationLink {
                     // TODO: - postId 알맞게 변경
-//                    DetailView(viewModel: DetailViewModel(apiManager: <#T##NewApiManager#>, postId: <#T##Int#>))
+                    DetailView(viewModel: VoteViewModel(apiManager: loginState.serviceRoot.apimanager),
+                               postId: 5205)
                 } label: {
                     HStack(spacing: 2) {
                         Text("바로가기")
@@ -92,12 +95,17 @@ extension ReviewDetailView {
             }
             NavigationLink {
                 // TODO: - postId 알맞게 변경
-//                DetailView(viewModel: DetailViewModel(apiManager: <#T##NewApiManager#>, postId: <#T##Int#>))
+                DetailView(viewModel: VoteViewModel(apiManager: loginState.serviceRoot.apimanager),
+                           postId: 5205)
             } label: {
-//                VoteCardCell(cellType: .simple,
-//                             progressType: .end,
-//                             voteResultType: .draw,
-//                             post: )
+                // TODO: - 모델 넘겨주기
+                VoteCardCell(cellType: .simple,
+                             progressType: .end,
+                             post: SummaryPostModel(id: 313,
+                                                    createDate: "2023-11-19T07:13:22.281617",
+                                                    modifiedDate: "2023-11-19T07:13:22.281617",
+                                                    postStatus: "CLOSED",
+                                                    title: "제목"))
             }
         }
     }
@@ -107,7 +115,7 @@ extension ReviewDetailView {
             ConsumerTypeLabel(consumerType: .budgetKeeper, usage: .cell)
                 .padding(.bottom, 12)
             HStack(spacing: 4) {
-                PurchaseLabel(isPurchased: isPurchased)
+                PurchaseLabel(isPurchased: Bool.random())
                 Text("ACG 마운틴 플라이 결국 샀다 ㅋ")
                     .font(.system(size: 18, weight: .bold))
                     .foregroundStyle(Color.white)
@@ -127,25 +135,9 @@ extension ReviewDetailView {
             .font(.system(size: 14))
             .foregroundStyle(Color.gray100)
             .padding(.bottom, 24)
-            RoundedRectangle(cornerRadius: 16)
-                .strokeBorder(Color.disableGray, lineWidth: 1)
-                .frame(maxWidth: .infinity)
-                .aspectRatio(1.5, contentMode: .fill)
+            ImageView(imageURL: "https://picsum.photos/200")
                 .padding(.bottom, 28)
-            HStack {
-                Spacer()
-                Button {
-                    print("이야 공유하자")
-                } label: {
-                    Label("공유", systemImage: "square.and.arrow.up")
-                        .font(.system(size: 14))
-                        .foregroundStyle(Color.white)
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 6)
-                        .background(Color.lightBlue)
-                        .clipShape(RoundedRectangle(cornerRadius: 34))
-                }
-            }
+            shareButton
             .padding(.bottom, 4)
             CommentPreview()
                 .onTapGesture {
@@ -153,10 +145,28 @@ extension ReviewDetailView {
                 }
         }
     }
+
+    private var shareButton: some View {
+        HStack {
+            Spacer()
+            Button {
+                print("이야 공유하자")
+            } label: {
+                Label("공유", systemImage: "square.and.arrow.up")
+                    .font(.system(size: 14))
+                    .foregroundStyle(Color.white)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 6)
+                    .background(Color.lightBlue)
+                    .clipShape(RoundedRectangle(cornerRadius: 34))
+            }
+        }
+    }
 }
 
 #Preview {
     NavigationStack {
-        ReviewDetailView()
+        ReviewDetailView(postId: 3030)
+            .environment(AppLoginState())
     }
 }

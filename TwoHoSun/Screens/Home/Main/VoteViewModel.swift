@@ -27,7 +27,6 @@ final class VoteViewModel: ObservableObject {
 
     init(apiManager: NewApiManager) {
         self.apiManager = apiManager
-        fetchPosts(visibilityScope: VisibilityScopeType.global.rawValue)
     }
 
     func resetPosts() {

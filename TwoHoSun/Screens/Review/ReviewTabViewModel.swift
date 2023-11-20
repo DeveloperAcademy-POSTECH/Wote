@@ -19,8 +19,8 @@ class PaginationState {
 }
 
 final class ReviewTabViewModel: ObservableObject {
-    @Published var consumerType: ConsumerType? = nil
-    @Published var reviews: ReviewTabModel? = nil
+    @Published var consumerType: ConsumerType?
+    @Published var reviews: ReviewTabModel?
     @Published var isFetching = true
     private var apiManager: NewApiManager
     private var cancellable = Set<AnyCancellable>()

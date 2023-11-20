@@ -149,7 +149,8 @@ struct DetailHeaderView: View {
         case .othersPostWithoutReview:
             EmptyView()
         default:
-            ReviewDetailView()
+            // TODO: - post Id 수정
+            ReviewDetailView(postId: 3030)
         }
     }
 }

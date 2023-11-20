@@ -16,7 +16,7 @@ struct DetailView: View {
     @State private var applyComplaint = false
     @StateObject var viewModel: VoteViewModel
     var postId: Int
-    var index: Int
+    var index: Int?
 
     var body: some View {
         ZStack {
@@ -46,12 +46,12 @@ struct DetailView: View {
                                 IncompletedVoteButton(choice: .agree) {
                                     viewModel.votePost(postId: data.post.id, 
                                                        choice: true,
-                                                       index: index)
+                                                       index: index ?? 0)
                                 }
                                 IncompletedVoteButton(choice: .disagree) {
                                     viewModel.votePost(postId: data.post.id,
                                                        choice: false,
-                                                       index: index)
+                                                       index: index ?? 0)
                                 }
                             }
                         }

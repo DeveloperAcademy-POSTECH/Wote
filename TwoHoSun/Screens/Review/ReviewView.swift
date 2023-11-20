@@ -72,8 +72,8 @@ extension ReviewView {
                     HStack(spacing: 10) {
                         ForEach(datas) { data in
                             NavigationLink {
-                                // TODO: - isPurchased 수정, postId 수정
-                                ReviewDetailView(isPurchased: Bool.random())
+                                // TODO: Post Id 연결
+                                ReviewDetailView(postId: 3030)
                             } label: {
                                 simpleReviewCell(title: data.title,
                                                  content: data.contents,
@@ -145,7 +145,8 @@ extension ReviewView {
         } else {
             ForEach(Array(zip(datas.indices, datas)), id: \.0) { index, data in
                 NavigationLink {
-                    ReviewDetailView()
+                    // TODO: - postId 연결
+                    ReviewDetailView(postId: 3030)
                 } label: {
                     VStack(spacing: 6) {
                         Divider()

@@ -242,7 +242,7 @@ extension MyPageView {
         case .myReview:
             ForEach(0..<30) { _ in
                 NavigationLink {
-                    ReviewDetailView()
+//                    ReviewDetailView(postId: 3030)
                 } label: {
                     VStack(spacing: 0) {
 //                        ReviewCardCell(cellType: .myReview, 
