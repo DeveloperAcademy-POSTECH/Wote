@@ -7,30 +7,16 @@
 
 import SwiftUI
 
-enum SearchFilterType: Int, CaseIterable {
-    case progressing, end, review
-
-    var filterTitle: String {
-        switch self {
-        case .progressing:
-            return "진행중인 투표"
-        case .end:
-            return "종료된 투표"
-        case .review:
-            return "후기"
-        }
-    }
-}
-
 struct SearchView: View {
+    @Environment(AppLoginState.self) private var loginState
     @Environment(\.dismiss) private var dismiss
     @State private var searchText = ""
     @State private var hasResult: Bool = false
     @State private var isSearchResultViewShown = false
-    @State private var selectedFilterType = SearchFilterType.progressing
+    @State private var selectedFilterType = PostStatus.active
     @State private var searchTextFieldState = SearchTextFieldState.inactive
     @FocusState private var isFocused: Bool
-    private let viewModel = SearchViewModel()
+    @State var viewModel: SearchViewModel
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -97,8 +83,9 @@ extension SearchView {
                 }
                 .onSubmit {
                     searchTextFieldState = .submitted
+                    viewModel.fetchSearchedData(keyword: searchText)
                     isSearchResultViewShown = true
-                    viewModel.addRecentSearch(searchWord: searchText)
+//                    viewModel.addRecentSearch(searchWord: searchText)
                 }
             Spacer()
             Button {
@@ -173,8 +160,8 @@ extension SearchView {
 
     private var recentSearchView: some View {
         List {
-            ForEach(viewModel.searchWords.indices, id: \.self) { index in
-                recentSearchCell(word: viewModel.searchWords[index], index: index)
+            ForEach(viewModel.searchHistory.indices, id: \.self) { index in
+                recentSearchCell(word: viewModel.searchHistory[index], index: index)
                     .listRowInsets(EdgeInsets())
                     .listRowSeparator(.hidden)
                     .listRowBackground(Color.clear)
@@ -185,10 +172,10 @@ extension SearchView {
 
     private var searchFilterView: some View {
         HStack(spacing: 8) {
-            ForEach(SearchFilterType.allCases, id: \.self) { filter in
+            ForEach(PostStatus.allCases, id: \.self) { filter in
                 FilterButton(title: filter.filterTitle,
-                             isSelected: selectedFilterType == filter) {
-                    selectedFilterType = filter
+                             isSelected: viewModel.selectedFilterType == filter) {
+                    viewModel.selectedFilterType = filter
                 }
             }
         }
@@ -205,23 +192,21 @@ extension SearchView {
     private var searchResultView: some View {
         ScrollViewReader { proxy in
             List {
-                switch selectedFilterType {
-                case .progressing:
-                    ForEach(0..<5) { _ in
-//                        listCell(cellType: VoteCardCell(cellType: .standard,
-//                                                        progressType: .progressing,
-//                                                        post: )
+                switch viewModel.selectedFilterType {
+                case .active:
+                    ForEach(viewModel.searchedDatas, id: \.id) { data in
+                        listCell(cellType: 
+                                    VoteCardCell(cellType: .standard, progressType: .progressing, post:  data),
+                                 destination: DetailView(viewModel: DetailViewModel(apiManager: loginState.serviceRoot.apimanager), 
+                                                         postId: data.id))
                     }
                     .listRowBackground(Color.clear)
                     .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
                     .listRowSeparator(.hidden)
                     .id("searchResult")
-                case .end:
+                case .closed:
                     ForEach(0..<5) { _ in
-//                        listCell(cellType: VoteCardCell(cellType: .standard,
-//                                                        progressType: .end,
-//                                                        voteResultType: .draw,
-//                                                        post: )
+//                        listCell(cellType: VoteCardCell(cellType: <#T##VoteCardCellType#>, progressType: <#T##VoteProgressType#>, voteResultType: <#T##VoteResultType?#>, post: <#T##SummaryPostModel#>), destination: <#T##some View#>)
                     }
                     .listRowBackground(Color.clear)
                     .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
@@ -240,7 +225,8 @@ extension SearchView {
             }
             .listStyle(.plain)
             .scrollIndicators(.hidden)
-            .onChange(of: selectedFilterType) { _, _ in
+            .onChange(of: viewModel.selectedFilterType) { _, _ in
+                viewModel.fetchSearchedData(keyword: searchText     )
                 proxy.scrollTo("searchResult", anchor: .top)
             }
         }
@@ -256,8 +242,8 @@ extension SearchView {
     }
 }
 
-#Preview {
-    NavigationStack {
-        SearchView()
-    }
-}
+//#Preview {
+//    NavigationStack {
+//        SearchView()
+//    }
+//}

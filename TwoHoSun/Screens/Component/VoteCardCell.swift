@@ -4,26 +4,25 @@
 //
 //  Created by 김민 on 11/6/23.
 //
-
 import SwiftUI
 
-enum VoteCardCellType {
-    case standard
-    case simple
-    case myVote
-}
-
-enum VoteResultType {
-    case buy, draw, notBuy
-}
-
-enum VoteProgressType {
-    case progressing, end
-}
-
 struct VoteCardCell: View {
+    enum VoteCardCellType {
+        case standard
+        case simple
+        case myVote
+    }
+
+    enum VoteResultType {
+        case buy, draw, notBuy
+    }
+
+    enum VoteProgressType {
+        case progressing, end
+    }
+
     var cellType: VoteCardCellType
-    var progressType: VoteProgressType
+    var progressType: PostStatus
     var voteResultType: VoteResultType?
     var post: SummaryPostModel
 
@@ -44,7 +43,7 @@ struct VoteCardCell: View {
             HStack {
                 VStack(alignment: .leading, spacing: 6) {
                     HStack(spacing: 4) {
-                        if progressType == .end {
+                        if progressType == .closed {
                             Text("종료")
                                 .font(.system(size: 12, weight: .medium))
                                 .foregroundStyle(.white)
@@ -52,7 +51,12 @@ struct VoteCardCell: View {
                                 .padding(.horizontal, 5)
                                 .background(Color.black200)
                                 .clipShape(RoundedRectangle(cornerRadius: 3))
+                        } else if progressType == .review {
+                            if let isPurchased = post.isPurchased {
+                                PurchaseLabel(isPurchased: isPurchased)
+                            }
                         }
+
                         Text(post.title)
                             .font(.system(size: 16, weight: .bold))
                             .foregroundStyle(.white)
@@ -76,8 +80,8 @@ struct VoteCardCell: View {
                 Spacer()
                 ZStack {
                     CardImageView(imageURL: post.image)
-                        .opacity(progressType == .end ? 0.5 : 1.0)
-                    if progressType == .end {
+                        .opacity(progressType == .closed ? 0.5 : 1.0 )
+                    if progressType == .closed {
                         Group {
                             switch voteResultType {
                             case .buy:
@@ -96,7 +100,7 @@ struct VoteCardCell: View {
             }
 
             // TODO: - 후기를 작성한 투표라면 숨기기
-            if progressType == .end && cellType == .myVote {
+            if progressType == .closed && cellType == .myVote {
                 NavigationLink {
                     ReviewWriteView()
                 } label: {
