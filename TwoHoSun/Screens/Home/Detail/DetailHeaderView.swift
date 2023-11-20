@@ -58,19 +58,22 @@ enum ClosedPostStatus: Codable {
 struct DetailHeaderView: View {
     @Environment(AppLoginState.self) private var loginState
     @State private var alertOn = false
-    var author: AuthorModel
-    var postStatus: PostStatus
-    var isMine: Bool?
-    var hasReview: Bool?
+//    var author: AuthorModel
+//    var postStatus: PostStatus
+//    var isMine: Bool?
+//    var hasReview: Bool?
+    var data: PostDetailModel
 
     var body: some View {
-        switch postStatus {
+        switch PostStatus(rawValue: data.post.postStatus) {
         case .active:
-            activeVoteHeaderView(author: author, isMine: isMine)
+            activeVoteHeaderView(author: data.post.author, isMine: data.post.isMine)
         case .closed:
-            if let isMine = isMine, let hasReview = hasReview {
+            if let isMine = data.post.isMine,
+                let hasReview = data.post.hasReview {
                 let closedPostState = ClosedPostStatus(isMine: isMine, hasReview: hasReview)!
-                closedVoteHeaderView(author: author, closedState: closedPostState)
+                closedVoteHeaderView(author: data.post.author,
+                                     closedState: closedPostState)
             } else {
                 EmptyView()
             }
@@ -120,7 +123,7 @@ struct DetailHeaderView: View {
                 .foregroundStyle(Color.whiteGray)
             Spacer()
             NavigationLink {
-                destinationForHeaderButton(closedState)
+//                destinationForHeaderButton(closedState)
             } label: {
                 if closedState != ClosedPostStatus.othersPostWithoutReview {
                     headerButton(closedState.buttonView)
@@ -143,7 +146,7 @@ struct DetailHeaderView: View {
     }
 
     @ViewBuilder
-    private func destinationForHeaderButton(_ closedPostState: ClosedPostStatus) -> some View {
+    private func destinationForHeaderButton(_ closedPostState: ClosedPostStatus, id: Int) -> some View {
         switch closedPostState {
         case .myPostWithoutReview:
             ReviewWriteView()
@@ -152,55 +155,8 @@ struct DetailHeaderView: View {
         default:
             // TODO: - post Id 수정
             ReviewDetailView(viewModel: ReviewDetailViewModel(apiManager: loginState.serviceRoot.apimanager),
-                             reviewId: 3030)
+                             reviewId: id)
         }
-    }
-}
-
-#Preview {
-    Group {
-        DetailHeaderView(author: AuthorModel(id: 0,
-                                        nickname: "얄루",
-                                        profileImage: nil,
-                                        consumerType: ConsumerType.flexer.rawValue),
-                         postStatus: PostStatus.active,
-                         isMine: true,
-                         hasReview: nil)
-        DetailHeaderView(author: AuthorModel(id: 0,
-                                        nickname: "얄루",
-                                        profileImage: nil,
-                                        consumerType: ConsumerType.flexer.rawValue),
-                         postStatus: PostStatus.active,
-                         isMine: false,
-                         hasReview: nil)
-        DetailHeaderView(author: AuthorModel(id: 0,
-                                        nickname: "얄루",
-                                        profileImage: nil,
-                                        consumerType: ConsumerType.flexer.rawValue),
-                         postStatus: PostStatus.closed,
-                         isMine: true,
-                         hasReview: true)
-        DetailHeaderView(author: AuthorModel(id: 0,
-                                        nickname: "얄루",
-                                        profileImage: nil,
-                                        consumerType: ConsumerType.flexer.rawValue),
-                         postStatus: PostStatus.closed,
-                         isMine: true,
-                         hasReview: false)
-        DetailHeaderView(author: AuthorModel(id: 0,
-                                        nickname: "얄루",
-                                        profileImage: nil,
-                                        consumerType: ConsumerType.flexer.rawValue),
-                         postStatus: PostStatus.closed,
-                         isMine: false,
-                         hasReview: false)
-        DetailHeaderView(author: AuthorModel(id: 0,
-                                        nickname: "얄루",
-                                        profileImage: nil,
-                                        consumerType: ConsumerType.flexer.rawValue),
-                         postStatus: PostStatus.closed,
-                         isMine: false,
-                         hasReview: true)
     }
 }
 

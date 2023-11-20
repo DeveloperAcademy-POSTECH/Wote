@@ -27,10 +27,7 @@ struct DetailView: View {
                 ScrollView {
                     VStack(spacing: 0) {
                         if isShowingHeader {
-                            DetailHeaderView(author: data.post.author,
-                                             postStatus: PostStatus(rawValue: data.post.postStatus) ?? PostStatus.closed,
-                                             isMine: data.post.isMine,
-                                             hasReview: data.post.hasReview)
+                            DetailHeaderView(data: data)
                                 .padding(.top, 18)
                             Divider()
                                 .background(Color.disableGray)
