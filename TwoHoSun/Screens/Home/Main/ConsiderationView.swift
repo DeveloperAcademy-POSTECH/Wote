@@ -13,6 +13,7 @@ struct ConsiderationView: View {
     @Environment(AppLoginState.self) private var loginStateManager
     @EnvironmentObject private var pathManger: NavigationManager
     @State private var isRefreshing = false
+    @State private var didFinishSetup = false
     @StateObject var viewModel: VoteViewModel
     @AppStorage("haveConsumerType") var haveConsumerType: Bool = false
 
@@ -35,6 +36,13 @@ struct ConsiderationView: View {
                 .padding(.bottom, 21)
                 .padding(.trailing, 24)
         }
+        .onAppear {
+              if !didFinishSetup {
+                  viewModel.fetchPosts(visibilityScope: VisibilityScopeType.global.type)
+                  didFinishSetup = true
+              }
+          }
+
         .onChange(of: selectedVisibilityScope) { _, newScope in
             currentVote = 0
             viewModel.fetchPosts(visibilityScope: newScope.type)

@@ -37,7 +37,10 @@ struct VoteCardCell: View {
                         .font(.system(size: 16, weight: .bold))
                         .foregroundStyle(.white)
                     Spacer()
-                    ConsumerTypeLabel(consumerType: .budgetKeeper, usage: .cell)
+                    if let consumerType = post.author?.consumerType {
+                        ConsumerTypeLabel(consumerType: ConsumerType(rawValue: consumerType) ?? .ecoWarrior ,usage: .cell)
+                    }
+
                 }
             }
             HStack {

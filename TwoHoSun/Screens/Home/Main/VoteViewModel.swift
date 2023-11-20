@@ -27,7 +27,7 @@ final class VoteViewModel: ObservableObject {
 
     init(apiManager: NewApiManager) {
         self.apiManager = apiManager
-        fetchPosts(visibilityScope: VisibilityScopeType.global.type)
+//        fetchPosts(visibilityScope: VisibilityScopeType.global.type)
     }
 
     func resetPosts() {
@@ -47,7 +47,7 @@ final class VoteViewModel: ObservableObject {
     }
 
     func fetchPosts(page: Int = 0,
-                    size: Int = 5,
+                    size: Int = 10,
                     visibilityScope: String,
                     isFirstFetch: Bool = true) {
 

@@ -7,13 +7,18 @@
 import Combine
 import Foundation
 
-@Observable
-final class SearchViewModel {
-    var searchHistory = [String]()
+
+final class SearchViewModel: ObservableObject {
+    @Published var searchHistory = [String]()
     var isFetching = false
-    var searchedDatas: [SummaryPostModel] = []
+    @Published var searchedDatas: [SummaryPostModel] = [] {
+        didSet {
+            print("사리추가요")
+        }
+    }
     private var apiManager: NewApiManager
-    var selectedFilterType = PostStatus.active
+    @Published var selectedFilterType = PostStatus.active
+    @Published var page = 0
     var selectedVisibilityScope: VisibilityScopeType
     private var bag = Set<AnyCancellable>()
     init(apiManager: NewApiManager, selectedVisibilityScope: VisibilityScopeType) {
@@ -49,9 +54,10 @@ final class SearchViewModel {
         UserDefaults.standard.set(searchHistory, forKey: "RecentSearch")
     }
     // TODO: - fetching result data
-    func fetchSearchedData(page: Int = 0, size: Int = 20, keyword: String) {
+    func fetchSearchedData(size: Int = 5, keyword: String) {
         isFetching = true
-        apiManager.request(.postService(
+        var cancellable: AnyCancellable?
+        cancellable =  apiManager.request(.postService(
             .getSearchResult(postStatus: selectedFilterType,
                              visibilityScopeType: selectedVisibilityScope,
                              page: page, size: size, keyword: keyword)),
@@ -60,11 +66,11 @@ final class SearchViewModel {
         .sink { completion in
             print(completion)
         } receiveValue: { data in
-            print(data)
             self.searchedDatas.append(contentsOf: data)
             self.isFetching = false
             self.addRecentSearch(searchWord: keyword)
+            self.page += 1
+            cancellable?.cancel()
         }
-        .store(in: &bag)
     }
 }

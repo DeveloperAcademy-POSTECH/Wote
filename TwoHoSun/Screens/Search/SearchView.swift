@@ -16,7 +16,7 @@ struct SearchView: View {
     @State private var selectedFilterType = PostStatus.active
     @State private var searchTextFieldState = SearchTextFieldState.inactive
     @FocusState private var isFocused: Bool
-    @State var viewModel: SearchViewModel
+    @StateObject var viewModel: SearchViewModel
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -68,24 +68,24 @@ extension SearchView {
             TextField("search",
                       text: $searchText,
                       prompt: Text("원하는 소비항목을 검색해보세요.")
-                                .font(.system(size: 14, weight: .medium))
-                                .foregroundStyle(Color.placeholderGray))
-                .focused($isFocused)
                 .font(.system(size: 14, weight: .medium))
-                .foregroundStyle(searchTextFieldState.foregroundColor)
-                .tint(Color.placeholderGray)
-                .frame(height: 32)
-                .padding(.leading, 16)
-                .onChange(of: isFocused) { _, isFocused in
-                    if isFocused {
-                        searchTextFieldState = .active
-                    }
+                .foregroundStyle(Color.placeholderGray))
+            .focused($isFocused)
+            .font(.system(size: 14, weight: .medium))
+            .foregroundStyle(searchTextFieldState.foregroundColor)
+            .tint(Color.placeholderGray)
+            .frame(height: 32)
+            .padding(.leading, 16)
+            .onChange(of: isFocused) { _, isFocused in
+                if isFocused {
+                    searchTextFieldState = .active
                 }
-                .onSubmit {
-                    searchTextFieldState = .submitted
-                    viewModel.fetchSearchedData(keyword: searchText)
-                    isSearchResultViewShown = true
-                }
+            }
+            .onSubmit {
+                searchTextFieldState = .submitted
+                viewModel.fetchSearchedData(keyword: searchText)
+                isSearchResultViewShown = true
+            }
             Spacer()
             Button {
                 searchText.removeAll()
@@ -182,29 +182,35 @@ extension SearchView {
 
 
     private var searchResultView: some View {
-        ScrollViewReader { proxy in
-            List {
-                ForEach(Array(viewModel.searchedDatas.enumerated()), id: \.offset) { index, data in
-                    NavigationLink {
-                        DetailView(viewModel: VoteViewModel(apiManager: loginState.serviceRoot.apimanager), postId: data.id, index: index)
-                    } label: {
-                        VoteCardCell(cellType: .standard,
-                                                        progressType: viewModel.selectedFilterType, post: data)
+        ScrollView {
+            ScrollViewReader { proxy in
+                LazyVStack {
+                    ForEach(Array(viewModel.searchedDatas.enumerated()), id: \.offset) { index, data in
+                        NavigationLink {
+                            DetailView(viewModel: VoteViewModel(apiManager: loginState.serviceRoot.apimanager), postId: data.id, index: index)
+                        } label: {
+                            VoteCardCell(cellType: .standard,
+                                         progressType: viewModel.selectedFilterType, post: data)
+                        }
+                        .onAppear {
+                            if index == viewModel.searchedDatas.count - 4 {
+                                viewModel.fetchSearchedData(keyword: searchText)
+                            }                        }
+                    }
+                    .id("searchResult")
+                    .onChange(of: viewModel.selectedFilterType) { _, _ in
+                        viewModel.searchedDatas = []
+                        viewModel.page = 0
+                        viewModel.fetchSearchedData(keyword: searchText  )
+                        proxy.scrollTo("searchResult", anchor: .top)
                     }
                 }
-                .listRowBackground(Color.clear)
-                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
-                .listRowSeparator(.hidden)
-                .id("searchResult")
-            }
-            .listStyle(.plain)
-            .scrollIndicators(.hidden)
-            .onChange(of: viewModel.selectedFilterType) { _, _ in
-                viewModel.fetchSearchedData(keyword: searchText     )
-                proxy.scrollTo("searchResult", anchor: .top)
             }
         }
+        .scrollIndicators(.hidden)
     }
+
+
 
     private var emptyResultView: some View {
         VStack(spacing: 20) {

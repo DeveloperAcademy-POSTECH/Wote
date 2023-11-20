@@ -50,7 +50,6 @@ struct VoteInfoModel: Codable, Hashable {
     let consumerType: String
 }
 
-
 struct VoteCountsModel: Codable {
     let agreeCount: Int
     let disagreeCount: Int
