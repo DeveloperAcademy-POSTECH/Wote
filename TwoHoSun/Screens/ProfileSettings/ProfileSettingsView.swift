@@ -126,7 +126,6 @@ struct ProfileSettingsView: View {
                     .padding(.bottom, 34)
                 schoolInputView
                     .onAppear {
-                        print(viewModel.selectedSchoolInfo)
                         if let school = school {
                             if viewModel.selectedSchoolInfo == nil {
                                 viewModel.selectedSchoolInfo = SchoolInfoModel(school: school, schoolAddress: nil)
