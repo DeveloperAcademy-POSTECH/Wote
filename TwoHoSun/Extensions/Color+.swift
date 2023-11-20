@@ -40,6 +40,7 @@ extension Color {
     static let activeBlack = Color(UIColor(hexCode: "09090D"))
     static let subGray5 = Color(UIColor(hexCode: "AFAFAF"))
     static let subGray6 = Color(UIColor(hexCode: "979797"))
+    static let subGray7 = Color(UIColor(hexCode: "787878"))
 
     static let gray100 = Color(UIColor(hexCode: "8894B0"))
     static let gray200 = Color(UIColor(hexCode: "2C2F37"))

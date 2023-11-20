@@ -10,7 +10,7 @@ import Foundation
 struct ProfileModel: Codable {
     var createDate: String
     var modifiedDate: String
-    var lastSchoolRegisterDate: String
+    var lastSchoolRegisterDate: String?
     var nickname: String
     var profileImage: String?
     var consumerType: ConsumerType

@@ -165,7 +165,7 @@ extension SchoolSearchView {
             .onTapGesture {
                 let schoolModel = school.school
                 selectedSchoolInfo = SchoolInfoModel(school: SchoolModel(schoolName: schoolModel.schoolName,
-                                                                         schoolRegion: regionMapping[schoolModel.schoolRegion] 
+                                                                         schoolRegion: regionMapping[schoolModel.schoolRegion]
                                                                          ?? schoolModel.schoolRegion),
                                                      schoolAddress: school.schoolAddress)
                 dismiss()

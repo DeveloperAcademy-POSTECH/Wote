@@ -87,13 +87,15 @@ extension UserService: TargetType {
                                                   mimeType: "image/jpeg")
                 formData.append(imageData)
             }
-            let profileData: [String: Any] = [
-                 "nickname": profile.nickname,
-                 "school": [
-                     "schoolName": profile.school.schoolName,
-                     "schoolRegion": profile.school.schoolRegion
-                 ]
+            var profileData: [String: Any] = [
+                 "nickname": profile.nickname
              ]
+            if profile.school != nil {
+                profileData["school"] = [
+                    "schoolName": profile.school?.schoolName,
+                    "schoolRegion": profile.school?.schoolRegion
+                 ]
+            }
             do {
                 let jsonData = try JSONSerialization.data(withJSONObject: profileData)
                 let jsonString = String(data: jsonData, encoding: .utf8)!
