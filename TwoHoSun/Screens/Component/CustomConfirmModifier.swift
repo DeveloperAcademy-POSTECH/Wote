@@ -9,8 +9,9 @@ import SwiftUI
 
 struct CustomConfirmModifier<A>: ViewModifier where A: View {
     @Binding var isPresented: Bool
-    @ViewBuilder let actions: () -> A
-
+    let actions: (Binding<Bool>) -> A
+    @Binding var isMine: Bool
+    
     func body(content: Content) -> some View {
         ZStack {
             content
@@ -25,12 +26,9 @@ struct CustomConfirmModifier<A>: ViewModifier where A: View {
                         .transition(.opacity)
                     VStack(alignment: .center) {
                         GroupBox {
-                            actions()
-                                .padding(.vertical, 15)
-                                .background(Color.disableGray)
-                                .foregroundStyle(Color.lightBlue)
-                                .clipShape(.rect(cornerRadius: 10))
+                            actions($isMine)
                         }
+                        .clipShape(.rect(cornerRadius: 10))
                         .groupBoxStyle(TransparentGroupBox())
                         GroupBox {
                             Button("취소", role: .cancel) {
@@ -60,7 +58,7 @@ struct TransparentGroupBox: GroupBoxStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.content
             .frame(maxWidth: .infinity)
-            .background(RoundedRectangle(cornerRadius:  10)
+            .background(RoundedRectangle(cornerRadius: 10)
                     .fill(Color.disableGray))
     }
 }

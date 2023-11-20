@@ -14,7 +14,7 @@ enum PostService {
     case createPost(post: PostCreateModel)
     case getPostDetail(postId: Int)
     case modifyPost
-    case deletePost
+    case deletePost(postId: Int)
     case getReviewDetail(reviewId: Int)
     case modifyReview
     case createReview
@@ -22,6 +22,7 @@ enum PostService {
     case subscribeReview
     case votePost(postId: Int, choice: Bool)
     case getSearchResult
+    case closeVote(postId: Int)
     case getMyPosts(page: Int,
                     size: Int,
                     myVoteCategoryType: String)
@@ -50,6 +51,10 @@ extension PostService: TargetType {
             return "/posts/\(postId)/votes"
         case .getMyPosts:
             return "mypage/posts"
+        case .deletePost(let postId):
+            return "/posts/\(postId)"
+        case .closeVote(let postId):
+            return "/posts/\(postId)/complete"
         case .getReviews:
             return "/reviews"
         case .getMoreReviews(_, _, _, let reviewType):
@@ -67,8 +72,6 @@ extension PostService: TargetType {
             return ["page": page,
                     "size": size,
                     "visibilityScope": visibilityScope]
-        case .votePost(_, let choice):
-            return ["choice": choice]
         case .getMyPosts(let page, let size, let myVoteCategoryType):
             return ["page": page,
                     "size": size,
@@ -97,6 +100,10 @@ extension PostService: TargetType {
         case .getPostDetail:
             return .get
         case .votePost:
+            return .post
+        case .deletePost:
+            return .delete
+        case .closeVote:
             return .post
         default:
             return .get
@@ -149,6 +156,12 @@ extension PostService: TargetType {
                                       encoding: URLEncoding.queryString)
         case .getReviewDetail(let reviewId):
             return .requestParameters(parameters: ["reviewId": reviewId],
+                                      encoding: URLEncoding.queryString)
+        case .deletePost(let postId):
+            return .requestParameters(parameters: ["postId": postId],
+                                      encoding: URLEncoding.queryString)
+        case .closeVote(let postId):
+            return .requestParameters(parameters: ["postId": postId],
                                       encoding: URLEncoding.queryString)
         default:
             return .requestPlain

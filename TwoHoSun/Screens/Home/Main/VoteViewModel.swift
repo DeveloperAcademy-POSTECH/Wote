@@ -149,6 +149,42 @@ final class VoteViewModel: ObservableObject {
         return (agreeRatio, 100 - agreeRatio)
     }
 
+    func deletePost(postId: Int, index: Int) {
+        apiManager.request(.postService(.deletePost(postId: postId)),
+                           decodingType: NoData.self)
+            .compactMap(\.data)
+            .sink { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    print("error: \(error)")
+                }
+            } receiveValue: { _ in
+            }
+            .store(in: &cancellables)
+
+        posts.remove(at: index)
+    }
+
+    func closeVote(postId: Int, index: Int) {
+        apiManager.request(.postService(.closeVote(postId: postId)),
+                           decodingType: NoData.self)
+            .compactMap(\.data)
+            .sink { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    print("error: \(error)")
+                }
+            } receiveValue: { _ in
+            }
+            .store(in: &cancellables)
+
+        posts[index].postStatus = PostStatus.closed.rawValue
+    }
+
     private func setTopConsumerTypes() {
         guard let voteInfoList = postData?.post.voteInfoList else { return }
         let (agreeVoteInfos, disagreeVoteInfos) = filterSelectedResult(voteInfoList: voteInfoList)

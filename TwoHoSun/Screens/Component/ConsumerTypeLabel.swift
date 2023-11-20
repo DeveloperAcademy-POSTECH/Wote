@@ -22,7 +22,7 @@ enum LabelTypeUsage {
     var verticalPadding: Double {
         switch self {
         case .comments:
-            return 2
+            return 4
         default:
             return 5
         }
@@ -36,6 +36,15 @@ enum LabelTypeUsage {
             return 14
         }
     }
+
+    var iconSize: CGFloat {
+        switch self {
+        case .comments:
+            16
+        default:
+            20
+        }
+    }
 }
 
 struct ConsumerTypeLabel: View {
@@ -46,7 +55,7 @@ struct ConsumerTypeLabel: View {
         HStack(spacing: 4) {
             consumerType.icon
                 .resizable()
-                .frame(width: 20, height: 20)
+                .frame(width: usage.iconSize, height: usage.iconSize)
             Text(consumerType.title)
                 .font(.system(size: usage.fontSize, weight: .semibold))
         }
