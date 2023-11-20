@@ -15,7 +15,7 @@ enum ReviewCardCellType {
 
 struct ReviewCardCell: View {
     var cellType: ReviewCardCellType
-    var isPurchased: Bool
+    var post: SummaryPostModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -35,34 +35,32 @@ struct ReviewCardCell: View {
             HStack {
                 VStack(alignment: .leading, spacing: 6) {
                     HStack(spacing: 4) {
-                        PurchaseLabel(isPurchased: isPurchased)
-                        Text("ACG 마운틴 플라이 살까 말까?sdffdsfsdfsdasdf")
+                        if let isPurchased = post.isPurchased {
+                            PurchaseLabel(isPurchased: isPurchased)
+                        }
+                        Text(post.title)
                             .font(.system(size: 16, weight: .bold))
                             .foregroundStyle(.white)
                             .lineLimit(1)
                     }
-                    Text("어쩌고저쩌고50자미만임~~asdfasadsafsdfasdf")
+                    Text(post.contents ?? "")
                         .font(.system(size: 14, weight: .medium))
                         .foregroundStyle(.white)
                         .lineLimit(1)
                         .padding(.bottom, 9)
                     HStack(spacing: 0) {
-                        if isPurchased {
-                            Text("가격: 120,000원")
+                        if let price = post.price {
+                            Text("가격: \(price)원")
                             Text(" · ")
                         }
-                        Text("2020년 3월 12일")
+                        Text(post.createDate.convertToStringDate() ?? "")
                     }
                     .font(.system(size: 14))
                     .foregroundStyle(Color.gray100)
                 }
                 Spacer()
-                if isPurchased {
-                    // TODO: Rectangle -> image 변경 필요
-                    Rectangle()
-                        .frame(width: 66, height: 66)
-                        .foregroundStyle(.gray)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                if let image = post.image {
+                    CardImageView(imageURL: image)
                 }
             }
             .padding(.top, cellType == .myReview ? 28 : 18)
@@ -71,13 +69,5 @@ struct ReviewCardCell: View {
         .padding(.horizontal, 16)
         .background(cellType == .search ? Color.disableGray : Color.clear)
         .clipShape(RoundedRectangle(cornerRadius: 16))
-    }
-}
-
-#Preview {
-    Group {
-        ReviewCardCell(cellType: .search, isPurchased: true)
-        ReviewCardCell(cellType: .otherReview, isPurchased: true)
-        ReviewCardCell(cellType: .myReview, isPurchased: true)
     }
 }

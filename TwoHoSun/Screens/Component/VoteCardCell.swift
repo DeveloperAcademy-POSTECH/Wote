@@ -44,7 +44,7 @@ struct VoteCardCell: View {
             HStack {
                 VStack(alignment: .leading, spacing: 6) {
                     HStack(spacing: 4) {
-                        if progressType == .end {
+                        if progressType == .end && cellType != .myVote {
                             Text("종료")
                                 .font(.system(size: 12, weight: .medium))
                                 .foregroundStyle(.white)
@@ -68,7 +68,7 @@ struct VoteCardCell: View {
                             Text("가격: \(price)원")
                             Text(" · ")
                         }
-                        Text(post.createDate)
+                        Text(post.createDate.convertToStringDate() ?? "")
                     }
                     .font(.system(size: 14))
                     .foregroundStyle(Color.gray100)

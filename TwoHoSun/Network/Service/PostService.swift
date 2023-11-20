@@ -23,6 +23,7 @@ enum PostService {
     case votePost(postId: Int, choice: Bool)
     case getSearchResult
     case getMyPosts(page: Int, size: Int, myVoteCategoryType: String)
+    case getMyReviews(page: Int, size: Int, myReviewCategoryType: String)
     case closeVote(postId: Int)
     case getReviews(visibilityScope: String,
                       reviewType: String,
@@ -48,6 +49,8 @@ extension PostService: TargetType {
             return "/posts/\(postId)/votes"
         case .getMyPosts:
             return "mypage/posts"
+        case .getMyReviews:
+            return "mypage/reviews"
         case .deletePost(let postId):
             return "/posts/\(postId)"
         case .closeVote(let postId):
@@ -69,11 +72,10 @@ extension PostService: TargetType {
             return ["page": page,
                     "size": size,
                     "myVoteCategoryType": myVoteCategoryType]
-        case .getReviews(let visibilityScope, let reviewType, let page, let size):
-            return ["visibilityScope": visibilityScope,
-                    "reviewType": reviewType,
-                    "page": page,
-                    "size": size]
+        case .getMyReviews(let page, let size, let myReviewCategoryType):
+            return ["page": page,
+                    "size": size,
+                    "visibilityScope": myReviewCategoryType]
         default:
             return [:]
         }
@@ -95,6 +97,8 @@ extension PostService: TargetType {
             return .delete
         case .closeVote:
             return .post
+        case .getMyReviews:
+            return .get
         default:
             return .get
         }
@@ -146,6 +150,8 @@ extension PostService: TargetType {
                                       encoding: URLEncoding.queryString)
         case .getReviews:
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
+        case .getMyReviews:
+            return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         default:
             return .requestPlain
         }
@@ -156,6 +162,8 @@ extension PostService: TargetType {
         case .createPost:
             APIConstants.headerMultiPartForm
         case .getMyPosts:
+            APIConstants.headerWithAuthorization
+        case .getMyReviews:
             APIConstants.headerWithAuthorization
         default:
             APIConstants.headerWithAuthorization

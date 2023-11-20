@@ -10,6 +10,9 @@ import SwiftUI
 
 @Observable
 final class MyPageViewModel {
+    var selectedMyPageListType = MyPageListType.myVote
+    var selectedMyVoteCategoryType = MyVoteCategoryType.all
+    var selectedMyReviewCategoryType = MyReviewCategoryType.all
     let apiManager: NewApiManager
     var posts: [SummaryPostModel] = []
     var cacellabels: Set<AnyCancellable> = []
@@ -20,14 +23,8 @@ final class MyPageViewModel {
         self.apiManager = apiManager
     }
     
-    func fetchPosts(myVoteCategoryType: String, isFirstFetch: Bool = true) {
-        if isFirstFetch {
-            posts.removeAll()
-            page = 0
-            isLastPage = false
-        }
-        
-        apiManager.request(.postService(.getMyPosts(page: page, size: 10, myVoteCategoryType: myVoteCategoryType)), decodingType: MyPostModel.self)
+    func requestPosts(postType: PostService) {
+        apiManager.request(.postService(postType), decodingType: MyPostModel.self)
             .compactMap(\.data)
             .sink { completion in
                 switch completion {
@@ -45,9 +42,24 @@ final class MyPageViewModel {
             .store(in: &cacellabels)
     }
     
-    func fetchMorePosts(_ myVoteCategoryType: String) {
+    func fetchPosts(isFirstFetch: Bool = true) {
+        if isFirstFetch {
+            posts.removeAll()
+            page = 0
+            isLastPage = false
+        }
+        
+        switch selectedMyPageListType {
+        case .myVote:
+            requestPosts(postType: .getMyPosts(page: page, size: 10, myVoteCategoryType: selectedMyVoteCategoryType.parameter))
+        case .myReview:
+            requestPosts(postType: .getMyReviews(page: page, size: 10, myReviewCategoryType: selectedMyReviewCategoryType.parameter))
+        }
+    }
+    
+    func fetchMorePosts() {
         guard !isLastPage else { return }
         page += 1
-        fetchPosts(myVoteCategoryType: myVoteCategoryType, isFirstFetch: false)
+        fetchPosts(isFirstFetch: false)
     }
 }
