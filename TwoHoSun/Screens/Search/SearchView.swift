@@ -95,7 +95,7 @@ extension SearchView {
             }
             .onSubmit {
                 searchTextFieldState = .submitted
-                viewModel.fetchSearchedData(keyword: searchText, reset: true, save: true)
+                viewModel.fetchSearchedData(keyword: searchText, reset: true, save: searchText.isEmpty ? false : true)
                 isSearchResultViewShown = true
             }
             Spacer()
