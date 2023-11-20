@@ -88,7 +88,7 @@ struct VoteCardCell: View {
                 Spacer()
                 ZStack {
                     CardImageView(imageURL: data.image)
-                        .opacity(progressType == .end ? 0.5 : 1.0)
+//                        .opacity(progressType == .end ? 0.5 : 1.0)
                     if progressType == .end {
                         Group {
                             if let voteResult = data.voteResult {

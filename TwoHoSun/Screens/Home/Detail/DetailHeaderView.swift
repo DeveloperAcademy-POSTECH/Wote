@@ -113,7 +113,7 @@ struct DetailHeaderView: View {
                 .frame(width: 32, height: 32)
                 .padding(.trailing, 7)
             Text(author.nickname)
-                .font(.system(size: 16, weight: .medium))
+                .font(.system(size: 15, weight: .medium))
                 .foregroundStyle(Color.whiteGray)
             Text(closedState.description)
                 .font(.system(size: 13))
