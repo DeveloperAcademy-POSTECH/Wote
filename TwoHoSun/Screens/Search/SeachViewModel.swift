@@ -7,7 +7,6 @@
 import Combine
 import Foundation
 
-
 final class SearchViewModel: ObservableObject {
     @Published var searchHistory = [String]()
     var isFetching = false
@@ -50,8 +49,8 @@ final class SearchViewModel: ObservableObject {
     func setRecentSearch() {
         UserDefaults.standard.set(searchHistory, forKey: "RecentSearch")
     }
-    // TODO: - fetching result data
-    func fetchSearchedData(size: Int = 5, keyword: String, reset: Bool = false, save: Bool = false) {
+
+    func fetchSearchedData(keyword: String, reset: Bool = false, save: Bool = false) {
         isFetching.toggle()
         if reset {
             page = 0
@@ -61,7 +60,7 @@ final class SearchViewModel: ObservableObject {
         cancellable =  apiManager.request(.postService(
             .getSearchResult(postStatus: selectedFilterType,
                              visibilityScopeType: selectedVisibilityScope,
-                             page: page, size: size, keyword: keyword)),
+                             page: page, size: 8, keyword: keyword)),
                            decodingType: [SummaryPostModel].self)
         .compactMap(\.data)
         .sink { completion in
