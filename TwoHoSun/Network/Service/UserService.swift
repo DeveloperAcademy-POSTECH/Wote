@@ -15,6 +15,7 @@ enum UserService {
     case postProfileSetting(profile: ProfileSetting)
     case refreshToken
     case putConsumerType(consumertype: ConsumerType)
+    case getProfile
 }
 
 extension UserService: TargetType {
@@ -35,6 +36,8 @@ extension UserService: TargetType {
             return "/api/auth/refresh"
         case .putConsumerType:
             return "/api/profiles/consumerType"
+        case .getProfile:
+            return "/api/profiles"
         }
     }
     
@@ -42,6 +45,8 @@ extension UserService: TargetType {
         switch self {
         case .putConsumerType:
             return .put
+        case .getProfile:
+            return .get
         default:
             return .post
         }
@@ -61,6 +66,8 @@ extension UserService: TargetType {
                     "identifier": KeychainManager.shared.readToken(key: "identifier")!]
         case .putConsumerType(let consumerType):
             return ["consumerType": consumerType.rawValue]
+        case .getProfile:
+            return [:]
         }
     }
 
@@ -80,13 +87,15 @@ extension UserService: TargetType {
                                                   mimeType: "image/jpeg")
                 formData.append(imageData)
             }
-            let profileData: [String: Any] = [
-                 "nickname": profile.nickname,
-                 "school": [
-                     "schoolName": profile.school.schoolName,
-                     "schoolRegion": profile.school.schoolRegion
-                 ]
+            var profileData: [String: Any] = [
+                 "nickname": profile.nickname
              ]
+            if profile.school != nil {
+                profileData["school"] = [
+                    "schoolName": profile.school?.schoolName,
+                    "schoolRegion": profile.school?.schoolRegion
+                 ]
+            }
             do {
                 let jsonData = try JSONSerialization.data(withJSONObject: profileData)
                 let jsonString = String(data: jsonData, encoding: .utf8)!
@@ -100,7 +109,8 @@ extension UserService: TargetType {
             return .uploadMultipart(formData)
         case .putConsumerType:
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
-
+        case .getProfile:
+            return .requestPlain
         default:
             return .requestParameters(parameters: parameters,
                                       encoding: URLEncoding.default)
@@ -118,6 +128,8 @@ extension UserService: TargetType {
         case .refreshToken:
             APIConstants.headerWithOutToken
         case .putConsumerType:
+            APIConstants.headerWithAuthorization
+        case .getProfile:
             APIConstants.headerWithAuthorization
         }
     }

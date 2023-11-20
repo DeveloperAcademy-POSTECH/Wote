@@ -67,7 +67,7 @@ struct VoteCardCell: View {
             HStack {
                 VStack(alignment: .leading, spacing: 6) {
                     HStack(spacing: 4) {
-                        if progressType == .closed {
+                        if progressType == .closed && cellType != .myVote {
                             Text("종료")
                                 .font(.system(size: 12, weight: .medium))
                                 .foregroundStyle(.white)

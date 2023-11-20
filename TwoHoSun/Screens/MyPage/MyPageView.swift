@@ -47,12 +47,20 @@ enum MyReviewCategoryType: String, CaseIterable, Hashable {
     case all = "모든 후기"
     case allSchool = "전체 학교 후기"
     case mySchool = "우리 학교 후기"
+    
+    var parameter: String {
+        switch self {
+        case .all:
+            return "ALL"
+        case .allSchool:
+            return "GLOBAL"
+        case .mySchool:
+            return "SCHOOL"
+        }
+    }
 }
 
 struct MyPageView: View {
-    @State private var selectedMyPageListType = MyPageListType.myVote
-    @State private var selectedMyVoteCategoryType = MyVoteCategoryType.all
-    @State private var selectedMyReviewCategoryType = MyReviewCategoryType.all
     @State private var isMyVoteCategoryButtonDidTap = false
     @State private var isMyReviewCategoryButtonDidTap = false
     @State var viewModel: MyPageViewModel
@@ -82,12 +90,13 @@ struct MyPageView: View {
                         .id("myPageList")
                     }
                     .onAppear {
-                        viewModel.fetchPosts(myVoteCategoryType: selectedMyVoteCategoryType.parameter)
+                        viewModel.fetchPosts()
                     }
-                    .onChange(of: selectedMyPageListType) { _, _ in
+                    .onChange(of: viewModel.selectedMyPageListType) { _, _ in
                         isMyVoteCategoryButtonDidTap = false
                         isMyReviewCategoryButtonDidTap = false
                         proxy.scrollTo("myPageList", anchor: .top)
+                        viewModel.fetchPosts()
                     }
                 }
             }
@@ -98,8 +107,11 @@ struct MyPageView: View {
         .onTapGesture {
             isMyVoteCategoryButtonDidTap = false
         }
-        .onChange(of: selectedMyVoteCategoryType) { _, newValue in
-            viewModel.fetchPosts(myVoteCategoryType: newValue.parameter)
+        .onChange(of: viewModel.selectedMyVoteCategoryType) { _, _ in
+            viewModel.fetchPosts()
+        }
+        .onChange(of: viewModel.selectedMyReviewCategoryType) { _, _ in
+            viewModel.fetchPosts()
         }
     }
 }
@@ -108,25 +120,29 @@ extension MyPageView {
 
     private var profileHeaderView: some View {
         NavigationLink {
-            ProfileSettingsView(viewType: .modfiy,
-                                viewModel: ProfileSettingViewModel(appState: loginStateManager))
+            ProfileSettingsView(viewType: .modfiy, viewModel: ProfileSettingViewModel(appState: loginStateManager), profile: viewModel.profile)
         } label: {
-            HStack {
-                Circle()
-                    .frame(width: 103, height: 103)
-                    .foregroundStyle(.gray)
-                VStack(alignment: .leading, spacing: 16) {
+            HStack(spacing: 14) {
+                if let image = viewModel.profile?.profileImage {
+                    ProfileImageView(imageURL: image)
+                        .frame(width: 103, height: 103)
+                } else {
+                    Image("defaultProfile")
+                        .resizable()
+                        .frame(width: 103, height: 103)
+                }
+                VStack(alignment: .leading, spacing: 8) {
                     HStack(spacing: 0) {
-                        Text("김보람")
+                        Text(viewModel.profile?.nickname ?? "")
                             .font(.system(size: 20, weight: .medium))
                             .padding(.trailing, 12)
-                        ConsumerTypeLabel(consumerType: .flexer, usage: .standard)
+                        ConsumerTypeLabel(consumerType: viewModel.profile?.consumerType ?? .adventurer, usage: .standard)
                         Spacer()
                         Image(systemName: "chevron.right")
                             .font(.system(size: 14))
                             .foregroundStyle(Color.subGray1)
                     }
-                    Text("서현고등학교")
+                    Text(viewModel.profile?.school.schoolName ?? "")
                         .font(.system(size: 14))
                 }
                 .foregroundStyle(.white)
@@ -151,18 +167,18 @@ extension MyPageView {
                         .font(.system(size: 14))
                         .foregroundStyle(.white)
                     Spacer()
-                    switch selectedMyPageListType {
+                    switch viewModel.selectedMyPageListType {
                     case .myVote:
-                        selectCategoryButton(selectedCategoryType: $selectedMyVoteCategoryType, isButtonTapped: $isMyVoteCategoryButtonDidTap)
+                        selectCategoryButton(selectedCategoryType: $viewModel.selectedMyVoteCategoryType, isButtonTapped: $isMyVoteCategoryButtonDidTap)
                     case .myReview:
-                        selectCategoryButton(selectedCategoryType: $selectedMyReviewCategoryType, isButtonTapped: $isMyReviewCategoryButtonDidTap)
+                        selectCategoryButton(selectedCategoryType: $viewModel.selectedMyReviewCategoryType, isButtonTapped: $isMyReviewCategoryButtonDidTap)
                     }
                 }
                 .padding(.horizontal, 24)
                 .overlay(
                         isMyVoteCategoryButtonDidTap ? 
                         categoryMenuView(categories: MyVoteCategoryType.allCases,
-                                         selectedCategoryType: $selectedMyVoteCategoryType,
+                                         selectedCategoryType: $viewModel.selectedMyVoteCategoryType,
                                          isButtonTapped: $isMyVoteCategoryButtonDidTap)
                             .offset(x: -24, y: 30) : nil,
                         alignment: .topTrailing
@@ -170,7 +186,7 @@ extension MyPageView {
                 .overlay(
                         isMyReviewCategoryButtonDidTap ?
                         categoryMenuView(categories: MyReviewCategoryType.allCases,
-                                         selectedCategoryType: $selectedMyReviewCategoryType,
+                                         selectedCategoryType: $viewModel.selectedMyReviewCategoryType,
                                          isButtonTapped: $isMyReviewCategoryButtonDidTap)
                             .offset(x: -24, y: 30) : nil,
                         alignment: .topTrailing
@@ -188,13 +204,13 @@ extension MyPageView {
         VStack(spacing: 10) {
             Text(type.title)
                 .font(.system(size: 18, weight: .medium))
-                .foregroundStyle(type == selectedMyPageListType ? Color.lightBlue : Color.fontGray)
+                .foregroundStyle(type == viewModel.selectedMyPageListType ? Color.lightBlue : Color.fontGray)
             Rectangle()
                 .frame(width: 66, height: 2)
-                .foregroundStyle(type == selectedMyPageListType ? Color.lightBlue : Color.clear)
+                .foregroundStyle(type == viewModel.selectedMyPageListType ? Color.lightBlue : Color.clear)
         }
         .onTapGesture {
-            selectedMyPageListType = type
+            viewModel.selectedMyPageListType = type
         }
     }
 
@@ -216,7 +232,7 @@ extension MyPageView {
 
     @ViewBuilder
     private var myPageListTypeView: some View {
-        switch selectedMyPageListType {
+        switch viewModel.selectedMyPageListType {
         case .myVote:
             ForEach(Array(zip(viewModel.posts.indices, viewModel.posts)), id: \.0) { index, post in
                 NavigationLink {
@@ -234,27 +250,30 @@ extension MyPageView {
                 }
                 .onAppear {
                     if index == viewModel.posts.count - 4 {
-                        viewModel.fetchMorePosts(selectedMyVoteCategoryType.parameter)
+                        viewModel.fetchMorePosts()
                     }
                 }
             }
             .padding(.horizontal, 8)
         case .myReview:
-            ForEach(0..<30) { _ in
+            ForEach(Array(zip(viewModel.posts.indices, viewModel.posts)), id: \.0) { index, post in
                 NavigationLink {
                     ReviewDetailView()
                 } label: {
                     VStack(spacing: 0) {
-                        ReviewCardCell(cellType: .myReview, isPurchased: Bool.random())
+                        ReviewCardCell(cellType: .myReview, post: post)
                         Divider()
                             .background(Color.dividerGray)
                             .padding(.horizontal, 8)
                     }
                 }
+                .onAppear {
+                    if index == viewModel.posts.count - 4 {
+                        viewModel.fetchMorePosts()
+                    }
+                }
             }
             .padding(.horizontal, 8)
-//            NoReviewView()
-//                .padding(.top, 60)
         }
     }
 

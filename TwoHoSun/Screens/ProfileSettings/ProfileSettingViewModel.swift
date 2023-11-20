@@ -72,11 +72,33 @@ final class ProfileSettingViewModel {
         isFormValid = false
     }
     
-    func setProfile() {
+    func checkSchoolRegisterDate(_ date: String) -> Bool {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        if let date = dateFormatter.date(from: date) {
+            if let datePlusSixMonths = Calendar.current.date(byAdding: .month, value: 6, to: date) {
+                if Date() > datePlusSixMonths {
+                    return false
+                } else {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+    
+    func setProfile(_ isRestricted: Bool) {
         guard let school = selectedSchoolInfo?.school else { return }
-        model = ProfileSetting(imageFile: selectedImageData ?? Data(),
-                               nickname: nickname,
-                               school: school)
+        if isRestricted {
+            model = ProfileSetting(imageFile: selectedImageData ?? Data(),
+                                   nickname: nickname,
+                                   school: nil)
+        } else {
+            model = ProfileSetting(imageFile: selectedImageData ?? Data(),
+                                   nickname: nickname,
+                                   school: school)
+        }
         postProfileSetting()
     }
     

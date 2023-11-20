@@ -23,6 +23,7 @@ enum PostService {
     case votePost(postId: Int, choice: Bool)
     case getSearchResult(postStatus: PostStatus, visibilityScopeType: VisibilityScopeType, page: Int, size: Int, keyword: String)
     case getMyPosts(page: Int, size: Int, myVoteCategoryType: String)
+    case getMyReviews(page: Int, size: Int, myReviewCategoryType: String)
     case closeVote(postId: Int)
     case getReviews(visibilityScope: String,
                       reviewType: String,
@@ -50,6 +51,8 @@ extension PostService: TargetType {
             return "mypage/posts"
         case .getSearchResult:
             return "/search"
+        case .getMyReviews:
+            return "mypage/reviews"
         case .deletePost(let postId):
             return "/posts/\(postId)"
         case .closeVote(let postId):
@@ -84,6 +87,10 @@ extension PostService: TargetType {
                     "reviewType": reviewType,
                     "page": page,
                     "size": size]
+        case .getMyReviews(let page, let size, let myReviewCategoryType):
+            return ["page": page,
+                    "size": size,
+                    "visibilityScope": myReviewCategoryType]
         default:
             return [:]
         }
@@ -105,6 +112,8 @@ extension PostService: TargetType {
             return .delete
         case .closeVote:
             return .post
+        case .getMyReviews:
+            return .get
         default:
             return .get
         }
@@ -158,6 +167,8 @@ extension PostService: TargetType {
                                       encoding: URLEncoding.queryString)
         case .getReviews:
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
+        case .getMyReviews:
+            return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         default:
             return .requestPlain
         }
@@ -168,6 +179,8 @@ extension PostService: TargetType {
         case .createPost:
             APIConstants.headerMultiPartForm
         case .getMyPosts:
+            APIConstants.headerWithAuthorization
+        case .getMyReviews:
             APIConstants.headerWithAuthorization
         default:
             APIConstants.headerWithAuthorization

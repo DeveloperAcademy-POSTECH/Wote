@@ -98,7 +98,7 @@ extension SchoolSearchView {
                         .padding(.bottom, 13)
                     HStack(spacing: 5) {
                         infoLabel("도로명")
-                        infoDescription(schoolInfo.schoolAddress)
+                        infoDescription(schoolInfo.schoolAddress ?? "")
                     }
                     .padding(.bottom, 10)
                     HStack(spacing: 16) {
@@ -165,7 +165,7 @@ extension SchoolSearchView {
             .onTapGesture {
                 let schoolModel = school.school
                 selectedSchoolInfo = SchoolInfoModel(school: SchoolModel(schoolName: schoolModel.schoolName,
-                                                                         schoolRegion: regionMapping[schoolModel.schoolRegion] 
+                                                                         schoolRegion: regionMapping[schoolModel.schoolRegion]
                                                                          ?? schoolModel.schoolRegion),
                                                      schoolAddress: school.schoolAddress)
                 dismiss()
