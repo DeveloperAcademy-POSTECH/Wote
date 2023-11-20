@@ -15,7 +15,7 @@ struct SchoolModel: Codable {
 struct SchoolInfoModel: Identifiable {
     let id = UUID()
     let school: SchoolModel
-    let schoolAddress: String
+    let schoolAddress: String?
 }
 
 enum SchoolDataType {

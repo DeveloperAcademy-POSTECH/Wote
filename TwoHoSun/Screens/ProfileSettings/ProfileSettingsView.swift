@@ -94,6 +94,11 @@ struct ProfileSettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(AppLoginState.self) private var loginState
     
+    var profileImage: String?
+    var nickname: String?
+    var school: SchoolModel?
+    var consumerType: ConsumerType?
+    
     var body: some View {
         ZStack {
             Color.background
@@ -105,13 +110,13 @@ struct ProfileSettingsView: View {
                         .padding(.top, 40)
                 case .modfiy:
                     HStack {
-                        ConsumerTypeLabel(consumerType: .impulseBuyer, usage: .standard)
+                        ConsumerTypeLabel(consumerType: consumerType ?? .adventurer, usage: .standard)
                         Spacer()
                     }
                     .padding(.top, 30)
                 }
                 Spacer()
-                profileImage
+                profileImageView
                 Spacer()
                 nicknameInputView
                     .padding(.bottom, 34)
@@ -202,7 +207,7 @@ extension ProfileSettingsView {
         }
     }
 
-    private var profileImage: some View {
+    private var profileImageView: some View {
         ZStack(alignment: .bottomTrailing) {
             if let selectedData = viewModel.selectedImageData,
                let uiImage = UIImage(data: selectedData) {
@@ -212,9 +217,14 @@ extension ProfileSettingsView {
                     .clipShape(Circle())
             } else {
                 photoPickerView {
-                    Image("defaultProfile")
-                        .resizable()
-                        .frame(width: 130, height: 130)
+                    if let profileImage = profileImage {
+                        ProfileImageView(imageURL: profileImage)
+                            .frame(width: 130, height: 130)
+                    } else {
+                        Image("defaultProfile")
+                            .resizable()
+                            .frame(width: 130, height: 130)
+                    }
                 }
             }
             selectProfileButton
@@ -267,6 +277,7 @@ extension ProfileSettingsView {
                     .font(.system(size: 12))
                     .foregroundStyle(Color.placeholderGray))
                 .foregroundStyle(Color.white)
+                .font(.system(size: 14))
                 .frame(height: 44)
                 .padding(EdgeInsets(top: 0, leading: 17, bottom: 0, trailing: 0))
                 .overlay {
@@ -279,6 +290,11 @@ extension ProfileSettingsView {
                                 .shadow(color: Color.strokeBlue.opacity(0.15), radius: 2)
                                 .blur(radius: 3)
                         }
+                    }
+                }
+                .onAppear {
+                    if let nickname = nickname {
+                        viewModel.nickname = nickname
                     }
                 }
                 .onChange(of: viewModel.nickname) { _, newValue in
@@ -326,6 +342,11 @@ extension ProfileSettingsView {
                     schoolValidationAlertMessage
                         .padding(.top, 6)
                 }
+            }
+        }
+        .onAppear {
+            if let school = school {
+                viewModel.selectedSchoolInfo = SchoolInfoModel(school: school, schoolAddress: nil)
             }
         }
     }

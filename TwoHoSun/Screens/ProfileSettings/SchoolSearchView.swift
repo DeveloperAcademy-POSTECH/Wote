@@ -98,7 +98,7 @@ extension SchoolSearchView {
                         .padding(.bottom, 13)
                     HStack(spacing: 5) {
                         infoLabel("도로명")
-                        infoDescription(schoolInfo.schoolAddress)
+                        infoDescription(schoolInfo.schoolAddress ?? "")
                     }
                     .padding(.bottom, 10)
                     HStack(spacing: 16) {
