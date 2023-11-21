@@ -121,14 +121,10 @@ extension UserService: TargetType {
         switch self {
         case .postAuthorCode:
             APIConstants.headerXform
-        case .checkNicknameValid:
-            APIConstants.headerWithAuthorization
         case .postProfileSetting:
             APIConstants.headerMultiPartForm
         case .refreshToken:
             APIConstants.headerWithOutToken
-        case .putConsumerType:
-            APIConstants.headerWithAuthorization
         case .getProfile:
             APIConstants.headerWithAuthorization
         }

@@ -161,10 +161,6 @@ extension PostService: TargetType {
         switch self {
         case .createPost:
             APIConstants.headerMultiPartForm
-        case .getMyPosts:
-            APIConstants.headerWithAuthorization
-        case .getMyReviews:
-            APIConstants.headerWithAuthorization
         default:
             APIConstants.headerWithAuthorization
         }
