@@ -125,7 +125,7 @@ extension UserService: TargetType {
             APIConstants.headerMultiPartForm
         case .refreshToken:
             APIConstants.headerWithOutToken
-        case .getProfile:
+        default:
             APIConstants.headerWithAuthorization
         }
     }

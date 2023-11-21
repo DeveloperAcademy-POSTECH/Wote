@@ -51,10 +51,16 @@ class ServiceRoot {
 }
 
 @Observable
+class AppData {
+    var notificationDatas = [NotificationModel]()
+}
+
+@Observable
 class AppLoginState {
     var serviceRoot: ServiceRoot
-
+    var appData: AppData
     init() {
+        appData = AppData()
         serviceRoot = ServiceRoot()
         checkTokenValidity()
         serviceRoot.auth.relogin = relogin
