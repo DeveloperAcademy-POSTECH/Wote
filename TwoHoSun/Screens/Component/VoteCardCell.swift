@@ -97,7 +97,7 @@ struct VoteCardCell: View {
             }
 
             // TODO: - 후기를 작성한 투표라면 숨기기
-            if progressType == .end && cellType == .myVote {
+            if progressType == .end && cellType == .myVote && !(post.hasReview ?? false) {
                 NavigationLink {
                     ReviewWriteView(viewModel: ReviewWriteViewModel(post: post, apiManager: loginStateManager.serviceRoot.apimanager))
                 } label: {

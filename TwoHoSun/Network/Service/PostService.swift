@@ -129,7 +129,7 @@ extension PostService: TargetType {
                 let json = try JSONSerialization.data(withJSONObject: postData)
                 let jsonString = String(data: json, encoding: .utf8)!
                 let stringData = MultipartFormData(provider: .data(jsonString.data(using: String.Encoding.utf8)!), 
-                                                   name: "createPostRequest",
+                                                   name: "postRequest",
                                                    mimeType: "application/json")
                 formData.append(stringData)
             } catch {
@@ -171,7 +171,7 @@ extension PostService: TargetType {
                 let json = try JSONSerialization.data(withJSONObject: postData)
                 let jsonString = String(data: json, encoding: .utf8)!
                 let stringData = MultipartFormData(provider: .data(jsonString.data(using: String.Encoding.utf8)!),
-                                                   name: "createReviewRequest",
+                                                   name: "reviewRequest",
                                                    mimeType: "application/json")
                 formData.append(stringData)
             } catch {

@@ -13,15 +13,26 @@ final class ReviewWriteViewModel {
     var isPurchased: Bool = true
     var title: String = ""
     var price: String = ""
-    var content = ""
+    var content: String = ""
+    var image: Data?
     var post: SummaryPostModel
     var review: ReviewCreateModel?
-    var image: Data?
     private var apiManager: NewApiManager
     private var cancellable = Set<AnyCancellable>()
-    var isTitleValid: Bool {
-        guard !title.isEmpty else { return false }
-        return true
+    var isValid: Bool {
+        if isPurchased {
+            if !title.isEmpty && image != nil {
+                return true
+            } else {
+                return false
+            }
+        } else {
+            if !title.isEmpty {
+                return true
+            } else {
+                return false
+            }
+        }
     }
     
     init(post: SummaryPostModel, apiManager: NewApiManager) {
