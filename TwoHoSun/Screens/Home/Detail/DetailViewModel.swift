@@ -21,6 +21,13 @@ final class DetailViewModel {
         self.appLoginState = appLoginState
     }
 
+    func searchIndex(with postId: Int) -> Int {
+        guard let index = appLoginState.appData.posts.firstIndex(where: { $0.id == postId }) else {
+            fatalError("post not found")
+        }
+        return index
+    }
+
     func fetchPostDetail(postId: Int) {
         appLoginState.serviceRoot.apimanager
             .request(.postService(.getPostDetail(postId: postId)),

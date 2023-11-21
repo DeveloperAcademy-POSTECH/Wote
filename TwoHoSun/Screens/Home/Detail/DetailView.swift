@@ -19,7 +19,7 @@ struct DetailView: View {
     @State var viewModel: DetailViewModel
     var isShowingHeader = true
     var postId: Int
-    var index: Int
+    var index: Int?
 
     var body: some View {
         ZStack {
@@ -48,12 +48,12 @@ struct DetailView: View {
                                 IncompletedVoteButton(choice: .agree) {
                                     viewModel.votePost(postId: data.post.id,
                                                        choice: true,
-                                                       index: index)
+                                                       index: index ?? viewModel.searchIndex(with: postId))
                                 }
                                 IncompletedVoteButton(choice: .disagree) {
                                     viewModel.votePost(postId: data.post.id,
                                                        choice: false,
-                                                       index: index)
+                                                       index: index ?? viewModel.searchIndex(with: postId))
                                 }
                             }
                         }
@@ -107,11 +107,11 @@ struct DetailView: View {
                         switch currentAlert {
                         case .closeVote:
                             viewModel.closePost(postId: postId,
-                                                index: index)
+                                                index: index ?? viewModel.searchIndex(with: postId))
                             showCustomAlert.toggle()
                         case .deleteVote:
                             viewModel.deletePost(postId: postId,
-                                                 index: index)
+                                                 index: index ?? viewModel.searchIndex(with: postId))
                             showCustomAlert.toggle()
                             dismiss()
                         default:
