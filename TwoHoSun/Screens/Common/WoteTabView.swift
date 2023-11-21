@@ -96,10 +96,11 @@ struct WoteTabView: View {
             }  
             .navigationDestination(for: AllNavigation.self) { destination in
                 switch destination {
-                case .detailView(let postId, let index):
+                case .detailView(let postId, let index, let directComments):
                     DetailView(viewModel: VoteViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
                                postId: postId,
-                               index: index)
+                               index: index,
+                               directComments: directComments)
                 case .makeVoteView:
                     VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: selectedVisibilityScope, 
                                                                 apiManager: loginStateManager.serviceRoot.apimanager), tabselection: $selection )

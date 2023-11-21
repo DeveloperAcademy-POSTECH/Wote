@@ -9,7 +9,6 @@ import SwiftUI
 
 struct DetailView: View {
     @Environment(\.dismiss) var dismiss
-    @State private var showDetailComments = false
     @State private var showconfirm = false
     @State private var backgroundColor: Color = .background
     @State private var showCustomAlert = false
@@ -17,8 +16,10 @@ struct DetailView: View {
     @Environment(AppLoginState.self) private var loginStateManager
     @StateObject var viewModel: VoteViewModel
     @State private var currentAlert = AlertType.closeVote
+    @State var showDetailComments = false
     var postId: Int
     var index: Int
+    var directComments = false
 
     var body: some View {
         ZStack {
@@ -204,6 +205,9 @@ struct DetailView: View {
             }
         }
         .onAppear {
+            if directComments {
+                showDetailComments.toggle()
+            }
             viewModel.postData = nil
             viewModel.fetchPostDetail(postId: postId)
         }
