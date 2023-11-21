@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ReviewDetailView: View {
     @Environment(AppLoginState.self) private var loginState
-    @Environment(VoteDataManager.self) private var voteData
     @State private var isDetailCommentShown = false
     @State private var showCustomAlert = false
     @State private var applyComplaint = false
@@ -102,10 +101,13 @@ extension ReviewDetailView {
                     .foregroundStyle(Color.woteWhite)
                 Spacer()
                 NavigationLink {
-                    DetailView(viewModel: DetailViewModel(apiManager: voteData),
-                               isShowingHeader: false,
-                               postId: data.id, 
-                               index: 0)
+//                    DetailView(viewModel: DetailViewModel(voteDataManager: loginState.serviceRoot.voteManager),
+//                               isShowingHeader: false,
+//                               postId: 0,
+//                               index: 0)
+//                    DetailView(viewModel: DetailViewModel(appLoginState: loginState),
+//                               postId: <#T##Int#>,
+//                               index: <#T##Int#>)
                 } label: {
                     HStack(spacing: 2) {
                         Text("바로가기")
@@ -116,10 +118,10 @@ extension ReviewDetailView {
                 }
             }
             NavigationLink {
-                DetailView(viewModel: DetailViewModel(apiManager: voteData),
-                           isShowingHeader: false,
-                           postId: data.id, 
-                           index: 0)
+//                DetailView(viewModel: DetailViewModel(voteDataManager: loginState.serviceRoot.voteManager),
+//                           isShowingHeader: false,
+//                           postId: 0,
+//                           index: 0)
             } label: {
                 VoteCardCell(cellType: .simple,
                              progressType: .end,

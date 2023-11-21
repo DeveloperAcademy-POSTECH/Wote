@@ -28,7 +28,6 @@
 		AB38A1192B091BA9004153B5 /* ReviewTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1182B091BA9004153B5 /* ReviewTabViewModel.swift */; };
 		AB38A1BB2B0B4270004153B5 /* ReviewDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1BA2B0B4270004153B5 /* ReviewDetailViewModel.swift */; };
 		AB38A1BD2B0B4454004153B5 /* ReviewDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1BC2B0B4454004153B5 /* ReviewDetailModel.swift */; };
-		AB38A1C12B0B99B1004153B5 /* VoteDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1C02B0B99B1004153B5 /* VoteDataManager.swift */; };
 		AB38A1C52B0BACC7004153B5 /* ConsiderationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1C42B0BACC7004153B5 /* ConsiderationViewModel.swift */; };
 		AB38A1C72B0BE1BE004153B5 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1C62B0BE1BD004153B5 /* DetailViewModel.swift */; };
 		AB3BACFD2AF7A5FC00E792BE /* SearchTextFieldState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3BACFC2AF7A5FC00E792BE /* SearchTextFieldState.swift */; };
@@ -152,7 +151,6 @@
 		AB38A1182B091BA9004153B5 /* ReviewTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewTabViewModel.swift; sourceTree = "<group>"; };
 		AB38A1BA2B0B4270004153B5 /* ReviewDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewDetailViewModel.swift; sourceTree = "<group>"; };
 		AB38A1BC2B0B4454004153B5 /* ReviewDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewDetailModel.swift; sourceTree = "<group>"; };
-		AB38A1C02B0B99B1004153B5 /* VoteDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteDataManager.swift; sourceTree = "<group>"; };
 		AB38A1C42B0BACC7004153B5 /* ConsiderationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsiderationViewModel.swift; sourceTree = "<group>"; };
 		AB38A1C62B0BE1BD004153B5 /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
 		AB3BACFC2AF7A5FC00E792BE /* SearchTextFieldState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTextFieldState.swift; sourceTree = "<group>"; };
@@ -294,7 +292,6 @@
 			isa = PBXGroup;
 			children = (
 				C7A95F102B01FFBA00F8595A /* NewApiManager.swift */,
-				AB38A1C02B0B99B1004153B5 /* VoteDataManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -886,7 +883,6 @@
 				C7A95F1B2B03EB7B00F8595A /* NavigationManager.swift in Sources */,
 				C7719FE62AF2861000A520CB /* ConsumerType.swift in Sources */,
 				ABA1E8502AFEA3AF009051E0 /* SettingView.swift in Sources */,
-				AB38A1C12B0B99B1004153B5 /* VoteDataManager.swift in Sources */,
 				C7DE44C22AE26109001639CB /* View+.swift in Sources */,
 				C7E459D12ADFF89000ECD008 /* WoteTabView.swift in Sources */,
 				AB38A10D2B07D914004153B5 /* PostDetailModel.swift in Sources */,

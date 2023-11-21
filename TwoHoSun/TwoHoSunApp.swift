@@ -17,7 +17,6 @@ enum Route {
 struct TwoHoSunApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @State private var appState = AppLoginState()
-    @State private var voteDataManager = VoteDataManager(apiManager: AppLoginState().serviceRoot.apimanager)
 
     var body: some Scene {
         WindowGroup {
@@ -28,7 +27,6 @@ struct TwoHoSunApp: App {
             case .loggedIn:
                     WoteTabView(path: .constant([]))
                         .environment(appState)
-                        .environment(voteDataManager)
             }
         }
     }
@@ -36,10 +34,16 @@ struct TwoHoSunApp: App {
 
 class ServiceRoot {
     var auth = Authenticator()
+
     lazy var apimanager: NewApiManager = {
         let manager = NewApiManager(authenticator: auth)
         return manager
     }()
+}
+
+@Observable
+class AppData {
+    var posts = [PostModel]()
 }
 
 enum TokenState {
@@ -49,8 +53,10 @@ enum TokenState {
 @Observable
 class AppLoginState {
     var serviceRoot: ServiceRoot
+    var appData: AppData
 
     init() {
+        appData = AppData()
         serviceRoot = ServiceRoot()
         checkTokenValidity()
         serviceRoot.auth.relogin = relogin

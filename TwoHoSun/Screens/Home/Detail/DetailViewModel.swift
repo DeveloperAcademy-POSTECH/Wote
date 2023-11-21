@@ -10,51 +10,109 @@ import SwiftUI
 
 @Observable
 final class DetailViewModel {
-    private var apiManager: VoteDataManager
-    var postData: PostDetailModel?
+    private var appLoginState: AppLoginState
+    private var cancellables: Set<AnyCancellable> = []
     var isMine = false
+    var postDetail: PostDetailModel?
     var agreeTopConsumerTypes = [ConsumerType]()
     var disagreeTopConsumerTypes = [ConsumerType]()
-    private var cancellables: Set<AnyCancellable> = []
 
-    init(apiManager: VoteDataManager) {
-        self.apiManager = apiManager
-        setupDataSubscriber()
-    }
-
-    func setupDataSubscriber() {
-        apiManager.dataPublisher
-            .sink { [weak self] data in
-                self?.postData = data
-                guard let isVoteMine = data.post.isMine else { return }
-                self?.isMine = isVoteMine
-                self?.setTopConsumerTypes()
-            }
-            .store(in: &cancellables)
+    init(appLoginState: AppLoginState) {
+        self.appLoginState = appLoginState
     }
 
     func fetchPostDetail(postId: Int) {
-        apiManager.fetchPostDetail(postId: postId)
-
+        appLoginState.serviceRoot.apimanager
+            .request(.postService(.getPostDetail(postId: postId)),
+                           decodingType: PostDetailModel.self)
+        .compactMap(\.data)
+        .receive(on: DispatchQueue.main)
+        .sink { completion in
+            switch completion {
+            case .finished:
+                break
+            case .failure(let failure):
+                print(failure)
+            }
+        } receiveValue: { data in
+            self.postDetail = data
+            guard let isMine = data.post.isMine else { return }
+            self.isMine = isMine
+            self.setTopConsumerTypes()
+        }
+        .store(in: &cancellables)
     }
 
     func votePost(postId: Int,
                   choice: Bool,
                   index: Int) {
-        apiManager.votePost(postId: postId,
-                            choice: choice,
-                            index: index)
+        appLoginState.serviceRoot.apimanager
+            .request(.postService(.votePost(postId: postId, choice: choice)),
+                           decodingType: VoteCountsModel.self)
+        .compactMap(\.data)
+        .receive(on: DispatchQueue.main)
+        .sink { completion in
+            switch completion {
+            case .finished:
+                break
+            case .failure(let failure):
+                print(failure)
+            }
+        } receiveValue: { data in
+            self.updatePost(index: index,
+                            myChoice: choice,
+                            voteCount: data)
+            self.fetchPostDetail(postId: postId)
+        }
+        .store(in: &cancellables)
     }
 
-    func closeVote(postId: Int, index: Int) {
-        apiManager.closePost(postId: postId,
-                             index: index)
+    func updatePost(index: Int,
+                    myChoice: Bool,
+                    voteCount: VoteCountsModel) {
+        appLoginState.appData.posts[index].myChoice = myChoice
+        appLoginState.appData.posts[index].voteCounts = voteCount
+        appLoginState.appData.posts[index].voteCount = voteCount.agreeCount + voteCount.disagreeCount
     }
 
-    func deleteVote(postId: Int, index: Int) {
-        apiManager.deletePost(postId: postId,
-                              index: index)
-    }
+    func deletePost(postId: Int, index: Int) {
+        appLoginState.serviceRoot.apimanager
+            .request(.postService(.deletePost(postId: postId)),
+                            decodingType: NoData.self)
+             .compactMap(\.data)
+             .sink { completion in
+                 switch completion {
+                 case .finished:
+                     break
+                 case .failure(let error):
+                     print("error: \(error)")
+                 }
+             } receiveValue: { _ in
+             }
+             .store(in: &cancellables)
+
+        appLoginState.appData.posts.remove(at: index)
+     }
+
+     func closePost(postId: Int, index: Int) {
+         appLoginState.serviceRoot.apimanager
+             .request(.postService(.closeVote(postId: postId)),
+                            decodingType: NoData.self)
+             .compactMap(\.data)
+             .sink { completion in
+                 switch completion {
+                 case .finished:
+                     break
+                 case .failure(let error):
+                     print("error: \(error)")
+                 }
+             } receiveValue: { _ in
+             }
+             .store(in: &cancellables)
+
+         appLoginState.appData.posts[index].postStatus = PostStatus.closed.rawValue
+         self.fetchPostDetail(postId: postId)
+     }
 
     func calculatVoteRatio(voteCounts: VoteCountsModel?) -> (agree: Double, disagree: Double) {
         guard let voteCounts = voteCounts else { return (0.0, 0.0) }
@@ -66,7 +124,7 @@ final class DetailViewModel {
     }
 
     private func setTopConsumerTypes() {
-        guard let voteInfoList = postData?.post.voteInfoList else { return }
+        guard let voteInfoList = postDetail?.post.voteInfoList else { return }
         let (agreeVoteInfos, disagreeVoteInfos) = filterSelectedResult(voteInfoList: voteInfoList)
         agreeTopConsumerTypes = getTopConsumerTypes(for: agreeVoteInfos)
         disagreeTopConsumerTypes = getTopConsumerTypes(for: disagreeVoteInfos)
