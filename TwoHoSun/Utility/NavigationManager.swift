@@ -31,6 +31,9 @@ final class NavigationManager {
     var navigatePath = [AllNavigation]()
 
     func navigate(_ route: AllNavigation) {
+        guard !navigatePath.contains(route) else {
+            return
+        }
         navigatePath.append(route)
     }
 

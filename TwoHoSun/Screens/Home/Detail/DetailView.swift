@@ -20,7 +20,7 @@ struct DetailView: View {
     var postId: Int
     var index: Int
     var directComments = false
-
+    let commentNotification = NotificationCenter.default.publisher(for: Notification.Name("showComment"))
     var body: some View {
         ZStack {
             backgroundColor
@@ -136,6 +136,9 @@ struct DetailView: View {
                     }
             }
         }
+        .onReceive(commentNotification) {_ in
+            self.showDetailComments.toggle()
+        }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -210,6 +213,9 @@ struct DetailView: View {
             }
             viewModel.postData = nil
             viewModel.fetchPostDetail(postId: postId)
+        }
+        .onDisappear {
+            NotificationCenter.default.removeObserver(commentNotification)
         }
     }
 }

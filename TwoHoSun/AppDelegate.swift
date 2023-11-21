@@ -50,11 +50,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         completionHandler([.banner, .sound]) // Updated for iOS 14 and later
     }
 
-    //    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-    //        logger.log("Did receive response to notification: \(self.formatDictionary(response.notification.request.content.userInfo))")
-    //        completionHandler()
-    //    }
-    //
     private func formatDictionary(_ dictionary: [AnyHashable: Any]?) -> String {
         guard let dictionary = dictionary else { return "None" }
         return dictionary.map { key, value in
@@ -75,10 +70,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
-        logger.log("Did receive response to notification: \(self.formatDictionary(response.notification.request.content.userInfo))")
         if let bodyContent = response.notification.request.content.userInfo["post_id"] as? Int {
             Task {
                 guard let isComment = response.notification.request.content.userInfo["is_comment"] as? Bool else {return}
+                if isComment {
+                    NotificationCenter.default.post(name: Notification.Name("showComment"), object: nil)
+                }
                 await app?.handleDeepPush(postId: bodyContent, isComment)
             }
         }

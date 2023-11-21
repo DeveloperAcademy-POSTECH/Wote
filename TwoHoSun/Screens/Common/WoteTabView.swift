@@ -52,11 +52,7 @@ struct WoteTabView: View {
     @Binding var path: [LoginNavigation]
 
     var body: some View {
-        @Bindable var navigationPath = loginStateManager.serviceRoot.navigationManager {
-            didSet {
-                print(navigationPath)
-            }
-        }
+        @Bindable var navigationPath = loginStateManager.serviceRoot.navigationManager
         NavigationStack(path: $navigationPath.navigatePath) {
             ZStack(alignment: .topLeading) {
                 VStack(spacing: 0) {
