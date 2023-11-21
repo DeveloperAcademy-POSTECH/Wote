@@ -18,6 +18,7 @@ struct ReviewWriteView: View {
     @State private var isEditing: Bool = false
     @State private var placeholderText = "욕설,비방,광고 등 소비 고민과 관련없는 내용은 통보 없이 삭제될 수 있습니다."
     @State private var showCropView: Bool = false
+    @State private var isMine: Bool = false
     @Bindable var viewModel: ReviewWriteViewModel
     
     var body: some View {
@@ -58,33 +59,36 @@ struct ReviewWriteView: View {
             .onTapGesture {
                 dismissKeyboard()
             }
-//            .customConfirmDialog(isPresented: $isEditing) {
-//                Button {
-//                    showCropView.toggle()
-//                    isEditing = false
-//                } label: {
-//                    Text("수정하기")
-//                        .frame(maxWidth: .infinity)
-//                }
-//                Divider()
-//                    .foregroundStyle(Color.gray300)
-//                Button {
-//                    showPicker.toggle()
-//                    isEditing = false
-//                } label: {
-//                    Text("다른 상품사진 선택하기")
-//                        .frame(maxWidth: .infinity)
-//                }
-//                Divider()
-//                    .foregroundStyle(Color.gray300)
-//                Button {
-//                    croppedImage = nil
-//                    isEditing = false
-//                } label: {
-//                    Text("삭제하기")
-//                        .frame(maxWidth: .infinity)
-//                }
-//            }
+            .customConfirmDialog(isPresented: $isEditing, isMine: $isMine) { _ in
+                Button {
+                    showCropView.toggle()
+                    isEditing = false
+                } label: {
+                    Text("수정하기")
+                        .frame(maxWidth: .infinity)
+                }
+                .frame(height: 52)
+                Divider()
+                    .foregroundStyle(Color.gray300)
+                Button {
+                    showPicker.toggle()
+                    isEditing = false
+                } label: {
+                    Text("다른 상품사진 선택하기")
+                        .frame(maxWidth: .infinity)
+                }
+                .frame(height: 52)
+                Divider()
+                    .foregroundStyle(Color.gray300)
+                Button {
+                    croppedImage = nil
+                    isEditing = false
+                } label: {
+                    Text("삭제하기")
+                        .frame(maxWidth: .infinity)
+                }
+                .frame(height: 52)
+            }
         }
     }
 }
@@ -214,6 +218,11 @@ extension ReviewWriteView {
                     .clipShape(.rect(cornerRadius: 16))
                     .onTapGesture {
                         isEditing.toggle()
+                    }
+                    .onAppear {
+                        if let imageData = croppedImage.jpegData(compressionQuality: 1.0) {
+                            viewModel.image = imageData
+                        }
                     }
             } else {
                 Button {

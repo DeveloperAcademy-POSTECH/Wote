@@ -17,7 +17,7 @@ struct NoReviewView: View {
                 .foregroundStyle(Color.subGray1)
                 .multilineTextAlignment(.center)
             NavigationLink {
-                ReviewWriteView()
+//                VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: <#T##VisibilityScopeType#>, apiManager: <#T##NewApiManager#>)
             } label: {
                 Text("고민 등록하러 가기")
                     .font(.system(size: 16, weight: .semibold))
