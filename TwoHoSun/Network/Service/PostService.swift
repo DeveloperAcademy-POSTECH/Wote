@@ -32,6 +32,7 @@ enum PostService {
                         page: Int,
                         size: Int,
                         reviewType: String)
+    case deleteReviewWithPostId(postId: Int)
 }
 
 extension PostService: TargetType {
@@ -63,6 +64,8 @@ extension PostService: TargetType {
         case .getReviewDetailWithReviewId(let reviewId):
             return "/reviews/\(reviewId)/detail"
         case .getReviewDetailWithPostId(let postId):
+            return "/posts/\(postId)/reviews"
+        case .deleteReviewWithPostId(let postId):
             return "/posts/\(postId)/reviews"
         default:
             return ""
@@ -108,6 +111,8 @@ extension PostService: TargetType {
             return .delete
         case .closeVote:
             return .post
+        case .deleteReviewWithPostId:
+            return .delete
         default:
             return .get
         }
@@ -167,6 +172,9 @@ extension PostService: TargetType {
             return .requestParameters(parameters: ["postId": postId],
                                       encoding: URLEncoding.queryString)
         case .closeVote(let postId):
+            return .requestParameters(parameters: ["postId": postId],
+                                      encoding: URLEncoding.queryString)
+        case .deleteReviewWithPostId(let postId):
             return .requestParameters(parameters: ["postId": postId],
                                       encoding: URLEncoding.queryString)
         default:

@@ -30,7 +30,6 @@ final class ReviewTabViewModel: ObservableObject {
 
     init(apiManger: NewApiManager) {
         self.apiManager = apiManger
-        fetchReviews(for: .global)
     }
 
     func resetReviews() {

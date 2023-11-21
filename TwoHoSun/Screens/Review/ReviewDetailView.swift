@@ -8,36 +8,56 @@
 import SwiftUI
 
 struct ReviewDetailView: View {
+    @Environment(\.dismiss) var dismiss
     @Environment(AppLoginState.self) private var loginState
     @State private var isDetailCommentShown = false
     @State private var showCustomAlert = false
+    @State private var showConfirm = false
     @State private var applyComplaint = false
-    @State var viewModel: ReviewDetailViewModel
+    @StateObject var viewModel: ReviewDetailViewModel
     var isShowingHeader = true
     var postId: Int?
     var reviewId: Int?
 
     var body: some View {
-        ScrollView {
-            if let data = viewModel.reviewData {
-                VStack(spacing: 0) {
-                    if isShowingHeader {
-                        detailHeaderView(data.originalPost)
-                            .padding(.top, 24)
+        ZStack {
+            Color.background
+            ScrollView {
+                if let data = viewModel.reviewData {
+                    VStack(spacing: 0) {
+                        if isShowingHeader {
+                            detailHeaderView(data.originalPost)
+                                .padding(.top, 24)
+                                .padding(.horizontal, 24)
+                            Divider()
+                                .background(Color.disableGray)
+                                .padding(.horizontal, 12)
+                                .padding(.top, 12)
+                        }
+                        detailReviewCell(data.reviewPost)
                             .padding(.horizontal, 24)
-                        Divider()
-                            .background(Color.disableGray)
-                            .padding(.horizontal, 12)
-                            .padding(.top, 12)
+                            .padding(.vertical, 30)
                     }
-                    detailReviewCell(data.reviewPost)
-                        .padding(.horizontal, 24)
-                        .padding(.vertical, 30)
+                } else {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: Color.gray100))
+                        .scaleEffect(1.3, anchor: .center)
                 }
-            } else {
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle(tint: Color.gray100))
-                    .scaleEffect(1.3, anchor: .center)
+            }
+            .refreshable {
+                viewModel.fetchReviewDetail(postId: viewModel.postId)
+            }
+
+            if showCustomAlert {
+                ZStack {
+                    Color.black.opacity(0.7)
+                        .ignoresSafeArea()
+                    CustomAlertModalView(alertType: .deleteReview,
+                                         isPresented: $showCustomAlert) {
+                        viewModel.deleteReview(postId: viewModel.postId)
+//                        dismiss()
+                    }
+                }
             }
         }
         .frame(maxWidth: .infinity)
@@ -62,7 +82,7 @@ struct ReviewDetailView: View {
                          viewModel: CommentsViewModel(apiManager: loginState.serviceRoot.apimanager,
                                                       postId: postId ?? 0))
             .presentationDetents([.large,.fraction(0.9)])
-                .presentationContentInteraction(.scrolls)
+            .presentationContentInteraction(.scrolls)
         }
         .onAppear {
             if let reviewId = reviewId {
@@ -73,6 +93,36 @@ struct ReviewDetailView: View {
                 viewModel.fetchReviewDetail(postId: postId)
             }
         }
+        .customConfirmDialog(isPresented: $showConfirm, isMine: $viewModel.isMine) { _ in
+            if viewModel.isMine {
+                Button {
+                    showCustomAlert.toggle()
+                    showConfirm.toggle()
+                } label: {
+                    Text("삭제하기")
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 15)
+                }
+            } else {
+                VStack(spacing: 15) {
+                    Button {
+                        showConfirm.toggle()
+                    } label: {
+                        Text("신고하기")
+                            .frame(maxWidth: .infinity)
+                    }
+                    Divider()
+                        .background(Color.gray300)
+                    Button {
+                        showConfirm.toggle()
+                    } label: {
+                        Text("차단하기")
+                            .frame(maxWidth: .infinity)
+                    }
+                }
+                .padding(.vertical, 15)
+            }
+        }
     }
 }
 
@@ -80,7 +130,7 @@ extension ReviewDetailView {
 
     private var menuButton: some View {
         Button {
-            print("open menu")
+            showConfirm.toggle()
         } label: {
             Image(systemName: "ellipsis")
                 .foregroundStyle(Color.subGray1)
@@ -101,10 +151,11 @@ extension ReviewDetailView {
                     .foregroundStyle(Color.woteWhite)
                 Spacer()
                 NavigationLink {
-                    DetailView(viewModel: DetailViewModel(appLoginState: loginState),
-                               isShowingHeader: false,
-                               postId: viewModel.postId,
-                               index: 0)
+//                    DetailView(viewModel: DetailViewModel(appLoginState: loginState),
+//                               isShowingHeader: false,
+//                               postId: viewModel.postId,
+//                               index: 0)
+                    TestView(viewModel: TestViewModel(apiManager: loginState.serviceRoot.apimanager))
                 } label: {
                     HStack(spacing: 2) {
                         Text("바로가기")
@@ -115,10 +166,11 @@ extension ReviewDetailView {
                 }
             }
             NavigationLink {
-                DetailView(viewModel: DetailViewModel(appLoginState: loginState),
-                           isShowingHeader: false,
-                           postId: viewModel.postId,
-                           index: 0)
+//                DetailView(viewModel: DetailViewModel(appLoginState: loginState),
+//                           isShowingHeader: false,
+//                           postId: viewModel.postId,
+//                           index: 0)
+//                Text("hi")
             } label: {
                 // TODO: - progressType 고치기
                 VoteCardCell(cellType: .simple,

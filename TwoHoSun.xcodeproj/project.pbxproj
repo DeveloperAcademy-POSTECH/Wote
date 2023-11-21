@@ -30,6 +30,7 @@
 		AB38A1BD2B0B4454004153B5 /* ReviewDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1BC2B0B4454004153B5 /* ReviewDetailModel.swift */; };
 		AB38A1C52B0BACC7004153B5 /* ConsiderationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1C42B0BACC7004153B5 /* ConsiderationViewModel.swift */; };
 		AB38A1C72B0BE1BE004153B5 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1C62B0BE1BD004153B5 /* DetailViewModel.swift */; };
+		AB38A1CB2B0D505D004153B5 /* TestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1CA2B0D505D004153B5 /* TestViewModel.swift */; };
 		AB3BACFD2AF7A5FC00E792BE /* SearchTextFieldState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3BACFC2AF7A5FC00E792BE /* SearchTextFieldState.swift */; };
 		AB4522532ADDD99500B69F24 /* SchoolSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */; };
 		AB4522562ADDDBC400B69F24 /* SchoolResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */; };
@@ -153,6 +154,7 @@
 		AB38A1BC2B0B4454004153B5 /* ReviewDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewDetailModel.swift; sourceTree = "<group>"; };
 		AB38A1C42B0BACC7004153B5 /* ConsiderationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsiderationViewModel.swift; sourceTree = "<group>"; };
 		AB38A1C62B0BE1BD004153B5 /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
+		AB38A1CA2B0D505D004153B5 /* TestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewModel.swift; sourceTree = "<group>"; };
 		AB3BACFC2AF7A5FC00E792BE /* SearchTextFieldState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTextFieldState.swift; sourceTree = "<group>"; };
 		AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolSearchView.swift; sourceTree = "<group>"; };
 		AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolResponseModel.swift; sourceTree = "<group>"; };
@@ -349,6 +351,7 @@
 				AB38A1182B091BA9004153B5 /* ReviewTabViewModel.swift */,
 				ABA1E8442AFD5C0B009051E0 /* ReviewWrite */,
 				AB38A1BA2B0B4270004153B5 /* ReviewDetailViewModel.swift */,
+				AB38A1CA2B0D505D004153B5 /* TestViewModel.swift */,
 			);
 			name = Review;
 			path = TwoHoSun/Screens/Review;
@@ -803,6 +806,7 @@
 				AB38A1BD2B0B4454004153B5 /* ReviewDetailModel.swift in Sources */,
 				AB38A1052B06757C004153B5 /* CustomProgressStyle.swift in Sources */,
 				FD7624A02AF954980079AEEF /* GeneralResponse.swift in Sources */,
+				AB38A1CB2B0D505D004153B5 /* TestViewModel.swift in Sources */,
 				FD7624A12AF954980079AEEF /* NicknameValidation.swift in Sources */,
 				AB38A10F2B07DF49004153B5 /* InfoButton.swift in Sources */,
 				FD76249E2AF954670079AEEF /* LinkView.swift in Sources */,

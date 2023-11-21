@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ReviewView: View {
+    @State private var didFinishSetup = false
     @Binding var visibilityScope: VisibilityScopeType
     @State private var reviewType = ReviewType.all
     @Environment(AppLoginState.self) private var loginState
@@ -50,6 +51,12 @@ struct ReviewView: View {
         .onChange(of: visibilityScope) { _, newScope in
             viewModel.fetchReviews(for: newScope)
             reviewType = .all
+        }
+        .onAppear {
+            if !didFinishSetup {
+                viewModel.fetchReviews(for: .global)
+                didFinishSetup = true
+            }
         }
     }
 }

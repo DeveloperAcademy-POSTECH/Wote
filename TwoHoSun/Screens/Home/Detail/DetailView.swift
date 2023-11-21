@@ -16,7 +16,7 @@ struct DetailView: View {
     @State private var applyComplaint = false
     @Environment(AppLoginState.self) private var loginStateManager
     @State private var currentAlert = AlertType.closeVote
-    @State var viewModel: DetailViewModel
+    @StateObject var viewModel: DetailViewModel
     var isShowingHeader = true
     var postId: Int
     var index: Int?
@@ -48,12 +48,12 @@ struct DetailView: View {
                                 IncompletedVoteButton(choice: .agree) {
                                     viewModel.votePost(postId: data.post.id,
                                                        choice: true,
-                                                       index: index ?? viewModel.searchIndex(with: postId))
+                                                       index: index ?? 0)
                                 }
                                 IncompletedVoteButton(choice: .disagree) {
                                     viewModel.votePost(postId: data.post.id,
                                                        choice: false,
-                                                       index: index ?? viewModel.searchIndex(with: postId))
+                                                       index: index ?? 0)
                                 }
                             }
                         }
@@ -107,11 +107,11 @@ struct DetailView: View {
                         switch currentAlert {
                         case .closeVote:
                             viewModel.closePost(postId: postId,
-                                                index: index ?? viewModel.searchIndex(with: postId))
+                                                index: index ?? 0)
                             showCustomAlert.toggle()
                         case .deleteVote:
                             viewModel.deletePost(postId: postId,
-                                                 index: index ?? viewModel.searchIndex(with: postId))
+                                                 index: index ?? 0)
                             showCustomAlert.toggle()
                             dismiss()
                         default:

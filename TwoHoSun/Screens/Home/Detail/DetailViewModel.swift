@@ -8,8 +8,7 @@
 import Combine
 import SwiftUI
 
-@Observable
-final class DetailViewModel {
+final class DetailViewModel: ObservableObject {
     private var appLoginState: AppLoginState
     private var cancellables: Set<AnyCancellable> = []
     var isMine = false
