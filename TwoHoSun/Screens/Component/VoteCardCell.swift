@@ -56,14 +56,8 @@ struct VoteCardCell: View {
             HStack {
                 VStack(alignment: .leading, spacing: 6) {
                     HStack(spacing: 4) {
-                        if progressType == .end {
-                            Text("종료")
-                                .font(.system(size: 12, weight: .medium))
-                                .foregroundStyle(.white)
-                                .padding(.vertical, 4)
-                                .padding(.horizontal, 5)
-                                .background(Color.black200)
-                                .clipShape(RoundedRectangle(cornerRadius: 3))
+                        if data.postStatus == PostStatus.closed.rawValue {
+                            EndLabel()
                         }
                         Text(data.title)
                             .font(.system(size: 16, weight: .bold))
@@ -88,8 +82,9 @@ struct VoteCardCell: View {
                 Spacer()
                 ZStack {
                     CardImageView(imageURL: data.image)
-//                        .opacity(progressType == .end ? 0.5 : 1.0)
-                    if progressType == .end {
+                        .opacity(data.postStatus == PostStatus.closed.rawValue
+                                 ? 0.5 : 1.0)
+                    if data.postStatus == PostStatus.closed.rawValue {
                         Group {
                             if let voteResult = data.voteResult {
                                 switch VoteResultType(voteResult: voteResult) {

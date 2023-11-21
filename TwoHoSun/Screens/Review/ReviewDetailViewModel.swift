@@ -11,6 +11,7 @@ import SwiftUI
 @Observable
 final class ReviewDetailViewModel {
     var reviewData: ReviewDetailModel?
+    var postId = 0
     private var apiManager: NewApiManager
     private var cancellable = Set<AnyCancellable>()
 
@@ -31,6 +32,7 @@ final class ReviewDetailViewModel {
             }
         } receiveValue: { data in
             self.reviewData = data
+            self.postId = data.originalPost.id
         }
         .store(in: &cancellable)
     }

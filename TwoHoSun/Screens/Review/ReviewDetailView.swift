@@ -101,13 +101,10 @@ extension ReviewDetailView {
                     .foregroundStyle(Color.woteWhite)
                 Spacer()
                 NavigationLink {
-//                    DetailView(viewModel: DetailViewModel(voteDataManager: loginState.serviceRoot.voteManager),
-//                               isShowingHeader: false,
-//                               postId: 0,
-//                               index: 0)
-//                    DetailView(viewModel: DetailViewModel(appLoginState: loginState),
-//                               postId: <#T##Int#>,
-//                               index: <#T##Int#>)
+                    DetailView(viewModel: DetailViewModel(appLoginState: loginState),
+                               isShowingHeader: false,
+                               postId: viewModel.postId,
+                               index: 0)
                 } label: {
                     HStack(spacing: 2) {
                         Text("바로가기")
@@ -118,11 +115,12 @@ extension ReviewDetailView {
                 }
             }
             NavigationLink {
-//                DetailView(viewModel: DetailViewModel(voteDataManager: loginState.serviceRoot.voteManager),
-//                           isShowingHeader: false,
-//                           postId: 0,
-//                           index: 0)
+                DetailView(viewModel: DetailViewModel(appLoginState: loginState),
+                           isShowingHeader: false,
+                           postId: viewModel.postId,
+                           index: 0)
             } label: {
+                // TODO: - progressType 고치기
                 VoteCardCell(cellType: .simple,
                              progressType: .end,
                              data: data)
