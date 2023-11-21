@@ -49,6 +49,7 @@ struct WoteTabView: View {
     @State private var visibilityScope = VisibilityScopeType.global
     @State private var isVoteCategoryButtonDidTap = false
     @Environment(AppLoginState.self) private var loginStateManager
+    @Environment(VoteDataManager.self) private var voteDataManager
     @Binding var path: [LoginNavigation]
     @StateObject private var navigatePath = NavigationManager()
 
@@ -94,7 +95,8 @@ struct WoteTabView: View {
             .navigationDestination(for: AllNavigation.self) { destination in
                 switch destination {
                 case .detailView(let postId, let index):
-                    DetailView(viewModel: VoteViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
+                    EmptyView()
+                    DetailView(viewModel: DetailViewModel(apiManager: voteDataManager),
                                postId: postId,
                                index: index)
                 case .makeVoteView:
@@ -133,6 +135,7 @@ struct WoteTabView: View {
         .navigationTitle(selection.tabTitle)
         .toolbar(.hidden, for: .navigationBar)
         .tint(Color.accentBlue)
+        
     }
 }
 
@@ -142,7 +145,7 @@ extension WoteTabView {
         switch tab {
         case .consider:
             ConsiderationView(visibilityScope: $visibilityScope,
-                              viewModel: VoteViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
+                              viewModel: ConsiderationViewModel(apiManager: voteDataManager))
                 .environmentObject(navigatePath)
         case .review:
             ReviewView(visibilityScope: $visibilityScope, 

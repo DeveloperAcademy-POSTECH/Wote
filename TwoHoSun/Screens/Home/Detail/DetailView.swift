@@ -15,8 +15,8 @@ struct DetailView: View {
     @State private var showCustomAlert = false
     @State private var applyComplaint = false
     @Environment(AppLoginState.self) private var loginStateManager
-    @ObservedObject var viewModel: VoteViewModel
     @State private var currentAlert = AlertType.closeVote
+    @Bindable var viewModel: DetailViewModel
     var isShowingHeader = true
     var postId: Int
     var index: Int
@@ -46,7 +46,7 @@ struct DetailView: View {
 
                             } else {
                                 IncompletedVoteButton(choice: .agree) {
-                                    viewModel.votePost(postId: data.post.id, 
+                                    viewModel.votePost(postId: data.post.id,
                                                        choice: true,
                                                        index: index)
                                 }
@@ -72,13 +72,13 @@ struct DetailView: View {
                                                    isHigher: agreeRatio >= disagreeRatio)
                                 consumerTypeLabels(.disagree,
                                                    topConsumerTypes: viewModel.disagreeTopConsumerTypes)
-                                resultProgressView(.agree, 
+                                resultProgressView(.agree,
                                                    ratio: disagreeRatio,
                                                    isHigher: disagreeRatio >= agreeRatio)
                             } else {
-                                hiddenResultView(for: .agree, 
+                                hiddenResultView(for: .agree,
                                                  topConsumerTypesCount: viewModel.agreeTopConsumerTypes.count)
-                                    .padding(.bottom, 34)
+                                .padding(.bottom, 34)
                                 hiddenResultView(for: .disagree,
                                                  topConsumerTypesCount: viewModel.disagreeTopConsumerTypes.count)
                             }
@@ -95,6 +95,7 @@ struct DetailView: View {
 
             if showDetailComments {
                 Color.black.opacity(0.7)
+                    .ignoresSafeArea()
             }
             if showCustomAlert {
                 ZStack {
@@ -104,12 +105,11 @@ struct DetailView: View {
                                          isPresented: $showCustomAlert) {
                         switch currentAlert {
                         case .closeVote:
-                            viewModel.closeVote(postId: postId, 
+                            viewModel.closeVote(postId: postId,
                                                 index: index)
                             showCustomAlert.toggle()
-                            viewModel.fetchPostDetail(postId: postId)
                         case .deleteVote:
-                            viewModel.deletePost(postId: postId, 
+                            viewModel.deleteVote(postId: postId,
                                                  index: index)
                             showCustomAlert.toggle()
                             dismiss()
@@ -121,20 +121,21 @@ struct DetailView: View {
             }
 
             if applyComplaint {
-                    Color.black.opacity(0.7)
-                        .ignoresSafeArea()
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(Color.lightBlue)
-                            .frame(width: 283, height: 36)
+                Color.black.opacity(0.7)
+                    .ignoresSafeArea()
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.lightBlue)
+                        .frame(width: 283, height: 36)
 
-                        Text("신고해주셔서 감사합니다.")
-                            .foregroundStyle(.white)
-                            .font(.system(size: 16, weight: .semibold))
-                    }
-                    .onTapGesture {
-                        applyComplaint.toggle()
-                    }
+                    Text("신고해주셔서 감사합니다.")
+                        .foregroundStyle(.white)
+                        .font(.system(size: 16, weight: .semibold))
+                }
+                .onTapGesture {
+                    applyComplaint.toggle()
+                }
+
             }
         }
         .navigationBarTitleDisplayMode(.inline)
@@ -156,10 +157,11 @@ struct DetailView: View {
         .toolbarBackground(Color.background, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .sheet(isPresented: $showDetailComments) {
-            CommentsView(showComplaint: $showCustomAlert, applyComplaint: $applyComplaint,
+            CommentsView(showComplaint: $showCustomAlert,
+                         applyComplaint: $applyComplaint,
                          viewModel: CommentsViewModel(apiManager: loginStateManager.serviceRoot.apimanager, postId: postId))
-                    .presentationDetents([.large,.fraction(0.9)])
-                    .presentationContentInteraction(.scrolls)
+            .presentationDetents([.large,.fraction(0.9)])
+            .presentationContentInteraction(.scrolls)
         }
         .customConfirmDialog(isPresented: $showconfirm, isMine: $viewModel.isMine) { _ in
             if viewModel.isMine {
@@ -207,7 +209,6 @@ struct DetailView: View {
             }
         }
         .onAppear {
-            viewModel.postData = nil
             viewModel.fetchPostDetail(postId: postId)
         }
     }
@@ -296,8 +297,8 @@ struct DetailContentView: View {
     var body: some View {
         VStack(alignment: .leading) {
             VStack(alignment: .leading, spacing: 13) {
-                ConsumerTypeLabel(consumerType: ConsumerType(rawValue: postDetailData.author.consumerType) ?? .adventurer, 
-                               usage: .standard)
+                ConsumerTypeLabel(consumerType: ConsumerType(rawValue: postDetailData.author.consumerType) ?? .adventurer,
+                                  usage: .standard)
                 HStack(spacing: 6) {
                     if postDetailData.postStatus == PostStatus.closed.rawValue {
                         EndLabel()

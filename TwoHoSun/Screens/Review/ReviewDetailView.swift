@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ReviewDetailView: View {
     @Environment(AppLoginState.self) private var loginState
+    @Environment(VoteDataManager.self) private var voteData
     @State private var isDetailCommentShown = false
     @State private var showCustomAlert = false
     @State private var applyComplaint = false
@@ -57,12 +58,12 @@ struct ReviewDetailView: View {
         .toolbarBackground(Color.background, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .sheet(isPresented: $isDetailCommentShown) {
-//            CommentsView(showComplaint: $showCustomAlert,
-//                         applyComplaint: $applyComplaint,
-//                         viewModel: CommentsViewModel(apiManager: <#T##NewApiManager#>,
-//                                                      postId: ))
-//            .presentationDetents([.large,.fraction(0.9)])
-//                .presentationContentInteraction(.scrolls)
+            CommentsView(showComplaint: $showCustomAlert,
+                         applyComplaint: $applyComplaint,
+                         viewModel: CommentsViewModel(apiManager: loginState.serviceRoot.apimanager,
+                                                      postId: postId ?? 0))
+            .presentationDetents([.large,.fraction(0.9)])
+                .presentationContentInteraction(.scrolls)
         }
         .onAppear {
             if let reviewId = reviewId {
@@ -101,7 +102,7 @@ extension ReviewDetailView {
                     .foregroundStyle(Color.woteWhite)
                 Spacer()
                 NavigationLink {
-                    DetailView(viewModel: VoteViewModel(apiManager: loginState.serviceRoot.apimanager),
+                    DetailView(viewModel: DetailViewModel(apiManager: voteData),
                                isShowingHeader: false,
                                postId: data.id, 
                                index: 0)
@@ -115,7 +116,7 @@ extension ReviewDetailView {
                 }
             }
             NavigationLink {
-                DetailView(viewModel: VoteViewModel(apiManager: loginState.serviceRoot.apimanager),
+                DetailView(viewModel: DetailViewModel(apiManager: voteData),
                            isShowingHeader: false,
                            postId: data.id, 
                            index: 0)

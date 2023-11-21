@@ -12,9 +12,10 @@ struct ConsiderationView: View {
     @State private var currentVote = 0
     @Binding var visibilityScope: VisibilityScopeType
     @Environment(AppLoginState.self) private var loginState
+    @Environment(VoteDataManager.self) private var voteData
     @EnvironmentObject private var pathManger: NavigationManager
     @State private var isRefreshing = false
-    @StateObject var viewModel: VoteViewModel
+    var viewModel: ConsiderationViewModel
     @AppStorage("haveConsumerType") var haveConsumerType: Bool = false
 
     var body: some View {
@@ -23,8 +24,8 @@ struct ConsiderationView: View {
                 .ignoresSafeArea()
             VStack(spacing: 0) {
                 Spacer()
-                if !viewModel.isPostFetching {
-                    if viewModel.posts.isEmpty {
+                if !voteData.isFetching {
+                    if voteData.posts.isEmpty {
                         NoVoteView(selectedVisibilityScope: $visibilityScope)
                     } else {
                         votePagingView
@@ -37,12 +38,12 @@ struct ConsiderationView: View {
                 .padding(.trailing, 24)
         }
         .onChange(of: visibilityScope) { _, newScope in
-            currentVote = 0
-            viewModel.fetchPosts(visibilityScope: newScope.rawValue)
+            viewModel.fetchPosts(visibilityScope: newScope)
+//            currentVote = 0
         }
         .onAppear {
             if !didFinishSetup {
-                viewModel.fetchPosts(visibilityScope: VisibilityScopeType.global.rawValue)
+                viewModel.fetchPosts(visibilityScope: VisibilityScopeType.global)
                 didFinishSetup = true
             }
         }
@@ -54,18 +55,18 @@ extension ConsiderationView {
     private var votePagingView: some View {
         GeometryReader { proxy in
             TabView(selection: $currentVote) {
-                ForEach(Array(zip(viewModel.posts.indices, viewModel.posts)), id: \.0) { index, item in
+                ForEach(Array(zip(voteData.posts.indices, voteData.posts)), id: \.0) { index, item in
                     VStack(spacing: 0) {
                         VoteContentCell(viewModel: viewModel,
-                                        index: currentVote,
+                                        index: index,
                                         postId: item.id)
                         nextVoteButton
                             .padding(.top, 16)
                     }
                     .tag(index)
                     .onAppear {
-                        if (index == viewModel.posts.count - 2) {
-                            viewModel.fetchMorePosts(visibilityScope.rawValue)
+                        if (index == voteData.posts.count - 4) {
+                            viewModel.fetchMorePosts(visibilityScope: visibilityScope)
                         }
                     }
                 }
@@ -82,7 +83,7 @@ extension ConsiderationView {
                         if currentVote == 0 && value.translation.height > 0 {
                             isRefreshing = true
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                                viewModel.fetchPosts(visibilityScope: visibilityScope.rawValue)
+                                viewModel.fetchPosts(visibilityScope: visibilityScope)
                                 isRefreshing = false
                             }
                         }
@@ -102,7 +103,7 @@ extension ConsiderationView {
             VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: visibilityScope,
                                                         apiManager: loginState.serviceRoot.apimanager))
             .onDisappear {
-                viewModel.fetchPosts(visibilityScope: visibilityScope.rawValue)
+                viewModel.fetchPosts(visibilityScope: visibilityScope)
                 currentVote = 0
             }
         } label: {
@@ -135,13 +136,13 @@ extension ConsiderationView {
             Spacer()
             Button {
                 withAnimation {
-                    if currentVote != viewModel.posts.count - 1 {
+                    if currentVote != voteData.posts.count - 1 {
                         currentVote += 1
                     }
                 }
             } label: {
                 Image("icnCaretDown")
-                    .opacity(currentVote != viewModel.posts.count - 1 ? 1 : 0)
+                    .opacity(currentVote != voteData.posts.count - 1 ? 1 : 0)
             }
             Spacer()
         }

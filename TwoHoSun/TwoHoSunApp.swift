@@ -17,6 +17,7 @@ enum Route {
 struct TwoHoSunApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @State private var appState = AppLoginState()
+    @State private var voteDataManager = VoteDataManager(apiManager: AppLoginState().serviceRoot.apimanager)
 
     var body: some Scene {
         WindowGroup {
@@ -27,6 +28,7 @@ struct TwoHoSunApp: App {
             case .loggedIn:
                     WoteTabView(path: .constant([]))
                         .environment(appState)
+                        .environment(voteDataManager)
             }
         }
     }

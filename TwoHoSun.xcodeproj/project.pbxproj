@@ -28,6 +28,9 @@
 		AB38A1192B091BA9004153B5 /* ReviewTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1182B091BA9004153B5 /* ReviewTabViewModel.swift */; };
 		AB38A1BB2B0B4270004153B5 /* ReviewDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1BA2B0B4270004153B5 /* ReviewDetailViewModel.swift */; };
 		AB38A1BD2B0B4454004153B5 /* ReviewDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1BC2B0B4454004153B5 /* ReviewDetailModel.swift */; };
+		AB38A1C12B0B99B1004153B5 /* VoteDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1C02B0B99B1004153B5 /* VoteDataManager.swift */; };
+		AB38A1C52B0BACC7004153B5 /* ConsiderationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1C42B0BACC7004153B5 /* ConsiderationViewModel.swift */; };
+		AB38A1C72B0BE1BE004153B5 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1C62B0BE1BD004153B5 /* DetailViewModel.swift */; };
 		AB3BACFD2AF7A5FC00E792BE /* SearchTextFieldState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3BACFC2AF7A5FC00E792BE /* SearchTextFieldState.swift */; };
 		AB4522532ADDD99500B69F24 /* SchoolSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */; };
 		AB4522562ADDDBC400B69F24 /* SchoolResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */; };
@@ -62,7 +65,6 @@
 		ABBBC67C2AE49CC800B1E614 /* PostCreateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBBC67B2AE49CC800B1E614 /* PostCreateModel.swift */; };
 		ABBEEAF52AE64F7900F6D918 /* SeachViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBEEAF42AE64F7900F6D918 /* SeachViewModel.swift */; };
 		ABBFB6322AE3EABD006CE8CA /* VoteCreateRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBFB6312AE3EABD006CE8CA /* VoteCreateRequestModel.swift */; };
-		ABDED87F2B00AFCC00D78BEA /* VoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBFB62F2AE3EA2F006CE8CA /* VoteViewModel.swift */; };
 		ABDED8802B00B07300D78BEA /* TypeTestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6845AC2AFC13FF00C3F7C2 /* TypeTestModel.swift */; };
 		ABDED8832B00B0FE00D78BEA /* ComplaintReasonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7EFA7DA2AF9432800C9BEA0 /* ComplaintReasonView.swift */; };
 		ABDED8852B00B17F00D78BEA /* VoteWriteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBBC6772AE471B700B1E614 /* VoteWriteViewModel.swift */; };
@@ -150,6 +152,9 @@
 		AB38A1182B091BA9004153B5 /* ReviewTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewTabViewModel.swift; sourceTree = "<group>"; };
 		AB38A1BA2B0B4270004153B5 /* ReviewDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewDetailViewModel.swift; sourceTree = "<group>"; };
 		AB38A1BC2B0B4454004153B5 /* ReviewDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewDetailModel.swift; sourceTree = "<group>"; };
+		AB38A1C02B0B99B1004153B5 /* VoteDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteDataManager.swift; sourceTree = "<group>"; };
+		AB38A1C42B0BACC7004153B5 /* ConsiderationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsiderationViewModel.swift; sourceTree = "<group>"; };
+		AB38A1C62B0BE1BD004153B5 /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
 		AB3BACFC2AF7A5FC00E792BE /* SearchTextFieldState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTextFieldState.swift; sourceTree = "<group>"; };
 		AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolSearchView.swift; sourceTree = "<group>"; };
 		AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolResponseModel.swift; sourceTree = "<group>"; };
@@ -185,7 +190,6 @@
 		ABBBC6772AE471B700B1E614 /* VoteWriteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteWriteViewModel.swift; sourceTree = "<group>"; };
 		ABBBC67B2AE49CC800B1E614 /* PostCreateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCreateModel.swift; sourceTree = "<group>"; };
 		ABBEEAF42AE64F7900F6D918 /* SeachViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeachViewModel.swift; sourceTree = "<group>"; };
-		ABBFB62F2AE3EA2F006CE8CA /* VoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteViewModel.swift; sourceTree = "<group>"; };
 		ABBFB6312AE3EABD006CE8CA /* VoteCreateRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteCreateRequestModel.swift; sourceTree = "<group>"; };
 		ABE51ED02B054ED5009C6CA5 /* DetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHeaderView.swift; sourceTree = "<group>"; };
 		C721D5BA2B07CA8D00564EE0 /* CommentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewModel.swift; sourceTree = "<group>"; };
@@ -290,6 +294,7 @@
 			isa = PBXGroup;
 			children = (
 				C7A95F102B01FFBA00F8595A /* NewApiManager.swift */,
+				AB38A1C02B0B99B1004153B5 /* VoteDataManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -476,6 +481,7 @@
 				ABB71D792AE2A64300BE0671 /* LinkView.swift */,
 				FDB4B14F2AE68FC000720328 /* DetailView.swift */,
 				ABE51ED02B054ED5009C6CA5 /* DetailHeaderView.swift */,
+				AB38A1C62B0BE1BD004153B5 /* DetailViewModel.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -500,7 +506,7 @@
 				ABA1E83F2AFD5841009051E0 /* ConsiderationView.swift */,
 				AB38A10A2B077DEE004153B5 /* VoteResultView.swift */,
 				ABA1E82C2AFD0CD5009051E0 /* VoteContentCell.swift */,
-				ABBFB62F2AE3EA2F006CE8CA /* VoteViewModel.swift */,
+				AB38A1C42B0BACC7004153B5 /* ConsiderationViewModel.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -794,7 +800,6 @@
 				ABDED8802B00B07300D78BEA /* TypeTestModel.swift in Sources */,
 				C7974E0D2B0A869600BE9AF9 /* CommentPreview.swift in Sources */,
 				ABE51ED12B054ED5009C6CA5 /* DetailHeaderView.swift in Sources */,
-				ABDED87F2B00AFCC00D78BEA /* VoteViewModel.swift in Sources */,
 				C7EFA7D92AF9279200C9BEA0 /* ComplaintView.swift in Sources */,
 				AB7317EC2AF90F40008B5E41 /* ProfileSettingViewModel.swift in Sources */,
 				AB7317EA2AF90F00008B5E41 /* UIColor+.swift in Sources */,
@@ -875,11 +880,13 @@
 				C78E7D012AF6AF4C00C2E220 /* CommentsView.swift in Sources */,
 				AB38A1172B0919C9004153B5 /* ReviewTabModel.swift in Sources */,
 				AB03D7392B0137CC000C927A /* UserService.swift in Sources */,
+				AB38A1C52B0BACC7004153B5 /* ConsiderationViewModel.swift in Sources */,
 				C7E30E2B2ADC40E4001AE89B /* LoginViewModel.swift in Sources */,
 				C7719FE62AF2861000A520CB /* ConsumerType.swift in Sources */,
 				C7A95F1B2B03EB7B00F8595A /* NavigationManager.swift in Sources */,
 				C7719FE62AF2861000A520CB /* ConsumerType.swift in Sources */,
 				ABA1E8502AFEA3AF009051E0 /* SettingView.swift in Sources */,
+				AB38A1C12B0B99B1004153B5 /* VoteDataManager.swift in Sources */,
 				C7DE44C22AE26109001639CB /* View+.swift in Sources */,
 				C7E459D12ADFF89000ECD008 /* WoteTabView.swift in Sources */,
 				AB38A10D2B07D914004153B5 /* PostDetailModel.swift in Sources */,
@@ -889,6 +896,7 @@
 				AB7317F42AF94F31008B5E41 /* ReviewCardCell.swift in Sources */,
 				FD8D9F812ADC5FAD0072F4BA /* KeychainManager.swift in Sources */,
 				AB6845B22AFC145000C3F7C2 /* TypeTestView.swift in Sources */,
+				AB38A1C72B0BE1BE004153B5 /* DetailViewModel.swift in Sources */,
 				ABA1E8542AFEA640009051E0 /* GoToTypeTestButton.swift in Sources */,
 				C77113712AF0E7D500BAB128 /* Color+.swift in Sources */,
 				AB6845B02AFC143700C3F7C2 /* TypeTestIntroView.swift in Sources */,
