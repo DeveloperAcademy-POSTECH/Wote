@@ -27,21 +27,27 @@ struct TwoHoSunApp: App {
             case .loggedIn:
                     WoteTabView(path: .constant([]))
                         .environment(appState)
+                        .onAppear {
+                            appDelegate.app = self
+                        }
             }
         }
     }
+
 }
 
+extension TwoHoSunApp {
+    func handleDeepPush(postId: Int) async {
+        appState.serviceRoot.navigationManager.navigate(.detailView(postId: postId, index: 0))
+    }
+}
 class ServiceRoot {
     var auth = Authenticator()
     lazy var apimanager: NewApiManager = {
         let manager = NewApiManager(authenticator: auth)
         return manager
     }()
-}
-
-enum TokenState {
-    case none, allexpired, loggedIn, unfinishRegister
+    var navigationManager = NavigationManager()
 }
 
 @Observable

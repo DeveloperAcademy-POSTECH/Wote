@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct GoToTypeTestButton: View {
-    
-    @EnvironmentObject private var pathManager: NavigationManager
+    @Environment(AppLoginState.self) private var loginStateManager
+
     var body: some View {
         Button {
-            pathManager.navigate(.testIntroView)
+            loginStateManager.serviceRoot.navigationManager.navigate(.testIntroView)
         } label: {
             Text("소비 성향 테스트하러가기")
                 .font(.system(size: 16, weight: .semibold))

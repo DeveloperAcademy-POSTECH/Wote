@@ -26,8 +26,9 @@ enum AllNavigation: Hashable, Decodable {
     case mypageView
 }
 
-final class NavigationManager: ObservableObject {
-    @Published var navigatePath = [AllNavigation]() {
+@Observable
+final class NavigationManager {
+    var navigatePath = [AllNavigation]() {
         didSet {
             print("path는?\(navigatePath)")
         }

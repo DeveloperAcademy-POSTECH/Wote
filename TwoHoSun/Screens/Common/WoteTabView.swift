@@ -50,10 +50,14 @@ struct WoteTabView: View {
     @State private var isVoteCategoryButtonDidTap = false
     @Environment(AppLoginState.self) private var loginStateManager
     @Binding var path: [LoginNavigation]
-    @StateObject private var navigatePath = NavigationManager()
 
     var body: some View {
-        NavigationStack(path: $navigatePath.navigatePath) {
+        @Bindable var navigationPath = loginStateManager.serviceRoot.navigationManager {
+            didSet {
+                print(navigationPath)
+            }
+        }
+        NavigationStack(path: $navigationPath.navigatePath) {
             ZStack(alignment: .topLeading) {
                 VStack(spacing: 0) {
                     navigationBar
@@ -67,7 +71,6 @@ struct WoteTabView: View {
                                 }
                         }
                     }
-
                 }
 
                 if isVoteCategoryButtonDidTap {
@@ -103,24 +106,20 @@ struct WoteTabView: View {
                 case .testIntroView:
                     TypeTestIntroView()
                         .toolbar(.hidden, for: .navigationBar)
-                        .environmentObject(navigatePath)
                 case .testView:
                     TypeTestView(viewModel: TypeTestViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
-                        .environmentObject(navigatePath)
                 case .reveiwView:
                     ReviewView(viewModel: ReviewTabViewModel(apiManger: loginStateManager.serviceRoot.apimanager))
                 case .writeReiview:
-//                    VoteWriteView(viewModel: VoteWriteViewModel())
                     Text("아직")
                 case .settingView:
                     SettingView()
                 case .mypageView:
-                    MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager), selectedVisibilityScope: $selectedVisibilityScope)
-                        .environmentObject(navigatePath)
+                    MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager), 
+                               selectedVisibilityScope: $selectedVisibilityScope)
                 }
             }
         }
-
         .onAppear {
             let appearance = UITabBarAppearance()
             appearance.configureWithOpaqueBackground()
@@ -135,20 +134,18 @@ struct WoteTabView: View {
 }
 
 extension WoteTabView {
+
     @ViewBuilder
     private func tabDestinationView(for tab: WoteTabType) -> some View {
         switch tab {
         case .consider:
             ConsiderationView(selectedVisibilityScope: $selectedVisibilityScope, 
                               viewModel: VoteViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
-                .environmentObject(navigatePath)
         case .review:
             ReviewView(viewModel: ReviewTabViewModel(apiManger: loginStateManager.serviceRoot.apimanager))
-                .environmentObject(navigatePath)
         case .myPage:
             MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
                        selectedVisibilityScope: $selectedVisibilityScope)
-                .environmentObject(navigatePath)
         }
     }
 

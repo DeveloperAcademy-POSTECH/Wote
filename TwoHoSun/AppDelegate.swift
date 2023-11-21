@@ -9,8 +9,8 @@ import UIKit
 import UserNotifications
 import os.log
 
-class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
-    
+class AppDelegate: UIResponder, UIApplicationDelegate {
+    var app: TwoHoSunApp?
     let logger = Logger(subsystem: "com.twohosun.TwoHoSun", category: "PushNotifications")
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
@@ -36,8 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         logger.error("Failed to register for remote notifications: \(error.localizedDescription)")
     }
-    
-    //사일런트푸슁요
+
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         logger.log("Received remote notification: \(self.formatDictionary(userInfo))")
         if let consumerType = userInfo["consumer_type_exist"] {
@@ -51,11 +50,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         completionHandler([.banner, .sound]) // Updated for iOS 14 and later
     }
     
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        logger.log("Did receive response to notification: \(self.formatDictionary(response.notification.request.content.userInfo))")
-        completionHandler()
-    }
-    
+//    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+//        logger.log("Did receive response to notification: \(self.formatDictionary(response.notification.request.content.userInfo))")
+//        completionHandler()
+//    }
+//
     private func formatDictionary(_ dictionary: [AnyHashable: Any]?) -> String {
         guard let dictionary = dictionary else { return "None" }
         return dictionary.map { key, value in
@@ -70,6 +69,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             return decodedString
         } else {
             return string
+        }
+    }
+}
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
+        // 푸쉬 알람가 탭을 하는등 액션을 원하면 여기서 작업을 하면 된다.']
+        logger.log("Did receive response to notification: \(self.formatDictionary(response.notification.request.content.userInfo))")
+        if let bodyContent = response.notification.request.content.userInfo["post_id"] as? Int {
+            Task {
+                await app?.handleDeepPush(postId: bodyContent)
+            }
         }
     }
 }
