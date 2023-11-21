@@ -37,8 +37,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         logger.error("Failed to register for remote notifications: \(error.localizedDescription)")
     }
     
+    //사일런트푸슁요
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         logger.log("Received remote notification: \(self.formatDictionary(userInfo))")
+        if let consumerType = userInfo["consumer_type_exist"] {
+            UserDefaults.standard.setValue(consumerType, forKey: "haveConsumerType")
+        }
         completionHandler(.newData)
     }
     
