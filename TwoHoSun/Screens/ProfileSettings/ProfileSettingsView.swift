@@ -9,7 +9,7 @@ import PhotosUI
 import SwiftUI
 
 enum NicknameValidationType {
-    case none, empty, length, forbiddenWord, duplicated, valid
+    case none, empty, length, forbiddenWord, duplicated, valid, same
 
     var alertMessage: String {
         switch self {
@@ -25,6 +25,8 @@ enum NicknameValidationType {
             return "중복된 닉네임입니다."
         case .valid:
             return "사용 가능한 닉네임입니다."
+        case .same:
+            return "같은 닉네임입니다."
         }
     }
 
@@ -89,10 +91,13 @@ struct ProfileSettingsView: View {
     //    @State private var selectedImageData: Data?
     @State private var isProfileSheetShowed = false
     @State private var retryProfileImage = false
+    @State private var isRestricted = false
     @State var viewType: ProfileSettingType
     @Bindable var viewModel: ProfileSettingViewModel
     @Environment(\.dismiss) private var dismiss
     @Environment(AppLoginState.self) private var loginStateManager
+    
+    var profile: ProfileModel?
     
     var body: some View {
         ZStack {
@@ -105,17 +110,29 @@ struct ProfileSettingsView: View {
                         .padding(.top, 40)
                 case .modfiy:
                     HStack {
-                        ConsumerTypeLabel(consumerType: .impulseBuyer, usage: .standard)
+                        ConsumerTypeLabel(consumerType: profile?.consumerType ?? .adventurer, usage: .standard)
                         Spacer()
                     }
                     .padding(.top, 30)
                 }
                 Spacer()
-                profileImage
+                profileImageView
                 Spacer()
                 nicknameInputView
                     .padding(.bottom, 34)
                 schoolInputView
+                    .onAppear {
+                        if let school = profile?.school {
+                            if viewModel.selectedSchoolInfo == nil {
+                                viewModel.selectedSchoolInfo = SchoolInfoModel(school: school, schoolAddress: nil)
+                            }
+                        }
+                    }
+                    .onAppear {
+                        if let lastSchoolRegisterDate = profile?.lastSchoolRegisterDate {
+                            isRestricted = viewModel.checkSchoolRegisterDate(lastSchoolRegisterDate)
+                        }
+                    }
                 Spacer()
                 switch viewType {
                 case .setting:
@@ -202,7 +219,7 @@ extension ProfileSettingsView {
         }
     }
 
-    private var profileImage: some View {
+    private var profileImageView: some View {
         ZStack(alignment: .bottomTrailing) {
             if let selectedData = viewModel.selectedImageData,
                let uiImage = UIImage(data: selectedData) {
@@ -212,9 +229,14 @@ extension ProfileSettingsView {
                     .clipShape(Circle())
             } else {
                 photoPickerView {
-                    Image("defaultProfile")
-                        .resizable()
-                        .frame(width: 130, height: 130)
+                    if let profileImage = profile?.profileImage {
+                        ProfileImageView(imageURL: profileImage)
+                            .frame(width: 130, height: 130)
+                    } else {
+                        Image("defaultProfile")
+                            .resizable()
+                            .frame(width: 130, height: 130)
+                    }
                 }
             }
             selectProfileButton
@@ -267,18 +289,24 @@ extension ProfileSettingsView {
                     .font(.system(size: 12))
                     .foregroundStyle(Color.placeholderGray))
                 .foregroundStyle(Color.white)
+                .font(.system(size: 14))
                 .frame(height: 44)
                 .padding(EdgeInsets(top: 0, leading: 17, bottom: 0, trailing: 0))
                 .overlay {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
                             .strokeBorder(viewModel.nicknameValidationType.textfieldBorderColor, lineWidth: 1)
-                        if (viewModel.nicknameValidationType == .none || viewModel.nicknameValidationType == .valid) {
-                            RoundedRectangle(cornerRadius: 10)
-                                .strokeBorder(viewModel.nicknameValidationType.textfieldBorderColor, lineWidth: 1)
-                                .shadow(color: Color.strokeBlue.opacity(0.15), radius: 2)
-                                .blur(radius: 3)
-                        }
+//                        if (viewModel.nicknameValidationType == .none || viewModel.nicknameValidationType == .valid) {
+//                            RoundedRectangle(cornerRadius: 10)
+//                                .strokeBorder(viewModel.nicknameValidationType.textfieldBorderColor, lineWidth: 1)
+//                                .shadow(color: Color.strokeBlue.opacity(0.15), radius: 2)
+//                                .blur(radius: 3)
+//                        }
+                    }
+                }
+                .onAppear {
+                    if let nickname = profile?.nickname {
+                        viewModel.nickname = nickname
                     }
                 }
                 .onChange(of: viewModel.nickname) { _, newValue in
@@ -312,19 +340,39 @@ extension ProfileSettingsView {
         .disabled(viewModel.nicknameValidationType == .length)
     }
 
+    @ViewBuilder
     private var schoolInputView: some View {
-        NavigationLink {
-            SchoolSearchView(selectedSchoolInfo: $viewModel.selectedSchoolInfo)
-        } label: {
+        if isRestricted {
             VStack(alignment: .leading, spacing: 0) {
                 Text("우리 학교")
                     .modifier(TitleTextStyle())
                 roundedIconTextField(for: .school,
                                      text:  viewModel.selectedSchoolInfo?.school.schoolName,
                                      isFilled: viewModel.isSchoolFilled)
-                if !viewModel.isFormValid && !viewModel.isSchoolFilled {
-                    schoolValidationAlertMessage
-                        .padding(.top, 6)
+                if isRestricted {
+                    HStack {
+                        Image(systemName: "light.beacon.max")
+                        Text("학교를 변경한지 아직 6개월이 안 지났어요!")
+                    }
+                    .foregroundStyle(Color.errorRed)
+                    .font(.system(size: 12))
+                    .padding(.top, 4)
+                }
+            }
+        } else {
+            NavigationLink {
+                SchoolSearchView(selectedSchoolInfo: $viewModel.selectedSchoolInfo)
+            } label: {
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("우리 학교")
+                        .modifier(TitleTextStyle())
+                    roundedIconTextField(for: .school,
+                                         text: viewModel.selectedSchoolInfo?.school.schoolName,
+                                         isFilled: viewModel.isSchoolFilled)
+                    if !viewModel.isFormValid && !viewModel.isSchoolFilled {
+                        schoolValidationAlertMessage
+                            .padding(.top, 6)
+                    }
                 }
             }
         }
@@ -336,7 +384,7 @@ extension ProfileSettingsView {
                 viewModel.setInvalidCondition()
                 return
             }
-            viewModel.setProfile()
+            viewModel.setProfile(isRestricted)
         } label: {
             Text("완료")
                 .font(.system(size: 20, weight: .semibold))
@@ -354,7 +402,7 @@ extension ProfileSettingsView {
                 viewModel.setInvalidCondition()
                 return
             }
-            // TODO: - fetch modify profile api
+            viewModel.setProfile(isRestricted)
             dismiss()
         } label: {
             Text("완료")
@@ -370,11 +418,19 @@ extension ProfileSettingsView {
     private func roundedIconTextField(for input: ProfileInputType, text: String?, isFilled: Bool) -> some View {
         VStack(spacing: 10) {
             HStack(spacing: 0) {
-                Text(text ?? input.placeholder)
-                    .font(.system(size: 14))
-                    .foregroundColor(text != nil ? .white : Color.placeholderGray)
-                    .frame(height: 45)
-                    .padding(.leading, 17)
+                if isRestricted {
+                    Text(text ?? input.placeholder)
+                        .font(.system(size: 14))
+                        .foregroundColor(Color.subGray7)
+                        .frame(height: 45)
+                        .padding(.leading, 17)
+                } else {
+                    Text(text ?? input.placeholder)
+                        .font(.system(size: 14))
+                        .foregroundColor(text != nil ? .white : Color.placeholderGray)
+                        .frame(height: 45)
+                        .padding(.leading, 17)
+                }
                 Spacer()
                 Image(systemName: input.iconName)
                     .font(.system(size: 16))
@@ -382,9 +438,14 @@ extension ProfileSettingsView {
                     .padding(.trailing, 12)
             }
             .frame(maxWidth: .infinity)
-            .overlay {
-                RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(!isFilled && !viewModel.isFormValid ? Color.errorRed : Color.grayStroke, lineWidth: 1)
+            .background {
+                if isRestricted {
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundColor(isRestricted ? Color.dividerGray : nil)
+                } else {
+                    RoundedRectangle(cornerRadius: 10)
+                        .strokeBorder(!isFilled && !viewModel.isFormValid ? Color.errorRed : Color.grayStroke, lineWidth: 1)
+                }
             }
         }
     }

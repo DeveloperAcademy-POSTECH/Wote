@@ -7,37 +7,65 @@
 
 import UIKit
 import UserNotifications
+import os.log
 
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
-
-    func application(_ application: UIApplication, 
-                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        // 푸시 알림을 위한 설정
+    
+    let logger = Logger(subsystem: "com.twohosun.TwoHoSun", category: "PushNotifications")
+    
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+        logger.log("Application did finish launching with options: \(self.formatDictionary(launchOptions))")
+        
         let center = UNUserNotificationCenter.current()
         center.delegate = self
-        center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+        center.requestAuthorization(options: [.badge, .sound, .alert]) { granted, error in
             if let error = error {
-                print("Request authorization failed: \(error)")
+                self.logger.error("Authorization request failed: \(error.localizedDescription)")
             } else {
-                print("Authorization granted: \(granted)")
+                self.logger.log("Authorization granted: \(granted)")
             }
         }
         application.registerForRemoteNotifications()
         return true
     }
-
+    
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        // 디바이스 토큰 처리
-        let tokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-            print("Device Token: \(tokenString)")
-//        print("Device Token: \(deviceToken)")
-    }
-
-    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        // 푸시 알림 등록 실패 처리
-        print("Failed to register for remote notifications: \(error)")
+        logger.log("Registered for remote notifications with device token: \(deviceToken.map { String(format: "%02.2hhx", $0) }.joined())")
     }
     
-    // UNUserNotificationCenterDelegate 메서드 구현
-    // 예: func userNotificationCenter(_:willPresent:withCompletionHandler:) 등
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        logger.error("Failed to register for remote notifications: \(error.localizedDescription)")
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        logger.log("Received remote notification: \(self.formatDictionary(userInfo))")
+        completionHandler(.newData)
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        logger.log("Will present notification in foreground: \(self.formatDictionary(notification.request.content.userInfo))")
+        completionHandler([.banner, .sound]) // Updated for iOS 14 and later
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        logger.log("Did receive response to notification: \(self.formatDictionary(response.notification.request.content.userInfo))")
+        completionHandler()
+    }
+    
+    private func formatDictionary(_ dictionary: [AnyHashable: Any]?) -> String {
+        guard let dictionary = dictionary else { return "None" }
+        return dictionary.map { key, value in
+            "\(key): \(self.decodeUnicodeStringIfNeeded(String(describing: value)))"
+        }.joined(separator: ", ")
+    }
+    
+    private func decodeUnicodeStringIfNeeded(_ string: String) -> String {
+        // 유니코드 이스케이프 시퀀스를 정상적인 문자열로 디코딩
+        if let data = string.data(using: .utf8),
+           let decodedString = String(data: data, encoding: .nonLossyASCII) {
+            return decodedString
+        } else {
+            return string
+        }
+    }
 }

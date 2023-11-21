@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum ConsumerType: String {
+enum ConsumerType: String, Codable {
     case ecoWarrior = "ECO_WARRIOR"
     case budgetKeeper = "BUDGET_KEEPER"
     case flexer = "FLEXER"

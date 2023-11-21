@@ -4,14 +4,14 @@
 //
 //  Created by 김민 on 11/6/23.
 //
-
 import SwiftUI
 
-enum VoteCardCellType {
-    case standard
-    case simple
-    case myVote
-}
+struct VoteCardCell: View {
+    enum VoteCardCellType {
+        case standard
+        case simple
+        case myVote
+    }
 
 enum VoteResultType {
     case buy, draw, notBuy
@@ -29,12 +29,25 @@ enum VoteResultType {
         }
     }
 }
+    enum VoteResultType {
+        case buy, draw, notbuy
+        
+        var stampImage: Image {
+            switch self {
+            case .buy:
+                Image("imgBuy")
+            case .draw:
+                Image("imgDraw")
+            case .notbuy:
+                Image("imgNotBuy")
+            }
+        }
+    }
 
-enum VoteProgressType {
-    case progressing, end
-}
+    enum VoteProgressType {
+        case progressing, end
+    }
 
-struct VoteCardCell: View {
     var cellType: VoteCardCellType
     var progressType: VoteProgressType
     var data: SummaryPostModel
@@ -50,7 +63,9 @@ struct VoteCardCell: View {
                         .font(.system(size: 16, weight: .bold))
                         .foregroundStyle(.white)
                     Spacer()
-                    ConsumerTypeLabel(consumerType: .budgetKeeper, usage: .cell)
+                    if let consumerType = post.author?.consumerType {
+                        ConsumerTypeLabel(consumerType: ConsumerType(rawValue: consumerType) ?? .ecoWarrior ,usage: .cell)
+                    }
                 }
             }
             HStack {
@@ -101,9 +116,8 @@ struct VoteCardCell: View {
                     }
                 }
             }
-
             // TODO: - 후기를 작성한 투표라면 숨기기
-            if progressType == .end && cellType == .myVote {
+            if progressType == .closed && cellType == .myVote {
                 NavigationLink {
                     ReviewWriteView()
                 } label: {

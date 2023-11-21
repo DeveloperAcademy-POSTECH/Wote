@@ -7,59 +7,56 @@
 
 import SwiftUI
 
-enum SearchFilterType: Int, CaseIterable {
-    case progressing, end, review
-
-    var filterTitle: String {
-        switch self {
-        case .progressing:
-            return "진행중인 투표"
-        case .end:
-            return "종료된 투표"
-        case .review:
-            return "후기"
-        }
-    }
-}
-
 struct SearchView: View {
+    @Environment(AppLoginState.self) private var loginState
     @Environment(\.dismiss) private var dismiss
     @State private var searchText = ""
     @State private var hasResult: Bool = false
     @State private var isSearchResultViewShown = false
-    @State private var selectedFilterType = SearchFilterType.progressing
+    @State private var selectedFilterType = PostStatus.active
     @State private var searchTextFieldState = SearchTextFieldState.inactive
     @FocusState private var isFocused: Bool
-    private let viewModel = SearchViewModel()
+    @StateObject var viewModel: SearchViewModel
 
     var body: some View {
-        ZStack(alignment: .top) {
+        ZStack {
             Color.background
                 .ignoresSafeArea()
-            VStack( spacing: 0) {
-                HStack(spacing: 8) {
-                    backButton
-                    searchField
-                        .padding(.horizontal, 8)
-                }
-                .padding(.horizontal, 8)
-                VStack(alignment: .leading) {
-                    if isSearchResultViewShown {
-                        searchFilterView
-                            .padding(.bottom, 24)
-                        searchResultView
-                    } else {
-                        HStack {
-                            recentSearchLabel
-                            Spacer()
-                            deleteAllButton
-                        }
-                        recentSearchView
-                    }
-                }
-                .padding(.top, 24)
-                .padding(.horizontal, 16)
+            if viewModel.isFetching {
+                ProgressView()
             }
+            if viewModel.showEmptyView {
+                emptyResultView
+            }
+            ZStack(alignment: .top) {
+                VStack( spacing: 0) {
+                    HStack(spacing: 8) {
+                        backButton
+                        searchField
+                            .padding(.horizontal, 8)
+                    }
+                    .padding(.horizontal, 8)
+                    VStack(alignment: .leading) {
+                        if isFocused {
+                            HStack {
+                                recentSearchLabel
+                                Spacer()
+                                deleteAllButton
+                            }
+                            recentSearchView
+                        } else {
+                            searchFilterView
+                                .padding(.bottom, 24)
+                            searchResultView
+                        }
+                    }
+                    .padding(.top, 24)
+                    .padding(.horizontal, 16)
+                }
+            }
+        }
+        .onAppear {
+            isFocused = true
         }
         .toolbar(.hidden, for: .navigationBar)
     }
@@ -82,24 +79,25 @@ extension SearchView {
             TextField("search",
                       text: $searchText,
                       prompt: Text("원하는 소비항목을 검색해보세요.")
-                                .font(.system(size: 14, weight: .medium))
-                                .foregroundStyle(Color.placeholderGray))
-                .focused($isFocused)
                 .font(.system(size: 14, weight: .medium))
-                .foregroundStyle(searchTextFieldState.foregroundColor)
-                .tint(Color.placeholderGray)
-                .frame(height: 32)
-                .padding(.leading, 16)
-                .onChange(of: isFocused) { _, isFocused in
-                    if isFocused {
-                        searchTextFieldState = .active
-                    }
+                .foregroundStyle(Color.placeholderGray))
+            .focused($isFocused)
+            .font(.system(size: 14, weight: .medium))
+            .foregroundStyle(searchTextFieldState.foregroundColor)
+            .tint(Color.placeholderGray)
+            .frame(height: 32)
+            .padding(.leading, 16)
+            .onChange(of: isFocused) { _, isFocused in
+                if isFocused {
+                    searchTextFieldState = .active
+                    viewModel.showEmptyView = false
                 }
-                .onSubmit {
-                    searchTextFieldState = .submitted
-                    isSearchResultViewShown = true
-                    viewModel.addRecentSearch(searchWord: searchText)
-                }
+            }
+            .onSubmit {
+                searchTextFieldState = .submitted
+                viewModel.fetchSearchedData(keyword: searchText, reset: true, save: searchText.isEmpty ? false : true)
+                isSearchResultViewShown = true
+            }
             Spacer()
             Button {
                 searchText.removeAll()
@@ -147,34 +145,43 @@ extension SearchView {
 
     private func recentSearchCell(word: String, index: Int) -> some View {
         HStack(spacing: 0) {
-            ZStack {
-                Circle()
-                    .strokeBorder(Color.purpleStroke, lineWidth: 1)
-                    .frame(width: 28, height: 28)
-                    .foregroundStyle(.clear)
-                Image(systemName: "clock.arrow.circlepath")
-                    .font(.system(size: 18, weight: .light))
-                    .foregroundStyle(Color.darkGray)
+            HStack {
+                ZStack {
+                    Circle()
+                        .strokeBorder(Color.purpleStroke, lineWidth: 1)
+                        .frame(width: 28, height: 28)
+                        .foregroundStyle(.clear)
+                    Image(systemName: "clock.arrow.circlepath")
+                        .font(.system(size: 18, weight: .light))
+                        .foregroundStyle(Color.darkGray)
+                }
+                Text(word)
+                    .font(.system(size: 16))
+                    .foregroundStyle(Color.woteWhite)
+                    .padding(.leading, 16)
+                    .multilineTextAlignment(.leading)
+                Spacer()
             }
-            Text(word)
-                .font(.system(size: 16))
-                .foregroundStyle(Color.woteWhite)
-                .padding(.leading, 16)
-            Spacer()
-            Button {
-                viewModel.removeRecentSearch(at: index)
-            } label: {
-                Image(systemName: "xmark")
-                    .font(.system(size: 14))
-                    .foregroundStyle(Color.darkGray)
+            .background(Color.background.opacity(0.01))
+            .onTapGesture {
+                searchText = word
+                viewModel.fetchSearchedData(keyword: word)
+                isFocused.toggle()
             }
+            Image(systemName: "xmark")
+                .font(.system(size: 14))
+                .foregroundStyle(Color.darkGray)
+                .padding(15)
+                .onTapGesture {
+                    viewModel.removeRecentSearch(at: index)
+                }
         }
     }
 
     private var recentSearchView: some View {
         List {
-            ForEach(viewModel.searchWords.indices, id: \.self) { index in
-                recentSearchCell(word: viewModel.searchWords[index], index: index)
+            ForEach(viewModel.searchHistory.indices, id: \.self) { index in
+                recentSearchCell(word: viewModel.searchHistory[index], index: index)
                     .listRowInsets(EdgeInsets())
                     .listRowSeparator(.hidden)
                     .listRowBackground(Color.clear)
@@ -185,67 +192,41 @@ extension SearchView {
 
     private var searchFilterView: some View {
         HStack(spacing: 8) {
-            ForEach(SearchFilterType.allCases, id: \.self) { filter in
+            ForEach(PostStatus.allCases, id: \.self) { filter in
                 FilterButton(title: filter.filterTitle,
-                             isSelected: selectedFilterType == filter) {
-                    selectedFilterType = filter
+                             isSelected: viewModel.selectedFilterType == filter) {
+                    viewModel.selectedFilterType = filter
                 }
             }
-        }
-    }
-
-    private func listCell(cellType: some View, destination: some View) -> some View {
-        ZStack {
-            cellType
-            NavigationLink(destination: destination) { }
-                .opacity(0.0)
         }
     }
 
     private var searchResultView: some View {
-        ScrollViewReader { proxy in
-            List {
-                switch selectedFilterType {
-                case .progressing:
-                    ForEach(0..<5) { _ in
-//                        listCell(cellType: VoteCardCell(cellType: .standard,
-//                                                        progressType: .progressing,
-//                                                        post: )
+        ScrollView {
+            ScrollViewReader { proxy in
+                LazyVStack {
+                    ForEach(Array(viewModel.searchedDatas.enumerated()), id: \.offset) { index, data in
+                        NavigationLink {
+                            DetailView(viewModel: VoteViewModel(apiManager: loginState.serviceRoot.apimanager), postId: data.id, index: index)
+                        } label: {
+                            VoteCardCell(cellType: .standard,
+                                         progressType: viewModel.selectedFilterType, post: data)
+                        }
+                        .onAppear {
+                            if index == viewModel.searchedDatas.count - 4 {
+                                viewModel.fetchSearchedData(keyword: searchText)
+                            }
+                        }
                     }
-                    .listRowBackground(Color.clear)
-                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
-                    .listRowSeparator(.hidden)
                     .id("searchResult")
-                case .end:
-                    ForEach(0..<5) { _ in
-//                        listCell(cellType: VoteCardCell(cellType: .standard,
-//                                                        progressType: .end,
-//                                                        voteResultType: .draw,
-//                                                        post: )
+                    .onChange(of: viewModel.selectedFilterType) { _, _ in
+                        viewModel.fetchSearchedData(keyword: searchText, reset: true  )
+                        proxy.scrollTo("searchResult", anchor: .top)
                     }
-                    .listRowBackground(Color.clear)
-                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
-                    .listRowSeparator(.hidden)
-                    .id("searchResult")
-                case .review:
-                    ForEach(0..<5) { _ in
-//                        listCell(cellType: ReviewCardCell(cellType: .search, 
-//                                                          isPurchased: false,
-//                                                          data: <#SummaryPostModel#>),
-//                                 destination: ReviewDetailView())
-                    }
-                    .listRowBackground(Color.clear)
-                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
-                    .listRowSeparator(.hidden)
-                    .id("searchResult")
                 }
             }
-            .listStyle(.plain)
-            .scrollIndicators(.hidden)
-            .onChange(of: selectedFilterType) { _, _ in
-                proxy.scrollTo("searchResult", anchor: .top)
-            }
         }
+        .scrollIndicators(.hidden)
     }
 
     private var emptyResultView: some View {
@@ -255,11 +236,5 @@ extension SearchView {
                 .font(.system(size: 20, weight: .medium))
                 .foregroundStyle(Color.subGray1)
         }
-    }
-}
-
-#Preview {
-    NavigationStack {
-        SearchView()
     }
 }

@@ -10,7 +10,7 @@ import SwiftUI
 struct ProfileSetting: Codable {
     var imageFile: Data?
     var nickname: String
-    var school: SchoolModel
+    var school: SchoolModel?
 }
 
 enum UserGender: String, CaseIterable {
