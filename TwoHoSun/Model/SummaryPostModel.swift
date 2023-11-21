@@ -31,6 +31,8 @@ struct SummaryPostModel: Codable, Identifiable {
     
     enum CodingKeys: String, CodingKey {
         case id = "postId"
-        case createDate, modifiedDate, author, postStatus, viewCount, voteCount, voteResult, title, image, contents, price, isPurchased, hasReview
+        case createDate, modifiedDate, postStatus, voteResult, title, image, contents, price, hasReview
+        case author
+        case commentCount
     }
 }

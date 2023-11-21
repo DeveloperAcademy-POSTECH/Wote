@@ -96,7 +96,7 @@ extension CommentCell {
                 .clipShape(Circle())
             VStack(alignment: .leading) {
                 HStack(spacing: 8) {
-                    ConsumerTypeLabel(consumerType: .ecoWarrior, usage: .comments)
+                    ConsumerTypeLabel(consumerType: ConsumerType(rawValue: comment.author.consumerType) ?? .adventurer, usage: .comments)
                     Text(comment.author.nickname)
                         .font(.system(size: 14, weight: .medium))
                         .foregroundStyle(Color.white)
