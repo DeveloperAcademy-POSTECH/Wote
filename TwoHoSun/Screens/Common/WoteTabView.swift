@@ -91,11 +91,10 @@ struct WoteTabView: View {
             }  
             .navigationDestination(for: AllNavigation.self) { destination in
                 switch destination {
-                case .detailView(let postId, let index, _, let isShowingHeader):
+                case .detailView(let postId, _, let isShowingItems):
                     DetailView(viewModel: DetailViewModel(appLoginState: loginStateManager),
-                               isShowingHeader: isShowingHeader, 
-                               postId: postId,
-                               index: index)
+                               isShowingItems: isShowingItems,
+                               postId: postId)
                 case .makeVoteView:
                     VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: visibilityScope, 
                                                                 apiManager: loginStateManager.serviceRoot.apimanager), tabselection: $selection )
@@ -117,9 +116,9 @@ struct WoteTabView: View {
                 case .searchView:
                     SearchView(viewModel: SearchViewModel(apiManager: loginStateManager.serviceRoot.apimanager,
                                                           selectedVisibilityScope: visibilityScope))
-                case .reviewDetailView(let postId, let reviewId, let isShowingHeader):
+                case .reviewDetailView(let postId, let reviewId, let isShowingItems):
                     ReviewDetailView(viewModel: ReviewDetailViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
-                                     isShowingHeader: isShowingHeader,
+                                     isShowingItems: isShowingItems,
                                      postId: postId,
                                      reviewId: reviewId)
                 default:

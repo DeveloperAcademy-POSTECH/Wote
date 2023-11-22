@@ -151,7 +151,7 @@ struct DetailHeaderView: View {
             EmptyView()
         default:
             ReviewDetailView(viewModel: ReviewDetailViewModel(apiManager: loginState.serviceRoot.apimanager),
-                             isShowingHeader: false,
+                             isShowingItems: false,
                              postId: postId)
         }
     }

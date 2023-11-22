@@ -118,8 +118,7 @@ extension VoteContentCell {
     private var detailResultButton: some View {
         NavigationLink {
             DetailView(viewModel: DetailViewModel(appLoginState: loginState),
-                       postId: data.id,
-                       index: index)
+                       postId: data.id)
         } label: {
             Text("상세보기")
                 .font(.system(size: 16, weight: .bold))

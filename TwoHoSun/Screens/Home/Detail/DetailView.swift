@@ -16,10 +16,9 @@ struct DetailView: View {
     @Environment(AppLoginState.self) private var loginStateManager
     @State private var currentAlert = AlertType.closeVote
     @StateObject var viewModel: DetailViewModel
-    var isShowingHeader = true
+    var isShowingItems = true
     @State var showDetailComments = false
     var postId: Int
-    var index: Int?
 
     var directComments = false
     let commentNotification = NotificationCenter.default.publisher(for: Notification.Name("showComment"))
@@ -30,7 +29,7 @@ struct DetailView: View {
             if let data = viewModel.postDetail {
                 ScrollView {
                     VStack(spacing: 0) {
-                        if isShowingHeader {
+                        if isShowingItems {
                             DetailHeaderView(data: data)
                                 .padding(.top, 18)
                             Divider()
@@ -50,12 +49,12 @@ struct DetailView: View {
                                 IncompletedVoteButton(choice: .agree) {
                                     viewModel.votePost(postId: data.post.id,
                                                        choice: true,
-                                                       index: index ?? 0)
+                                                       index: viewModel.searchIndex(with: data.post.id))
                                 }
                                 IncompletedVoteButton(choice: .disagree) {
                                     viewModel.votePost(postId: data.post.id,
                                                        choice: false,
-                                                       index: index ?? 0)
+                                                       index: viewModel.searchIndex(with: data.post.id))
                                 }
                             }
                         }
@@ -109,11 +108,11 @@ struct DetailView: View {
                         switch currentAlert {
                         case .closeVote:
                             viewModel.closePost(postId: postId,
-                                                index: index ?? 0)
+                                                index: viewModel.searchIndex(with: postId))
                             showCustomAlert.toggle()
                         case .deleteVote:
                             viewModel.deletePost(postId: postId,
-                                                 index: index ?? 0)
+                                                 index: viewModel.searchIndex(with: postId))
                             showCustomAlert.toggle()
                             dismiss()
                         default:
@@ -157,6 +156,7 @@ struct DetailView: View {
                 } label: {
                     Image(systemName: "ellipsis")
                         .foregroundStyle(Color.subGray1)
+                        .opacity(isShowingItems ? 1 : 0)
                 }
             }
         }

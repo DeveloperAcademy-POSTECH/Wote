@@ -33,7 +33,7 @@ struct TwoHoSunApp: App {
 
 extension TwoHoSunApp {
     func handleDeepPush(postId: Int, _ isComment: Bool) async {
-        appState.serviceRoot.navigationManager.navigate(.detailView(postId: postId, index: 0, dirrectComments: isComment))
+        appState.serviceRoot.navigationManager.navigate(.detailView(postId: postId, dirrectComments: isComment))
     }
 }
 class ServiceRoot {

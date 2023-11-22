@@ -221,7 +221,7 @@ extension SearchView {
                             case .review:
                                 loginState.serviceRoot.navigationManager.navigate(.reviewDetailView(postId: nil, reviewId: data.id))
                             default:
-                                loginState.serviceRoot.navigationManager.navigate(.detailView(postId: data.id, index: nil))
+                                loginState.serviceRoot.navigationManager.navigate(.detailView(postId: data.id))
                             }
 
                         } label: {

@@ -16,7 +16,7 @@ struct ReviewDetailView: View {
     @State private var applyComplaint = false
     @Environment(AppLoginState.self ) var loginmanager
     @StateObject var viewModel: ReviewDetailViewModel
-    var isShowingHeader = true
+    var isShowingItems = true
     var postId: Int?
     var reviewId: Int?
 
@@ -26,7 +26,7 @@ struct ReviewDetailView: View {
             ScrollView {
                 if let data = viewModel.reviewData {
                     VStack(spacing: 0) {
-                        if isShowingHeader {
+                        if isShowingItems {
                             detailHeaderView(data.originalPost)
                                 .padding(.top, 24)
                                 .padding(.horizontal, 24)
@@ -153,9 +153,8 @@ extension ReviewDetailView {
                 Spacer()
                 Button {
                     loginState.serviceRoot.navigationManager.navigate(.detailView(postId: viewModel.postId,
-                                                                                  index: nil, 
                                                                                   dirrectComments: false, 
-                                                                                  isShowingHeader: reviewId != nil ? false : true))
+                                                                                  isShowingItems: reviewId != nil ? false : true))
 
                 } label: {
                     HStack(spacing: 2) {
@@ -168,9 +167,8 @@ extension ReviewDetailView {
             }
             Button {
                 loginState.serviceRoot.navigationManager.navigate(.detailView(postId: viewModel.postId,
-                                                                              index: nil,
                                                                               dirrectComments: false, 
-                                                                              isShowingHeader: reviewId != nil ? false : true))
+                                                                              isShowingItems: reviewId != nil ? false : true))
             } label: {
                 VoteCardCell(cellType: .simple,
                              progressType: .end,

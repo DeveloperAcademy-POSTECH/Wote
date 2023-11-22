@@ -17,7 +17,6 @@ final class ReviewDetailViewModel: ObservableObject {
 
     init(apiManager: NewApiManager) {
         self.apiManager = apiManager
-        print("ReviewDetailViewModel init")
     }
 
     func fetchReviewDetail(reviewId: Int) {
