@@ -9,6 +9,6 @@ import Foundation
 
 struct PostDetailModel: Codable {
     let post: PostModel
-    let commentCount: Int
+    let commentCount: Int?
     let commentPreview: String?
 }
