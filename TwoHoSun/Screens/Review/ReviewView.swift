@@ -18,8 +18,8 @@ struct ReviewView: View {
         ScrollView {
             VStack(spacing: 0) {
                 if !viewModel.isFetching {
-                    sameSpendTypeReviewView(datas: viewModel.reviews?.recentReviews,
-                                            consumerType: viewModel.reviews?.myConsumerType)
+                    sameSpendTypeReviewView(datas: loginState.appData.reviewManager.reviews?.recentReviews,
+                                            consumerType: viewModel.consumerType?.rawValue)
                         .padding(.top, 24)
                         .padding(.bottom, 20)
                         .padding(.leading, 24)
@@ -37,6 +37,14 @@ struct ReviewView: View {
                         .onChange(of: reviewType) { _, _ in
                             proxy.scrollTo("reviewTypeSection", anchor: .top)
                         }
+                    }
+                } else {
+                    VStack {
+                        Spacer()
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: Color.gray100))
+                            .scaleEffect(1.3, anchor: .center)
+                        Spacer()
                     }
                 }
             }
@@ -66,7 +74,7 @@ extension ReviewView {
     @ViewBuilder
     private func sameSpendTypeReviewView(datas: [SummaryPostModel]?,
                                          consumerType: String?) -> some View {
-        if let datas = datas, let consumerType = consumerType {
+        if let datas = datas, let consumerType = consumerType, !datas.isEmpty {
             VStack(spacing: 18) {
                 HStack(spacing: 6) {
                     ConsumerTypeLabel(consumerType: ConsumerType(rawValue: consumerType) ?? .adventurer,
@@ -141,11 +149,11 @@ extension ReviewView {
     private func reviewListView(for filter: ReviewType) -> some View {
         let datas = switch filter {
                     case .all:
-                    viewModel.reviews?.allReviews ?? []
+                    loginState.appData.reviewManager.allReviews
                     case .purchased:
-                    viewModel.reviews?.purchasedReviews ?? []
+                    loginState.appData.reviewManager.purchasedReviews
                     case .notPurchased:
-                    viewModel.reviews?.notPurchasedReviews ?? []
+                    loginState.appData.reviewManager.notPurchasedReviews
                     }
         if datas.isEmpty {
             NoReviewView()

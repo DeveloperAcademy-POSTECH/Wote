@@ -49,12 +49,8 @@ class ServiceRoot {
 @Observable
 class AppData {
     var posts = [PostModel]()
-    var reviews = ReviewTabModel(myConsumerType: nil,
-                                 recentReviews: [],
-                                 allReviews: [],
-                                 purchasedReviews: [],
-                                 notPurchasedReviews: [])
     var notificationDatas = [NotificationModel]()
+    var reviewManager = ReviewManager()
 }
 
 @Observable

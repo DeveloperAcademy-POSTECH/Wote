@@ -30,6 +30,7 @@
 		AB38A1C72B0BE1BE004153B5 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1C62B0BE1BD004153B5 /* DetailViewModel.swift */; };
 		AB38A1CB2B0D505D004153B5 /* TestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1CA2B0D505D004153B5 /* TestViewModel.swift */; };
 		AB38A1CD2B0D5580004153B5 /* ReviewDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1CC2B0D5580004153B5 /* ReviewDetailModel.swift */; };
+		AB38A1CF2B0E788F004153B5 /* ReviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1CE2B0E788F004153B5 /* ReviewManager.swift */; };
 		AB3BACFD2AF7A5FC00E792BE /* SearchTextFieldState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3BACFC2AF7A5FC00E792BE /* SearchTextFieldState.swift */; };
 		AB4522532ADDD99500B69F24 /* SchoolSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */; };
 		AB4522562ADDDBC400B69F24 /* SchoolResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */; };
@@ -157,6 +158,7 @@
 		AB38A1C62B0BE1BD004153B5 /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
 		AB38A1CA2B0D505D004153B5 /* TestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewModel.swift; sourceTree = "<group>"; };
 		AB38A1CC2B0D5580004153B5 /* ReviewDetailModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewDetailModel.swift; sourceTree = "<group>"; };
+		AB38A1CE2B0E788F004153B5 /* ReviewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManager.swift; sourceTree = "<group>"; };
 		AB3BACFC2AF7A5FC00E792BE /* SearchTextFieldState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTextFieldState.swift; sourceTree = "<group>"; };
 		AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolSearchView.swift; sourceTree = "<group>"; };
 		AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolResponseModel.swift; sourceTree = "<group>"; };
@@ -647,6 +649,7 @@
 				AB3BACFC2AF7A5FC00E792BE /* SearchTextFieldState.swift */,
 				FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */,
 				C7A95F1A2B03EB7B00F8595A /* NavigationManager.swift */,
+				AB38A1CE2B0E788F004153B5 /* ReviewManager.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -800,7 +803,6 @@
 				ABDED8802B00B07300D78BEA /* TypeTestModel.swift in Sources */,
 				C7974E0D2B0A869600BE9AF9 /* CommentPreview.swift in Sources */,
 				ABE51ED12B054ED5009C6CA5 /* DetailHeaderView.swift in Sources */,
-				ABDED87F2B00AFCC00D78BEA /* VoteViewModel.swift in Sources */,
 				C7C596BB2B0D30AD000D1672 /* NotificationModel.swift in Sources */,
 				C7EFA7D92AF9279200C9BEA0 /* ComplaintView.swift in Sources */,
 				AB7317EC2AF90F40008B5E41 /* ProfileSettingViewModel.swift in Sources */,
@@ -837,6 +839,7 @@
 				C721D5BB2B07CA8D00564EE0 /* CommentsViewModel.swift in Sources */,
 				FDDEC15B2AE3EABA004509EA /* SearchView.swift in Sources */,
 				ABAFB6412AF978790070512F /* PurchaseLabel.swift in Sources */,
+				AB38A1CF2B0E788F004153B5 /* ReviewManager.swift in Sources */,
 				FD50A0482B01EBE000CF7F59 /* SettingNotificationView.swift in Sources */,
 				C7B5A8882B01641A00B73881 /* Authenticator.swift in Sources */,
 				5E5099542AED59DE0053E529 /* AppDelegate.swift in Sources */,

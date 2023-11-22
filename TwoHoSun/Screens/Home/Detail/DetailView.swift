@@ -26,6 +26,9 @@ struct DetailView: View {
         ZStack {
             backgroundColor
                 .ignoresSafeArea()
+            ProgressView()
+                .progressViewStyle(CircularProgressViewStyle(tint: Color.gray100))
+                .scaleEffect(1.3, anchor: .center)
             if let data = viewModel.postDetail {
                 ScrollView {
                     VStack(spacing: 0) {

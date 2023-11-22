@@ -97,6 +97,7 @@ struct ReviewDetailView: View {
         .customConfirmDialog(isPresented: $showConfirm, isMine: $viewModel.isMine) { _ in
             if viewModel.isMine {
                 Button {
+                    viewModel.deleteReview(postId: viewModel.postId)
                     showCustomAlert.toggle()
                     showConfirm.toggle()
                 } label: {
@@ -242,7 +243,7 @@ extension ReviewDetailView {
     NavigationStack {
         @Environment(AppLoginState.self) var loginState
 
-        ReviewDetailView(viewModel: ReviewDetailViewModel(apiManager: loginState.serviceRoot.apimanager), 
+        ReviewDetailView(viewModel: ReviewDetailViewModel(loginState: loginState), 
                          reviewId: 3030)
             .environment(AppLoginState())
     }

@@ -105,7 +105,7 @@ struct WoteTabView: View {
                     TypeTestView(viewModel: TypeTestViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
                 case .reveiwView:
                     ReviewView(visibilityScope: $visibilityScope,
-                               viewModel: ReviewTabViewModel(apiManger: loginStateManager.serviceRoot.apimanager))
+                               viewModel: ReviewTabViewModel(loginState: loginStateManager))
                 case .writeReiview:
                     Text("아직")
                 case .settingView:
@@ -117,7 +117,7 @@ struct WoteTabView: View {
                     SearchView(viewModel: SearchViewModel(apiManager: loginStateManager.serviceRoot.apimanager,
                                                           selectedVisibilityScope: visibilityScope))
                 case .reviewDetailView(let postId, let reviewId, let isShowingItems):
-                    ReviewDetailView(viewModel: ReviewDetailViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
+                    ReviewDetailView(viewModel: ReviewDetailViewModel(loginState: loginStateManager),
                                      isShowingItems: isShowingItems,
                                      postId: postId,
                                      reviewId: reviewId)
@@ -150,7 +150,7 @@ extension WoteTabView {
                               viewModel: ConsiderationViewModel(appLoginState: loginStateManager))
         case .review:
             ReviewView(visibilityScope: $visibilityScope,
-                       viewModel: ReviewTabViewModel(apiManger: loginStateManager.serviceRoot.apimanager))
+                       viewModel: ReviewTabViewModel(loginState: loginStateManager))
         case .myPage:
             MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
                        selectedVisibilityScope: $visibilityScope)

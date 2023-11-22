@@ -71,7 +71,7 @@ struct DetailHeaderView: View {
                 closedVoteHeaderView(author: data.post.author,
                                      closedState: closedPostState,
                                      postId: data.post.id)
-            } else {
+            } else  {
                 EmptyView()
             }
         default:
@@ -150,7 +150,7 @@ struct DetailHeaderView: View {
         case .othersPostWithoutReview:
             EmptyView()
         default:
-            ReviewDetailView(viewModel: ReviewDetailViewModel(apiManager: loginState.serviceRoot.apimanager),
+            ReviewDetailView(viewModel: ReviewDetailViewModel(loginState: loginState),
                              isShowingItems: false,
                              postId: postId)
         }
