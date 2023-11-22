@@ -77,6 +77,7 @@ enum SettingType {
 struct SettingView: View {
     @State private var isSubmited: Bool = false
     @State private var showLogOut: Bool = false
+    @Environment(AppLoginState.self) private var loginStateManager
     
     var body: some View {
         ZStack {
@@ -111,7 +112,8 @@ struct SettingView: View {
             .scrollContentBackground(.hidden)
             if showLogOut {
                 CustomAlertModalView(alertType: .logOut, isPresented: $showLogOut) {
-                    print("로그아웃 완료!")
+                    loginStateManager.serviceRoot.auth.authState = .none
+                    KeychainManager.shared.deleteToken(key: "accessToken")
                     showLogOut = false
                 }
             }

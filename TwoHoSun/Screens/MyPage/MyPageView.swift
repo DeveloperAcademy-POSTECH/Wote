@@ -239,10 +239,9 @@ extension MyPageView {
                     Text("DetailView")
                 } label: {
                     VStack(spacing: 0) {
-//                        VoteCardCell(cellType: .myVote,
-//                                     progressType: .closed,
-//                                     voteResultType: .draw,
-//                                     post: post)
+                        VoteCardCell(cellType: .myVote,
+                                     progressType: .closed,
+                                     post: post)
                         Divider()
                             .background(Color.dividerGray)
                             .padding(.horizontal, 8)
