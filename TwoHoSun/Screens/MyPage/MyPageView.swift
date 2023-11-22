@@ -238,12 +238,9 @@ extension MyPageView {
 //                    loginStateManager.serviceRoot.navigationManager.navigate(.)
                 } label: {
                     VStack(spacing: 0) {
-                        // TODO: - 수정
-//                        VoteCardCell(cellType: .myVote,
-//                                     progressType: .closed,
-//                                     voteResultType: .draw,
-//                                     post: post)
-                        Text("\(index)")
+                        VoteCardCell(cellType: .myVote,
+                                     progressType: .closed,
+                                     post: post)
                         Divider()
                             .background(Color.dividerGray)
                             .padding(.horizontal, 8)

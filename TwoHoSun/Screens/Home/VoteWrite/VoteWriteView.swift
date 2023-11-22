@@ -20,6 +20,7 @@ struct VoteWriteView: View {
     @State private var isTagTextFieldShowed = false
     @State private var isEditing: Bool = false
     @State private var showCropView: Bool = false
+    @State private var isMine: Bool = false
     @Bindable var viewModel: VoteWriteViewModel
     @Binding var tabselection: WoteTabType
 
@@ -63,33 +64,36 @@ struct VoteWriteView: View {
             .onTapGesture {
                 dismissKeyboard()
             }
-//            .customConfirmDialog(isPresented: $isEditing) {
-//                Button {
-//                    showCropView.toggle()
-//                    isEditing = false
-//                } label: {
-//                    Text("수정하기")
-//                        .frame(maxWidth: .infinity)
-//                }
-//                Divider()
-//                    .foregroundStyle(Color.gray300)
-//                Button {
-//                    showPicker.toggle()
-//                    isEditing = false
-//                } label: {
-//                    Text("다른 상품사진 선택하기")
-//                        .frame(maxWidth: .infinity)
-//                }
-//                Divider()
-//                    .foregroundStyle(Color.gray300)
-//                Button {
-//                    croppedImage = nil
-//                    isEditing = false
-//                } label: {
-//                    Text("삭제하기")
-//                        .frame(maxWidth: .infinity)
-//                }
-//            }
+            .customConfirmDialog(isPresented: $isEditing, isMine: $isMine) { _ in
+                Button {
+                    showCropView.toggle()
+                    isEditing = false
+                } label: {
+                    Text("수정하기")
+                        .frame(maxWidth: .infinity)
+                }
+                .frame(height: 52)
+                Divider()
+                    .foregroundStyle(Color.gray300)
+                Button {
+                    showPicker.toggle()
+                    isEditing = false
+                } label: {
+                    Text("다른 상품사진 선택하기")
+                        .frame(maxWidth: .infinity)
+                }
+                .frame(height: 52)
+                Divider()
+                    .foregroundStyle(Color.gray300)
+                Button {
+                    croppedImage = nil
+                    isEditing = false
+                } label: {
+                    Text("삭제하기")
+                        .frame(maxWidth: .infinity)
+                }
+                .frame(height: 52)
+            }
         }
         .onAppear {
             tabselection = .consider
