@@ -16,6 +16,7 @@ enum UserService {
     case refreshToken
     case putConsumerType(consumertype: ConsumerType)
     case getProfile
+    case requestLogout
 }
 
 extension UserService: TargetType {
@@ -38,6 +39,8 @@ extension UserService: TargetType {
             return "/api/profiles/consumerType"
         case .getProfile:
             return "/api/profiles"
+        case .requestLogout:
+            return "/api/auth/logout"
         }
     }
     
@@ -47,6 +50,8 @@ extension UserService: TargetType {
             return .put
         case .getProfile:
             return .get
+        case .requestLogout:
+            return .post
         default:
             return .post
         }
@@ -67,6 +72,8 @@ extension UserService: TargetType {
         case .putConsumerType(let consumerType):
             return ["consumerType": consumerType.rawValue]
         case .getProfile:
+            return [:]
+        case .requestLogout:
             return [:]
         }
     }
@@ -111,6 +118,8 @@ extension UserService: TargetType {
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         case .getProfile:
             return .requestPlain
+        case .requestLogout:
+            return .requestPlain
         default:
             return .requestParameters(parameters: parameters,
                                       encoding: URLEncoding.default)
@@ -130,6 +139,8 @@ extension UserService: TargetType {
         case .putConsumerType:
             APIConstants.headerWithAuthorization
         case .getProfile:
+            APIConstants.headerWithAuthorization
+        case .requestLogout:
             APIConstants.headerWithAuthorization
         }
     }

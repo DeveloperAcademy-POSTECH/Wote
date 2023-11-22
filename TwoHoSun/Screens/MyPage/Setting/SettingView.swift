@@ -114,6 +114,7 @@ struct SettingView: View {
                 CustomAlertModalView(alertType: .logOut, isPresented: $showLogOut) {
                     loginStateManager.serviceRoot.auth.authState = .none
                     KeychainManager.shared.deleteToken(key: "accessToken")
+                    KeychainManager.shared.deleteToken(key: "refreshToken")
                     showLogOut = false
                 }
             }
