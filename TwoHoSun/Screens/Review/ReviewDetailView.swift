@@ -56,7 +56,7 @@ struct ReviewDetailView: View {
                     CustomAlertModalView(alertType: .deleteReview,
                                          isPresented: $showCustomAlert) {
                         viewModel.deleteReview(postId: viewModel.postId)
-//                        dismiss()
+                        dismiss()
                     }
                 }
             }
@@ -151,10 +151,12 @@ extension ReviewDetailView {
                     .font(.system(size: 13))
                     .foregroundStyle(Color.woteWhite)
                 Spacer()
-                NavigationLink {
-                    DetailView(viewModel: DetailViewModel(appLoginState: loginState),
-                               isShowingHeader: false,
-                               postId: viewModel.postId)
+                Button {
+                    loginState.serviceRoot.navigationManager.navigate(.detailView(postId: viewModel.postId,
+                                                                                  index: nil, 
+                                                                                  dirrectComments: false, 
+                                                                                  isShowingHeader: reviewId != nil ? false : true))
+
                 } label: {
                     HStack(spacing: 2) {
                         Text("바로가기")
@@ -164,14 +166,12 @@ extension ReviewDetailView {
                     .foregroundStyle(Color.accentBlue)
                 }
             }
-            NavigationLink {
-//                DetailView(viewModel: DetailViewModel(appLoginState: loginState),
-//                           isShowingHeader: false,
-//                           postId: viewModel.postId,
-//                           index: 0)
-//                Text("hi")
+            Button {
+                loginState.serviceRoot.navigationManager.navigate(.detailView(postId: viewModel.postId,
+                                                                              index: nil,
+                                                                              dirrectComments: false, 
+                                                                              isShowingHeader: reviewId != nil ? false : true))
             } label: {
-                // TODO: - progressType 고치기
                 VoteCardCell(cellType: .simple,
                              progressType: .end,
                              data: data)

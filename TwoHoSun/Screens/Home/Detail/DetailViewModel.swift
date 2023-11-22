@@ -11,14 +11,13 @@ import SwiftUI
 final class DetailViewModel: ObservableObject {
     private var appLoginState: AppLoginState
     private var cancellables: Set<AnyCancellable> = []
-    var isMine = false
-    var postDetail: PostDetailModel?
-    var agreeTopConsumerTypes = [ConsumerType]()
-    var disagreeTopConsumerTypes = [ConsumerType]()
+    @Published var isMine = false
+    @Published var postDetail: PostDetailModel?
+    @Published var agreeTopConsumerTypes = [ConsumerType]()
+    @Published var disagreeTopConsumerTypes = [ConsumerType]()
 
     init(appLoginState: AppLoginState) {
         self.appLoginState = appLoginState
-        print("init")
     }
 
     func searchIndex(with postId: Int) -> Int {
