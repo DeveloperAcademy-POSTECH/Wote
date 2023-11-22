@@ -240,7 +240,7 @@ extension MyPageView {
                     VStack(spacing: 0) {
                         VoteCardCell(cellType: .myVote,
                                      progressType: .closed,
-                                     post: post)
+                                     data: post)
                         Divider()
                             .background(Color.dividerGray)
                             .padding(.horizontal, 8)

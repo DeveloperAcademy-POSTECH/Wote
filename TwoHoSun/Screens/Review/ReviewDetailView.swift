@@ -171,7 +171,7 @@ extension ReviewDetailView {
                                                                               isShowingItems: reviewId != nil ? false : true))
             } label: {
                 VoteCardCell(cellType: .simple,
-                             progressType: .end,
+                             progressType: .closed,
                              data: data)
             }
         }

@@ -97,13 +97,13 @@ struct WoteTabView: View {
                                postId: postId)
                 case .makeVoteView:
                     VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: visibilityScope, 
-                                                                apiManager: loginStateManager.serviceRoot.apimanager), tabselection: $selection )
+                                                                apiManager: loginStateManager.serviceRoot.apimanager), tabselection: $selection)
                 case .testIntroView:
                     TypeTestIntroView()
                         .toolbar(.hidden, for: .navigationBar)
                 case .testView:
                     TypeTestView(viewModel: TypeTestViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
-                case .reveiwView:
+                case .reviewView:
                     ReviewView(visibilityScope: $visibilityScope,
                                viewModel: ReviewTabViewModel(loginState: loginStateManager))
                 case .writeReiview:
@@ -121,6 +121,9 @@ struct WoteTabView: View {
                                      isShowingItems: isShowingItems,
                                      postId: postId,
                                      reviewId: reviewId)
+                case .reviewWriteView(let post):
+                    ReviewWriteView(viewModel: ReviewWriteViewModel(post: post,
+                                                                    apiManager: loginStateManager.serviceRoot.apimanager))
                 default:
                     EmptyView()
                 }

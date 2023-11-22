@@ -70,8 +70,8 @@ struct DetailHeaderView: View {
                 let closedPostState = ClosedPostStatus(isMine: isMine, hasReview: hasReview)!
                 closedVoteHeaderView(author: data.post.author,
                                      closedState: closedPostState,
-                                     postId: data.post.id)
-            } else  {
+                                     post: data)
+            } else {
                 EmptyView()
             }
         default:
@@ -107,7 +107,9 @@ struct DetailHeaderView: View {
         .padding(.bottom, 13)
     }
 
-    private func closedVoteHeaderView(author: AuthorModel, closedState: ClosedPostStatus, postId: Int) -> some View {
+    private func closedVoteHeaderView(author: AuthorModel,
+                                      closedState: ClosedPostStatus,
+                                      post: PostDetailModel) -> some View {
         HStack(spacing: 3) {
             ProfileImageView(imageURL: author.profileImage)
                 .frame(width: 32, height: 32)
@@ -119,8 +121,8 @@ struct DetailHeaderView: View {
                 .font(.system(size: 13))
                 .foregroundStyle(Color.whiteGray)
             Spacer()
-            NavigationLink {
-                destinationForHeaderButton(closedState, postId: postId)
+            Button {
+                destinationForHeaderButton(closedState, post: post)
             } label: {
                 if closedState != ClosedPostStatus.othersPostWithoutReview {
                     headerButton(closedState.buttonView)
@@ -142,18 +144,27 @@ struct DetailHeaderView: View {
         }
     }
 
-    @ViewBuilder
-    private func destinationForHeaderButton(_ closedPostState: ClosedPostStatus, postId: Int) -> some View {
+    private func destinationForHeaderButton(_ closedPostState: ClosedPostStatus, post: PostDetailModel) {
         switch closedPostState {
         case .myPostWithoutReview:
-            Text("임시")
-//            ReviewWriteView(viewModel: ReviewWriteViewModel(post: <#T##SummaryPostModel#>, apiManager: <#T##NewApiManager#>))
+            // TODO: - vote Result?
+            let data = post.post
+            let summaryPost = SummaryPostModel(id: data.id,
+                                               createDate: data.createDate,
+                                               modifiedDate: data.modifiedDate,
+                                               postStatus: data.postStatus,
+                                               title: data.title,
+                                               image: data.image,
+                                               contents: data.contents,
+                                               price: data.price)
+            loginState.serviceRoot.navigationManager.navigate(.reviewWriteView(post: summaryPost))
         case .othersPostWithoutReview:
-            EmptyView()
+            // TODO: - Check
+            break
         default:
-            ReviewDetailView(viewModel: ReviewDetailViewModel(loginState: loginState),
-                             isShowingItems: false,
-                             postId: postId)
+            loginState.serviceRoot.navigationManager.navigate(.reviewDetailView(postId: post.post.id,
+                                                                                reviewId: nil,
+                                                                                isShowingItems: false))
         }
     }
 }

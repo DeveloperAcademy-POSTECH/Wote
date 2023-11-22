@@ -38,7 +38,7 @@ struct PostModel: Codable, Identifiable {
     } 
 }
 
-struct AuthorModel: Codable {
+struct AuthorModel: Codable, Hashable {
     let id: Int
     let nickname: String
     let profileImage: String?

@@ -227,7 +227,7 @@ extension SearchView {
                         } label: {
                             // TODO: - 수정
                             VoteCardCell(cellType: .standard,
-                                         progressType: .end,
+                                         progressType: .closed,
                                          data: data)
                         }
                         .onAppear {

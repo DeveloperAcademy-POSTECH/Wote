@@ -116,17 +116,16 @@ extension VoteContentCell {
     }
 
     private var detailResultButton: some View {
-        NavigationLink {
-            DetailView(viewModel: DetailViewModel(appLoginState: loginState),
-                       postId: data.id)
+        Button {
+            loginState.serviceRoot.navigationManager.navigate(.detailView(postId: data.id))
         } label: {
-            Text("상세보기")
-                .font(.system(size: 16, weight: .bold))
-                .foregroundStyle(.white)
-                .frame(maxWidth: .infinity)
-                .frame(height: 48)
-                .background(Color.blue100)
-                .clipShape(Capsule())
+                Text("상세보기")
+                    .font(.system(size: 16, weight: .bold))
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 48)
+                    .background(Color.blue100)
+                    .clipShape(Capsule())
         }
     }
 }

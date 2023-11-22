@@ -12,7 +12,11 @@ struct MyPostModel: Codable {
     var posts: [SummaryPostModel]
 }
 
-struct SummaryPostModel: Codable, Identifiable {
+struct SummaryPostModel: Codable, Identifiable, Equatable, Hashable {
+    static func == (lhs: SummaryPostModel, rhs: SummaryPostModel) -> Bool {
+        return lhs.id == rhs.id
+    }
+
     var id: Int
     var createDate: String
     var modifiedDate: String
