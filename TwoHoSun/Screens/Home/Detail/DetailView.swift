@@ -115,7 +115,7 @@ struct DetailView: View {
                             viewModel.deletePost(postId: postId,
                                                  index: index ?? 0)
                             showCustomAlert.toggle()
-//                            dismiss()
+                            dismiss()
                         default:
                             break
                         }

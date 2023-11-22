@@ -19,7 +19,6 @@ enum PostService {
     case getReviewDetailWithPostId(postId: Int)
     case modifyReview
     case createReview
-    case deleteReview
     case subscribeReview
     case votePost(postId: Int, choice: Bool)
     case getSearchResult(postStatus: PostStatus, visibilityScopeType: VisibilityScopeType, page: Int, size: Int, keyword: String)
