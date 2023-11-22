@@ -256,12 +256,16 @@ extension MyPageView {
             }
             .padding(.horizontal, 8)
         case .myReview:
-            ForEach(Array(zip(viewModel.posts.indices, viewModel.posts)), id: \.0) { index, post in
+            ForEach(Array(zip(viewModel.posts.indices, viewModel.posts)), id: \.0) { index, data in
                 NavigationLink {
 //                    ReviewDetailView(postId: 3030)
+//                    ReviewDetailView(viewModel: ReviewDetailViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
+                    ReviewDetailView(viewModel: ReviewDetailViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
+                                     reviewId: 5056)
                 } label: {
                     VStack(spacing: 0) {
-                        ReviewCardCell(cellType: .myReview, post: post)
+//                        ReviewCardCell(cellType: .myReview, post: post)
+                        ReviewCardCell(cellType: .myReview, data: data)
                         Divider()
                             .background(Color.dividerGray)
                             .padding(.horizontal, 8)
