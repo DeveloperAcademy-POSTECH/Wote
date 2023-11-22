@@ -14,12 +14,12 @@ struct OnBoardingView : View {
     @State private var goProfileView = false
     @State var viewModel: LoginViewModel
     @Environment(AppLoginState.self) private var loginStateManager
-    @State private var navigationPath: [LoginNavigation] = []
+//    @State private var navigationPath: [LoginNavigation] = []
     init(viewModel: LoginViewModel) {
         self.viewModel = viewModel
     }
     var body: some View {
-        NavigationStack(path: $navigationPath) {
+        NavigationStack {
             ZStack {
                 Image("onboardingBackground")
                     .resizable()
@@ -53,22 +53,26 @@ struct OnBoardingView : View {
                 .padding(.horizontal, 26)
             }
             .sheet(isPresented: $viewModel.showSheet) {
-                BottomSheetView(navigationPath: $navigationPath)
+                BottomSheetView(goProfileView: $goProfileView)
                     .presentationDetents([.medium])
             }
-            .onChange(of: viewModel.goMain, { _, newValue in
-                if newValue {
-                    self.navigationPath.append(.mainTabView)
-                }
-            })
-            .navigationDestination(for: LoginNavigation.self) { route in
-                switch route {
-                case .mainTabView:
-                    WoteTabView(path: $navigationPath)
-                case .profileView:
-                    ProfileSettingsView(viewType: .setting, 
-                                        viewModel: ProfileSettingViewModel(appState: loginStateManager))
-                }
+//            .onChange(of: viewModel.goMain, { _, newValue in
+//                if newValue {
+//                    self.navigationPath.append(.mainTabView)
+//                }
+//            })
+//            .navigationDestination(for: LoginNavigation.self) { route in
+//                switch route {
+//                case .mainTabView:
+//                    WoteTabView(path: $navigationPath)
+//                case .profileView:
+//                    ProfileSettingsView(viewType: .setting, 
+//                                        viewModel: ProfileSettingViewModel(appState: loginStateManager))
+//                }
+//            }
+            .navigationDestination(isPresented: $goProfileView) {
+                ProfileSettingsView(viewType: .setting,
+                                                       viewModel: ProfileSettingViewModel(appState: loginStateManager))
             }
         }
     }

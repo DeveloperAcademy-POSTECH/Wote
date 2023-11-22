@@ -14,7 +14,6 @@ import Moya
 class LoginViewModel {
     var showSheet = false
     var authorization: String = ""
-    var goMain = false
     private var bag = Set<AnyCancellable>()
     private var appState: AppLoginState
 
@@ -46,7 +45,6 @@ class LoginViewModel {
                     } else {
                         UserDefaults.standard.setValue(data.consumerTypeExist, forKey: "haveConsumerType")
                         self.appState.serviceRoot.auth.authState = .loggedIn
-                        self.goMain = true
                     }
                 }
             })
