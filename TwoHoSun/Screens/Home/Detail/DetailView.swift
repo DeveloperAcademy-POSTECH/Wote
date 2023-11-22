@@ -154,12 +154,13 @@ struct DetailView: View {
                     .foregroundStyle(Color.white)
             }
             ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    showconfirm.toggle()
-                } label: {
-                    Image(systemName: "ellipsis")
-                        .foregroundStyle(Color.subGray1)
-                        .opacity(isShowingItems ? 1 : 0)
+                if isShowingItems {
+                    Button {
+                        showconfirm.toggle()
+                    } label: {
+                        Image(systemName: "ellipsis")
+                            .foregroundStyle(Color.subGray1)
+                    }
                 }
             }
         }

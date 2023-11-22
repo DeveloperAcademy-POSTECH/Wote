@@ -129,12 +129,15 @@ struct ReviewDetailView: View {
 
 extension ReviewDetailView {
 
+    @ViewBuilder
     private var menuButton: some View {
-        Button {
-            showConfirm.toggle()
-        } label: {
-            Image(systemName: "ellipsis")
-                .foregroundStyle(Color.subGray1)
+        if isShowingItems {
+            Button {
+                showConfirm.toggle()
+            } label: {
+                Image(systemName: "ellipsis")
+                    .foregroundStyle(Color.subGray1)
+            }
         }
     }
 

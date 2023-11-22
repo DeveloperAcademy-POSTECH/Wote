@@ -36,7 +36,7 @@ enum VisibilityScopeType: String, Codable {
         case .global:
             return "전국 투표"
         case .school:
-            return "OO고등학교 투표"
+            return "우리 학교 투표"
         }
     }
 

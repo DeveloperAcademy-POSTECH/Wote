@@ -104,7 +104,6 @@ final class DetailViewModel: ObservableObject {
          appLoginState.serviceRoot.apimanager
              .request(.postService(.closeVote(postId: postId)),
                             decodingType: NoData.self)
-             .compactMap(\.data)
              .sink { completion in
                  switch completion {
                  case .finished:
@@ -113,12 +112,11 @@ final class DetailViewModel: ObservableObject {
                      print("error: \(error)")
                  }
              } receiveValue: { _ in
+                 self.appLoginState.appData.posts[index].postStatus = PostStatus.closed.rawValue
+                 self.fetchPostDetail(postId: postId)
              }
              .store(in: &cancellables)
 
-         appLoginState.appData.posts[index].postStatus = PostStatus.closed.rawValue
-//         self.fetchPostDetail(postId: postId)
-         postDetail?.post.postStatus = PostStatus.closed.rawValue
      }
 
     func calculatVoteRatio(voteCounts: VoteCountsModel?) -> (agree: Double, disagree: Double) {

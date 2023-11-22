@@ -321,7 +321,9 @@ extension ReviewWriteView {
             isRegisterButtonDidTap = true
             if viewModel.isValid {
                 viewModel.createReview()
-                dismiss()
+                if viewModel.isCompleted {
+                    dismiss()
+                }
             }
         } label: {
             Text("등록하기")
