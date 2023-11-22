@@ -49,7 +49,6 @@ struct WoteTabView: View {
     @State private var selectedVisibilityScope = VisibilityScopeType.global
     @State private var isVoteCategoryButtonDidTap = false
     @Environment(AppLoginState.self) private var loginStateManager
-    @Binding var path: [LoginNavigation]
 
     var body: some View {
         @Bindable var navigationPath = loginStateManager.serviceRoot.navigationManager
@@ -114,6 +113,11 @@ struct WoteTabView: View {
                 case .mypageView:
                     MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager), 
                                selectedVisibilityScope: $selectedVisibilityScope)
+                case .searchView:
+                    SearchView(viewModel: SearchViewModel(apiManager: loginStateManager.serviceRoot.apimanager,
+                                                          selectedVisibilityScope: selectedVisibilityScope))
+                default:
+                    Text("HI")
                 }
             }
         }
@@ -175,8 +179,8 @@ extension WoteTabView {
     }
 
     private var notificationButton: some View {
-        NavigationLink {
-            NotificationView()
+        Button {
+            loginStateManager.serviceRoot.navigationManager.navigate(.notiView)
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 6)
@@ -190,9 +194,8 @@ extension WoteTabView {
     }
 
     private var searchButton: some View {
-        NavigationLink {
-            SearchView(viewModel: SearchViewModel(apiManager: loginStateManager.serviceRoot.apimanager,
-                                                  selectedVisibilityScope: selectedVisibilityScope))
+        Button {
+            loginStateManager.serviceRoot.navigationManager.navigate(.searchView)
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 6)
@@ -206,8 +209,8 @@ extension WoteTabView {
     }
 
     private var settingButton: some View {
-        NavigationLink {
-            SettingView()
+        Button {
+            loginStateManager.serviceRoot.navigationManager.navigate(.settingView)
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 6)

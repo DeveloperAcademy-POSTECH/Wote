@@ -24,7 +24,7 @@ class Authenticator {
     var accessToken: String? {
         return KeychainManager.shared.readToken(key: "accessToken")
     }
-    private var refreshToken: String? {
+    var refreshToken: String? {
        return KeychainManager.shared.readToken(key: "refreshToken")
     }
     
