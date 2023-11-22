@@ -18,6 +18,7 @@ class KeychainManager {
             kSecValueData: token.data(using: .utf8, allowLossyConversion: false) as Any
         ]
         SecItemDelete(query)
+        print("save result of \(key): \(SecItemAdd(query as CFDictionary, nil) == errSecSuccess)")
     }
     
     func readToken(key: String) -> String? {

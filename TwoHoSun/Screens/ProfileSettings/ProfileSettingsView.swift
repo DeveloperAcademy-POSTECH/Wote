@@ -452,7 +452,7 @@ extension ProfileSettingsView {
 
     private var goToTypeTestButton: some View {
         NavigationLink {
-//            TypeTestIntroView()
+            TypeTestIntroView()
 
         } label: {
             HStack(spacing: 0) {

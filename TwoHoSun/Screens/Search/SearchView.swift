@@ -17,6 +17,7 @@ struct SearchView: View {
     @State private var searchTextFieldState = SearchTextFieldState.inactive
     @FocusState private var isFocused: Bool
     @StateObject var viewModel: SearchViewModel
+    @State private var isOpen = true
 
     var body: some View {
         ZStack {
@@ -56,7 +57,10 @@ struct SearchView: View {
             }
         }
         .onAppear {
-            isFocused = true
+            isFocused = isOpen
+        }
+        .onDisappear {
+            isOpen = false
         }
         .toolbar(.hidden, for: .navigationBar)
     }

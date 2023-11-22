@@ -49,7 +49,6 @@ struct WoteTabView: View {
     @State private var selectedVisibilityScope = VisibilityScopeType.global
     @State private var isVoteCategoryButtonDidTap = false
     @Environment(AppLoginState.self) private var loginStateManager
-    @Binding var path: [LoginNavigation]
 
     var body: some View {
         @Bindable var navigationPath = loginStateManager.serviceRoot.navigationManager
