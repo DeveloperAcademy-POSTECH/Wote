@@ -23,8 +23,10 @@ struct ReviewDetailView: View {
     var body: some View {
         ZStack {
             Color.background
-            ScrollView {
-                if let data = viewModel.reviewData {
+                .ignoresSafeArea()
+
+            if let data = viewModel.reviewData {
+                ScrollView {
                     VStack(spacing: 0) {
                         if isShowingItems {
                             detailHeaderView(data.originalPost)
@@ -39,14 +41,14 @@ struct ReviewDetailView: View {
                             .padding(.horizontal, 24)
                             .padding(.vertical, 30)
                     }
-                } else {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: Color.gray100))
-                        .scaleEffect(1.3, anchor: .center)
                 }
-            }
-            .refreshable {
-                viewModel.fetchReviewDetail(postId: viewModel.postId)
+                .refreshable {
+                    viewModel.fetchReviewDetail(postId: viewModel.postId)
+                }
+            } else {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: Color.gray100))
+                    .scaleEffect(1.3, anchor: .center)
             }
 
             if showCustomAlert {
@@ -61,8 +63,6 @@ struct ReviewDetailView: View {
                 }
             }
         }
-        .frame(maxWidth: .infinity)
-        .background(Color.background)
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text("후기 상세보기")

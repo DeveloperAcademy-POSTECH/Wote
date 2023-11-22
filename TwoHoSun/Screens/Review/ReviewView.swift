@@ -15,9 +15,12 @@ struct ReviewView: View {
     @StateObject var viewModel: ReviewTabViewModel
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 0) {
-                if !viewModel.isFetching {
+        ZStack {
+            Color.background
+                .ignoresSafeArea()
+
+            if !viewModel.isFetching {
+                ScrollView {
                     sameSpendTypeReviewView(datas: loginState.appData.reviewManager.reviews?.recentReviews,
                                             consumerType: viewModel.consumerType?.rawValue)
                         .padding(.top, 24)
@@ -38,19 +41,49 @@ struct ReviewView: View {
                             proxy.scrollTo("reviewTypeSection", anchor: .top)
                         }
                     }
-                } else {
-                    VStack {
-                        Spacer()
-                        ProgressView()
-                            .progressViewStyle(CircularProgressViewStyle(tint: Color.gray100))
-                            .scaleEffect(1.3, anchor: .center)
-                        Spacer()
-                    }
                 }
+            } else {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: Color.gray100))
+                    .scaleEffect(1.3, anchor: .center)
             }
+
+//            ScrollView {
+//                VStack(spacing: 0) {
+//                    if !viewModel.isFetching {
+//                        sameSpendTypeReviewView(datas: loginState.appData.reviewManager.reviews?.recentReviews,
+//                                                consumerType: viewModel.consumerType?.rawValue)
+//                            .padding(.top, 24)
+//                            .padding(.bottom, 20)
+//                            .padding(.leading, 24)
+//                        ScrollViewReader { proxy in
+//                            LazyVStack(pinnedViews: .sectionHeaders) {
+//                                Section {
+//                                    reviewListView(for: reviewType)
+//                                        .padding(.leading, 16)
+//                                        .padding(.trailing, 8)
+//                                } header: {
+//                                    reviewFilterView
+//                                }
+//                                .id("reviewTypeSection")
+//                            }
+//                            .onChange(of: reviewType) { _, _ in
+//                                proxy.scrollTo("reviewTypeSection", anchor: .top)
+//                            }
+//                        }
+//                    } else {
+//                        VStack {
+//                            Spacer()
+//                            ProgressView()
+//                                .progressViewStyle(CircularProgressViewStyle(tint: Color.gray100))
+//                                .scaleEffect(1.3, anchor: .center)
+//                            Spacer()
+//                        }
+//                    }
+//                }
+//            }
         }
-        .frame(maxWidth: .infinity)
-        .background(Color.background)
+//        .frame(maxWidth: .infinity)
         .toolbarBackground(Color.background, for: .tabBar)
         .scrollIndicators(.hidden)
         .refreshable {
