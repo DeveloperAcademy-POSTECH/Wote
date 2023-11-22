@@ -208,17 +208,18 @@ extension SearchView {
                     ForEach(Array(viewModel.searchedDatas.enumerated()), id: \.offset) { index, data in
                         Button {
                             loginState.serviceRoot.navigationManager.navigate(.detailView(postId: data.id, index: index))
+
                         } label: {
                             // TODO: - 수정
                             VoteCardCell(cellType: .standard,
                                          progressType: .end,
                                          data: data)
                         }
-//                        .onAppear {
-//                            if index == viewModel.searchedDatas.count - 4 {
-//                                viewModel.fetchSearchedData(keyword: searchText)
-//                            }
-//                        }
+                        .onAppear {
+                            if index == viewModel.searchedDatas.count - 4 {
+                                viewModel.fetchSearchedData(keyword: searchText)
+                            }
+                        }
                     }
                     .id("searchResult")
                     .onChange(of: viewModel.selectedFilterType) { _, _ in

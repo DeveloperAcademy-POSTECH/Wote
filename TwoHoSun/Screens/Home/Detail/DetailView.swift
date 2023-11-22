@@ -218,7 +218,7 @@ struct DetailView: View {
             if directComments {
                 showDetailComments.toggle()
             }
-            viewModel.postData = nil
+            viewModel.postDetail = nil
             viewModel.fetchPostDetail(postId: postId)
         }
         .onDisappear {

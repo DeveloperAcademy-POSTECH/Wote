@@ -17,7 +17,7 @@ enum AlertNavigation {
 }
 enum AllNavigation: Hashable, Decodable {
     case writeReiview
-    case detailView(postId: Int, index: Int, dirrectComments: Bool = false)
+    case detailView(postId: Int, index: Int?, dirrectComments: Bool = false)
     case reveiwView
     case makeVoteView
     case testIntroView
@@ -26,6 +26,7 @@ enum AllNavigation: Hashable, Decodable {
     case mypageView
     case searchView
     case notiView
+    case reviewDetailView(postId: Int?, reviewId: Int?)
 }
 
 @Observable

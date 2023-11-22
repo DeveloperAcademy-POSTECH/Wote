@@ -93,7 +93,7 @@ struct WoteTabView: View {
             }  
             .navigationDestination(for: AllNavigation.self) { destination in
                 switch destination {
-                case .detailView(let postId, let index):
+                case .detailView(let postId, let index, let directComments):
                     DetailView(viewModel: DetailViewModel(appLoginState: loginStateManager),
                                postId: postId,
                                index: index,
@@ -115,10 +115,14 @@ struct WoteTabView: View {
                     SettingView()
                 case .mypageView:
                     MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager), 
-                               selectedVisibilityScope: $selectedVisibilityScope)
+                               selectedVisibilityScope: $visibilityScope)
                 case .searchView:
                     SearchView(viewModel: SearchViewModel(apiManager: loginStateManager.serviceRoot.apimanager,
-                                                          selectedVisibilityScope: selectedVisibilityScope))
+                                                          selectedVisibilityScope: visibilityScope))
+                case .reviewDetailView(let postId, let reviewId):
+                    ReviewDetailView(viewModel: ReviewDetailViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
+                                     postId: postId,
+                                     reviewId: reviewId)
                 default:
                     Text("HI")
                 }

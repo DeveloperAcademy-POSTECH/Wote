@@ -54,12 +54,6 @@ class ServiceRoot {
 @Observable
 class AppData {
     var posts = [PostModel]()
-}
-
-enum TokenState {
-    case none, allexpired, loggedIn, unfinishRegister
-@Observable
-class AppData {
     var notificationDatas = [NotificationModel]()
 }
 
