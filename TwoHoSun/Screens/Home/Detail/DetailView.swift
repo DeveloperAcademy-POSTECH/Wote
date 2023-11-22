@@ -14,7 +14,7 @@ struct DetailView: View {
     @State private var showCustomAlert = false
     @State private var applyComplaint = false
     @Environment(AppLoginState.self) private var loginStateManager
-    @ObservedObject var viewModel: VoteViewModel
+    @StateObject var viewModel: VoteViewModel
     @State private var currentAlert = AlertType.closeVote
     @State var showDetailComments = false
     var postId: Int

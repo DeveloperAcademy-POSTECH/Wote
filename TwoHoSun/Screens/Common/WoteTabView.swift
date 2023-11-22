@@ -114,6 +114,11 @@ struct WoteTabView: View {
                 case .mypageView:
                     MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager), 
                                selectedVisibilityScope: $selectedVisibilityScope)
+                case .searchView:
+                    SearchView(viewModel: SearchViewModel(apiManager: loginStateManager.serviceRoot.apimanager,
+                                                          selectedVisibilityScope: selectedVisibilityScope))
+                default:
+                    Text("HI")
                 }
             }
         }
@@ -175,8 +180,8 @@ extension WoteTabView {
     }
 
     private var notificationButton: some View {
-        NavigationLink {
-            NotificationView()
+        Button {
+            loginStateManager.serviceRoot.navigationManager.navigate(.notiView)
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 6)
@@ -190,9 +195,8 @@ extension WoteTabView {
     }
 
     private var searchButton: some View {
-        NavigationLink {
-            SearchView(viewModel: SearchViewModel(apiManager: loginStateManager.serviceRoot.apimanager,
-                                                  selectedVisibilityScope: selectedVisibilityScope))
+        Button {
+            loginStateManager.serviceRoot.navigationManager.navigate(.searchView)
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 6)
@@ -206,8 +210,8 @@ extension WoteTabView {
     }
 
     private var settingButton: some View {
-        NavigationLink {
-            SettingView()
+        Button {
+            loginStateManager.serviceRoot.navigationManager.navigate(.settingView)
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 6)

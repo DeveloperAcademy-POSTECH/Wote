@@ -24,6 +24,8 @@ enum AllNavigation: Hashable, Decodable {
     case testView
     case settingView
     case mypageView
+    case searchView
+    case notiView
 }
 
 @Observable
