@@ -70,14 +70,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
-        if let bodyContent = response.notification.request.content.userInfo["post_id"] as? Int {
-            Task {
-                guard let isComment = response.notification.request.content.userInfo["is_comment"] as? Bool else {return}
-                if isComment {
-                    NotificationCenter.default.post(name: Notification.Name("showComment"), object: nil)
-                }
-                await app?.handleDeepPush(postId: bodyContent, isComment)
+        print(response, "typeof\(type(of: response))")
+        print(response.notification.request, "typeof\(type(of: response.notification.request))")
+        print(response.notification.request.content, "typeof\(type(of: response.notification.request.content))")
+        let decoder = JSONDecoder()
+        do {
+            let data = try JSONSerialization.data(withJSONObject: response.notification.request.content.userInfo)
+            let notimodel = try decoder.decode(NotificationModel.self, from: data)
+            if notimodel.isComment {
+                NotificationCenter.default.post(name: Notification.Name("showComment"), object: nil)
             }
+            await app?.handleDeepPush(notiModel: notimodel)
+        } catch {
+            print(error)
         }
     }
 }

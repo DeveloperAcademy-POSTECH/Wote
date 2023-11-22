@@ -17,6 +17,7 @@ enum Route {
 struct TwoHoSunApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @State private var appState = AppLoginState()
+//    @AppStorage("alertData") var alertData = [NotificationModel]()
 
     var body: some Scene {
         WindowGroup {
@@ -37,8 +38,9 @@ struct TwoHoSunApp: App {
 }
 
 extension TwoHoSunApp {
-    func handleDeepPush(postId: Int, _ isComment: Bool) async {
-        appState.serviceRoot.navigationManager.navigate(.detailView(postId: postId, index: 0, dirrectComments: isComment))
+    func handleDeepPush(notiModel: NotificationModel) async {
+        appState.appData.notificationDatas.append(notiModel)
+        appState.serviceRoot.navigationManager.navigate(.detailView(postId: notiModel.postid, index: 0, dirrectComments: notiModel.isComment))
     }
 }
 class ServiceRoot {
@@ -52,7 +54,11 @@ class ServiceRoot {
 
 @Observable
 class AppData {
-    var notificationDatas = [NotificationModel]()
+    var notificationDatas = [NotificationModel]() {
+        didSet {
+            print(notificationDatas)
+        }
+    }
 }
 
 @Observable

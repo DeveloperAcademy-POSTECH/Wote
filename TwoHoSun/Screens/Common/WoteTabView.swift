@@ -48,11 +48,11 @@ struct WoteTabView: View {
     @State private var selection = WoteTabType.consider
     @State private var selectedVisibilityScope = VisibilityScopeType.global
     @State private var isVoteCategoryButtonDidTap = false
-    @Environment(AppLoginState.self) private var loginStateManager
+    @Environment(AppLoginState.self) private var appManager
     @Binding var path: [LoginNavigation]
 
     var body: some View {
-        @Bindable var navigationPath = loginStateManager.serviceRoot.navigationManager
+        @Bindable var navigationPath = appManager.serviceRoot.navigationManager
         NavigationStack(path: $navigationPath.navigatePath) {
             ZStack(alignment: .topLeading) {
                 VStack(spacing: 0) {
@@ -93,26 +93,26 @@ struct WoteTabView: View {
             .navigationDestination(for: AllNavigation.self) { destination in
                 switch destination {
                 case .detailView(let postId, let index, let directComments):
-                    DetailView(viewModel: VoteViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
+                    DetailView(viewModel: VoteViewModel(apiManager: appManager.serviceRoot.apimanager),
                                postId: postId,
                                index: index,
                                directComments: directComments)
                 case .makeVoteView:
                     VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: selectedVisibilityScope, 
-                                                                apiManager: loginStateManager.serviceRoot.apimanager), tabselection: $selection )
+                                                                apiManager: appManager.serviceRoot.apimanager), tabselection: $selection )
                 case .testIntroView:
                     TypeTestIntroView()
                         .toolbar(.hidden, for: .navigationBar)
                 case .testView:
-                    TypeTestView(viewModel: TypeTestViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
+                    TypeTestView(viewModel: TypeTestViewModel(apiManager: appManager.serviceRoot.apimanager))
                 case .reveiwView:
-                    ReviewView(viewModel: ReviewTabViewModel(apiManger: loginStateManager.serviceRoot.apimanager))
+                    ReviewView(viewModel: ReviewTabViewModel(apiManger: appManager.serviceRoot.apimanager))
                 case .writeReiview:
                     Text("아직")
                 case .settingView:
                     SettingView()
                 case .mypageView:
-                    MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager), 
+                    MyPageView(viewModel: MyPageViewModel(apiManager: appManager.serviceRoot.apimanager), 
                                selectedVisibilityScope: $selectedVisibilityScope)
                 }
             }
@@ -137,11 +137,11 @@ extension WoteTabView {
         switch tab {
         case .consider:
             ConsiderationView(selectedVisibilityScope: $selectedVisibilityScope, 
-                              viewModel: VoteViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
+                              viewModel: VoteViewModel(apiManager: appManager.serviceRoot.apimanager))
         case .review:
-            ReviewView(viewModel: ReviewTabViewModel(apiManger: loginStateManager.serviceRoot.apimanager))
+            ReviewView(viewModel: ReviewTabViewModel(apiManger: appManager.serviceRoot.apimanager))
         case .myPage:
-            MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
+            MyPageView(viewModel: MyPageViewModel(apiManager: appManager.serviceRoot.apimanager),
                        selectedVisibilityScope: $selectedVisibilityScope)
         }
     }
@@ -176,7 +176,7 @@ extension WoteTabView {
 
     private var notificationButton: some View {
         NavigationLink {
-            NotificationView()
+            NotificationView(viewModel: NotificationViewModel(notisavedDatas: appManager.appData))
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 6)
@@ -191,7 +191,7 @@ extension WoteTabView {
 
     private var searchButton: some View {
         NavigationLink {
-            SearchView(viewModel: SearchViewModel(apiManager: loginStateManager.serviceRoot.apimanager,
+            SearchView(viewModel: SearchViewModel(apiManager: appManager.serviceRoot.apimanager,
                                                   selectedVisibilityScope: selectedVisibilityScope))
         } label: {
             ZStack {
