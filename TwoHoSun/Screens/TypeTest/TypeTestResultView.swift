@@ -10,7 +10,8 @@ import SwiftUI
 struct TypeTestResultView: View {
     var spendType: ConsumerType
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var pathManger: NavigationManager
+    @Environment(AppLoginState.self) private var loginStateManager
+
     var body: some View {
         ZStack {
             Color.background
@@ -73,11 +74,11 @@ extension TypeTestResultView {
 
     private var pushToHomeButton: some View {
         Button {
-            pathManger.navigate(.makeVoteView)
+            loginStateManager.serviceRoot.navigationManager.navigate(.makeVoteView)
             var transaction = Transaction()
             transaction.disablesAnimations = true
             withTransaction(transaction) {
-                pathManger.countDeque(count: 2)
+                loginStateManager.serviceRoot.navigationManager.countDeque(count: 2)
             }
         } label: {
             Text("소비 고민 등록하러 가기")
@@ -92,7 +93,7 @@ extension TypeTestResultView {
 
     private var dismissButton: some View {
         Button(action: {
-            pathManger.countPop(count: 2)
+            loginStateManager.serviceRoot.navigationManager.countPop(count: 2)
         }, label: {
             HStack(spacing: 7) {
                 Image(systemName: "xmark")

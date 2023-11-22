@@ -21,7 +21,8 @@ struct NoVoteView: View {
                     .multilineTextAlignment(.center)
                     .padding(.top, 8)
                 NavigationLink {
-                    VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: selectedVisibilityScope, apiManager: loginStateManager.serviceRoot.apimanager))
+                    VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: selectedVisibilityScope, 
+                                                                apiManager: loginStateManager.serviceRoot.apimanager))
                 } label: {
                     Text("고민 등록하러 가기")
                         .font(.system(size: 16, weight: .semibold))
