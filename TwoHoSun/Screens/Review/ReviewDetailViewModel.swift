@@ -62,7 +62,6 @@ final class ReviewDetailViewModel: ObservableObject {
             .store(in: &cancellable)
     }
 
-    // 투표 포스트 아이디 - 5760, 후기 포스트 아이디 - 5762
     func deleteReview(postId: Int) {
         loginState.serviceRoot.apimanager
             .request(.postService(.deleteReviewWithPostId(postId: postId)), 
@@ -78,8 +77,7 @@ final class ReviewDetailViewModel: ObservableObject {
             } receiveValue: { _ in
             }
             .store(in: &cancellable)
-
-        // 지금 postid 5760임, 얘는 리뷰 아이디로 삭제해야 함
+        
         loginState.appData.reviewManager.deleteReviews(with: reviewPostId)
     }
 }

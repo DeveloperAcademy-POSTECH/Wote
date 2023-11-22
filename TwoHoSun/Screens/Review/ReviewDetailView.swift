@@ -97,7 +97,6 @@ struct ReviewDetailView: View {
         .customConfirmDialog(isPresented: $showConfirm, isMine: $viewModel.isMine) { _ in
             if viewModel.isMine {
                 Button {
-                    viewModel.deleteReview(postId: viewModel.postId)
                     showCustomAlert.toggle()
                     showConfirm.toggle()
                 } label: {
