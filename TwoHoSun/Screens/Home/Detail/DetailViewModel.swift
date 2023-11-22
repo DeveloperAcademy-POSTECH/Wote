@@ -117,7 +117,8 @@ final class DetailViewModel: ObservableObject {
              .store(in: &cancellables)
 
          appLoginState.appData.posts[index].postStatus = PostStatus.closed.rawValue
-         self.fetchPostDetail(postId: postId)
+//         self.fetchPostDetail(postId: postId)
+         postDetail?.post.postStatus = PostStatus.closed.rawValue
      }
 
     func calculatVoteRatio(voteCounts: VoteCountsModel?) -> (agree: Double, disagree: Double) {
