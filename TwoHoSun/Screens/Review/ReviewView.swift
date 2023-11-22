@@ -152,9 +152,9 @@ extension ReviewView {
                 .padding(.top, 70)
         } else {
             ForEach(Array(zip(datas.indices, datas)), id: \.0) { index, data in
-                NavigationLink {
-                    ReviewDetailView(viewModel: ReviewDetailViewModel(apiManager: loginState.serviceRoot.apimanager), 
-                                     reviewId: data.id)
+                Button {
+                    loginState.serviceRoot.navigationManager.navigate(.reviewDetailView(postId: nil,
+                                                                                        reviewId: data.id))
                 } label: {
                     VStack(spacing: 6) {
                         Divider()
