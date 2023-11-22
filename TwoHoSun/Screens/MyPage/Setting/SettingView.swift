@@ -101,7 +101,7 @@ struct SettingView: View {
                         SettingQuestionsView(viewModel: SettingQuestionsViewModel(), isSubmited: $isSubmited)
                     }
                     settingLinkView(.terms) {
-                        SettingTermsView()
+                        SettingTermsView(viewModel: SettingViewModel(loginStateManager: loginStateManager))
                     }
                     appVersionView
                 }

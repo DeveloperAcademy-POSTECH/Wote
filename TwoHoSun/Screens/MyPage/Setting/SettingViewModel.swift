@@ -33,4 +33,21 @@ class SettingViewModel {
             }
             .store(in: &cancellable)
     }
+    
+    func deleteUser() {
+        loginStateManager.serviceRoot.apimanager.request(.userService(.deleteUser), decodingType: NoData.self)
+            .sink { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    print(error)
+                }
+            } receiveValue: { _ in
+                KeychainManager.shared.deleteToken(key: "accessToken")
+                KeychainManager.shared.deleteToken(key: "refreshToken")
+                self.loginStateManager.serviceRoot.auth.authState = .none
+            }
+            .store(in: &cancellable)
+    }
 }
