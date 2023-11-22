@@ -35,12 +35,9 @@ final class ReviewTabViewModel: ObservableObject {
         allTypePagination.resetPagination()
         purchasedTypePagination.resetPagination()
         notPurchasedTypePagination.resetPagination()
-        loginState.appData.reviewManager
-            .reviews?.allReviews.removeAll()
-        loginState.appData.reviewManager
-            .reviews?.purchasedReviews.removeAll()
-        loginState.appData.reviewManager
-            .reviews?.notPurchasedReviews.removeAll()
+        loginState.appData.reviewManager.reviews?.allReviews.removeAll()
+        loginState.appData.reviewManager.reviews?.purchasedReviews.removeAll()
+        loginState.appData.reviewManager.reviews?.notPurchasedReviews.removeAll()
     }
 
     func fetchReviews(for visibilityScope: VisibilityScopeType) {
