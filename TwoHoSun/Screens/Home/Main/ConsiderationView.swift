@@ -11,7 +11,6 @@ struct ConsiderationView: View {
     @State private var currentVote = 0
     @Binding var selectedVisibilityScope: VisibilityScopeType
     @Environment(AppLoginState.self) private var loginStateManager
-    @EnvironmentObject private var pathManger: NavigationManager
     @State private var isRefreshing = false
     @State private var didFinishSetup = false
     @StateObject var viewModel: VoteViewModel

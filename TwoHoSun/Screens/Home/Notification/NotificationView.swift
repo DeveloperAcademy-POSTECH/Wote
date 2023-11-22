@@ -10,6 +10,16 @@ import SwiftUI
 import Kingfisher
 
 struct NotificationView: View {
+    @Environment(AppLoginState.self) private var stateManager
+    var notidummydata: [NotificationModel] = [
+        NotificationModel(profileImage: "https:/www.wote.social/images/profiles/de4cf718-bd4f-4a2e-b35c-234d69c11770.png", contents: "이거사실?", time: 1, postImage: nil),
+        NotificationModel(profileImage: "https:/www.wote.social/images/profiles/de4cf718-bd4f-4a2e-b35c-234d69c11770.png", contents: "ㅂ조고?", time: 2, postImage: nil),
+        NotificationModel(profileImage: "https:/www.wote.social/images/profiles/de4cf718-bd4f-4a2e-b35c-234d69c11770.png", contents: "헤입덜쟈ㅐㅓ대?", time: 1, postImage: nil),
+        NotificationModel(profileImage: "https:/www.wote.social/images/profiles/de4cf718-bd4f-4a2e-b35c-234d69c11770.png", contents: "럽ㄷ쟈ㅓㅐ?", time: 1, postImage: nil),
+        NotificationModel(profileImage: "https:/www.wote.social/images/profiles/de4cf718-bd4f-4a2e-b35c-234d69c11770.png", contents: "ㅓ랴ㅐㅓ뱆?", time: 1, postImage: nil),
+        NotificationModel(profileImage: "https:/www.wote.social/images/profiles/de4cf718-bd4f-4a2e-b35c-234d69c11770.png", contents: "러댜재러ㅐ?", time: 1, postImage: nil),
+    ]
+
     var body: some View {
         ZStack {
             Color.background
@@ -33,16 +43,19 @@ extension NotificationView {
     private var notificationList: some View {
         ScrollView {
             VStack(alignment: .leading) {
-                listHeader("오늘 알림")
-                ForEach(0..<3) { _ in
-                    notificationCell
+                ForEach(notidummydata, id: \.id) { data in
+                    makenotificationCell(notiData: data)
                 }
-                Divider()
-                    .foregroundStyle(Color.dividerGray)
-                listHeader("이전 알림")
-                ForEach(0..<10) { _ in
-                    notificationCell
-                }
+//                listHeader("오늘 알림")
+//                ForEach(0..<3) { _ in
+//                    notificationCell
+//                }
+//                Divider()
+//                    .foregroundStyle(Color.dividerGray)
+//                listHeader("이전 알림")
+//                ForEach(0..<10) { _ in
+//                    notificationCell
+//                }
             }
             .padding(.horizontal, 16)
         }
@@ -56,9 +69,9 @@ extension NotificationView {
             .padding(.top, 16)
     }
 
-    private var notificationCell: some View {
+    func makenotificationCell(notiData: NotificationModel) -> some View {
         HStack(alignment: .top, spacing: 16) {
-            KFImage(URL(string: "https://picsum.photos/100")!)
+            KFImage(URL(string: notiData.profileImage)!)
                 .placeholder {
                     ProgressView()
                         .preferredColorScheme(.dark)
@@ -71,17 +84,17 @@ extension NotificationView {
                 .frame(width: 46, height: 46)
                 .clipShape(.circle)
             VStack(alignment: .leading, spacing: 6) {
-                Text("선호님이 회원님의 게시글에 답글을 남겼어요.")
+                Text(notiData.contents)
                     .font(.system(size: 16, weight: .medium))
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .foregroundStyle(.white)
                     .lineSpacing(2)
-                Text("2분 전")
+                Text("\(notiData.time)분 전")
                     .font(.system(size: 14))
                     .foregroundStyle(Color.subGray5)
             }
             if Bool.random() {
-                KFImage(URL(string: "https://picsum.photos/100")!)
+                KFImage(URL(string: notiData.profileImage)!)
                     .placeholder {
                         ProgressView()
                             .preferredColorScheme(.dark)

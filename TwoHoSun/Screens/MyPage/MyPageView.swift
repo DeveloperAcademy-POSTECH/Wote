@@ -67,7 +67,6 @@ struct MyPageView: View {
     @Binding var selectedVisibilityScope: VisibilityScopeType
     @AppStorage("haveConsumerType") var haveConsumerType: Bool = false
     @Environment(AppLoginState.self) private var loginStateManager
-    @EnvironmentObject private var pathManger: NavigationManager
 
     var body: some View {
         ScrollView {
