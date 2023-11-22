@@ -79,9 +79,9 @@ extension ReviewView {
                 ScrollView(.horizontal) {
                     HStack(spacing: 10) {
                         ForEach(datas) { data in
-                            NavigationLink {
-                                ReviewDetailView(viewModel: ReviewDetailViewModel(apiManager: loginState.serviceRoot.apimanager),
-                                                 reviewId: data.id)
+                            Button {
+                                loginState.serviceRoot.navigationManager.navigate(.reviewDetailView(postId: nil,
+                                                                                                    reviewId: data.id))
                             } label: {
                                 simpleReviewCell(title: data.title,
                                                  content: data.contents,
