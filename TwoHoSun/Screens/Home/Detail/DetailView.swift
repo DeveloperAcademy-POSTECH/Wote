@@ -149,7 +149,7 @@ struct DetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Text("상세보기")
+                Text("고민 상세보기")
                     .font(.system(size: 18, weight: .medium))
                     .foregroundStyle(Color.white)
             }

@@ -65,7 +65,7 @@ struct ReviewDetailView: View {
         .background(Color.background)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Text("상세보기")
+                Text("후기 상세보기")
                     .font(.system(size: 18, weight: .medium))
                     .foregroundStyle(.white)
             }
