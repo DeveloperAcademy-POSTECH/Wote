@@ -78,6 +78,7 @@ struct SettingView: View {
     @State private var isSubmited: Bool = false
     @State private var showLogOut: Bool = false
     @Environment(AppLoginState.self) private var loginStateManager
+    var viewModel: SettingViewModel
     
     var body: some View {
         ZStack {
@@ -112,10 +113,7 @@ struct SettingView: View {
             .scrollContentBackground(.hidden)
             if showLogOut {
                 CustomAlertModalView(alertType: .logOut, isPresented: $showLogOut) {
-                    loginStateManager.serviceRoot.auth.authState = .none
-                    KeychainManager.shared.deleteToken(key: "accessToken")
-                    KeychainManager.shared.deleteToken(key: "refreshToken")
-                    showLogOut = false
+                    viewModel.requestLogOut()
                 }
             }
             if isSubmited {
@@ -222,8 +220,4 @@ extension SettingView {
             .foregroundStyle(.white)
         }
     }
-}
-
-#Preview {
-    SettingView()
 }

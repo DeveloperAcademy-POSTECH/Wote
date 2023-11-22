@@ -113,7 +113,7 @@ struct WoteTabView: View {
 //                    VoteWriteView(viewModel: VoteWriteViewModel())
                     Text("아직")
                 case .settingView:
-                    SettingView()
+                    SettingView(viewModel: SettingViewModel(loginStateManager: loginStateManager))
                 case .mypageView:
                     MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager), selectedVisibilityScope: $selectedVisibilityScope)
                         .environmentObject(navigatePath)
@@ -213,7 +213,7 @@ extension WoteTabView {
 
     private var settingButton: some View {
         NavigationLink {
-            SettingView()
+            SettingView(viewModel: SettingViewModel(loginStateManager: loginStateManager))
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 6)
