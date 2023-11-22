@@ -11,6 +11,10 @@ import Moya
 
 @Observable
 class Authenticator {
+    enum TokenState {
+        case none, allexpired, loggedIn, unfinishRegister
+    }
+
     var authState: TokenState = .none {
         didSet {
             authStateSubject.send(authState)

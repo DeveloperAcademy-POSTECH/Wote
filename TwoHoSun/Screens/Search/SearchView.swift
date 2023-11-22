@@ -205,11 +205,9 @@ extension SearchView {
         ScrollView {
             ScrollViewReader { proxy in
                 LazyVStack {
-//                    ForEach(Array(viewModel.searchedDatas.enumerated()), id: \.offset) { index, data in
-                    ForEach(viewModel.searchedDatas) { data in
-                        NavigationLink {
-                            DetailView(viewModel: DetailViewModel(appLoginState: loginState),
-                                       postId: data.id)
+                    ForEach(Array(viewModel.searchedDatas.enumerated()), id: \.offset) { index, data in
+                        Button {
+                            loginState.serviceRoot.navigationManager.navigate(.detailView(postId: data.id, index: index))
                         } label: {
                             // TODO: - 수정
                             VoteCardCell(cellType: .standard,

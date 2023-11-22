@@ -17,23 +17,25 @@ enum AlertNavigation {
 }
 enum AllNavigation: Hashable, Decodable {
     case writeReiview
-    case detailView(postId: Int, index: Int)
+    case detailView(postId: Int, index: Int, dirrectComments: Bool = false)
     case reveiwView
     case makeVoteView
     case testIntroView
     case testView
     case settingView
     case mypageView
+    case searchView
+    case notiView
 }
 
-final class NavigationManager: ObservableObject {
-    @Published var navigatePath = [AllNavigation]() {
-        didSet {
-            print("path는?\(navigatePath)")
-        }
-    }
+@Observable
+final class NavigationManager {
+    var navigatePath = [AllNavigation]()
 
     func navigate(_ route: AllNavigation) {
+        guard !navigatePath.contains(route) else {
+            return
+        }
         navigatePath.append(route)
     }
 
