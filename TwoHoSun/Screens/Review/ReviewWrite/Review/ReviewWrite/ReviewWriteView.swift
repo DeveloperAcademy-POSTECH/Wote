@@ -30,7 +30,7 @@ struct ReviewWriteView: View {
                 ScrollView {
                     VStack(spacing: 48) {
                         VStack(spacing: 12) {
-                            VoteCardCell(cellType: .simple, progressType: .end, voteResultType: .buy, post: viewModel.post)
+                            VoteCardCell(cellType: .simple, progressType: .closed, post: viewModel.post)
                             buySelection
                         }
                         titleView
@@ -103,11 +103,7 @@ extension ReviewWriteView {
                 HStack(spacing: 0) {
                     Button {
                         withAnimation(.easeInOut(duration: 0.3)) {
-                            viewModel.isPurchased = true
-                            viewModel.title = ""
-                            viewModel.price = ""
-                            viewModel.content = ""
-                            viewModel.image = nil
+                            viewModel.clearData(true)
                             croppedImage = nil
                             isRegisterButtonDidTap = false
                         }
@@ -124,11 +120,7 @@ extension ReviewWriteView {
                     .contentShape(Rectangle())
                     Button {
                         withAnimation(.easeInOut(duration: 0.3)) {
-                            viewModel.isPurchased = false
-                            viewModel.title = ""
-                            viewModel.price = ""
-                            viewModel.content = ""
-                            viewModel.image = nil
+                            viewModel.clearData(false)
                             croppedImage = nil
                             isRegisterButtonDidTap = false
                         }

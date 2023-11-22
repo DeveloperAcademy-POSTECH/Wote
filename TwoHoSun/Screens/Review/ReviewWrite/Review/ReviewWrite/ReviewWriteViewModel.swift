@@ -65,4 +65,12 @@ final class ReviewWriteViewModel {
             }
             .store(in: &cancellable)
     }
+    
+    func clearData(_ state: Bool) {
+        isPurchased = state
+        title = ""
+        price = ""
+        content = ""
+        image = nil
+    }
 }
