@@ -66,18 +66,20 @@ extension NotificationView {
             notiData.notitime.toDate()!.differenceCurrentTime()
         }
         return HStack(alignment: .top, spacing: 16) {
-            KFImage(URL(string: notiData.authorProfile)!)
-                .placeholder {
-                    ProgressView()
-                        .preferredColorScheme(.dark)
-                }
-                .onFailure { error in
-                    print(error.localizedDescription)
-                }
-                .cancelOnDisappear(true)
-                .resizable()
-                .frame(width: 46, height: 46)
-                .clipShape(.circle)
+            if let profileImage = notiData.authorProfile {
+                KFImage(URL(string: profileImage)!)
+                    .placeholder {
+                        ProgressView()
+                            .preferredColorScheme(.dark)
+                    }
+                    .onFailure { error in
+                        print(error.localizedDescription)
+                    }
+                    .cancelOnDisappear(true)
+                    .resizable()
+                    .frame(width: 46, height: 46)
+                    .clipShape(.circle)
+            }
             VStack(alignment: .leading, spacing: 6) {
                 Text(notiData.aps.alert.body)
                     .font(.system(size: 16, weight: .medium))
@@ -88,8 +90,8 @@ extension NotificationView {
                     .font(.system(size: 14))
                     .foregroundStyle(Color.subGray5)
             }
-            if Bool.random() {
-                KFImage(URL(string: notiData.postImage)!)
+            if let postImage = notiData.postImage {
+                KFImage(URL(string: postImage)!)
                     .placeholder {
                         ProgressView()
                             .preferredColorScheme(.dark)

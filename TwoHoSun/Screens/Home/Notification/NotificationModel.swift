@@ -10,8 +10,8 @@ struct NotificationModel: Decodable {
     let postid: Int
     let aps: Aps
     let postStatus: String
-    let authorProfile: String
-    let postImage: String
+    let authorProfile: String?
+    let postImage: String?
     let isComment: Bool
     let notitime: String
 

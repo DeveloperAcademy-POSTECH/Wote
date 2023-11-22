@@ -17,7 +17,6 @@ enum Route {
 struct TwoHoSunApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @State private var appState = AppLoginState()
-//    @AppStorage("alertData") var alertData = [NotificationModel]()
 
     var body: some Scene {
         WindowGroup {
