@@ -203,7 +203,7 @@ extension WoteTabView {
     private var searchButton: some View {
         NavigationLink {
             SearchView(viewModel: SearchViewModel(apiManager: loginStateManager.serviceRoot.apimanager,
-                                                  selectedVisibilityScope: selectedVisibilityScope))
+                                                  selectedVisibilityScope: visibilityScope))
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 6)

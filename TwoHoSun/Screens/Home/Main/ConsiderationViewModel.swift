@@ -8,12 +8,12 @@
 import Combine
 import SwiftUI
 
-@Observable
-final class ConsiderationViewModel {
+//@Observable
+final class ConsiderationViewModel: ObservableObject {
     private var appLoginState: AppLoginState
     var isLastPage = false
     var page = 0
-    var isLoading = true
+    @Published var isLoading = true
     private var cancellables: Set<AnyCancellable> = []
 
     init(appLoginState: AppLoginState) {

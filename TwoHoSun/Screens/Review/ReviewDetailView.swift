@@ -151,11 +151,10 @@ extension ReviewDetailView {
                     .foregroundStyle(Color.woteWhite)
                 Spacer()
                 NavigationLink {
-//                    DetailView(viewModel: DetailViewModel(appLoginState: loginState),
-//                               isShowingHeader: false,
-//                               postId: viewModel.postId,
-//                               index: 0)
-                    TestView(viewModel: TestViewModel(apiManager: loginState.serviceRoot.apimanager))
+                    DetailView(viewModel: DetailViewModel(appLoginState: loginState),
+                               isShowingHeader: false,
+                               postId: viewModel.postId)
+//                    TestView(viewModel: TestViewModel(apiManager: loginState.serviceRoot.apimanager))
                 } label: {
                     HStack(spacing: 2) {
                         Text("바로가기")

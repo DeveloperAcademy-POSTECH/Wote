@@ -13,32 +13,29 @@ struct VoteCardCell: View {
         case myVote
     }
 
-enum VoteResultType {
-    case buy, draw, notBuy
-
-    init(voteResult: String) {
-        switch voteResult {
-        case "BUY":
-            self = .buy
-        case "NOT_BUY":
-            self = .notBuy
-        case "DRAW":
-            self = .draw
-        default:
-            self = .buy
-        }
-    }
-}
     enum VoteResultType {
-        case buy, draw, notbuy
-        
+        case buy, draw, notBuy
+
+        init(voteResult: String) {
+            switch voteResult {
+            case "BUY":
+                self = .buy
+            case "NOT_BUY":
+                self = .notBuy
+            case "DRAW":
+                self = .draw
+            default:
+                self = .buy
+            }
+        }
+
         var stampImage: Image {
             switch self {
             case .buy:
                 Image("imgBuy")
             case .draw:
                 Image("imgDraw")
-            case .notbuy:
+            case .notBuy:
                 Image("imgNotBuy")
             }
         }
@@ -63,7 +60,7 @@ enum VoteResultType {
                         .font(.system(size: 16, weight: .bold))
                         .foregroundStyle(.white)
                     Spacer()
-                    if let consumerType = post.author?.consumerType {
+                    if let consumerType = data.author?.consumerType {
                         ConsumerTypeLabel(consumerType: ConsumerType(rawValue: consumerType) ?? .ecoWarrior ,usage: .cell)
                     }
                 }
@@ -117,7 +114,7 @@ enum VoteResultType {
                 }
             }
             // TODO: - 후기를 작성한 투표라면 숨기기
-            if progressType == .closed && cellType == .myVote {
+            if progressType == .end && cellType == .myVote {
                 NavigationLink {
                     ReviewWriteView()
                 } label: {

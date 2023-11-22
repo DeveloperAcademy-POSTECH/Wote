@@ -18,6 +18,7 @@ final class DetailViewModel: ObservableObject {
 
     init(appLoginState: AppLoginState) {
         self.appLoginState = appLoginState
+        print("init")
     }
 
     func searchIndex(with postId: Int) -> Int {

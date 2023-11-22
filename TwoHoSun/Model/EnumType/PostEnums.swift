@@ -39,4 +39,15 @@ enum VisibilityScopeType: String, Codable {
             return "OO고등학교 투표"
         }
     }
+
+    var type: String {
+        switch self {
+        case .all:
+            return "ALL"
+        case .global:
+            return "GLOBAL"
+        case .school:
+            return "SCHOOL"
+        }
+    }
 }

@@ -14,7 +14,7 @@ struct ConsiderationView: View {
     @Environment(AppLoginState.self) private var loginState
     @EnvironmentObject private var pathManger: NavigationManager
     @State private var isRefreshing = false
-    @State var viewModel: ConsiderationViewModel
+    @StateObject var viewModel: ConsiderationViewModel
     @AppStorage("haveConsumerType") var haveConsumerType: Bool = false
 
     var body: some View {

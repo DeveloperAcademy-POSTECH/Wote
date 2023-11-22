@@ -113,7 +113,7 @@ struct DetailView: View {
                             viewModel.deletePost(postId: postId,
                                                  index: index ?? 0)
                             showCustomAlert.toggle()
-                            dismiss()
+//                            dismiss()
                         default:
                             break
                         }
@@ -210,7 +210,8 @@ struct DetailView: View {
             }
         }
         .onAppear {
-            viewModel.fetchPostDetail(postId: postId)
+//             viewModel.fetchPostDetail(postId: postId)
+            print("Detail View OnAppear")
         }
     }
 }

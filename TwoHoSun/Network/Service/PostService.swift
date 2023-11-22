@@ -23,7 +23,6 @@ enum PostService {
     case subscribeReview
     case votePost(postId: Int, choice: Bool)
     case getSearchResult(postStatus: PostStatus, visibilityScopeType: VisibilityScopeType, page: Int, size: Int, keyword: String)
-    case getMyPosts(page: Int, size: Int, myVoteCategoryType: String)
     case getMyReviews(page: Int, size: Int, myReviewCategoryType: String)
     case closeVote(postId: Int)
     case getMyPosts(page: Int,
@@ -92,7 +91,15 @@ extension PostService: TargetType {
                              let page,
                              let size,
                              let reviewType):
-        case .getSearchResult(let postStatus, let visibilityScopeType, let page, let size, let keyword):
+            return ["visibilityScope": visibilityScope,
+                    "page": page,
+                    "size": size,
+                    "reviewType": reviewType]
+        case .getSearchResult(let postStatus, 
+                              let visibilityScopeType,
+                              let page,
+                              let size,
+                              let keyword):
             return [
                 "postStatus": postStatus.rawValue,
                 "visibilityScope": visibilityScopeType.type,
@@ -100,12 +107,8 @@ extension PostService: TargetType {
                 "size": size,
                 "keyword": keyword
             ]
-        case .getReviews(let visibilityScope, let reviewType, let page, let size):
-            return ["visibilityScope": visibilityScope,
-                    "page": page,
-                    "size": size,
-                    "reviewType": reviewType]
-                    "size": size]
+        case .getReviews(let visibilityScope):
+            return ["visibilityScope": visibilityScope]
         case .getMyReviews(let page, let size, let myReviewCategoryType):
             return ["page": page,
                     "size": size,
