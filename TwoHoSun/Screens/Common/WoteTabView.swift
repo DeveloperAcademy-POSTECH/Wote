@@ -50,8 +50,6 @@ struct WoteTabView: View {
     @State private var isVoteCategoryButtonDidTap = false
     @Environment(AppLoginState.self) private var loginStateManager
 
-    @Binding var path: [LoginNavigation]
-
     var body: some View {
         @Bindable var navigationPath = loginStateManager.serviceRoot.navigationManager
         NavigationStack(path: $navigationPath.navigatePath) {
@@ -93,11 +91,10 @@ struct WoteTabView: View {
             }  
             .navigationDestination(for: AllNavigation.self) { destination in
                 switch destination {
-                case .detailView(let postId, let index, let directComments):
+                case .detailView(let postId, let index, _):
                     DetailView(viewModel: DetailViewModel(appLoginState: loginStateManager),
                                postId: postId,
-                               index: index,
-                               directComments: directComments)
+                               index: index)
                 case .makeVoteView:
                     VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: visibilityScope, 
                                                                 apiManager: loginStateManager.serviceRoot.apimanager), tabselection: $selection )
@@ -124,7 +121,7 @@ struct WoteTabView: View {
                                      postId: postId,
                                      reviewId: reviewId)
                 default:
-                    Text("HI")
+                    EmptyView()
                 }
             }
         }

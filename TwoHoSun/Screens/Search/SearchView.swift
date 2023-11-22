@@ -211,7 +211,18 @@ extension SearchView {
                 LazyVStack {
                     ForEach(Array(viewModel.searchedDatas.enumerated()), id: \.offset) { index, data in
                         Button {
-                            loginState.serviceRoot.navigationManager.navigate(.detailView(postId: data.id, index: index))
+//                            switch selectedFilterType {
+//                            case .review:
+//                                loginState.serviceRoot.navigationManager.navigate(.reviewDetailView(postId: data.id, reviewId: nil))
+//                            default:
+//                                loginState.serviceRoot.navigationManager.navigate(.detailView(postId: data.id, index: nil))
+//                            }
+                            switch viewModel.selectedFilterType {
+                            case .review:
+                                loginState.serviceRoot.navigationManager.navigate(.reviewDetailView(postId: nil, reviewId: data.id))
+                            default:
+                                loginState.serviceRoot.navigationManager.navigate(.detailView(postId: data.id, index: nil))
+                            }
 
                         } label: {
                             // TODO: - 수정

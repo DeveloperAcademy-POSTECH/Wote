@@ -155,8 +155,6 @@ extension ReviewDetailView {
                     DetailView(viewModel: DetailViewModel(appLoginState: loginState),
                                isShowingHeader: false,
                                postId: viewModel.postId)
-//                    TestView(viewModel: TestViewModel(apiManager: loginState.serviceRoot.apimanager))
-                    DetailView(viewModel: VoteViewModel(apiManager: loginmanager.serviceRoot.apimanager), postId: 5252, index: 0)
                 } label: {
                     HStack(spacing: 2) {
                         Text("바로가기")
