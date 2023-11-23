@@ -230,7 +230,7 @@ struct DetailView: View {
 extension DetailView {
 
     var commentPreview: some View {
-        CommentPreview()
+        CommentPreview(previewComment: viewModel.postDetail?.commentPreview, commentCount: viewModel.postDetail?.commentCount)
             .onTapGesture {
                 showDetailComments.toggle()
             }

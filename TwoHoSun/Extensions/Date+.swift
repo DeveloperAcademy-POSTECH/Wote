@@ -8,6 +8,30 @@
 import Foundation
 
 extension Date {
+    enum TimeCalendar {
+        case year
+        case month
+        case day
+        case hour
+        case minutes
+        case seconds
+        var beforeString: String {
+            switch self {
+            case .year:
+                return "년전"
+            case .month:
+                return "개월전"
+            case .day:
+                return "일전"
+            case .hour:
+                return "시간전"
+            case .minutes:
+                return "분전"
+            case .seconds:
+                return "초전"
+            }
+        }
+    }
     func differenceCurrentTime() -> (String, Int) {
         let calendar = Calendar.current
         let components = calendar.dateComponents([.second, .minute, .hour, .day], from: self, to: .now)

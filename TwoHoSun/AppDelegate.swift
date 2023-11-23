@@ -15,7 +15,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         logger.log("Application did finish launching with options: \(self.formatDictionary(launchOptions))")
-
         let center = UNUserNotificationCenter.current()
         center.delegate = self
         center.requestAuthorization(options: [.badge, .sound, .alert]) { granted, error in
@@ -31,23 +30,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         logger.log("Registered for remote notifications with device token: \(deviceToken.map { String(format: "%02.2hhx", $0) }.joined())")
+        let deviceString =  deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+        KeychainManager.shared.saveToken(key: "deviceToken", token: deviceString)
     }
 
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         logger.error("Failed to register for remote notifications: \(error.localizedDescription)")
     }
 
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        logger.log("Received remote notification: \(self.formatDictionary(userInfo))")
-        if let consumerType = userInfo["consumer_type_exist"] {
-            UserDefaults.standard.setValue(consumerType, forKey: "haveConsumerType")
-        }
-        completionHandler(.newData)
-    }
-
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification) async -> UNNotificationPresentationOptions {
         logger.log("Will present notification in foreground: \(self.formatDictionary(notification.request.content.userInfo))")
-        completionHandler([.banner, .sound]) // Updated for iOS 14 and later
+        let decoder = JSONDecoder()
+        do {
+            let data = try JSONSerialization.data(withJSONObject: notification.request.content.userInfo)
+            let notimodel = try decoder.decode(NotiDecodeModel.self, from: data)
+            await app?.savePush(notiModel: notimodel)
+        } catch {
+            print(error)
+        }
+        return [.banner, .sound]
     }
 
     private func formatDictionary(_ dictionary: [AnyHashable: Any]?) -> String {
@@ -70,14 +72,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
-        if let bodyContent = response.notification.request.content.userInfo["post_id"] as? Int {
-            Task {
-                guard let isComment = response.notification.request.content.userInfo["is_comment"] as? Bool else {return}
-                if isComment {
-                    NotificationCenter.default.post(name: Notification.Name("showComment"), object: nil)
-                }
-                await app?.handleDeepPush(postId: bodyContent, isComment)
-            }
+        let decoder = JSONDecoder()
+        do {
+            let data = try JSONSerialization.data(withJSONObject: response.notification.request.content.userInfo)
+            let notimodel = try decoder.decode(NotiDecodeModel.self, from: data)
+            await app?.handleDeepPush(notiModel: notimodel)
+        } catch {
+            print(error)
         }
+    }
+
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) async -> UIBackgroundFetchResult {
+        if let consumerType = userInfo["consumer_type_exist"] {
+             UserDefaults.standard.setValue(consumerType, forKey: "haveConsumerType")
+        }
+        return .newData
     }
 }

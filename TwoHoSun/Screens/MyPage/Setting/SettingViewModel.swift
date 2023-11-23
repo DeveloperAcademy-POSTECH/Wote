@@ -18,7 +18,8 @@ class SettingViewModel {
     }
     
     func requestLogOut() {
-        loginStateManager.serviceRoot.apimanager.request(.userService(.requestLogout), decodingType: NoData.self)
+        var cancellable: AnyCancellable?
+        cancellable =  loginStateManager.serviceRoot.apimanager.request(.userService(.requestLogout), decodingType: NoData.self)
             .sink { completion in
                 switch completion {
                 case .finished:
@@ -29,9 +30,10 @@ class SettingViewModel {
             } receiveValue: { _ in
                 KeychainManager.shared.deleteToken(key: "accessToken")
                 KeychainManager.shared.deleteToken(key: "refreshToken")
+                self.loginStateManager.serviceRoot.navigationManager.countPop(count: 1)
                 self.loginStateManager.serviceRoot.auth.authState = .none
+                cancellable?.cancel()
             }
-            .store(in: &cancellable)
     }
     
     func deleteUser() {
