@@ -24,8 +24,10 @@ enum PostStatus: String, Codable, CaseIterable {
     }
 }
 
-enum VisibilityScopeType: Codable {
-    case all, global, school
+enum VisibilityScopeType: String, Codable {
+    case all = "ALL"
+    case global = "GLOBAL"
+    case school = "SCHOOL"
 
     var title: String {
         switch self {

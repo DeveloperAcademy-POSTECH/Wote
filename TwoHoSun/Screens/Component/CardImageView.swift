@@ -26,7 +26,7 @@ struct CardImageView: View {
                 .clipShape(.rect(cornerRadius: 8))
                 .frame(width: 66, height: 66)
         } else {
-            Rectangle()
+            Image("icnDummyLogo")
                 .frame(width: 66, height: 66)
                 .foregroundStyle(.gray)
                 .clipShape(RoundedRectangle(cornerRadius: 8))

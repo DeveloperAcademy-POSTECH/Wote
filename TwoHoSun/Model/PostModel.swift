@@ -11,18 +11,18 @@ struct PostModel: Codable, Identifiable {
     var id: Int
     var createDate: String
     var modifiedDate: String
-    var visibilityScope: String
+    var visibilityScope: String?
     var postStatus: String
     var author: AuthorModel
     var title: String
     var contents: String?
     var image: String?
     var externalURL: String?
-    var voteCount: Int
-    var commentCount: Int
+    var voteCount: Int?
+    var commentCount: Int?
     var price: Int?
     var myChoice: Bool?
-    var voteCounts: VoteCountsModel
+    var voteCounts: VoteCountsModel?
     var voteInfoList: [VoteInfoModel]?
     var isMine: Bool?
     var isNotified: Bool?

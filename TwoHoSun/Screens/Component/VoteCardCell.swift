@@ -14,15 +14,28 @@ struct VoteCardCell: View {
     }
 
     enum VoteResultType {
-        case buy, draw, notbuy
-        
+        case buy, draw, notBuy
+
+        init(voteResult: String) {
+            switch voteResult {
+            case "BUY":
+                self = .buy
+            case "NOT_BUY":
+                self = .notBuy
+            case "DRAW":
+                self = .draw
+            default:
+                self = .buy
+            }
+        }
+
         var stampImage: Image {
             switch self {
             case .buy:
                 Image("imgBuy")
             case .draw:
                 Image("imgDraw")
-            case .notbuy:
+            case .notBuy:
                 Image("imgNotBuy")
             }
         }
@@ -56,7 +69,7 @@ struct VoteCardCell: View {
                         .font(.system(size: 16, weight: .bold))
                         .foregroundStyle(.white)
                     Spacer()
-                    if let consumerType = post.author?.consumerType {
+                    if let consumerType = data.author?.consumerType {
                         ConsumerTypeLabel(consumerType: ConsumerType(rawValue: consumerType) ?? .ecoWarrior ,usage: .cell)
                     }
                 }
@@ -64,45 +77,47 @@ struct VoteCardCell: View {
             HStack {
                 VStack(alignment: .leading, spacing: 6) {
                     HStack(spacing: 4) {
-                        if progressType == .closed && cellType != .myVote {
-                            Text("종료")
-                                .font(.system(size: 12, weight: .medium))
-                                .foregroundStyle(.white)
-                                .padding(.vertical, 4)
-                                .padding(.horizontal, 5)
-                                .background(Color.black200)
-                                .clipShape(RoundedRectangle(cornerRadius: 3))
-                        } else if progressType == .review {
-                            if let isPurchased = post.isPurchased {
-                                PurchaseLabel(isPurchased: isPurchased)
-                            }
+                        if data.postStatus == PostStatus.closed.rawValue {
+                            EndLabel()
                         }
-                        Text(post.title)
+                        Text(data.title)
                             .font(.system(size: 16, weight: .bold))
                             .foregroundStyle(.white)
                             .lineLimit(1)
                     }
-                    Text(post.contents ?? "")
+                    Text(data.contents ?? "")
                         .font(.system(size: 14, weight: .medium))
                         .foregroundStyle(.white)
                         .lineLimit(1)
                         .padding(.bottom, 9)
                     HStack(spacing: 0) {
-                        if let price = post.price {
+                        if let price = data.price {
                             Text("가격: \(price)원")
                             Text(" · ")
                         }
-                        Text(post.createDate.convertToStringDate() ?? "")
+                        Text(data.createDate.convertToStringDate() ?? "")
                     }
                     .font(.system(size: 14))
                     .foregroundStyle(Color.gray100)
                 }
                 Spacer()
                 ZStack {
-                    CardImageView(imageURL: post.image)
-                        .opacity(progressType == .closed ? 0.5 : 1.0 )
-                    if progressType == .closed {
-                        voteResultType?.stampImage
+                    CardImageView(imageURL: data.image)
+                        .opacity(data.postStatus == PostStatus.closed.rawValue
+                                 ? 0.5 : 1.0)
+                    if data.postStatus == PostStatus.closed.rawValue {
+                        Group {
+                            if let voteResult = data.voteResult {
+                                switch VoteResultType(voteResult: voteResult) {
+                                case .buy:
+                                    Image("imgBuy")
+                                case .draw:
+                                    Image("imgDraw")
+                                case .notBuy:
+                                    Image("imgNotBuy")
+                                }
+                            }
+                        }
                         .offset(x: -10, y: 10)
                     }
                 }
@@ -125,7 +140,6 @@ struct VoteCardCell: View {
                         .padding(.top, 6)
                         .padding(.bottom, -6)
                 }
-
             }
         }
         .padding(.horizontal, 16)

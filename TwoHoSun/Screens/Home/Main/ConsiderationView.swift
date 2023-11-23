@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct ConsiderationView: View {
-    @State private var currentVote = 0
-    @Binding var selectedVisibilityScope: VisibilityScopeType
-    @Environment(AppLoginState.self) private var loginStateManager
-    @State private var isRefreshing = false
     @State private var didFinishSetup = false
-    @StateObject var viewModel: VoteViewModel
+    @State private var currentVote = 0
+    @Binding var visibilityScope: VisibilityScopeType
+    @Environment(AppLoginState.self) private var loginState
+    @State private var isRefreshing = false
+    @StateObject var viewModel: ConsiderationViewModel
     @AppStorage("haveConsumerType") var haveConsumerType: Bool = false
 
     var body: some View {
@@ -22,11 +22,23 @@ struct ConsiderationView: View {
                 .ignoresSafeArea()
             VStack(spacing: 0) {
                 Spacer()
-                if !viewModel.isPostFetching {
-                    if viewModel.posts.isEmpty {
-                        NoVoteView(selectedVisibilityScope: $selectedVisibilityScope)
+                if !viewModel.isLoading {
+                    if loginState.appData.posts.isEmpty {
+                        NoVoteView(selectedVisibilityScope: $visibilityScope)
                     } else {
                         votePagingView
+                    }
+                } else {
+                    VStack {
+                        Spacer()
+                        HStack {
+                            Spacer()
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: Color.gray100))
+                                .scaleEffect(1.3, anchor: .center)
+                            Spacer()
+                        }
+                        Spacer()
                     }
                 }
                 Spacer()
@@ -35,16 +47,15 @@ struct ConsiderationView: View {
                 .padding(.bottom, 21)
                 .padding(.trailing, 24)
         }
-        .onAppear {
-              if !didFinishSetup {
-                  viewModel.fetchPosts(visibilityScope: VisibilityScopeType.global.type)
-                  didFinishSetup = true
-              }
-          }
-
-        .onChange(of: selectedVisibilityScope) { _, newScope in
+        .onChange(of: visibilityScope) { _, newScope in
+            viewModel.fetchPosts(visibilityScope: newScope)
             currentVote = 0
-            viewModel.fetchPosts(visibilityScope: newScope.type)
+        }
+        .onAppear {
+            if !didFinishSetup {
+                viewModel.fetchPosts(visibilityScope: visibilityScope)
+                didFinishSetup = true
+            }
         }
     }
 }
@@ -53,19 +64,21 @@ extension ConsiderationView {
 
     private var votePagingView: some View {
         GeometryReader { proxy in
+            let datas = loginState.appData.posts
             TabView(selection: $currentVote) {
-                ForEach(Array(zip(viewModel.posts.indices, viewModel.posts)), id: \.0) { index, item in
+                ForEach(Array(zip(datas.indices,
+                                  datas)), id: \.0) { index, item in
                     VStack(spacing: 0) {
                         VoteContentCell(viewModel: viewModel,
-                                        index: currentVote,
-                                        postId: item.id)
+                                        data: item,
+                                        index: index)
                         nextVoteButton
                             .padding(.top, 16)
                     }
                     .tag(index)
                     .onAppear {
-                        if (index == viewModel.posts.count - 2) {
-                            viewModel.fetchMorePosts(selectedVisibilityScope.type)
+                        if (index == datas.count - 4) {
+                            viewModel.fetchMorePosts(visibilityScope)
                         }
                     }
                 }
@@ -82,7 +95,8 @@ extension ConsiderationView {
                         if currentVote == 0 && value.translation.height > 0 {
                             isRefreshing = true
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                                viewModel.fetchPosts(visibilityScope: selectedVisibilityScope.type)
+                                viewModel.fetchPosts(visibilityScope: visibilityScope,
+                                                     isRefresh: true)
                                 isRefreshing = false
                             }
                         }
@@ -99,10 +113,10 @@ extension ConsiderationView {
 
     private var createVoteButton: some View {
         NavigationLink {
-            VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: selectedVisibilityScope,
-                                                        apiManager: loginStateManager.serviceRoot.apimanager))
+            VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: visibilityScope,
+                                                        apiManager: loginState.serviceRoot.apimanager))
             .onDisappear {
-                viewModel.fetchPosts(visibilityScope: selectedVisibilityScope.type)
+                viewModel.fetchPosts(visibilityScope: visibilityScope)
                 currentVote = 0
             }
         } label: {
@@ -135,13 +149,13 @@ extension ConsiderationView {
             Spacer()
             Button {
                 withAnimation {
-                    if currentVote != viewModel.posts.count - 1 {
-                        currentVote += 1
-                    }
+//                    if currentVote != voteData.posts.count - 1 {
+//                        currentVote += 1
+//                    }
                 }
             } label: {
                 Image("icnCaretDown")
-                    .opacity(currentVote != viewModel.posts.count - 1 ? 1 : 0)
+//                    .opacity(currentVote != voteData.posts.count - 1 ? 1 : 0)
             }
             Spacer()
         }
