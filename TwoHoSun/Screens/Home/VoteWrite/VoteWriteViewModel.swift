@@ -43,7 +43,6 @@ final class VoteWriteViewModel {
         setPost()
         guard let postCreateModel = postCreateModel else { return }
         apiManager.request(.postService(.createPost(post: postCreateModel)), decodingType: NoData.self)
-            .compactMap(\.data)
             .sink { completion in
                 switch completion {
                 case .finished:
@@ -52,7 +51,7 @@ final class VoteWriteViewModel {
                     print("error: \(error)")
                 }
             } receiveValue: { _ in
-                print("create post finished!")
+                self.isPostCreated = true
             }
             .store(in: &cancellable)
     }

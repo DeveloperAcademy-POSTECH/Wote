@@ -38,11 +38,20 @@ struct PostModel: Codable, Identifiable {
     } 
 }
 
-struct AuthorModel: Codable {
+struct AuthorModel: Codable, Hashable {
     let id: Int
     let nickname: String
     let profileImage: String?
     let consumerType: String
+}
+
+extension AuthorModel: Equatable {
+    static func == (lhs: AuthorModel, rhs: AuthorModel) -> Bool {
+        return lhs.id == rhs.id &&
+               lhs.nickname == rhs.nickname &&
+               lhs.profileImage == rhs.profileImage &&
+               lhs.consumerType == rhs.consumerType
+    }
 }
 
 struct VoteInfoModel: Codable, Hashable {

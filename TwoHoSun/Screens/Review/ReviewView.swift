@@ -15,11 +15,14 @@ struct ReviewView: View {
     @StateObject var viewModel: ReviewTabViewModel
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 0) {
-                if !viewModel.isFetching {
-                    sameSpendTypeReviewView(datas: viewModel.reviews?.recentReviews,
-                                            consumerType: viewModel.reviews?.myConsumerType)
+        ZStack {
+            Color.background
+                .ignoresSafeArea()
+
+            if !viewModel.isFetching {
+                ScrollView {
+                    sameSpendTypeReviewView(datas: loginState.appData.reviewManager.reviews?.recentReviews,
+                                            consumerType: viewModel.consumerType?.rawValue)
                         .padding(.top, 24)
                         .padding(.bottom, 20)
                         .padding(.leading, 24)
@@ -39,10 +42,12 @@ struct ReviewView: View {
                         }
                     }
                 }
+            } else {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: Color.gray100))
+                    .scaleEffect(1.3, anchor: .center)
             }
-        }
-        .frame(maxWidth: .infinity)
-        .background(Color.background)
+        } 
         .toolbarBackground(Color.background, for: .tabBar)
         .scrollIndicators(.hidden)
         .refreshable {
@@ -58,6 +63,9 @@ struct ReviewView: View {
                 didFinishSetup = true
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: NSNotification.reviewCreated)) { _ in
+            viewModel.fetchReviews(for: visibilityScope)
+        }
     }
 }
 
@@ -66,7 +74,7 @@ extension ReviewView {
     @ViewBuilder
     private func sameSpendTypeReviewView(datas: [SummaryPostModel]?,
                                          consumerType: String?) -> some View {
-        if let datas = datas, let consumerType = consumerType {
+        if let datas = datas, let consumerType = consumerType, !datas.isEmpty {
             VStack(spacing: 18) {
                 HStack(spacing: 6) {
                     ConsumerTypeLabel(consumerType: ConsumerType(rawValue: consumerType) ?? .adventurer,
@@ -79,9 +87,9 @@ extension ReviewView {
                 ScrollView(.horizontal) {
                     HStack(spacing: 10) {
                         ForEach(datas) { data in
-                            NavigationLink {
-                                ReviewDetailView(viewModel: ReviewDetailViewModel(apiManager: loginState.serviceRoot.apimanager),
-                                                 reviewId: data.id)
+                            Button {
+                                loginState.serviceRoot.navigationManager.navigate(.reviewDetailView(postId: nil,
+                                                                                                    reviewId: data.id))
                             } label: {
                                 simpleReviewCell(title: data.title,
                                                  content: data.contents,
@@ -141,20 +149,20 @@ extension ReviewView {
     private func reviewListView(for filter: ReviewType) -> some View {
         let datas = switch filter {
                     case .all:
-                    viewModel.reviews?.allReviews ?? []
+                    loginState.appData.reviewManager.allReviews
                     case .purchased:
-                    viewModel.reviews?.purchasedReviews ?? []
+                    loginState.appData.reviewManager.purchasedReviews
                     case .notPurchased:
-                    viewModel.reviews?.notPurchasedReviews ?? []
+                    loginState.appData.reviewManager.notPurchasedReviews
                     }
         if datas.isEmpty {
             NoReviewView()
                 .padding(.top, 70)
         } else {
             ForEach(Array(zip(datas.indices, datas)), id: \.0) { index, data in
-                NavigationLink {
-                    ReviewDetailView(viewModel: ReviewDetailViewModel(apiManager: loginState.serviceRoot.apimanager), 
-                                     reviewId: data.id)
+                Button {
+                    loginState.serviceRoot.navigationManager.navigate(.reviewDetailView(postId: nil,
+                                                                                        reviewId: data.id))
                 } label: {
                     VStack(spacing: 6) {
                         Divider()

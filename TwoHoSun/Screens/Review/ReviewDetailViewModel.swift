@@ -12,53 +12,60 @@ final class ReviewDetailViewModel: ObservableObject {
     @Published var reviewData: ReviewDetailModel?
     @Published var postId = 0
     @Published var isMine = false
-    private var apiManager: NewApiManager
+    private var loginState: AppLoginState
     private var cancellable = Set<AnyCancellable>()
+    private var reviewPostId = 0
 
-    init(apiManager: NewApiManager) {
-        self.apiManager = apiManager
-        print("ReviewDetailViewModel init")
+    init(loginState: AppLoginState) {
+        self.loginState = loginState
     }
 
     func fetchReviewDetail(reviewId: Int) {
-        apiManager.request(.postService(.getReviewDetailWithReviewId(reviewId: reviewId)),
-                           decodingType: ReviewDetailModel.self)
-        .compactMap(\.data)
-        .sink { completion in
-            switch completion {
-            case .finished:
-                break
-            case .failure(let failure):
-                print(failure)
+        loginState.serviceRoot.apimanager
+            .request(.postService(.getReviewDetailWithReviewId(reviewId: reviewId)),
+                     decodingType: ReviewDetailModel.self)
+            .compactMap(\.data)
+            .sink { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let failure):
+                    print(failure)
+                }
+            } receiveValue: { data in
+                self.reviewData = data
+                self.postId = data.originalPost.id
+                self.reviewPostId = data.reviewPost.id
+                self.isMine = data.isMine
             }
-        } receiveValue: { data in
-            self.reviewData = data
-            self.postId = data.originalPost.id
-            self.isMine = data.isMine
-        }
-        .store(in: &cancellable)
+            .store(in: &cancellable)
     }
 
     func fetchReviewDetail(postId: Int) {
-        apiManager.request(.postService(.getReviewDetailWithPostId(postId: postId)),
-                           decodingType: ReviewDetailModel.self)
-        .compactMap(\.data)
-        .sink { completion in
-            switch completion {
-            case .finished:
-                break
-            case .failure(let failure):
-                print(failure)
+        loginState.serviceRoot.apimanager
+            .request(.postService(.getReviewDetailWithPostId(postId: postId)),
+                     decodingType: ReviewDetailModel.self)
+            .compactMap(\.data)
+            .sink { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let failure):
+                    print(failure)
+                }
+            } receiveValue: { data in
+                self.reviewData = data
+                self.postId = data.originalPost.id
+                self.reviewPostId = data.reviewPost.id
+                self.isMine = data.isMine
             }
-        } receiveValue: { data in
-            self.reviewData = data
-            self.isMine = data.isMine
-        }
-        .store(in: &cancellable)
+            .store(in: &cancellable)
     }
 
     func deleteReview(postId: Int) {
-        apiManager.request(.postService(.deleteReviewWithPostId(postId: postId)), decodingType: NoData.self)
+        loginState.serviceRoot.apimanager
+            .request(.postService(.deleteReviewWithPostId(postId: postId)), 
+                     decodingType: NoData.self)
             .compactMap(\.data)
             .sink { completion in
                 switch completion {
@@ -70,5 +77,7 @@ final class ReviewDetailViewModel: ObservableObject {
             } receiveValue: { _ in
             }
             .store(in: &cancellable)
+        
+        loginState.appData.reviewManager.deleteReviews(postId: reviewPostId)
     }
 }

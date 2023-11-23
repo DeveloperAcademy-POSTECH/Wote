@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-enum AllNavigation: Hashable, Decodable {
+enum AllNavigation: Decodable, Hashable {
     case writeReiview
-    case detailView(postId: Int, index: Int?, dirrectComments: Bool = false, isShowingHeader: Bool = true)
-    case reveiwView
+    case detailView(postId: Int, dirrectComments: Bool = false, isShowingItems: Bool = true)
+    case reviewView
     case makeVoteView
     case testIntroView
     case testView
@@ -18,7 +18,8 @@ enum AllNavigation: Hashable, Decodable {
     case mypageView
     case searchView
     case notiView
-    case reviewDetailView(postId: Int?, reviewId: Int?, isShowingHeader: Bool = true)
+    case reviewDetailView(postId: Int?, reviewId: Int?, isShowingItems: Bool = true)
+    case reviewWriteView(post: SummaryPostModel)
 }
 
 @Observable

@@ -57,20 +57,29 @@ enum ClosedPostStatus: Codable {
 
 struct DetailHeaderView: View {
     @Environment(AppLoginState.self) private var loginState
-    @State private var alertOn = false
+    @State var alertOn = false
+    @State var viewModel: DetailHeaderViewModel
     var data: PostDetailModel
 
     var body: some View {
         switch PostStatus(rawValue: data.post.postStatus) {
         case .active:
             activeVoteHeaderView(author: data.post.author, isMine: data.post.isMine)
+                .onChange(of: alertOn) { _, newValue in
+                    guard !newValue else {
+                        viewModel.subscribeReview(postId: data.post.id)
+                        return
+                    }
+
+                    viewModel.deleteSubscribeReview(postId: data.post.id)
+                }
         case .closed:
             if let isMine = data.post.isMine,
                 let hasReview = data.post.hasReview {
                 let closedPostState = ClosedPostStatus(isMine: isMine, hasReview: hasReview)!
                 closedVoteHeaderView(author: data.post.author,
                                      closedState: closedPostState,
-                                     postId: data.post.id)
+                                     post: data)
             } else {
                 EmptyView()
             }
@@ -107,7 +116,9 @@ struct DetailHeaderView: View {
         .padding(.bottom, 13)
     }
 
-    private func closedVoteHeaderView(author: AuthorModel, closedState: ClosedPostStatus, postId: Int) -> some View {
+    private func closedVoteHeaderView(author: AuthorModel,
+                                      closedState: ClosedPostStatus,
+                                      post: PostDetailModel) -> some View {
         HStack(spacing: 3) {
             ProfileImageView(imageURL: author.profileImage)
                 .frame(width: 32, height: 32)
@@ -119,8 +130,8 @@ struct DetailHeaderView: View {
                 .font(.system(size: 13))
                 .foregroundStyle(Color.whiteGray)
             Spacer()
-            NavigationLink {
-                destinationForHeaderButton(closedState, postId: postId)
+            Button {
+                destinationForHeaderButton(closedState, post: post)
             } label: {
                 if closedState != ClosedPostStatus.othersPostWithoutReview {
                     headerButton(closedState.buttonView)
@@ -142,18 +153,40 @@ struct DetailHeaderView: View {
         }
     }
 
-    @ViewBuilder
-    private func destinationForHeaderButton(_ closedPostState: ClosedPostStatus, postId: Int) -> some View {
+    private func calculateVoteResult(_ voteCounts: VoteCountsModel) -> String {
+        var voteResult = VoteResultType.buy
+        if voteCounts.agreeCount == voteCounts.disagreeCount {
+            voteResult = .draw
+        } else if voteCounts.agreeCount > voteCounts.disagreeCount {
+            voteResult = .buy
+        } else {
+            voteResult = .notBuy
+        }
+
+        return voteResult.rawValue
+    }
+
+    private func destinationForHeaderButton(_ closedPostState: ClosedPostStatus, post: PostDetailModel) {
         switch closedPostState {
         case .myPostWithoutReview:
-            Text("임시")
-//            ReviewWriteView(viewModel: ReviewWriteViewModel(post: <#T##SummaryPostModel#>, apiManager: <#T##NewApiManager#>))
+            let data = post.post
+            guard let voteCounts = data.voteCounts else { return }
+            let summaryPost = SummaryPostModel(id: data.id,
+                                               createDate: data.createDate,
+                                               modifiedDate: data.modifiedDate,
+                                               postStatus: data.postStatus,
+                                               voteResult: calculateVoteResult(voteCounts),
+                                               title: data.title,
+                                               image: data.image,
+                                               contents: data.contents,
+                                               price: data.price)
+            loginState.serviceRoot.navigationManager.navigate(.reviewWriteView(post: summaryPost))
         case .othersPostWithoutReview:
-            EmptyView()
+            break
         default:
-            ReviewDetailView(viewModel: ReviewDetailViewModel(apiManager: loginState.serviceRoot.apimanager),
-                             isShowingHeader: false,
-                             postId: postId)
+            loginState.serviceRoot.navigationManager.navigate(.reviewDetailView(postId: post.post.id,
+                                                                                reviewId: nil,
+                                                                                isShowingItems: false))
         }
     }
 }

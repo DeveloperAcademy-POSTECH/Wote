@@ -13,19 +13,21 @@ final class MyPageViewModel {
     var selectedMyPageListType = MyPageListType.myVote
     var selectedMyVoteCategoryType = MyVoteCategoryType.all
     var selectedMyReviewCategoryType = MyReviewCategoryType.all
-    let apiManager: NewApiManager
-    var posts: [SummaryPostModel] = []
+    private var loginState: AppLoginState
     var profile: ProfileModel?
     var cacellabels: Set<AnyCancellable> = []
-    private var page: Int = 0
+    var total = 0
+    private var votePage = 0
+    private var reviewPage = 0
     private var isLastPage: Bool = false
-    
-    init(apiManager: NewApiManager) {
-        self.apiManager = apiManager
+
+    init(loginState: AppLoginState) {
+        self.loginState = loginState
     }
-    
+
     func requestPosts(postType: PostService) {
-        apiManager.request(.postService(postType), decodingType: MyPostModel.self)
+        loginState.serviceRoot.apimanager
+            .request(.postService(postType), decodingType: MyPostModel.self)
             .compactMap(\.data)
             .sink { completion in
                 switch completion {
@@ -35,32 +37,50 @@ final class MyPageViewModel {
                     print(error)
                 }
             } receiveValue: { data in
-                self.posts.append(contentsOf: data.posts)
-                if data.posts.isEmpty || self.posts.count % 10 != 0 {
+                switch self.selectedMyPageListType {
+                case .myVote:
+                    self.loginState.appData.postManager.myPosts.append(contentsOf: data.posts)
+                case .myReview:
+                    self.loginState.appData.reviewManager.myReviews.append(contentsOf: data.posts)
+                }
+
+                if data.posts.isEmpty || data.posts.count % 10 != 0 {
                     self.isLastPage = true
                 }
+                self.total = data.total
             }
             .store(in: &cacellabels)
     }
     
     func fetchPosts(isFirstFetch: Bool = true) {
         if isFirstFetch {
-            posts.removeAll()
-            page = 0
+            loginState.appData.reviewManager.myReviews.removeAll()
+            loginState.appData.postManager.myPosts.removeAll()
+            votePage = 0
+            reviewPage = 0
             isLastPage = false
         }
         
         switch selectedMyPageListType {
         case .myVote:
-            requestPosts(postType: .getMyPosts(page: page, size: 10, myVoteCategoryType: selectedMyVoteCategoryType.parameter))
+            requestPosts(postType: .getMyPosts(page: votePage,
+                                               size: 10,
+                                               myVoteCategoryType: selectedMyVoteCategoryType.parameter))
         case .myReview:
-            requestPosts(postType: .getMyReviews(page: page, size: 10, myReviewCategoryType: selectedMyReviewCategoryType.parameter))
+            requestPosts(postType: .getMyReviews(page: reviewPage,
+                                                 size: 10,
+                                                 myReviewCategoryType: selectedMyReviewCategoryType.parameter))
         }
     }
     
     func fetchMorePosts() {
         guard !isLastPage else { return }
-        page += 1
+        switch selectedMyPageListType {
+        case .myVote:
+            votePage += 1
+        case .myReview:
+            reviewPage += 1
+        }
         fetchPosts(isFirstFetch: false)
     }
 }

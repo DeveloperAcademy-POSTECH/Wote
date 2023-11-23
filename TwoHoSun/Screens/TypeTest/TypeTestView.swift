@@ -38,9 +38,8 @@ struct TypeTestView: View {
             }
             .padding(.horizontal, 16)
         }
+        .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
-        .toolbarBackground(Color.background, for: .navigationBar)
-        .toolbarBackground(.visible, for: .navigationBar)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 backButton

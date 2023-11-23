@@ -9,7 +9,7 @@ import Foundation
 
 struct ReviewTabModel: Codable {
     let myConsumerType: String?
-    let recentReviews: [SummaryPostModel]
+    var recentReviews: [SummaryPostModel]
     var allReviews: [SummaryPostModel]
     var purchasedReviews: [SummaryPostModel]
     var notPurchasedReviews: [SummaryPostModel]

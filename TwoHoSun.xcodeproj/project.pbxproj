@@ -30,6 +30,9 @@
 		AB38A1C72B0BE1BE004153B5 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1C62B0BE1BD004153B5 /* DetailViewModel.swift */; };
 		AB38A1CB2B0D505D004153B5 /* TestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1CA2B0D505D004153B5 /* TestViewModel.swift */; };
 		AB38A1CD2B0D5580004153B5 /* ReviewDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1CC2B0D5580004153B5 /* ReviewDetailModel.swift */; };
+		AB38A1CF2B0E788F004153B5 /* ReviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1CE2B0E788F004153B5 /* ReviewManager.swift */; };
+		AB38A1D12B0F4946004153B5 /* NSNotification+.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1D02B0F4946004153B5 /* NSNotification+.swift */; };
+		AB38A1D32B0F4D71004153B5 /* PostManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1D22B0F4D71004153B5 /* PostManager.swift */; };
 		AB3BACFD2AF7A5FC00E792BE /* SearchTextFieldState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3BACFC2AF7A5FC00E792BE /* SearchTextFieldState.swift */; };
 		AB4522532ADDD99500B69F24 /* SchoolSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */; };
 		AB4522562ADDDBC400B69F24 /* SchoolResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */; };
@@ -47,6 +50,7 @@
 		AB7317F42AF94F31008B5E41 /* ReviewCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7317F32AF94F31008B5E41 /* ReviewCardCell.swift */; };
 		AB8770F42AFF897100B272F2 /* NoVoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB8770F32AFF897100B272F2 /* NoVoteView.swift */; };
 		AB8770F62AFF8A5E00B272F2 /* NoReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB8770F52AFF8A5E00B272F2 /* NoReviewView.swift */; };
+		AB94B1952B0FFF7000CD5A49 /* DetailHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB94B1942B0FFF7000CD5A49 /* DetailHeaderViewModel.swift */; };
 		ABA1E82D2AFD0CD5009051E0 /* VoteContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA1E82C2AFD0CD5009051E0 /* VoteContentCell.swift */; };
 		ABA1E8392AFD576A009051E0 /* ReviewDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA1E8342AFD576A009051E0 /* ReviewDetailView.swift */; };
 		ABA1E83A2AFD576A009051E0 /* ReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA1E8352AFD576A009051E0 /* ReviewView.swift */; };
@@ -163,6 +167,9 @@
 		AB38A1C62B0BE1BD004153B5 /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
 		AB38A1CA2B0D505D004153B5 /* TestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewModel.swift; sourceTree = "<group>"; };
 		AB38A1CC2B0D5580004153B5 /* ReviewDetailModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewDetailModel.swift; sourceTree = "<group>"; };
+		AB38A1CE2B0E788F004153B5 /* ReviewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManager.swift; sourceTree = "<group>"; };
+		AB38A1D02B0F4946004153B5 /* NSNotification+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNotification+.swift"; sourceTree = "<group>"; };
+		AB38A1D22B0F4D71004153B5 /* PostManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostManager.swift; sourceTree = "<group>"; };
 		AB3BACFC2AF7A5FC00E792BE /* SearchTextFieldState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTextFieldState.swift; sourceTree = "<group>"; };
 		AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolSearchView.swift; sourceTree = "<group>"; };
 		AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolResponseModel.swift; sourceTree = "<group>"; };
@@ -181,6 +188,7 @@
 		AB8770F22AFEDE0900B272F2 /* Secret.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secret.xcconfig; sourceTree = "<group>"; };
 		AB8770F32AFF897100B272F2 /* NoVoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoVoteView.swift; sourceTree = "<group>"; };
 		AB8770F52AFF8A5E00B272F2 /* NoReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoReviewView.swift; sourceTree = "<group>"; };
+		AB94B1942B0FFF7000CD5A49 /* DetailHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHeaderViewModel.swift; sourceTree = "<group>"; };
 		ABA1E82C2AFD0CD5009051E0 /* VoteContentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteContentCell.swift; sourceTree = "<group>"; };
 		ABA1E8342AFD576A009051E0 /* ReviewDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewDetailView.swift; sourceTree = "<group>"; };
 		ABA1E8352AFD576A009051E0 /* ReviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewView.swift; sourceTree = "<group>"; };
@@ -489,6 +497,7 @@
 				FDB4B14F2AE68FC000720328 /* DetailView.swift */,
 				ABE51ED02B054ED5009C6CA5 /* DetailHeaderView.swift */,
 				AB38A1C62B0BE1BD004153B5 /* DetailViewModel.swift */,
+				AB94B1942B0FFF7000CD5A49 /* DetailHeaderViewModel.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -503,6 +512,7 @@
 				C77113702AF0E7D500BAB128 /* Color+.swift */,
 				AB53CA6C2AF7AC4100FD850A /* UINavigationController+.swift */,
 				AB38A1022B0646F1004153B5 /* Double+.swift */,
+				AB38A1D02B0F4946004153B5 /* NSNotification+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -663,6 +673,8 @@
 				AB3BACFC2AF7A5FC00E792BE /* SearchTextFieldState.swift */,
 				FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */,
 				C7A95F1A2B03EB7B00F8595A /* NavigationManager.swift */,
+				AB38A1CE2B0E788F004153B5 /* ReviewManager.swift */,
+				AB38A1D22B0F4D71004153B5 /* PostManager.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -829,7 +841,9 @@
 				FD7624A12AF954980079AEEF /* NicknameValidation.swift in Sources */,
 				AB38A10F2B07DF49004153B5 /* InfoButton.swift in Sources */,
 				FD76249E2AF954670079AEEF /* LinkView.swift in Sources */,
+				AB94B1952B0FFF7000CD5A49 /* DetailHeaderViewModel.swift in Sources */,
 				FDD5829F2AFC175F0004DFC6 /* VoteWriteView.swift in Sources */,
+				AB38A1D32B0F4D71004153B5 /* PostManager.swift in Sources */,
 				ABBEEAF52AE64F7900F6D918 /* SeachViewModel.swift in Sources */,
 				C7F1FD882ADDA39500C5A2A1 /* DesciptionView.swift in Sources */,
 				AB4D82692ADD7F4D00F35CCB /* ProfileSettingsView.swift in Sources */,
@@ -855,6 +869,7 @@
 				C721D5BB2B07CA8D00564EE0 /* CommentsViewModel.swift in Sources */,
 				FDDEC15B2AE3EABA004509EA /* SearchView.swift in Sources */,
 				ABAFB6412AF978790070512F /* PurchaseLabel.swift in Sources */,
+				AB38A1CF2B0E788F004153B5 /* ReviewManager.swift in Sources */,
 				FD50A0482B01EBE000CF7F59 /* SettingNotificationView.swift in Sources */,
 				FD0E8B5A2B0DDCBB002CED68 /* SettingViewModel.swift in Sources */,
 				C7B5A8882B01641A00B73881 /* Authenticator.swift in Sources */,
@@ -920,6 +935,7 @@
 				AB6845B22AFC145000C3F7C2 /* TypeTestView.swift in Sources */,
 				AB38A1C72B0BE1BE004153B5 /* DetailViewModel.swift in Sources */,
 				ABA1E8542AFEA640009051E0 /* GoToTypeTestButton.swift in Sources */,
+				AB38A1D12B0F4946004153B5 /* NSNotification+.swift in Sources */,
 				FD0113C92B10097100CCAEE7 /* MemberManager.swift in Sources */,
 				C77113712AF0E7D500BAB128 /* Color+.swift in Sources */,
 				AB6845B02AFC143700C3F7C2 /* TypeTestIntroView.swift in Sources */,
@@ -1077,8 +1093,10 @@
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "유저 앨범 접근";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1114,8 +1132,10 @@
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "유저 앨범 접근";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

@@ -39,7 +39,7 @@ extension TwoHoSunApp {
             await savePush(notiModel: notiModel)
             NotificationCenter.default.post(name: Notification.Name("showComment"), object: nil)
         }
-        appState.serviceRoot.navigationManager.navigate(.detailView(postId: notiModel.postid, index: 0, dirrectComments: notiModel.isComment))
+        appState.serviceRoot.navigationManager.navigate(.detailView(postId: notiModel.postid, dirrectComments: notiModel.isComment))
     }
     func savePush(notiModel: NotiDecodeModel) async {
         if notiModel.isComment {
@@ -60,7 +60,9 @@ class ServiceRoot {
 
 @Observable
 class AppData {
-    var posts = [PostModel]()
+    var notificationDatas = [NotificationModel]()
+    var reviewManager = ReviewManager()
+    var postManager = PostManager()
 }
 
 @Observable
