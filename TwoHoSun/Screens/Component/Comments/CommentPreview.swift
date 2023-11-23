@@ -19,7 +19,7 @@ struct CommentPreview: View {
                 Spacer()
             }
             HStack(spacing: 7) {
-                if let image = loginStateManager.appData.profile?.profileImage {
+                if let image = loginStateManager.serviceRoot.memberManager.profile?.profileImage {
                     ProfileImageView(imageURL: image)
                         .frame(width: 24, height: 24)
                 } else {

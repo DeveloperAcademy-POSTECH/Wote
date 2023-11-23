@@ -45,27 +45,26 @@ class ServiceRoot {
         return manager
     }()
     var navigationManager = NavigationManager()
+    lazy var memberManager = MemberManager(authenticator: auth)
 }
 
 @Observable
 class AppData {
     var posts = [PostModel]()
     var notificationDatas = [NotificationModel]()
-    var profile: ProfileModel?
 }
 
 @Observable
 class AppLoginState {
     var serviceRoot: ServiceRoot
     var appData: AppData
-    var cacellabels: Set<AnyCancellable> = []
     
     init() {
         appData = AppData()
         serviceRoot = ServiceRoot()
         checkTokenValidity()
         serviceRoot.auth.relogin = relogin
-        fetchProfile()
+        serviceRoot.memberManager.fetchProfile()
     }
     
     private func relogin() {
@@ -80,21 +79,5 @@ class AppLoginState {
         } else {
             serviceRoot.auth.authState = .none
         }
-    }
-    
-    private func fetchProfile() {
-        serviceRoot.apimanager.request(.userService(.getProfile), decodingType: ProfileModel.self)
-            .compactMap(\.data)
-            .sink { completion in
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let error):
-                    print(error)
-                }
-            } receiveValue: { data in
-                self.appData.profile = data
-            }
-            .store(in: &cacellabels)
     }
 }

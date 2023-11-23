@@ -108,7 +108,7 @@ struct ProfileSettingsView: View {
                         .padding(.top, 40)
                 case .modfiy:
                     HStack {
-                        ConsumerTypeLabel(consumerType: loginStateManager.appData.profile?.consumerType ?? .adventurer, usage: .standard)
+                        ConsumerTypeLabel(consumerType: loginStateManager.serviceRoot.memberManager.profile?.consumerType ?? .adventurer, usage: .standard)
                         Spacer()
                     }
                     .padding(.top, 30)
@@ -120,14 +120,14 @@ struct ProfileSettingsView: View {
                     .padding(.bottom, 34)
                 schoolInputView
                     .onAppear {
-                        if let school = loginStateManager.appData.profile?.school {
+                        if let school = loginStateManager.serviceRoot.memberManager.profile?.school {
                             if viewModel.selectedSchoolInfo == nil {
                                 viewModel.selectedSchoolInfo = SchoolInfoModel(school: school, schoolAddress: nil)
                             }
                         }
                     }
                     .onAppear {
-                        if let lastSchoolRegisterDate = loginStateManager.appData.profile?.lastSchoolRegisterDate {
+                        if let lastSchoolRegisterDate = loginStateManager.serviceRoot.memberManager.profile?.lastSchoolRegisterDate {
                             isRestricted = viewModel.checkSchoolRegisterDate(lastSchoolRegisterDate)
                         }
                     }
@@ -224,7 +224,7 @@ extension ProfileSettingsView {
                     .clipShape(Circle())
             } else {
                 photoPickerView {
-                    if let profileImage = loginStateManager.appData.profile?.profileImage {
+                    if let profileImage = loginStateManager.serviceRoot.memberManager.profile?.profileImage {
                         ProfileImageView(imageURL: profileImage)
                             .frame(width: 130, height: 130)
                     } else {
@@ -300,7 +300,7 @@ extension ProfileSettingsView {
                     }
                 }
                 .onAppear {
-                    if let nickname = loginStateManager.appData.profile?.nickname {
+                    if let nickname = loginStateManager.serviceRoot.memberManager.profile?.nickname {
                         viewModel.nickname = nickname
                     }
                 }

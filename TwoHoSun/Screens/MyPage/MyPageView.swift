@@ -122,7 +122,7 @@ extension MyPageView {
             ProfileSettingsView(viewType: .modfiy, viewModel: ProfileSettingViewModel(appState: loginStateManager))
         } label: {
             HStack(spacing: 14) {
-                if let image = loginStateManager.appData.profile?.profileImage {
+                if let image = loginStateManager.serviceRoot.memberManager.profile?.profileImage {
                     ProfileImageView(imageURL: image)
                         .frame(width: 103, height: 103)
                 } else {
@@ -132,16 +132,16 @@ extension MyPageView {
                 }
                 VStack(alignment: .leading, spacing: 8) {
                     HStack(spacing: 0) {
-                        Text(loginStateManager.appData.profile?.nickname ?? "")
+                        Text(loginStateManager.serviceRoot.memberManager.profile?.nickname ?? "")
                             .font(.system(size: 20, weight: .medium))
                             .padding(.trailing, 12)
-                        ConsumerTypeLabel(consumerType: loginStateManager.appData.profile?.consumerType ?? .adventurer, usage: .standard)
+                        ConsumerTypeLabel(consumerType: loginStateManager.serviceRoot.memberManager.profile?.consumerType ?? .adventurer, usage: .standard)
                         Spacer()
                         Image(systemName: "chevron.right")
                             .font(.system(size: 14))
                             .foregroundStyle(Color.subGray1)
                     }
-                    Text(loginStateManager.appData.profile?.school.schoolName ?? "")
+                    Text(loginStateManager.serviceRoot.memberManager.profile?.school.schoolName ?? "")
                         .font(.system(size: 14))
                 }
                 .foregroundStyle(.white)

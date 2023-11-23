@@ -129,7 +129,7 @@ extension CommentsView {
 
     var commentInputView: some View {
         HStack {
-            if let image = loginStateManager.appData.profile?.profileImage {
+            if let image = loginStateManager.serviceRoot.memberManager.profile?.profileImage {
                 ProfileImageView(imageURL: image)
                     .frame(width: 32, height: 32)
             } else {
