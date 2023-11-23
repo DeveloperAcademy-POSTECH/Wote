@@ -37,7 +37,6 @@ class LoginViewModel {
                 }
             }, receiveValue: { response in
                 if let data = response.data {
-                    let semaphore = DispatchSemaphore(value: 0)
                     self.appState.serviceRoot.auth.saveTokens(data.jwtToken)
                     if response.message == "Not Completed SignUp Exception" {
                         UserDefaults.standard.setValue(false, forKey: "haveConsumerType")
@@ -66,6 +65,5 @@ class LoginViewModel {
             print("successDeviceToken")
             cancellable?.cancel()
         }
-//        .store(in: &bag)
     }
 }

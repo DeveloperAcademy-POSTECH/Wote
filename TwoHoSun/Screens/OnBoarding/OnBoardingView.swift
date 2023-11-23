@@ -79,7 +79,6 @@ extension OnBoardingView {
                     guard let authorizationCode = authorization else { return }
                     viewModel.setAuthorizationCode(authorizationCode)
                     viewModel.postAuthorCode()
-//                    viewModel.postDeviceToken()
                 default:
                     break
                 }

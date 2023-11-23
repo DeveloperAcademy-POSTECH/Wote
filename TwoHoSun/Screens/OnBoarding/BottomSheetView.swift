@@ -7,51 +7,51 @@
 
 import SwiftUI
 
-enum AgreeType: Int {
-    case needs, personalData, marketing
-    static func fromRawValue(_ rawValue: Int) -> AgreeType? {
-        return AgreeType(rawValue: rawValue)
-    }
-    
-    var text: String {
-        switch self {
-        case .needs:
-            return "서비스 이용약관, 개인정보 수집 및 이용 동의"
-        case .personalData:
-            return "개인정보 수집 및 이용 동의"
-        case .marketing:
-            return "마케팅 정보 수신 동의"
-        }
-    }
-    
-    var isRequired: Bool {
-        switch self {
-        case .needs:
-            return true
-        case .personalData:
-            return false
-        case .marketing:
-            return false
-        }
-    }
-    
-    var nextPage: some View {
-        switch self {
-        case .needs:
-            return DescriptionView()
-        case .personalData:
-            return DescriptionView()
-        case .marketing:
-            return DescriptionView()
-        }
-    }
-}
-
 struct BottomSheetView: View {
+    
+    enum AgreeType: Int {
+        case needs, personalData, marketing
+        static func fromRawValue(_ rawValue: Int) -> AgreeType? {
+            return AgreeType(rawValue: rawValue)
+        }
+
+        var text: String {
+            switch self {
+            case .needs:
+                return "서비스 이용약관, 개인정보 수집 및 이용 동의"
+            case .personalData:
+                return "개인정보 수집 및 이용 동의"
+            case .marketing:
+                return "마케팅 정보 수신 동의"
+            }
+        }
+
+        var isRequired: Bool {
+            switch self {
+            case .needs:
+                return true
+            case .personalData:
+                return false
+            case .marketing:
+                return false
+            }
+        }
+
+        var nextPage: some View {
+            switch self {
+            case .needs:
+                return DescriptionView()
+            case .personalData:
+                return DescriptionView()
+            case .marketing:
+                return DescriptionView()
+            }
+        }
+    }
+
     @Environment(\.dismiss) var dismiss
     @State private var checked: [Bool]  = [false, false, false]
     @State private var showAlert = false
-//    @Binding var navigationPath: [LoginNavigation]
     @Binding var goProfileView: Bool
     private var allChecked: Bool {
         checked.allSatisfy { $0 }

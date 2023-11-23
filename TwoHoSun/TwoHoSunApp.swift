@@ -59,7 +59,6 @@ class ServiceRoot {
 @Observable
 class AppData {
     var posts = [PostModel]()
-    var notificationDatas = [NotiDecodeModel]() 
 }
 
 @Observable
