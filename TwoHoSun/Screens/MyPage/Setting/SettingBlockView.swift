@@ -7,29 +7,14 @@
 
 import SwiftUI
 
-// MARK: 임시 데이터 모델
-struct BlockModel: Hashable, Identifiable {
-    let id: UUID = UUID()
-    let userName: String
-    var isBlock: Bool
-}
-
 struct SettingBlockView: View {
-    
-    // MARK: 임시 데이터
-    @State private var blockList: [BlockModel] = [
-        BlockModel(userName: "얄루", isBlock: true),
-        BlockModel(userName: "얄루", isBlock: true),
-        BlockModel(userName: "얄루", isBlock: true)
-    ]
-    
     var viewModel: SettingViewModel
 
     var body: some View {
         ZStack {
             Color.background
                 .ignoresSafeArea()
-            if blockList.isEmpty {
+            if viewModel.blockUsersList.isEmpty {
                 Text("차단한 사용자가 없습니다.")
                     .font(.system(size: 16, weight: .medium))
                     .foregroundStyle(Color.subGray1)
@@ -53,26 +38,30 @@ struct SettingBlockView: View {
                     .font(.system(size: 18, weight: .medium))
             }
         }
+        .onAppear {
+            viewModel.getBlockUsers()
+        }
     }
 }
 
 extension SettingBlockView {
     private var blockListView: some View {
-        ForEach($blockList) { $user in
+        ForEach(viewModel.blockUsersList) { user in
+            var isToggled = false
             HStack {
                 Image("defaultProfile")
                     .resizable()
                     .frame(width: 32, height: 32)
                     .padding(.trailing, 2)
-                Text(user.userName)
+                Text(user.nickname)
                     .foregroundStyle(.white)
                     .font(.system(size: 16, weight: .bold))
                 Spacer()
                 Button {
-                    user.isBlock.toggle()
+                    isToggled.toggle()
                 } label: {
                     ZStack {
-                        if user.isBlock {
+                        if isToggled {
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(width: 103, height: 44)
                                 .foregroundStyle(Color.lightBlue)
@@ -84,7 +73,7 @@ extension SettingBlockView {
                         }
                         Text("차단중")
                             .font(.system(size: 14, weight: .medium))
-                            .foregroundStyle(user.isBlock ? .white : Color.lightBlue)
+                            .foregroundStyle(isToggled ? .white : Color.lightBlue)
                     }
                 }
             }
