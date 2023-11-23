@@ -111,8 +111,7 @@ struct DetailView: View {
                                                 index: viewModel.searchIndex(with: postId))
                             showCustomAlert.toggle()
                         case .deleteVote:
-                            viewModel.deletePost(postId: postId,
-                                                 index: viewModel.searchIndex(with: postId))
+                            viewModel.deletePost(postId: postId)
                             showCustomAlert.toggle()
                             dismiss()
                         default:

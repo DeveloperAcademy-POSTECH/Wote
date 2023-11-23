@@ -61,6 +61,7 @@ enum MyReviewCategoryType: String, CaseIterable, Hashable {
 }
 
 struct MyPageView: View {
+    @State private var didFinishSetup = false
     @State private var isMyVoteCategoryButtonDidTap = false
     @State private var isMyReviewCategoryButtonDidTap = false
     @State var viewModel: MyPageViewModel
@@ -88,9 +89,6 @@ struct MyPageView: View {
                         }
                         .id("myPageList")
                     }
-                    .onAppear {
-                        viewModel.fetchPosts()
-                    }
                     .onChange(of: viewModel.selectedMyPageListType) { _, _ in
                         isMyVoteCategoryButtonDidTap = false
                         isMyReviewCategoryButtonDidTap = false
@@ -103,6 +101,13 @@ struct MyPageView: View {
         .toolbarBackground(Color.background, for: .tabBar)
         .scrollIndicators(.hidden)
         .background(Color.background)
+        .onAppear {
+            if !didFinishSetup {
+                viewModel.fetchProfile()
+                viewModel.fetchPosts()
+                didFinishSetup = true
+            }
+        }
         .onTapGesture {
             isMyVoteCategoryButtonDidTap = false
         }
@@ -115,7 +120,7 @@ struct MyPageView: View {
         .refreshable {
             viewModel.fetchPosts()
         }
-        .onReceive(NotificationCenter.default.publisher(for: NSNotification.reviewCreated)) { _ in
+        .onReceive(NotificationCenter.default.publisher(for: NSNotification.voteCreated)) { _ in
             viewModel.fetchPosts()
         }
     }
@@ -182,26 +187,18 @@ extension MyPageView {
                     }
                 }
                 .padding(.horizontal, 24)
-                .overlay(
-                    isMyVoteCategoryButtonDidTap ?
-                    categoryMenuView(categories: MyVoteCategoryType.allCases,
-                                     selectedCategoryType: $viewModel.selectedMyVoteCategoryType,
-                                     isButtonTapped: $isMyVoteCategoryButtonDidTap)
-                    .offset(x: -24, y: 30) : nil,
-                    alignment: .topTrailing
-                )
-                .overlay(
-                    isMyReviewCategoryButtonDidTap ?
-                    categoryMenuView(categories: MyReviewCategoryType.allCases,
-                                     selectedCategoryType: $viewModel.selectedMyReviewCategoryType,
-                                     isButtonTapped: $isMyReviewCategoryButtonDidTap)
-                    .offset(x: -24, y: 30) : nil,
-                    alignment: .topTrailing
-                )
                 Divider()
                     .background(Color.dividerGray)
                     .padding(.horizontal, 16)
             }
+            .overlay(
+                isMyVoteCategoryButtonDidTap ? myVoteCategoryMenu
+                                                    .offset(x: -24, y: 85) : nil, alignment: .topTrailing
+            )
+            .overlay(
+                isMyReviewCategoryButtonDidTap ? myReviewCategoryMenu
+                                                    .offset(x: -24, y: 85) : nil, alignment: .topTrailing
+            )
             .padding(.top, 23)
             .background(Color.background)
         }
@@ -241,13 +238,14 @@ extension MyPageView {
     private var myPageListTypeView: some View {
         switch viewModel.selectedMyPageListType {
         case .myVote:
-            ForEach(Array(zip(viewModel.posts.indices, viewModel.posts)), id: \.0) { index, post in
+            let myPosts = loginStateManager.appData.postManager.myPosts
+            ForEach(Array(zip(myPosts.indices, myPosts)), id: \.0) { index, post in
                 Button {
-//                    loginStateManager.serviceRoot.navigationManager.navigate(.)
+                    loginStateManager.serviceRoot.navigationManager.navigate(.detailView(postId: post.id))
                 } label: {
                     VStack(spacing: 0) {
                         VoteCardCell(cellType: .myVote,
-                                     progressType: .closed,
+                                     progressType: PostStatus(rawValue: post.postStatus) ?? .closed,
                                      data: post)
                         Divider()
                             .background(Color.dividerGray)
@@ -255,7 +253,7 @@ extension MyPageView {
                     }
                 }
                 .onAppear {
-                    if index == viewModel.posts.count - 4 {
+                    if index == myPosts.count - 4 {
                         viewModel.fetchMorePosts()
                     }
                 }
@@ -265,19 +263,18 @@ extension MyPageView {
             let myReviews = loginStateManager.appData.reviewManager.myReviews
             ForEach(Array(zip(myReviews.indices, myReviews)), id: \.0) { index, data in
                 Button {
-
                     loginStateManager.serviceRoot.navigationManager.navigate(.reviewDetailView(postId: nil,
                                                                                                reviewId: data.id))
                 } label: {
                     VStack(spacing: 0) {
-                        ReviewCardCell(cellType: .myReview, 
+                        ReviewCardCell(cellType: .myReview,
                                        data: data)
                         Divider()
                             .background(Color.dividerGray)
                             .padding(.horizontal, 8)
                     }
                     .onAppear {
-                        if index == viewModel.posts.count - 4 {
+                        if index == myReviews.count - 4 {
                             viewModel.fetchMorePosts()
                         }
                     }
@@ -287,22 +284,40 @@ extension MyPageView {
         }
     }
 
-    private func categoryMenuView<T: RawRepresentable & CaseIterable & Hashable>
-    (categories: [T], selectedCategoryType: Binding<T>, isButtonTapped: Binding<Bool>)
-    -> some View where T.RawValue == String {
+    private var myVoteCategoryMenu: some View {
         VStack(alignment: .leading, spacing: 0) {
-            ForEach(categories, id: \.self) { category in
+            ForEach(MyVoteCategoryType.allCases, id: \.self) { category in
                 categoryButton(for: category) {
-                    selectedCategoryType.wrappedValue = category
-                    isButtonTapped.wrappedValue.toggle()
+                    viewModel.selectedMyVoteCategoryType = category
+                    isMyVoteCategoryButtonDidTap.toggle()
                 }
-                if category != categories.last {
-                    Divider()
-                        .background(Color.gray300)
-                }
+                Divider()
+                    .background(Color.gray300)
+                    .opacity(category != MyVoteCategoryType.allCases.last ? 1 : 0)
             }
         }
-        .frame(width: 131, height: 44 * CGFloat(categories.count))
+        .frame(width: 131, height: 44 * CGFloat(MyVoteCategoryType.allCases.count))
+        .font(.system(size: 14))
+        .foregroundStyle(Color.woteWhite)
+        .background(
+            RoundedRectangle(cornerRadius: 10)
+                .fill(Color.disableGray)
+        )
+    }
+
+    private var myReviewCategoryMenu: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            ForEach(MyReviewCategoryType.allCases, id: \.self) { category in
+                categoryButton(for: category) {
+                    viewModel.selectedMyReviewCategoryType = category
+                    isMyReviewCategoryButtonDidTap.toggle()
+                }
+                Divider()
+                    .background(Color.gray300)
+                    .opacity(category != MyReviewCategoryType.allCases.last ? 1 : 0)
+            }
+        }
+        .frame(width: 131, height: 44 * CGFloat(MyReviewCategoryType.allCases.count))
         .font(.system(size: 14))
         .foregroundStyle(Color.woteWhite)
         .background(
@@ -317,10 +332,9 @@ extension MyPageView {
             action()
         } label: {
             Text(category.rawValue)
-                .frame(alignment: .leading)
                 .padding(.leading, 15)
-                .padding(.top, 12)
-                .padding(.bottom, 14)
+                .padding(.top, 14)
+                .padding(.bottom, 12)
         }
     }
 }

@@ -63,6 +63,9 @@ struct ReviewView: View {
                 didFinishSetup = true
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: NSNotification.reviewCreated)) { _ in
+            viewModel.fetchReviews(for: visibilityScope)
+        }
     }
 }
 

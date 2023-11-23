@@ -96,8 +96,9 @@ struct ReviewWriteView: View {
         }
         .onChange(of: viewModel.isCompleted) { _, isCompleted in
             if isCompleted {
-                loginState.serviceRoot.navigationManager.back()
+                loginState.appData.postManager.updateVote(postID: viewModel.post.id)
                 NotificationCenter.default.post(name: NSNotification.reviewCreated, object: nil)
+                loginState.serviceRoot.navigationManager.back()
             }
         }
     }

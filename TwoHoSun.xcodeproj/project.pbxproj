@@ -32,6 +32,7 @@
 		AB38A1CD2B0D5580004153B5 /* ReviewDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1CC2B0D5580004153B5 /* ReviewDetailModel.swift */; };
 		AB38A1CF2B0E788F004153B5 /* ReviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1CE2B0E788F004153B5 /* ReviewManager.swift */; };
 		AB38A1D12B0F4946004153B5 /* NSNotification+.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1D02B0F4946004153B5 /* NSNotification+.swift */; };
+		AB38A1D32B0F4D71004153B5 /* PostManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1D22B0F4D71004153B5 /* PostManager.swift */; };
 		AB3BACFD2AF7A5FC00E792BE /* SearchTextFieldState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3BACFC2AF7A5FC00E792BE /* SearchTextFieldState.swift */; };
 		AB4522532ADDD99500B69F24 /* SchoolSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */; };
 		AB4522562ADDDBC400B69F24 /* SchoolResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */; };
@@ -162,6 +163,7 @@
 		AB38A1CC2B0D5580004153B5 /* ReviewDetailModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewDetailModel.swift; sourceTree = "<group>"; };
 		AB38A1CE2B0E788F004153B5 /* ReviewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManager.swift; sourceTree = "<group>"; };
 		AB38A1D02B0F4946004153B5 /* NSNotification+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNotification+.swift"; sourceTree = "<group>"; };
+		AB38A1D22B0F4D71004153B5 /* PostManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostManager.swift; sourceTree = "<group>"; };
 		AB3BACFC2AF7A5FC00E792BE /* SearchTextFieldState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTextFieldState.swift; sourceTree = "<group>"; };
 		AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolSearchView.swift; sourceTree = "<group>"; };
 		AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolResponseModel.swift; sourceTree = "<group>"; };
@@ -656,6 +658,7 @@
 				FD8D9F802ADC5FAD0072F4BA /* KeychainManager.swift */,
 				C7A95F1A2B03EB7B00F8595A /* NavigationManager.swift */,
 				AB38A1CE2B0E788F004153B5 /* ReviewManager.swift */,
+				AB38A1D22B0F4D71004153B5 /* PostManager.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -820,6 +823,7 @@
 				AB38A10F2B07DF49004153B5 /* InfoButton.swift in Sources */,
 				FD76249E2AF954670079AEEF /* LinkView.swift in Sources */,
 				FDD5829F2AFC175F0004DFC6 /* VoteWriteView.swift in Sources */,
+				AB38A1D32B0F4D71004153B5 /* PostManager.swift in Sources */,
 				ABBEEAF52AE64F7900F6D918 /* SeachViewModel.swift in Sources */,
 				C7F1FD882ADDA39500C5A2A1 /* DesciptionView.swift in Sources */,
 				AB4D82692ADD7F4D00F35CCB /* ProfileSettingsView.swift in Sources */,

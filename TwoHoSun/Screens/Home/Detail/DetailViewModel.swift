@@ -21,7 +21,8 @@ final class DetailViewModel: ObservableObject {
     }
 
     func searchIndex(with postId: Int) -> Int {
-        guard let index = appLoginState.appData.posts.firstIndex(where: { $0.id == postId }) else {
+        guard let index = appLoginState.appData.postManager.posts.firstIndex(where: { $0.id == postId }) 
+        else {
             fatalError("post not found")
         }
         return index
@@ -76,12 +77,12 @@ final class DetailViewModel: ObservableObject {
     func updatePost(index: Int,
                     myChoice: Bool,
                     voteCount: VoteCountsModel) {
-        appLoginState.appData.posts[index].myChoice = myChoice
-        appLoginState.appData.posts[index].voteCounts = voteCount
-        appLoginState.appData.posts[index].voteCount = voteCount.agreeCount + voteCount.disagreeCount
+        appLoginState.appData.postManager.posts[index].myChoice = myChoice
+        appLoginState.appData.postManager.posts[index].voteCounts = voteCount
+        appLoginState.appData.postManager.posts[index].voteCount = voteCount.agreeCount + voteCount.disagreeCount
     }
 
-    func deletePost(postId: Int, index: Int) {
+    func deletePost(postId: Int) {
         appLoginState.serviceRoot.apimanager
             .request(.postService(.deletePost(postId: postId)),
                             decodingType: NoData.self)
@@ -97,7 +98,7 @@ final class DetailViewModel: ObservableObject {
              }
              .store(in: &cancellables)
 
-        appLoginState.appData.posts.remove(at: index)
+        appLoginState.appData.postManager.deleteReviews(postId: postId)
      }
 
      func closePost(postId: Int, index: Int) {
@@ -112,7 +113,8 @@ final class DetailViewModel: ObservableObject {
                      print("error: \(error)")
                  }
              } receiveValue: { _ in
-                 self.appLoginState.appData.posts[index].postStatus = PostStatus.closed.rawValue
+                 self.appLoginState.appData.postManager.posts[index].postStatus
+                        = PostStatus.closed.rawValue
                  self.fetchPostDetail(postId: postId)
              }
              .store(in: &cancellables)

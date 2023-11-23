@@ -14,7 +14,6 @@ final class MyPageViewModel {
     var selectedMyVoteCategoryType = MyVoteCategoryType.all
     var selectedMyReviewCategoryType = MyReviewCategoryType.all
     private var loginState: AppLoginState
-    var posts: [SummaryPostModel] = []
     var profile: ProfileModel?
     var cacellabels: Set<AnyCancellable> = []
     var total = 0
@@ -24,7 +23,6 @@ final class MyPageViewModel {
 
     init(loginState: AppLoginState) {
         self.loginState = loginState
-        self.fetchProfile()
     }
 
     func requestPosts(postType: PostService) {
@@ -41,11 +39,12 @@ final class MyPageViewModel {
             } receiveValue: { data in
                 switch self.selectedMyPageListType {
                 case .myVote:
-                    self.posts.append(contentsOf: data.posts)
+                    self.loginState.appData.postManager.myPosts.append(contentsOf: data.posts)
                 case .myReview:
                     self.loginState.appData.reviewManager.myReviews.append(contentsOf: data.posts)
                 }
-                if data.posts.isEmpty || self.posts.count % 10 != 0 {
+
+                if data.posts.isEmpty || data.posts.count % 10 != 0 {
                     self.isLastPage = true
                 }
                 self.total = data.total
@@ -56,6 +55,7 @@ final class MyPageViewModel {
     func fetchPosts(isFirstFetch: Bool = true) {
         if isFirstFetch {
             loginState.appData.reviewManager.myReviews.removeAll()
+            loginState.appData.postManager.myPosts.removeAll()
             votePage = 0
             reviewPage = 0
             isLastPage = false

@@ -24,7 +24,7 @@ struct ConsiderationView: View {
             VStack(spacing: 0) {
                 Spacer()
                 if !viewModel.isLoading {
-                    if loginState.appData.posts.isEmpty {
+                    if loginState.appData.postManager.posts.isEmpty {
                         NoVoteView(selectedVisibilityScope: $visibilityScope)
                     } else {
                         votePagingView
@@ -68,7 +68,7 @@ extension ConsiderationView {
 
     private var votePagingView: some View {
         GeometryReader { proxy in
-            let datas = loginState.appData.posts
+            let datas = loginState.appData.postManager.posts
             TabView(selection: $currentVote) {
                 ForEach(Array(zip(datas.indices,
                                   datas)), id: \.0) { index, item in
@@ -148,13 +148,13 @@ extension ConsiderationView {
             Spacer()
             Button {
                 withAnimation {
-                    if currentVote != loginState.appData.posts.count - 1 {
+                    if currentVote != loginState.appData.postManager.posts.count - 1 {
                         currentVote += 1
                     }
                 }
             } label: {
                 Image("icnCaretDown")
-                    .opacity(currentVote != loginState.appData.posts.count - 1 ? 1 : 0)
+                    .opacity(currentVote != loginState.appData.postManager.posts.count - 1 ? 1 : 0)
             }
             Spacer()
         }

@@ -45,6 +45,15 @@ struct AuthorModel: Codable, Hashable {
     let consumerType: String
 }
 
+extension AuthorModel: Equatable {
+    static func == (lhs: AuthorModel, rhs: AuthorModel) -> Bool {
+        return lhs.id == rhs.id &&
+               lhs.nickname == rhs.nickname &&
+               lhs.profileImage == rhs.profileImage &&
+               lhs.consumerType == rhs.consumerType
+    }
+}
+
 struct VoteInfoModel: Codable, Hashable {
     let isAgree: Bool
     let consumerType: String

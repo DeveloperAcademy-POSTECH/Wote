@@ -124,8 +124,8 @@ struct VoteCardCell: View {
                     }
                 }
             }
-            // TODO: - 후기를 작성한 투표라면 숨기기
-            if progressType == .closed && cellType == .myVote && !(data.hasReview ?? false) {
+            
+            if progressType == .closed && cellType == .myVote && data.hasReview == false {
                 Button {
                     loginStateManager.serviceRoot.navigationManager.navigate(.reviewWriteView(post: data))
                 } label: {

@@ -26,7 +26,7 @@ final class ConsiderationViewModel: ObservableObject {
                     isRefresh: Bool = false) {
 
         if isFirstFetch && !isRefresh {
-            self.appLoginState.appData.posts.removeAll()
+            appLoginState.appData.postManager.posts.removeAll()
             isLoading = true
         }
 
@@ -45,7 +45,7 @@ final class ConsiderationViewModel: ObservableObject {
                 print(failure)
             }
         } receiveValue: { data in
-            self.appLoginState.appData.posts.append(contentsOf: data)
+            self.appLoginState.appData.postManager.posts.append(contentsOf: data)
             self.isLastPage = data.count < 10
             self.isLoading = false
         }
@@ -87,9 +87,9 @@ final class ConsiderationViewModel: ObservableObject {
     func updatePost(index: Int,
                     myChoice: Bool,
                     voteCount: VoteCountsModel) {
-        appLoginState.appData.posts[index].myChoice = myChoice
-        appLoginState.appData.posts[index].voteCounts = voteCount
-        appLoginState.appData.posts[index].voteCount = voteCount.agreeCount + voteCount.disagreeCount
+        appLoginState.appData.postManager.posts[index].myChoice = myChoice
+        appLoginState.appData.postManager.posts[index].voteCounts = voteCount
+        appLoginState.appData.postManager.posts[index].voteCount = voteCount.agreeCount + voteCount.disagreeCount
     }
 
     func calculatVoteRatio(voteCounts: VoteCountsModel?) -> (agree: Double, disagree: Double) {
