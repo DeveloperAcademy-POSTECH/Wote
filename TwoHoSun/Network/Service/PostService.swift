@@ -15,17 +15,24 @@ enum PostService {
     case getPostDetail(postId: Int)
     case modifyPost
     case deletePost(postId: Int)
-    case getReviewDetail
+    case getReviewDetailWithReviewId(reviewId: Int)
+    case getReviewDetailWithPostId(postId: Int)
     case modifyReview
     case createReview(postId: Int, review: ReviewCreateModel)
-    case deleteReview
     case subscribeReview
     case votePost(postId: Int, choice: Bool)
     case getSearchResult(postStatus: PostStatus, visibilityScopeType: VisibilityScopeType, page: Int, size: Int, keyword: String)
-    case getMyPosts(page: Int, size: Int, myVoteCategoryType: String)
     case getMyReviews(page: Int, size: Int, myReviewCategoryType: String)
     case closeVote(postId: Int)
-    case getReviews(visibilityScope: String, reviewType: String, page: Int, size: Int)
+    case getMyPosts(page: Int,
+                    size: Int,
+                    myVoteCategoryType: String)
+    case getReviews(visibilityScope: String)
+    case getMoreReviews(visibilityScope: String,
+                        page: Int,
+                        size: Int,
+                        reviewType: String)
+    case deleteReviewWithPostId(postId: Int)
 }
 
 extension PostService: TargetType {
@@ -58,6 +65,14 @@ extension PostService: TargetType {
             return "/reviews"
         case .createReview(let postId, _):
             return "/posts/\(postId)/reviews"
+        case .getMoreReviews(_, _, _, let reviewType):
+            return "reviews/\(reviewType)"
+        case .getReviewDetailWithReviewId(let reviewId):
+            return "/reviews/\(reviewId)/detail"
+        case .getReviewDetailWithPostId(let postId):
+            return "/posts/\(postId)/reviews"
+        case .deleteReviewWithPostId(let postId):
+            return "/posts/\(postId)/reviews"
         default:
             return ""
         }
@@ -73,7 +88,19 @@ extension PostService: TargetType {
             return ["page": page,
                     "size": size,
                     "myVoteCategoryType": myVoteCategoryType]
-        case .getSearchResult(let postStatus, let visibilityScopeType, let page, let size, let keyword):
+        case .getMoreReviews(let visibilityScope,
+                             let page,
+                             let size,
+                             let reviewType):
+            return ["visibilityScope": visibilityScope,
+                    "page": page,
+                    "size": size,
+                    "reviewType": reviewType]
+        case .getSearchResult(let postStatus, 
+                              let visibilityScopeType,
+                              let page,
+                              let size,
+                              let keyword):
             return [
                 "postStatus": postStatus.rawValue,
                 "visibilityScope": visibilityScopeType.type,
@@ -81,11 +108,8 @@ extension PostService: TargetType {
                 "size": size,
                 "keyword": keyword
             ]
-        case .getReviews(let visibilityScope, let reviewType, let page, let size):
-            return ["visibilityScope": visibilityScope,
-                    "reviewType": reviewType,
-                    "page": page,
-                    "size": size]
+        case .getReviews(let visibilityScope):
+            return ["visibilityScope": visibilityScope]
         case .getMyReviews(let page, let size, let myReviewCategoryType):
             return ["page": page,
                     "size": size,
@@ -113,6 +137,8 @@ extension PostService: TargetType {
             return .delete
         case .closeVote:
             return .post
+        case .deleteReviewWithPostId:
+            return .delete
         case .getMyReviews:
             return .get
         case .createReview:
@@ -134,7 +160,7 @@ extension PostService: TargetType {
                 formData.append(imageData)
             }
             let postData: [String: Any] = [
-                "visibilityScope": post.visibilityScope.type,
+                "visibilityScope": post.visibilityScope.rawValue,
                 "title": post.title,
                 "price": post.price ?? 0,
                 "contents": post.contents ?? "",
@@ -160,6 +186,18 @@ extension PostService: TargetType {
                                                urlParameters: ["postId": postId])
         case .getMyPosts:
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
+        case .getReviews(let scope):
+            return .requestParameters(parameters: ["visibilityScope": scope],
+                                      encoding: URLEncoding.queryString)
+        case .getMoreReviews:
+            return .requestParameters(parameters: parameters,
+                                      encoding: URLEncoding.queryString)
+        case .getReviewDetailWithReviewId(let reviewId):
+            return .requestParameters(parameters: ["reviewId": reviewId],
+                                      encoding: URLEncoding.queryString)
+        case .getReviewDetailWithPostId(let postId):
+            return .requestParameters(parameters: ["postId": postId],
+                                      encoding: URLEncoding.queryString)
         case .getSearchResult:
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case .deletePost(let postId):
@@ -168,8 +206,9 @@ extension PostService: TargetType {
         case .closeVote(let postId):
             return .requestParameters(parameters: ["postId": postId],
                                       encoding: URLEncoding.queryString)
-        case .getReviews:
-            return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
+        case .deleteReviewWithPostId(let postId):
+            return .requestParameters(parameters: ["postId": postId],
+                                      encoding: URLEncoding.queryString)
         case .getMyReviews:
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case .createReview(_, let review):

@@ -48,7 +48,12 @@ struct SearchView: View {
                         } else {
                             searchFilterView
                                 .padding(.bottom, 24)
-                            searchResultView
+                            switch selectedFilterType {
+                            case .review:
+                                reviewSearchedResult
+                            default:
+                                voteSearchedResult
+                            }
                         }
                     }
                     .padding(.top, 24)
@@ -205,16 +210,17 @@ extension SearchView {
         }
     }
 
-    private var searchResultView: some View {
+    private var reviewSearchedResult: some View {
         ScrollView {
             ScrollViewReader { proxy in
                 LazyVStack {
                     ForEach(Array(viewModel.searchedDatas.enumerated()), id: \.offset) { index, data in
                         Button {
-                            loginState.serviceRoot.navigationManager.navigate(.detailView(postId: data.id, index: index))
+                            loginState.serviceRoot.navigationManager.navigate(.reviewDetailView(postId: nil, reviewId: data.id))
                         } label: {
                             VoteCardCell(cellType: .standard,
-                                         progressType: viewModel.selectedFilterType, post: data)
+                                         progressType: .closed,
+                                         post: data)
                         }
                         .onAppear {
                             if index == viewModel.searchedDatas.count - 4 {
@@ -224,7 +230,7 @@ extension SearchView {
                     }
                     .id("searchResult")
                     .onChange(of: viewModel.selectedFilterType) { _, _ in
-                        viewModel.fetchSearchedData(keyword: searchText, reset: true  )
+                        viewModel.fetchSearchedData(keyword: searchText, reset: true)
                         proxy.scrollTo("searchResult", anchor: .top)
                     }
                 }
@@ -233,6 +239,35 @@ extension SearchView {
         .scrollIndicators(.hidden)
     }
 
+    private var voteSearchedResult: some View {
+        ScrollView {
+            ScrollViewReader { proxy in
+                LazyVStack {
+                    ForEach(Array(viewModel.searchedDatas.enumerated()), id: \.offset) { index, data in
+                        Button {
+                            loginState.serviceRoot.navigationManager.navigate(.detailView(postId: data.id, index: nil))
+                        } label: {
+                            VoteCardCell(cellType: .standard,
+                                         progressType: .closed,
+                                         post: data)
+                        }
+                        .onAppear {
+                            if index == viewModel.searchedDatas.count - 4 {
+                                viewModel.fetchSearchedData(keyword: searchText)
+                            }
+                        }
+                    }
+                    .id("searchResult")
+                    .onChange(of: viewModel.selectedFilterType) { _, _ in
+                        viewModel.fetchSearchedData(keyword: searchText, reset: true)
+                        proxy.scrollTo("searchResult", anchor: .top)
+                    }
+                }
+            }
+        }
+        .scrollIndicators(.hidden)
+    }
+    
     private var emptyResultView: some View {
         VStack(spacing: 20) {
             Image("imgNoResult")

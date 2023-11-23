@@ -338,7 +338,7 @@ extension ProfileSettingsView {
                 Text("우리 학교")
                     .modifier(TitleTextStyle())
                 roundedIconTextField(for: .school,
-                                     text: viewModel.selectedSchoolInfo?.school.schoolName,
+                                     text:  viewModel.selectedSchoolInfo?.school.schoolName,
                                      isFilled: viewModel.isSchoolFilled)
                 if isRestricted {
                     HStack {

@@ -39,6 +39,7 @@ extension TwoHoSunApp {
 }
 class ServiceRoot {
     var auth = Authenticator()
+
     lazy var apimanager: NewApiManager = {
         let manager = NewApiManager(authenticator: auth)
         return manager
@@ -48,6 +49,7 @@ class ServiceRoot {
 
 @Observable
 class AppData {
+    var posts = [PostModel]()
     var notificationDatas = [NotificationModel]()
     var profile: ProfileModel?
 }
