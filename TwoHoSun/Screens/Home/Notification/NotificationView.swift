@@ -37,10 +37,10 @@ extension NotificationView {
     private var notificationList: some View {
         List {
             if !viewModel.todayDatas.isEmpty {
-                makeNotificationSection(title: "오늘 알림", data: viewModel.todayDatas, isRecentData: true)
+                makeNotificationSection(title: "오늘 알림", data: viewModel.todayDatas.reversed(), isRecentData: true)
             }
             if !viewModel.previousDatas.isEmpty {
-                makeNotificationSection(title: "이전 알림", data: viewModel.previousDatas, isRecentData: false)
+                makeNotificationSection(title: "이전 알림", data: viewModel.previousDatas.reversed(), isRecentData: false)
             }
         }
         .listStyle(.plain)

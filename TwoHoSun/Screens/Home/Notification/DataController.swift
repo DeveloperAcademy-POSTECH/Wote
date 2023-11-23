@@ -46,7 +46,13 @@ class DataController: ObservableObject {
         let request = NSFetchRequest<NotificationModel>(entityName: "NotificationModel")
         do {
             let allSavedDatas = try container.viewContext.fetch(request)
-            
+            if allSavedDatas.count > 20 {
+                let itemsToRemove = allSavedDatas.prefix(allSavedDatas.count - 20)
+                for item in itemsToRemove {
+                    container.viewContext.delete(item)
+                }
+                save()
+            }
             let today = Calendar.current.startOfDay(for: Date())
             todayDatas = allSavedDatas.filter { data in
                 guard let dataDate = data.date else { return false }
