@@ -109,7 +109,7 @@ struct WoteTabView: View {
                 case .writeReiview:
                     Text("아직")
                 case .settingView:
-                    SettingView()
+                    SettingView(viewModel: SettingViewModel(loginStateManager: loginStateManager))
                 case .mypageView:
                     MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager), 
                                selectedVisibilityScope: $selectedVisibilityScope)
