@@ -13,20 +13,19 @@ enum AlertType {
     case logOut
     case closeVote
     case deleteVote
+    case deleteReview
 
     var title: String {
         switch self {
         case .ban:
             return "차단"
-        case .erase:
-            return "삭제"
         case .withdrawal:
             return "탈퇴"
         case .logOut:
             return ""
         case .closeVote:
             return "마감"
-        case .deleteVote:
+        case .deleteVote, .deleteReview, .erase:
             return "삭제"
         }
     }
@@ -45,6 +44,8 @@ enum AlertType {
             return "지금 투표를 마감하면 다른 친구들의 의견을\n더 들을 수 없어요."
         case .deleteVote:
             return "지금 투표를 삭제하면 해당 게시물이\n영구히 삭제됩니다."
+        case .deleteReview:
+            return "지금 후기를 삭제하면 해당 게시물이\n영구히 삭제됩니다."
         }
     }
     var optionalDescription: String {
@@ -60,15 +61,13 @@ enum AlertType {
         switch self {
         case .ban:
             return "차단하기"
-        case .erase:
-            return "삭제하기"
         case .withdrawal:
             return "탈퇴"
         case .logOut:
             return "로그아웃"
         case .closeVote:
             return "종료하기"
-        case .deleteVote:
+        case .deleteVote, .deleteReview, .erase:
             return "삭제하기"
         }
     }
@@ -103,6 +102,8 @@ struct CustomAlertModalView: View {
             return "투표를 "
         case .deleteVote:
             return "투표를 "
+        case .deleteReview:
+            return "후기를 "
         }
     }
 

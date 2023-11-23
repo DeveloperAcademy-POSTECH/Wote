@@ -45,17 +45,10 @@ extension TwoHoSunApp {
             dataController.addNotificationData(model: notiModel)
         }
     }
-    func registerDevicetoken(deviceToken: String) {
-        appState.serviceRoot.apimanager.request(
-            .userService(.postDeviceTokens(deviceToken: deviceToken)), decodingType: NoData.self)
-        .sink { completion in
-            print(completion)
-        } receiveValue: { _ in
-        }
-    }
 }
 class ServiceRoot {
     var auth = Authenticator()
+
     lazy var apimanager: NewApiManager = {
         let manager = NewApiManager(authenticator: auth)
         return manager
@@ -65,6 +58,7 @@ class ServiceRoot {
 
 @Observable
 class AppData {
+    var posts = [PostModel]()
     var notificationDatas = [NotiDecodeModel]() 
 }
 
@@ -72,6 +66,7 @@ class AppData {
 class AppLoginState {
     var serviceRoot: ServiceRoot
     var appData: AppData
+
     init() {
         appData = AppData()
         serviceRoot = ServiceRoot()

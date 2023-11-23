@@ -46,9 +46,24 @@ class LoginViewModel {
                     } else {
                         UserDefaults.standard.setValue(data.consumerTypeExist, forKey: "haveConsumerType")
                         self.appState.serviceRoot.auth.authState = .loggedIn
+                        self.postDeviceToken()
                     }
                 }
             })
             .store(in: &bag)
+    }
+
+    func postDeviceToken() {
+        appState.serviceRoot.apimanager.request(
+            .userService(
+                .postDeviceTokens(deviceToken: KeychainManager.shared.readToken(key: "deviceToken")!)),
+            decodingType: NoData.self)
+        .sink { completion in
+            print(completion)
+        } receiveValue: { response in
+            print(response)
+            print("successDeviceToken")
+        }
+        .store(in: &bag)
     }
 }

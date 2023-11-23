@@ -14,15 +14,28 @@ struct VoteCardCell: View {
     }
 
     enum VoteResultType {
-        case buy, draw, notbuy
-        
+        case buy, draw, notBuy
+
+        init(voteResult: String) {
+            switch voteResult {
+            case "BUY":
+                self = .buy
+            case "NOT_BUY":
+                self = .notBuy
+            case "DRAW":
+                self = .draw
+            default:
+                self = .buy
+            }
+        }
+
         var stampImage: Image {
             switch self {
             case .buy:
                 Image("imgBuy")
             case .draw:
                 Image("imgDraw")
-            case .notbuy:
+            case .notBuy:
                 Image("imgNotBuy")
             }
         }
@@ -35,7 +48,7 @@ struct VoteCardCell: View {
             if voteresult == "DRAW" {
                 return .draw
             } else if voteresult == "NOT_BUY" {
-                return .notbuy
+                return .notBuy
             } else {
                 return .buy
             }
@@ -64,18 +77,8 @@ struct VoteCardCell: View {
             HStack {
                 VStack(alignment: .leading, spacing: 6) {
                     HStack(spacing: 4) {
-                        if progressType == .closed && cellType != .myVote {
-                            Text("종료")
-                                .font(.system(size: 12, weight: .medium))
-                                .foregroundStyle(.white)
-                                .padding(.vertical, 4)
-                                .padding(.horizontal, 5)
-                                .background(Color.black200)
-                                .clipShape(RoundedRectangle(cornerRadius: 3))
-                        } else if progressType == .review {
-                            if let isPurchased = post.isPurchased {
-                                PurchaseLabel(isPurchased: isPurchased)
-                            }
+                        if post.postStatus == PostStatus.closed.rawValue {
+                            EndLabel()
                         }
                         Text(post.title)
                             .font(.system(size: 16, weight: .bold))
@@ -100,14 +103,25 @@ struct VoteCardCell: View {
                 Spacer()
                 ZStack {
                     CardImageView(imageURL: post.image)
-                        .opacity(progressType == .closed ? 0.5 : 1.0 )
-                    if progressType == .closed {
-                        voteResultType?.stampImage
+                        .opacity(post.postStatus == PostStatus.closed.rawValue
+                                 ? 0.5 : 1.0)
+                    if post.postStatus == PostStatus.closed.rawValue {
+                        Group {
+                            if let voteResult = post.voteResult {
+                                switch VoteResultType(voteResult: voteResult) {
+                                case .buy:
+                                    Image("imgBuy")
+                                case .draw:
+                                    Image("imgDraw")
+                                case .notBuy:
+                                    Image("imgNotBuy")
+                                }
+                            }
+                        }
                         .offset(x: -10, y: 10)
                     }
                 }
             }
-            // TODO: - 후기를 작성한 투표라면 숨기기
             if progressType == .closed && cellType == .myVote && !(post.hasReview ?? false) {
                 NavigationLink {
                     ReviewWriteView(viewModel: ReviewWriteViewModel(post: post, apiManager: loginStateManager.serviceRoot.apimanager))
@@ -125,7 +139,6 @@ struct VoteCardCell: View {
                         .padding(.top, 6)
                         .padding(.bottom, -6)
                 }
-
             }
         }
         .padding(.horizontal, 16)

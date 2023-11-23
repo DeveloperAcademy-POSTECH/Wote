@@ -8,15 +8,17 @@
 import Foundation
 
 struct ReviewTabModel: Codable {
+    let myConsumerType: String?
     let recentReviews: [SummaryPostModel]
-    let reviewType: String
-    let reviews: [SummaryPostModel]
+    var allReviews: [SummaryPostModel]
+    var purchasedReviews: [SummaryPostModel]
+    var notPurchasedReviews: [SummaryPostModel]
 }
 
 enum ReviewType: String, CaseIterable {
     case all = "ALL"
     case purchased = "PURCHASED"
-    case notPurchased = "NOTPURCHASED"
+    case notPurchased = "NOT_PURCHASED"
 
     var title: String {
         switch self {

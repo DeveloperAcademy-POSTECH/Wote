@@ -14,29 +14,30 @@ struct DetailView: View {
     @State private var showCustomAlert = false
     @State private var applyComplaint = false
     @Environment(AppLoginState.self) private var loginStateManager
-    @StateObject var viewModel: VoteViewModel
     @State private var currentAlert = AlertType.closeVote
+    @StateObject var viewModel: DetailViewModel
+    var isShowingHeader = true
     @State var showDetailComments = false
     var postId: Int
-    var index: Int
+    var index: Int?
+
     var directComments = false
     let commentNotification = NotificationCenter.default.publisher(for: Notification.Name("showComment"))
     var body: some View {
         ZStack {
             backgroundColor
                 .ignoresSafeArea()
-            if let data = viewModel.postData {
+            if let data = viewModel.postDetail {
                 ScrollView {
                     VStack(spacing: 0) {
-                        DetailHeaderView(author: data.post.author,
-                                         postStatus: PostStatus(rawValue: data.post.postStatus) ?? PostStatus.closed,
-                                         isMine: data.post.isMine,
-                                         hasReview: data.post.hasReview)
-                            .padding(.top, 18)
-                        Divider()
-                            .background(Color.disableGray)
-                            .padding(.horizontal, 12)
-                        DetailContentView(postDetailData: data.post)
+                        if isShowingHeader {
+                            DetailHeaderView(data: data)
+                                .padding(.top, 18)
+                            Divider()
+                                .background(Color.disableGray)
+                                .padding(.horizontal, 12)
+                        }
+                        DetailContentView(postDetailData: data)
                             .padding(.top, 27)
                         VStack {
                             if data.post.postStatus == "CLOSED" || data.post.myChoice != nil {
@@ -47,14 +48,14 @@ struct DetailView: View {
 
                             } else {
                                 IncompletedVoteButton(choice: .agree) {
-                                    viewModel.votePost(postId: data.post.id, 
+                                    viewModel.votePost(postId: data.post.id,
                                                        choice: true,
-                                                       index: index)
+                                                       index: index ?? 0)
                                 }
                                 IncompletedVoteButton(choice: .disagree) {
                                     viewModel.votePost(postId: data.post.id,
                                                        choice: false,
-                                                       index: index)
+                                                       index: index ?? 0)
                                 }
                             }
                         }
@@ -73,13 +74,13 @@ struct DetailView: View {
                                                    isHigher: agreeRatio >= disagreeRatio)
                                 consumerTypeLabels(.disagree,
                                                    topConsumerTypes: viewModel.disagreeTopConsumerTypes)
-                                resultProgressView(.agree, 
+                                resultProgressView(.agree,
                                                    ratio: disagreeRatio,
                                                    isHigher: disagreeRatio >= agreeRatio)
                             } else {
-                                hiddenResultView(for: .agree, 
+                                hiddenResultView(for: .agree,
                                                  topConsumerTypesCount: viewModel.agreeTopConsumerTypes.count)
-                                    .padding(.bottom, 34)
+                                .padding(.bottom, 34)
                                 hiddenResultView(for: .disagree,
                                                  topConsumerTypesCount: viewModel.disagreeTopConsumerTypes.count)
                             }
@@ -96,7 +97,9 @@ struct DetailView: View {
 
             if showDetailComments {
                 Color.black.opacity(0.7)
+                    .ignoresSafeArea()
             }
+
             if showCustomAlert {
                 ZStack {
                     Color.black.opacity(0.7)
@@ -105,11 +108,12 @@ struct DetailView: View {
                                          isPresented: $showCustomAlert) {
                         switch currentAlert {
                         case .closeVote:
-                            viewModel.closeVote(postId: postId, index: index)
+                            viewModel.closePost(postId: postId,
+                                                index: index ?? 0)
                             showCustomAlert.toggle()
-                            viewModel.fetchPostDetail(postId: postId)
                         case .deleteVote:
-                            viewModel.deletePost(postId: postId, index: index)
+                            viewModel.deletePost(postId: postId,
+                                                 index: index ?? 0)
                             showCustomAlert.toggle()
                             dismiss()
                         default:
@@ -120,20 +124,21 @@ struct DetailView: View {
             }
 
             if applyComplaint {
-                    Color.black.opacity(0.7)
-                        .ignoresSafeArea()
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(Color.lightBlue)
-                            .frame(width: 283, height: 36)
+                Color.black.opacity(0.7)
+                    .ignoresSafeArea()
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.lightBlue)
+                        .frame(width: 283, height: 36)
 
-                        Text("신고해주셔서 감사합니다.")
-                            .foregroundStyle(.white)
-                            .font(.system(size: 16, weight: .semibold))
-                    }
-                    .onTapGesture {
-                        applyComplaint.toggle()
-                    }
+                    Text("신고해주셔서 감사합니다.")
+                        .foregroundStyle(.white)
+                        .font(.system(size: 16, weight: .semibold))
+                }
+                .onTapGesture {
+                    applyComplaint.toggle()
+                }
+
             }
         }
         .onReceive(commentNotification) {_ in
@@ -143,6 +148,7 @@ struct DetailView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text("상세보기")
+                    .font(.system(size: 18, weight: .medium))
                     .foregroundStyle(Color.white)
             }
             ToolbarItem(placement: .topBarTrailing) {
@@ -157,15 +163,16 @@ struct DetailView: View {
         .toolbarBackground(Color.background, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .sheet(isPresented: $showDetailComments) {
-            CommentsView(showComplaint: $showCustomAlert, applyComplaint: $applyComplaint,
+            CommentsView(showComplaint: $showCustomAlert,
+                         applyComplaint: $applyComplaint,
                          viewModel: CommentsViewModel(apiManager: loginStateManager.serviceRoot.apimanager, postId: postId))
-                    .presentationDetents([.large,.fraction(0.9)])
-                    .presentationContentInteraction(.scrolls)
+            .presentationDetents([.large,.fraction(0.9)])
+            .presentationContentInteraction(.scrolls)
         }
         .customConfirmDialog(isPresented: $showconfirm, isMine: $viewModel.isMine) { _ in
             if viewModel.isMine {
                 VStack(spacing: 15) {
-                    if viewModel.postData?.post.postStatus != PostStatus.closed.rawValue {
+                    if viewModel.postDetail?.post.postStatus != PostStatus.closed.rawValue {
                         Button {
                             currentAlert = .closeVote
                             showCustomAlert.toggle()
@@ -211,7 +218,7 @@ struct DetailView: View {
             if directComments {
                 showDetailComments.toggle()
             }
-            viewModel.postData = nil
+            viewModel.postDetail = nil
             viewModel.fetchPostDetail(postId: postId)
         }
         .onDisappear {
@@ -298,22 +305,22 @@ extension DetailView {
 }
 
 struct DetailContentView: View {
-    var postDetailData: PostModel
+    var postDetailData: PostDetailModel
 
     var body: some View {
         VStack(alignment: .leading) {
             VStack(alignment: .leading, spacing: 13) {
-                ConsumerTypeLabel(consumerType: ConsumerType(rawValue: postDetailData.author.consumerType) ?? .adventurer, 
-                               usage: .standard)
+                ConsumerTypeLabel(consumerType: ConsumerType(rawValue: postDetailData.post.author.consumerType) ?? .adventurer,
+                                  usage: .standard)
                 HStack(spacing: 6) {
-                    if postDetailData.postStatus == PostStatus.closed.rawValue {
+                    if postDetailData.post.postStatus == PostStatus.closed.rawValue {
                         EndLabel()
                     }
-                    Text(postDetailData.title)
+                    Text(postDetailData.post.title)
                         .foregroundStyle(Color.white)
                         .font(.system(size: 18, weight: .bold))
                 }
-                if let contents = postDetailData.contents {
+                if let contents = postDetailData.post.contents {
                     Text(contents)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .lineLimit(3)
@@ -321,11 +328,11 @@ struct DetailContentView: View {
                         .foregroundStyle(Color.whiteGray)
                 }
                 HStack(spacing: 0) {
-                    if let price = postDetailData.price {
+                    if let price = postDetailData.post.price {
                         Text("가격: \(price)원")
                         Text(" · ")
                     }
-                    Text(postDetailData.modifiedDate.convertToStringDate() ?? "")
+                    Text(postDetailData.post.modifiedDate.convertToStringDate() ?? "")
                 }
                 .foregroundStyle(Color.priceGray)
                 .font(.system(size: 14))
@@ -334,7 +341,8 @@ struct DetailContentView: View {
             .padding(.bottom, 16)
 
             HStack {
-                Label("\(postDetailData.voteCount)명 투표", systemImage: "person.2.fill")
+                Label("\(postDetailData.post.voteCount ?? 333)명 투표",
+                      systemImage: "person.2.fill")
                     .font(.system(size: 14))
                     .foregroundStyle(Color.white)
                     .frame(width: 94, height: 29)
@@ -354,7 +362,7 @@ struct DetailContentView: View {
             }
             .padding(.bottom, 4)
 
-            if let externalURL = postDetailData.externalURL {
+            if let externalURL = postDetailData.post.externalURL {
                 Link(destination: URL(string: externalURL)!, label: {
                     Text(externalURL)
                         .tint(Color.white)
@@ -368,13 +376,14 @@ struct DetailContentView: View {
                         .background(Color.lightGray)
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                 })
+                .padding(.bottom, 4)
             }
 
             Group {
-                if let imageURL = postDetailData.image {
+                if let imageURL = postDetailData.post.image {
                     ImageView(imageURL: imageURL)
                 } else {
-                    Image("imgDummyVote\((postDetailData.id) % 3 + 1)")
+                    Image("imgDummyVote\((postDetailData.post.id) % 3 + 1)")
                         .resizable()
                         .frame(maxWidth: .infinity)
                         .aspectRatio(1.5, contentMode: .fit)

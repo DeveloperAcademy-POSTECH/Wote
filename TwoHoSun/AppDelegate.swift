@@ -30,15 +30,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         logger.log("Registered for remote notifications with device token: \(deviceToken.map { String(format: "%02.2hhx", $0) }.joined())")
-        app?.registerDevicetoken(deviceToken: deviceToken.map { String(format: "%02.2hhx", $0) }.joined())
-
+        let deviceString =  deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+        KeychainManager.shared.saveToken(key: "deviceToken", token: deviceString)
     }
 
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         logger.error("Failed to register for remote notifications: \(error.localizedDescription)")
     }
 
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification) async -> UNNotificationPresentationOptions {
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification) async -> UNNotificationPresentationOptions {
         logger.log("Will present notification in foreground: \(self.formatDictionary(notification.request.content.userInfo))")
         let decoder = JSONDecoder()
         do {

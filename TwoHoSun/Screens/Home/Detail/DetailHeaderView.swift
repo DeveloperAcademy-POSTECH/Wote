@@ -31,7 +31,7 @@ enum ClosedPostStatus: Codable {
     var description: String {
         switch self {
         case .myPostWithReview:
-            return "님의 소비후기"
+            return "님의 소비 후기"
         case .myPostWithoutReview:
             return "님! 상품에 대한 후기를 들려주세요!"
         case .othersPostWithReview:
@@ -56,20 +56,21 @@ enum ClosedPostStatus: Codable {
 }
 
 struct DetailHeaderView: View {
+    @Environment(AppLoginState.self) private var loginState
     @State private var alertOn = false
-    var author: AuthorModel
-    var postStatus: PostStatus
-    var isMine: Bool?
-    var hasReview: Bool?
+    var data: PostDetailModel
 
     var body: some View {
-        switch postStatus {
+        switch PostStatus(rawValue: data.post.postStatus) {
         case .active:
-            activeVoteHeaderView(author: author, isMine: isMine)
+            activeVoteHeaderView(author: data.post.author, isMine: data.post.isMine)
         case .closed:
-            if let isMine = isMine, let hasReview = hasReview {
+            if let isMine = data.post.isMine,
+                let hasReview = data.post.hasReview {
                 let closedPostState = ClosedPostStatus(isMine: isMine, hasReview: hasReview)!
-                closedVoteHeaderView(author: author, closedState: closedPostState)
+                closedVoteHeaderView(author: data.post.author,
+                                     closedState: closedPostState,
+                                     postId: data.post.id)
             } else {
                 EmptyView()
             }
@@ -79,16 +80,16 @@ struct DetailHeaderView: View {
     }
 
     private func activeVoteHeaderView(author: AuthorModel, isMine: Bool?) -> some View {
-        HStack(spacing: 0) {
+        HStack(spacing: 3) {
             ProfileImageView(imageURL: author.profileImage)
                 .frame(width: 32, height: 32)
-                .padding(.trailing, 10)
+                .padding(.trailing, 7)
             Text(author.nickname)
-                .font(.system(size: 16, weight: .medium))
+                .font(.system(size: 15, weight: .medium))
                 .foregroundStyle(Color.whiteGray)
             if let isMine = isMine {
                 if isMine {
-                    Text("님의 소비고민")
+                    Text("님의 소비 고민")
                         .font(.system(size: 13))
                         .foregroundStyle(Color.whiteGray)
                     Spacer()
@@ -106,20 +107,20 @@ struct DetailHeaderView: View {
         .padding(.bottom, 13)
     }
 
-    private func closedVoteHeaderView(author: AuthorModel, closedState: ClosedPostStatus) -> some View {
-        HStack(spacing: 0) {
+    private func closedVoteHeaderView(author: AuthorModel, closedState: ClosedPostStatus, postId: Int) -> some View {
+        HStack(spacing: 3) {
             ProfileImageView(imageURL: author.profileImage)
                 .frame(width: 32, height: 32)
-                .padding(.trailing, 10)
+                .padding(.trailing, 7)
             Text(author.nickname)
-                .font(.system(size: 16, weight: .medium))
+                .font(.system(size: 15, weight: .medium))
                 .foregroundStyle(Color.whiteGray)
             Text(closedState.description)
                 .font(.system(size: 13))
                 .foregroundStyle(Color.whiteGray)
             Spacer()
             NavigationLink {
-                destinationForHeaderButton(closedState)
+                destinationForHeaderButton(closedState, postId: postId)
             } label: {
                 if closedState != ClosedPostStatus.othersPostWithoutReview {
                     headerButton(closedState.buttonView)
@@ -142,7 +143,7 @@ struct DetailHeaderView: View {
     }
 
     @ViewBuilder
-    private func destinationForHeaderButton(_ closedPostState: ClosedPostStatus) -> some View {
+    private func destinationForHeaderButton(_ closedPostState: ClosedPostStatus, postId: Int) -> some View {
         switch closedPostState {
         case .myPostWithoutReview:
             Text("임시")
@@ -150,55 +151,10 @@ struct DetailHeaderView: View {
         case .othersPostWithoutReview:
             EmptyView()
         default:
-            ReviewDetailView()
+            ReviewDetailView(viewModel: ReviewDetailViewModel(apiManager: loginState.serviceRoot.apimanager),
+                             isShowingHeader: false,
+                             postId: postId)
         }
-    }
-}
-
-#Preview {
-    Group {
-        DetailHeaderView(author: AuthorModel(id: 0,
-                                        nickname: "얄루",
-                                        profileImage: nil,
-                                        consumerType: ConsumerType.flexer.rawValue),
-                         postStatus: PostStatus.active,
-                         isMine: true,
-                         hasReview: nil)
-        DetailHeaderView(author: AuthorModel(id: 0,
-                                        nickname: "얄루",
-                                        profileImage: nil,
-                                        consumerType: ConsumerType.flexer.rawValue),
-                         postStatus: PostStatus.active,
-                         isMine: false,
-                         hasReview: nil)
-        DetailHeaderView(author: AuthorModel(id: 0,
-                                        nickname: "얄루",
-                                        profileImage: nil,
-                                        consumerType: ConsumerType.flexer.rawValue),
-                         postStatus: PostStatus.closed,
-                         isMine: true,
-                         hasReview: true)
-        DetailHeaderView(author: AuthorModel(id: 0,
-                                        nickname: "얄루",
-                                        profileImage: nil,
-                                        consumerType: ConsumerType.flexer.rawValue),
-                         postStatus: PostStatus.closed,
-                         isMine: true,
-                         hasReview: false)
-        DetailHeaderView(author: AuthorModel(id: 0,
-                                        nickname: "얄루",
-                                        profileImage: nil,
-                                        consumerType: ConsumerType.flexer.rawValue),
-                         postStatus: PostStatus.closed,
-                         isMine: false,
-                         hasReview: false)
-        DetailHeaderView(author: AuthorModel(id: 0,
-                                        nickname: "얄루",
-                                        profileImage: nil,
-                                        consumerType: ConsumerType.flexer.rawValue),
-                         postStatus: PostStatus.closed,
-                         isMine: false,
-                         hasReview: true)
     }
 }
 
