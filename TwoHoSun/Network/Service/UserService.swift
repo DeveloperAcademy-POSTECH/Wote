@@ -18,6 +18,7 @@ enum UserService {
     case getProfile
     case requestLogout
     case deleteUser
+    case blockUser(memberId: Int)
 }
 
 extension UserService: TargetType {
@@ -44,6 +45,8 @@ extension UserService: TargetType {
             return "/api/auth/logout"
         case .deleteUser:
             return "/api/members"
+        case .blockUser(let memberId):
+            return "/api/members/block/\(memberId)"
         }
     }
     
@@ -53,8 +56,6 @@ extension UserService: TargetType {
             return .put
         case .getProfile:
             return .get
-        case .requestLogout:
-            return .post
         case .deleteUser:
             return .delete
         default:
@@ -82,14 +83,13 @@ extension UserService: TargetType {
             return [:]
         case .deleteUser:
             return [:]
+        case .blockUser(let memberId):
+            return ["memberId": memberId]
         }
     }
 
     var task: Moya.Task {
         switch self {
-        case .checkNicknameValid:
-            return .requestParameters(parameters: parameters,
-                                      encoding: JSONEncoding.default)
         case .postProfileSetting(let profile):
             var formData: [MultipartFormData] = []
 
@@ -121,8 +121,6 @@ extension UserService: TargetType {
                 print("error")
             }
             return .uploadMultipart(formData)
-        case .putConsumerType:
-            return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         case .getProfile:
             return .requestPlain
         case .requestLogout:
@@ -130,8 +128,7 @@ extension UserService: TargetType {
         case .deleteUser:
             return .requestPlain
         default:
-            return .requestParameters(parameters: parameters,
-                                      encoding: URLEncoding.default)
+            return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
         }
     }
     
@@ -145,7 +142,6 @@ extension UserService: TargetType {
             APIConstants.headerWithOutToken
         default:
             APIConstants.headerWithAuthorization
-
         }
     }
 }
