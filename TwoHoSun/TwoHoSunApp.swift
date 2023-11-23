@@ -5,6 +5,7 @@
 //  Created by 관식 on 10/15/23.
 //
 
+import Combine
 import SwiftUI
 import Observation
 
@@ -54,6 +55,7 @@ class ServiceRoot {
         return manager
     }()
     var navigationManager = NavigationManager()
+    lazy var memberManager = MemberManager(authenticator: auth)
 }
 
 @Observable
@@ -65,12 +67,13 @@ class AppData {
 class AppLoginState {
     var serviceRoot: ServiceRoot
     var appData: AppData
-
+    
     init() {
         appData = AppData()
         serviceRoot = ServiceRoot()
         checkTokenValidity()
         serviceRoot.auth.relogin = relogin
+        serviceRoot.memberManager.fetchProfile()
     }
 
     private func relogin() {
