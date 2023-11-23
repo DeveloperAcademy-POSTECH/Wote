@@ -7,14 +7,6 @@
 
 import SwiftUI
 
-enum LoginNavigation {
-    case mainTabView
-    case profileView
-}
-enum AlertNavigation {
-    case voteView(id: String)
-    case reviewView(id: String)
-}
 enum AllNavigation: Hashable, Decodable {
     case writeReiview
     case detailView(postId: Int, index: Int, dirrectComments: Bool = false)
@@ -24,6 +16,8 @@ enum AllNavigation: Hashable, Decodable {
     case testView
     case settingView
     case mypageView
+    case searchView
+    case notiView
 }
 
 @Observable

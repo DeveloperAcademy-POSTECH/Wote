@@ -16,6 +16,8 @@ enum UserService {
     case refreshToken
     case putConsumerType(consumertype: ConsumerType)
     case getProfile
+    case requestLogout
+    case deleteUser
 }
 
 extension UserService: TargetType {
@@ -38,6 +40,10 @@ extension UserService: TargetType {
             return "/api/profiles/consumerType"
         case .getProfile:
             return "/api/profiles"
+        case .requestLogout:
+            return "/api/auth/logout"
+        case .deleteUser:
+            return "/api/members"
         }
     }
     
@@ -47,6 +53,10 @@ extension UserService: TargetType {
             return .put
         case .getProfile:
             return .get
+        case .requestLogout:
+            return .post
+        case .deleteUser:
+            return .delete
         default:
             return .post
         }
@@ -67,6 +77,10 @@ extension UserService: TargetType {
         case .putConsumerType(let consumerType):
             return ["consumerType": consumerType.rawValue]
         case .getProfile:
+            return [:]
+        case .requestLogout:
+            return [:]
+        case .deleteUser:
             return [:]
         }
     }
@@ -110,6 +124,10 @@ extension UserService: TargetType {
         case .putConsumerType:
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         case .getProfile:
+            return .requestPlain
+        case .requestLogout:
+            return .requestPlain
+        case .deleteUser:
             return .requestPlain
         default:
             return .requestParameters(parameters: parameters,

@@ -39,7 +39,7 @@ struct CustomImagePicker<Content: View>: View {
                 }
                 showCropView.toggle()
             }
-            .navigationDestination(isPresented: $showCropView, destination: {
+            .fullScreenCover(isPresented: $showCropView, content: {
                 CropView(image: selectedImage) { croppedImage, _ in
                     if let croppedImage {
                         self.croppedImage = croppedImage

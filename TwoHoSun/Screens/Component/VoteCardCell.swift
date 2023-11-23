@@ -28,10 +28,6 @@ struct VoteCardCell: View {
         }
     }
 
-    enum VoteProgressType {
-        case progressing, end
-    }
-
     var cellType: VoteCardCellType
     var progressType: PostStatus
     var voteResultType: VoteResultType? {
@@ -47,6 +43,7 @@ struct VoteCardCell: View {
         return nil
     }
     var post: SummaryPostModel
+    @Environment(AppLoginState.self) private var loginStateManager
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
@@ -111,9 +108,9 @@ struct VoteCardCell: View {
                 }
             }
             // TODO: - 후기를 작성한 투표라면 숨기기
-            if progressType == .closed && cellType == .myVote {
+            if progressType == .closed && cellType == .myVote && !(post.hasReview ?? false) {
                 NavigationLink {
-                    ReviewWriteView()
+                    ReviewWriteView(viewModel: ReviewWriteViewModel(post: post, apiManager: loginStateManager.serviceRoot.apimanager))
                 } label: {
                     Text("후기 작성하기")
                         .font(.system(size: 16, weight: .semibold))

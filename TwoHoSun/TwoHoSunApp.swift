@@ -8,11 +8,6 @@
 import SwiftUI
 import Observation
 
-enum Route {
-    case mainTabView
-    case profileView
-}
-
 @main
 struct TwoHoSunApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
@@ -26,7 +21,7 @@ struct TwoHoSunApp: App {
                 OnBoardingView(viewModel: LoginViewModel(appState: appState))
                     .environment(appState)
             case .loggedIn:
-                WoteTabView(path: .constant([]), notiManager: dataController)
+                WoteTabView(notiManager: dataController)
                     .environment(appState)
 //                    .environment(\.managedObjectContext, dataController.container.viewContext)
                     .onAppear {

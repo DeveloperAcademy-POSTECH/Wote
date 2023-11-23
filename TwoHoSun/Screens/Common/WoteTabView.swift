@@ -48,12 +48,11 @@ struct WoteTabView: View {
     @State private var selection = WoteTabType.consider
     @State private var selectedVisibilityScope = VisibilityScopeType.global
     @State private var isVoteCategoryButtonDidTap = false
-    @Environment(AppLoginState.self) private var appManager
-    @Binding var path: [LoginNavigation]
+    @Environment(AppLoginState.self) private var loginStateManager
     @ObservedObject var notiManager: DataController
 
     var body: some View {
-        @Bindable var navigationPath = appManager.serviceRoot.navigationManager
+        @Bindable var navigationPath = loginStateManager.serviceRoot.navigationManager
         NavigationStack(path: $navigationPath.navigatePath) {
             ZStack(alignment: .topLeading) {
                 VStack(spacing: 0) {
@@ -94,27 +93,34 @@ struct WoteTabView: View {
             .navigationDestination(for: AllNavigation.self) { destination in
                 switch destination {
                 case .detailView(let postId, let index, let directComments):
-                    DetailView(viewModel: VoteViewModel(apiManager: appManager.serviceRoot.apimanager),
+                    DetailView(viewModel: VoteViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
                                postId: postId,
                                index: index,
                                directComments: directComments)
                 case .makeVoteView:
                     VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: selectedVisibilityScope, 
-                                                                apiManager: appManager.serviceRoot.apimanager), tabselection: $selection )
+                                                                apiManager: loginStateManager.serviceRoot.apimanager), tabselection: $selection )
                 case .testIntroView:
                     TypeTestIntroView()
                         .toolbar(.hidden, for: .navigationBar)
                 case .testView:
-                    TypeTestView(viewModel: TypeTestViewModel(apiManager: appManager.serviceRoot.apimanager))
+                    TypeTestView(viewModel: TypeTestViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
                 case .reveiwView:
-                    ReviewView(viewModel: ReviewTabViewModel(apiManger: appManager.serviceRoot.apimanager))
+                    ReviewView(viewModel: ReviewTabViewModel(apiManger: loginStateManager.serviceRoot.apimanager))
                 case .writeReiview:
                     Text("아직")
                 case .settingView:
-                    SettingView()
+                    SettingView(viewModel: SettingViewModel(loginStateManager: loginStateManager))
                 case .mypageView:
-                    MyPageView(viewModel: MyPageViewModel(apiManager: appManager.serviceRoot.apimanager), 
+                    MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager), 
                                selectedVisibilityScope: $selectedVisibilityScope)
+                case .searchView:
+                    SearchView(viewModel: SearchViewModel(apiManager: loginStateManager.serviceRoot.apimanager,
+                                                          selectedVisibilityScope: selectedVisibilityScope))
+                case .notiView:
+                    NotificationView( viewModel: notiManager)
+                default:
+                    Text("HI")
                 }
             }
         }
@@ -138,11 +144,11 @@ extension WoteTabView {
         switch tab {
         case .consider:
             ConsiderationView(selectedVisibilityScope: $selectedVisibilityScope, 
-                              viewModel: VoteViewModel(apiManager: appManager.serviceRoot.apimanager))
+                              viewModel: VoteViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
         case .review:
-            ReviewView(viewModel: ReviewTabViewModel(apiManger: appManager.serviceRoot.apimanager))
+            ReviewView(viewModel: ReviewTabViewModel(apiManger: loginStateManager.serviceRoot.apimanager))
         case .myPage:
-            MyPageView(viewModel: MyPageViewModel(apiManager: appManager.serviceRoot.apimanager),
+            MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
                        selectedVisibilityScope: $selectedVisibilityScope)
         }
     }
@@ -176,8 +182,8 @@ extension WoteTabView {
     }
 
     private var notificationButton: some View {
-        NavigationLink {
-            NotificationView(viewModel: notiManager)
+        Button {
+            loginStateManager.serviceRoot.navigationManager.navigate(.notiView)
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 6)
@@ -191,9 +197,8 @@ extension WoteTabView {
     }
 
     private var searchButton: some View {
-        NavigationLink {
-            SearchView(viewModel: SearchViewModel(apiManager: appManager.serviceRoot.apimanager,
-                                                  selectedVisibilityScope: selectedVisibilityScope))
+        Button {
+            loginStateManager.serviceRoot.navigationManager.navigate(.searchView)
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 6)
@@ -207,8 +212,8 @@ extension WoteTabView {
     }
 
     private var settingButton: some View {
-        NavigationLink {
-            SettingView()
+        Button {
+            loginStateManager.serviceRoot.navigationManager.navigate(.settingView)
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 6)

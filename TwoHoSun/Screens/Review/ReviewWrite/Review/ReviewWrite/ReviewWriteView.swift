@@ -18,7 +18,9 @@ struct ReviewWriteView: View {
     @State private var isEditing: Bool = false
     @State private var placeholderText = "욕설,비방,광고 등 소비 고민과 관련없는 내용은 통보 없이 삭제될 수 있습니다."
     @State private var showCropView: Bool = false
-    @Bindable private var viewModel: ReviewWriteViewModel = ReviewWriteViewModel()
+    @State private var isMine: Bool = false
+    @Bindable var viewModel: ReviewWriteViewModel
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         ZStack {
@@ -28,14 +30,11 @@ struct ReviewWriteView: View {
                 ScrollView {
                     VStack(spacing: 48) {
                         VStack(spacing: 12) {
-//                            VoteCardCell(cellType: .simple,
-//                                         progressType: .end,
-//                                         voteResultType: .draw,
-//                                         post: )
+                            VoteCardCell(cellType: .simple, progressType: .closed, post: viewModel.post)
                             buySelection
                         }
                         titleView
-                        if viewModel.isBuy {
+                        if viewModel.isPurchased {
                             priceView
                             imageView
                         }
@@ -61,33 +60,36 @@ struct ReviewWriteView: View {
             .onTapGesture {
                 dismissKeyboard()
             }
-//            .customConfirmDialog(isPresented: $isEditing) {
-//                Button {
-//                    showCropView.toggle()
-//                    isEditing = false
-//                } label: {
-//                    Text("수정하기")
-//                        .frame(maxWidth: .infinity)
-//                }
-//                Divider()
-//                    .foregroundStyle(Color.gray300)
-//                Button {
-//                    showPicker.toggle()
-//                    isEditing = false
-//                } label: {
-//                    Text("다른 상품사진 선택하기")
-//                        .frame(maxWidth: .infinity)
-//                }
-//                Divider()
-//                    .foregroundStyle(Color.gray300)
-//                Button {
-//                    croppedImage = nil
-//                    isEditing = false
-//                } label: {
-//                    Text("삭제하기")
-//                        .frame(maxWidth: .infinity)
-//                }
-//            }
+            .customConfirmDialog(isPresented: $isEditing, isMine: $isMine) { _ in
+                Button {
+                    showCropView.toggle()
+                    isEditing = false
+                } label: {
+                    Text("수정하기")
+                        .frame(maxWidth: .infinity)
+                }
+                .frame(height: 52)
+                Divider()
+                    .foregroundStyle(Color.gray300)
+                Button {
+                    showPicker.toggle()
+                    isEditing = false
+                } label: {
+                    Text("다른 상품사진 선택하기")
+                        .frame(maxWidth: .infinity)
+                }
+                .frame(height: 52)
+                Divider()
+                    .foregroundStyle(Color.gray300)
+                Button {
+                    croppedImage = nil
+                    isEditing = false
+                } label: {
+                    Text("삭제하기")
+                        .frame(maxWidth: .infinity)
+                }
+                .frame(height: 52)
+            }
         }
     }
 }
@@ -101,14 +103,16 @@ extension ReviewWriteView {
                 HStack(spacing: 0) {
                     Button {
                         withAnimation(.easeInOut(duration: 0.3)) {
-                            viewModel.isBuy = true
+                            viewModel.clearData(true)
+                            croppedImage = nil
+                            isRegisterButtonDidTap = false
                         }
                     } label: {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(viewModel.isBuy ? Color.lightBlue : .clear)
+                                .foregroundStyle(viewModel.isPurchased ? Color.lightBlue : .clear)
                             Text("샀다")
-                                .font(.system(size: 16, weight: viewModel.isBuy ? .bold : .medium))
+                                .font(.system(size: 16, weight: viewModel.isPurchased ? .bold : .medium))
                                 .foregroundStyle(.white)
                         }
                     }
@@ -116,14 +120,16 @@ extension ReviewWriteView {
                     .contentShape(Rectangle())
                     Button {
                         withAnimation(.easeInOut(duration: 0.3)) {
-                            viewModel.isBuy = false
+                            viewModel.clearData(false)
+                            croppedImage = nil
+                            isRegisterButtonDidTap = false
                         }
                     } label: {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(viewModel.isBuy ? .clear : Color.lightBlue)
+                                .foregroundStyle(viewModel.isPurchased ? .clear : Color.lightBlue)
                             Text("안샀다")
-                                .font(.system(size: 16, weight: viewModel.isBuy ? .bold : .medium))
+                                .font(.system(size: 16, weight: viewModel.isPurchased ? .bold : .medium))
                                 .foregroundStyle(.white)
                         }
                     }
@@ -158,11 +164,11 @@ extension ReviewWriteView {
                                 .shadow(color: Color.strokeBlue.opacity(isTitleFocused ? 0.25 : 0), radius: 4)
                         }
                         RoundedRectangle(cornerRadius: 10)
-                            .strokeBorder(!viewModel.isTitleValid && isRegisterButtonDidTap ? .red : Color.darkBlue, lineWidth: 1)
+                            .strokeBorder(viewModel.title.isEmpty && isRegisterButtonDidTap ? .red : Color.darkBlue, lineWidth: 1)
                     }
                 )
             }
-            if !viewModel.isTitleValid && isRegisterButtonDidTap {
+            if viewModel.title.isEmpty && isRegisterButtonDidTap {
                 HStack(spacing: 8) {
                     Image(systemName: "light.beacon.max")
                     Text("제목을 입력해주세요.")
@@ -218,22 +224,37 @@ extension ReviewWriteView {
                     .onTapGesture {
                         isEditing.toggle()
                     }
+                    .onAppear {
+                        if let imageData = croppedImage.jpegData(compressionQuality: 1.0) {
+                            viewModel.image = imageData
+                        }
+                    }
             } else {
                 Button {
                     showPicker.toggle()
                 } label: {
-                    HStack(spacing: 7) {
-                        Image(systemName: "plus")
-                            .font(.system(size: 16))
-                        Text("상품 이미지")
-                            .font(.system(size: 14, weight: .medium))
-                    }
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 44)
-                    .foregroundStyle(Color.lightBlue)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 10)
-                            .strokeBorder(Color.darkBlue, lineWidth: 1)
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack(spacing: 7) {
+                            Image(systemName: "plus")
+                                .font(.system(size: 16))
+                            Text("상품 이미지")
+                                .font(.system(size: 14, weight: .medium))
+                        }
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 44)
+                        .foregroundStyle(Color.lightBlue)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 10)
+                                .strokeBorder(!viewModel.isValid && isRegisterButtonDidTap ? .red : Color.darkBlue, lineWidth: 1)
+                        }
+                        if viewModel.image == nil && isRegisterButtonDidTap {
+                            HStack(spacing: 8) {
+                                Image(systemName: "light.beacon.max")
+                                Text("사진을 등록해주세요.")
+                            }
+                            .font(.system(size: 12))
+                            .foregroundStyle(.red)
+                        }
                     }
                 }
             }
@@ -295,18 +316,18 @@ extension ReviewWriteView {
     
     private var reviewRegisterButton: some View {
         Button {
-                        isRegisterButtonDidTap = true
-            //            if viewModel.isTitleValid {
-            //                viewModel.createPost()
-            //                isWriteViewPresented = false
-            //            }
+            isRegisterButtonDidTap = true
+            if viewModel.isValid {
+                viewModel.createReview()
+                dismiss()
+            }
         } label: {
             Text("등록하기")
                 .font(.system(size: 20, weight: .bold))
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
                 .frame(height: 52)
-                .background(viewModel.title != "" ? Color.lightBlue : Color.disableGray)
+                .background(viewModel.isValid ? Color.lightBlue : Color.disableGray)
                 .cornerRadius(10)
         }
     }
@@ -322,11 +343,5 @@ extension ReviewWriteView {
     
     private func dismissKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-    }
-}
-
-#Preview {
-    NavigationStack {
-        ReviewWriteView()
     }
 }

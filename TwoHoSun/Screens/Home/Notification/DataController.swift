@@ -9,11 +9,14 @@ import CoreData
 
 class DataController: ObservableObject {
     let container: NSPersistentContainer
-    @Published var savedDatas: [NotificationModel] = [] {
-        didSet {
-            print(savedDatas)
-        }
-    }
+//    @Published var savedDatas: [NotificationModel] = [] {
+//        didSet {
+//            print(savedDatas)
+//        }
+//    }
+    @Published var todayDatas: [NotificationModel] = []
+
+    @Published var previousDatas: [NotificationModel] = []
     init() {
         container = NSPersistentContainer(name: "DataModel")
         container.loadPersistentStores { description, error in
@@ -30,7 +33,6 @@ class DataController: ObservableObject {
             fetchDatas()
             print("saved")
         } catch {
-            print(error)
             print("not save data")
         }
     }
@@ -48,7 +50,17 @@ class DataController: ObservableObject {
     func fetchDatas() {
         let request = NSFetchRequest<NotificationModel>(entityName: "NotificationModel")
         do {
-            savedDatas =  try container.viewContext.fetch(request)
+            let allSavedDatas = try container.viewContext.fetch(request)
+            let today = Calendar.current.startOfDay(for: Date())
+            todayDatas = allSavedDatas.filter { data in
+                guard let dataDate = data.date else { return false }
+                return Calendar.current.isDate(dataDate, inSameDayAs: today)
+            }
+
+            previousDatas = allSavedDatas.filter { data in
+                guard let dataDate = data.date else { return false }
+                return !Calendar.current.isDate(dataDate, inSameDayAs: today)
+            }
         } catch let error {
             print("wow \(error)")
         }
@@ -56,7 +68,7 @@ class DataController: ObservableObject {
 
     func deleteData(indexSet: IndexSet) {
         guard let index = indexSet.first else {return}
-        let entity = savedDatas[index]
+        let entity = todayDatas[index]
         container.viewContext.delete(entity)
         save()
     }

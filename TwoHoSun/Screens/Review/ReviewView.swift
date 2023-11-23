@@ -121,11 +121,13 @@ extension ReviewView {
                 NavigationLink {
                     ReviewDetailView()
                 } label: {
-                    VStack(spacing: 6) {
-                        Divider()
-                            .background(Color.dividerGray)
-//                        ReviewCardCell(cellType: .otherReview, isPurchased: Bool.random())
-                    }
+//                    VStack(spacing: 6) {
+//                        Divider()
+//                            .background(Color.dividerGray)
+////                        ReviewCardCell(cellType: .otherReview, post: )
+//                        ReviewCardCell(cellType: .otherReview, post: Text("hi"))
+//                    }
+                    Text("hi")
                 }
             }
         case .purchased:

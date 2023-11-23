@@ -38,34 +38,21 @@ extension NotificationView {
     private var notificationList: some View {
         ScrollView {
             VStack(alignment: .leading) {
-                List {
-                    ForEach(viewModel.savedDatas) { data in
-                        Text(data.body!)
-                            .foregroundStyle(Color.white)
-//                        makenotificationCell(notiData: data)
-//                            .onAppear {
-//                                print(data)
-//                            }
+                if !viewModel.todayDatas.isEmpty {
+                    listHeader("오늘 알림")
+                    ForEach(viewModel.todayDatas) { data in
+                        makenotificationCell(notiData: data)
                     }
                 }
-//                if !viewModel.within24HoursData.isEmpty {
-//                    listHeader("오늘 알림")
-//                    ForEach(viewModel.within24HoursData, id: \.notitime) { data in
-//                        makenotificationCell(notiData: data)
-//                    }
-//                } else if !viewModel.beyond24HoursData.isEmpty {
-//                    Divider()
-//                        .foregroundStyle(Color.dividerGray)
-//                    listHeader("이전 알림")
-//                    ForEach(viewModel.beyond24HoursData, id: \.notitime) {data in
-//                        makenotificationCell(notiData: data)
-//                    }
-//                }
+                if !viewModel.previousDatas.isEmpty {
+                    Divider()
+                        .foregroundStyle(Color.dividerGray)
+                    listHeader("이전 알림")
+                    ForEach(viewModel.previousDatas) {data in
+                        makenotificationCell(notiData: data)
+                    }
+                }
             }
-
-//            .onAppear {
-//                print(datas)
-//            }
             .padding(.horizontal, 16)
         }
         .scrollIndicators(.hidden)

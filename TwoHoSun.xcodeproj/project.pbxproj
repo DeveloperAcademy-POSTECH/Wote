@@ -104,8 +104,10 @@
 		C7F1FD842ADDA2F000C5A2A1 /* OnBoardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F1FD832ADDA2F000C5A2A1 /* OnBoardingView.swift */; };
 		C7F1FD862ADDA37E00C5A2A1 /* BottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F1FD852ADDA37E00C5A2A1 /* BottomSheetView.swift */; };
 		C7F1FD882ADDA39500C5A2A1 /* DesciptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F1FD872ADDA39500C5A2A1 /* DesciptionView.swift */; };
+		FD0E8B5A2B0DDCBB002CED68 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD0E8B592B0DDCBB002CED68 /* SettingViewModel.swift */; };
 		FD132BF22ADBE8FB00F31AAF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD132BF12ADBE8FB00F31AAF /* Assets.xcassets */; };
 		FD132BF52ADBE8FB00F31AAF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD132BF42ADBE8FB00F31AAF /* Preview Assets.xcassets */; };
+		FD1B6D462B0BEBC50097F789 /* ReviewCreateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD1B6D452B0BEBC50097F789 /* ReviewCreateModel.swift */; };
 		FD2C7D8C2B0705DA00B5B494 /* CardImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2C7D8B2B0705DA00B5B494 /* CardImageView.swift */; };
 		FD3205682ADD5C0D00B0D5F6 /* TwoHoSunApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3205672ADD5C0D00B0D5F6 /* TwoHoSunApp.swift */; };
 		FD3646F52ADD8E2D0064DF94 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FD3646F42ADD8E2D0064DF94 /* Alamofire */; };
@@ -232,9 +234,11 @@
 		C7F1FD832ADDA2F000C5A2A1 /* OnBoardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingView.swift; sourceTree = "<group>"; };
 		C7F1FD852ADDA37E00C5A2A1 /* BottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetView.swift; sourceTree = "<group>"; };
 		C7F1FD872ADDA39500C5A2A1 /* DesciptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesciptionView.swift; sourceTree = "<group>"; };
+		FD0E8B592B0DDCBB002CED68 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
 		FD132BEA2ADBE8FA00F31AAF /* TwoHoSun.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwoHoSun.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD132BF12ADBE8FB00F31AAF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FD132BF42ADBE8FB00F31AAF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		FD1B6D452B0BEBC50097F789 /* ReviewCreateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewCreateModel.swift; sourceTree = "<group>"; };
 		FD2C7D8B2B0705DA00B5B494 /* CardImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardImageView.swift; sourceTree = "<group>"; };
 		FD32055D2ADD16AC00B0D5F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FD3205672ADD5C0D00B0D5F6 /* TwoHoSunApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoHoSunApp.swift; sourceTree = "<group>"; };
@@ -594,6 +598,7 @@
 				C73F8E852AE55014001C6B07 /* FeedModel */,
 				C73F8E862AE550E4001C6B07 /* CommonModel */,
 				ABBBC67B2AE49CC800B1E614 /* PostCreateModel.swift */,
+				FD1B6D452B0BEBC50097F789 /* ReviewCreateModel.swift */,
 				AB6845AC2AFC13FF00C3F7C2 /* TypeTestModel.swift */,
 			);
 			path = Model;
@@ -676,6 +681,7 @@
 			isa = PBXGroup;
 			children = (
 				ABA1E84F2AFEA3AF009051E0 /* SettingView.swift */,
+				FD0E8B592B0DDCBB002CED68 /* SettingViewModel.swift */,
 				FD50A0472B01EBE000CF7F59 /* SettingNotificationView.swift */,
 				FD70B1F52B01C3080097B727 /* SettingBlockView.swift */,
 				FD50A0492B01F16200CF7F59 /* SettingAnnouncementView.swift */,
@@ -836,6 +842,7 @@
 				FDDEC15B2AE3EABA004509EA /* SearchView.swift in Sources */,
 				ABAFB6412AF978790070512F /* PurchaseLabel.swift in Sources */,
 				FD50A0482B01EBE000CF7F59 /* SettingNotificationView.swift in Sources */,
+				FD0E8B5A2B0DDCBB002CED68 /* SettingViewModel.swift in Sources */,
 				C7B5A8882B01641A00B73881 /* Authenticator.swift in Sources */,
 				5E5099542AED59DE0053E529 /* AppDelegate.swift in Sources */,
 				AB7317EF2AF9178C008B5E41 /* FilterButton.swift in Sources */,
@@ -850,6 +857,7 @@
 				C7F1FD862ADDA37E00C5A2A1 /* BottomSheetView.swift in Sources */,
 				ABA1E84A2AFD5C0B009051E0 /* ReviewWriteViewModel.swift in Sources */,
 				FD50A04C2B02084600CF7F59 /* SettingQuestionsView.swift in Sources */,
+				FD1B6D462B0BEBC50097F789 /* ReviewCreateModel.swift in Sources */,
 				FD2C7D8C2B0705DA00B5B494 /* CardImageView.swift in Sources */,
 				C782E7642AFED523006BCE59 /* ErrorResponse.swift in Sources */,
 				AB4522562ADDDBC400B69F24 /* SchoolResponseModel.swift in Sources */,
