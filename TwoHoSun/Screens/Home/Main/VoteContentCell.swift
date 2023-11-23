@@ -30,13 +30,7 @@ struct VoteContentCell: View {
             .padding(.bottom, 10)
             HStack(spacing: 4) {
                 if data.postStatus == PostStatus.closed.rawValue {
-                    Text("종료")
-                        .font(.system(size: 12, weight: .medium))
-                        .foregroundStyle(.white)
-                        .padding(.vertical, 4)
-                        .padding(.horizontal, 5)
-                        .background(Color.disableGray)
-                        .clipShape(RoundedRectangle(cornerRadius: 3))
+                    EndLabel()
                 }
                 Text(data.title)
                     .font(.system(size: 16, weight: .bold))

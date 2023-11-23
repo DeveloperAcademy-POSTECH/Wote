@@ -20,14 +20,17 @@ final class ConsiderationViewModel: ObservableObject {
     }
 
     func fetchPosts(page: Int = 0,
-                    size: Int = 10,
+                    size: Int = 5,
                     visibilityScope: VisibilityScopeType,
                     isFirstFetch: Bool = true,
                     isRefresh: Bool = false) {
-
-        if isFirstFetch && !isRefresh {
+        if isFirstFetch {
             appLoginState.appData.postManager.posts.removeAll()
             isLoading = true
+        }
+
+        if isRefresh {
+            appLoginState.appData.postManager.posts.removeAll()
         }
 
         appLoginState.serviceRoot.apimanager
@@ -46,7 +49,7 @@ final class ConsiderationViewModel: ObservableObject {
             }
         } receiveValue: { data in
             self.appLoginState.appData.postManager.posts.append(contentsOf: data)
-            self.isLastPage = data.count < 10
+            self.isLastPage = data.count < 5
             self.isLoading = false
         }
         .store(in: &cancellables)

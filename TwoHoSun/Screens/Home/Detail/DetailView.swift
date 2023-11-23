@@ -30,7 +30,8 @@ struct DetailView: View {
                 ScrollView {
                     VStack(spacing: 0) {
                         if isShowingItems {
-                            DetailHeaderView(data: data)
+                            DetailHeaderView(alertOn: data.post.isNotified ?? false,
+                                             data: data)
                                 .padding(.top, 18)
                             Divider()
                                 .background(Color.disableGray)

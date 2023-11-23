@@ -13,13 +13,10 @@ enum PostService {
     case getPosts(page: Int, size: Int, visibilityScope: String)
     case createPost(post: PostCreateModel)
     case getPostDetail(postId: Int)
-    case modifyPost
     case deletePost(postId: Int)
     case getReviewDetailWithReviewId(reviewId: Int)
     case getReviewDetailWithPostId(postId: Int)
-    case modifyReview
     case createReview(postId: Int, review: ReviewCreateModel)
-    case subscribeReview
     case votePost(postId: Int, choice: Bool)
     case getSearchResult(postStatus: PostStatus, visibilityScopeType: VisibilityScopeType, page: Int, size: Int, keyword: String)
     case getMyReviews(page: Int, size: Int, myReviewCategoryType: String)
@@ -33,6 +30,8 @@ enum PostService {
                         size: Int,
                         reviewType: String)
     case deleteReviewWithPostId(postId: Int)
+    case subscribeReview(postId: Int)
+    case deleteSubscribeReview(postId: Int)
 }
 
 extension PostService: TargetType {
@@ -73,6 +72,10 @@ extension PostService: TargetType {
             return "/posts/\(postId)/reviews"
         case .createReview(let postId, _):
             return "/posts/\(postId)/reviews"
+        case .subscribeReview(let postId):
+            return "/posts/\(postId)/subscribe"
+        case .deleteSubscribeReview(let postId):
+            return "/posts/\(postId)/subscribe"
         default:
             return ""
         }
@@ -143,6 +146,10 @@ extension PostService: TargetType {
             return .get
         case .createReview:
             return .post
+        case .subscribeReview:
+            return .post
+        case .deleteSubscribeReview:
+            return .delete
         default:
             return .get
         }
@@ -234,6 +241,12 @@ extension PostService: TargetType {
                 print("error: \(error)")
             }
             return .uploadMultipart(formData)
+        case .subscribeReview(let postId):
+            return .requestParameters(parameters: ["postId": postId],
+                                      encoding: URLEncoding.default)
+        case .deleteSubscribeReview(let postId):
+            return .requestParameters(parameters: ["postId": postId],
+                                      encoding: URLEncoding.default)
         default:
             return .requestPlain
         }
