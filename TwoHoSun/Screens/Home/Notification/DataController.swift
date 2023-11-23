@@ -66,10 +66,15 @@ class DataController: ObservableObject {
         }
     }
 
-    func deleteData(indexSet: IndexSet) {
+    func deleteData(indexSet: IndexSet, recentData: Bool) {
         guard let index = indexSet.first else {return}
-        let entity = todayDatas[index]
-        container.viewContext.delete(entity)
+        if recentData {
+            let entity = todayDatas[index]
+            container.viewContext.delete(entity)
+        } else {
+            let entity = previousDatas[index]
+            container.viewContext.delete(entity)
+        }
         save()
     }
 }

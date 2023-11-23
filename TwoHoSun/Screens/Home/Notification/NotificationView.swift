@@ -11,10 +11,8 @@ import Kingfisher
 
 struct NotificationView: View {
     @Environment(AppLoginState.self) private var stateManager
-//    @Environment(\.managedObjectContext) var managedObjContext
-//    @FetchRequest(entity: NotificationModel.entity(),
-//                  sortDescriptors: [NSSortDescriptor(keyPath: \NotificationModel.date, ascending: true)]) var datas: FetchedResults<NotificationModel>
     @ObservedObject var viewModel: DataController
+
     var body: some View {
         ZStack {
             Color.background
@@ -35,27 +33,59 @@ struct NotificationView: View {
 }
 
 extension NotificationView {
+    @ViewBuilder
     private var notificationList: some View {
-        ScrollView {
-            VStack(alignment: .leading) {
-                if !viewModel.todayDatas.isEmpty {
-                    listHeader("오늘 알림")
-                    ForEach(viewModel.todayDatas) { data in
-                        makenotificationCell(notiData: data)
+        List {
+            if !viewModel.todayDatas.isEmpty {
+                Section {
+                    ForEach(viewModel.todayDatas) {data in
+                        Button {
+                            stateManager.serviceRoot.navigationManager.navigate(
+                                .detailView(postId: Int(data.postId), index: 0, dirrectComments: true))
+                        } label: {
+                            makenotificationCell(notiData: data)
+                        }
+                        .listRowSeparator(.hidden)
+                        .listRowInsets(EdgeInsets())
+                        .listRowBackground(Color.background)
                     }
-                }
-                if !viewModel.previousDatas.isEmpty {
+                    .onDelete { index in
+                        viewModel.deleteData(indexSet: index, recentData: true)
+                    }
+                } header: {
+                    listHeader("오늘 알림")
+                } footer: {
                     Divider()
                         .foregroundStyle(Color.dividerGray)
-                    listHeader("이전 알림")
-                    ForEach(viewModel.previousDatas) {data in
-                        makenotificationCell(notiData: data)
-                    }
+                        .listRowBackground(Color.background)
+                        .listRowInsets(EdgeInsets())
+                        .listRowSeparator(.hidden)
                 }
             }
-            .padding(.horizontal, 16)
+            if !viewModel.previousDatas.isEmpty {
+                Section {
+                    ForEach(viewModel.previousDatas) {data in
+                        Button {
+                            stateManager.serviceRoot.navigationManager.navigate(
+                                .detailView(postId: Int(data.postId), index: 0, dirrectComments: true))
+                        } label: {
+                            makenotificationCell(notiData: data)
+                        }
+                        .listRowSeparator(.hidden)
+                        .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
+                        .listRowBackground(Color.background)
+                    }
+                    .onDelete { index in
+                        viewModel.deleteData(indexSet: index, recentData: false)
+                    }
+                } header: {
+                    listHeader("이전 알림")
+                }
+                .listRowInsets(EdgeInsets())
+            }
         }
-        .scrollIndicators(.hidden)
+        .listStyle(.plain)
+        .padding(.horizontal, 16)
     }
 
     private func listHeader(_ headerName: String) -> some View {
@@ -64,6 +94,7 @@ extension NotificationView {
             .foregroundStyle(.white)
             .padding(.top, 16)
     }
+
 
     func makenotificationCell(notiData: NotificationModel) -> some View {
         var diffrentTime: (String, Int) {
