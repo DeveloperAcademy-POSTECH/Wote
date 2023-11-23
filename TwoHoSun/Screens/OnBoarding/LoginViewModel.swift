@@ -37,7 +37,7 @@ class LoginViewModel {
                 }
             }, receiveValue: { response in
                 if let data = response.data {
-                    print(data.jwtToken)
+                    let semaphore = DispatchSemaphore(value: 0)
                     self.appState.serviceRoot.auth.saveTokens(data.jwtToken)
                     if response.message == "Not Completed SignUp Exception" {
                         UserDefaults.standard.setValue(false, forKey: "haveConsumerType")
@@ -54,7 +54,8 @@ class LoginViewModel {
     }
 
     func postDeviceToken() {
-        appState.serviceRoot.apimanager.request(
+        var cancellable: AnyCancellable?
+        cancellable =  appState.serviceRoot.apimanager.request(
             .userService(
                 .postDeviceTokens(deviceToken: KeychainManager.shared.readToken(key: "deviceToken")!)),
             decodingType: NoData.self)
@@ -63,7 +64,8 @@ class LoginViewModel {
         } receiveValue: { response in
             print(response)
             print("successDeviceToken")
+            cancellable?.cancel()
         }
-        .store(in: &bag)
+//        .store(in: &bag)
     }
 }
