@@ -125,8 +125,6 @@ struct WoteTabView: View {
                 case .reviewWriteView(let post):
                     ReviewWriteView(viewModel: ReviewWriteViewModel(post: post,
                                                                     apiManager: loginStateManager.serviceRoot.apimanager))
-                default:
-                    EmptyView()
                 case .notiView:
                     NotificationView( viewModel: notiManager)
                 }

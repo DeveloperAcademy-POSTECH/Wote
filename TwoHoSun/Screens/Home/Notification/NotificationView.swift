@@ -60,7 +60,7 @@ extension NotificationView {
             ForEach(data) { dataItem in
                 Button {
                     stateManager.serviceRoot.navigationManager.navigate(
-                        .detailView(postId: Int(dataItem.postId), index: 0, dirrectComments: true))
+                        .detailView(postId: Int(dataItem.postId), dirrectComments: true))
                 } label: {
                     makenotificationCell(notiData: dataItem)
                 }

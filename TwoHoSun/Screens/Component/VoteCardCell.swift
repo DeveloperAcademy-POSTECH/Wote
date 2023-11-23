@@ -65,7 +65,7 @@ struct VoteCardCell: View {
         VStack(alignment: .leading, spacing: 18) {
             if cellType == .standard {
                 HStack(spacing: 8) {
-                    if let profileImage = post.author?.profileImage {
+                    if let profileImage = data.author?.profileImage {
                         KFImage(URL(string: profileImage)!)
                             .placeholder {
                                 ProgressView()
@@ -79,7 +79,7 @@ struct VoteCardCell: View {
                             .frame(width: 32, height: 32)
                             .clipShape(.circle)
                     }
-                    Text(post.author?.nickname ?? "")
+                    Text(data.author?.nickname ?? "")
                         .font(.system(size: 16, weight: .bold))
                         .foregroundStyle(.white)
                     Spacer()
