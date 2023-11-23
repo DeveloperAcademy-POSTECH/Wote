@@ -96,7 +96,8 @@ struct ProfileSettingsView: View {
     @Bindable var viewModel: ProfileSettingViewModel
     @Environment(\.dismiss) private var dismiss
     @Environment(AppLoginState.self) private var loginStateManager
-    
+    @FocusState var focusState: Bool
+
     var profile: ProfileModel?
     
     var body: some View {
@@ -164,36 +165,33 @@ struct ProfileSettingsView: View {
         .toolbarBackground(Color.background, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .photosPicker(isPresented: $retryProfileImage, selection: $selectedPhoto)
-//        .customConfirmDialog(isPresented: $isProfileSheetShowed) {
-//            Button("프로필 삭제하기", role: .destructive) {
-//                selectedPhoto = nil
-//                viewModel.selectedImageData = nil
-//                isProfileSheetShowed.toggle()
-//            }
-//            .frame(height: 42)
-//            Divider()
-//            Button("프로필 재설정하기") {
-//                retryProfileImage = true
-//            }
-//            .frame(height: 42)
-//            .navigationTitle("프로필 설정")
-//            .toolbar(.hidden, for: .navigationBar)
-//            .navigationBarBackButtonHidden()
-//        }
-        //        .onChange(of: viewModel.isSucccedPost) { _, newValue in
-        //            if newValue == true {
-        //                navigationPath.removeFirst()
-        //                navigationPath.append(.mainTabView)
-        //                print(navigationPath)
-        //            }
-        //        }
+        .customConfirmDialog(isPresented: $isProfileSheetShowed, isMine: .constant(true)) {_ in
+            Button {
+                selectedPhoto = nil
+                viewModel.selectedImageData = nil
+                isProfileSheetShowed.toggle()
+            } label: {
+                Text("프로필 삭제하기")
+                    .frame(maxWidth: .infinity)
+            }
+            .frame(height: 42)
+            Divider()
+                .background(Color.gray300)
+            Button {
+                retryProfileImage = true
+            } label: {
+                Text("프로필 재설정하기")
+            }
+            .frame(height: 42)
+        }
+        .navigationTitle("프로필 설정")
+        .toolbar(.hidden, for: .navigationBar)
+        .navigationBarBackButtonHidden()
     }
 }
 
 extension ProfileSettingsView {
-
     // MARK: - UI Components
-
     private var titleLabel: some View {
         HStack(spacing: 7) {
             VStack(alignment: .leading, spacing: 9) {
@@ -296,12 +294,12 @@ extension ProfileSettingsView {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
                             .strokeBorder(viewModel.nicknameValidationType.textfieldBorderColor, lineWidth: 1)
-//                        if (viewModel.nicknameValidationType == .none || viewModel.nicknameValidationType == .valid) {
-//                            RoundedRectangle(cornerRadius: 10)
-//                                .strokeBorder(viewModel.nicknameValidationType.textfieldBorderColor, lineWidth: 1)
-//                                .shadow(color: Color.strokeBlue.opacity(0.15), radius: 2)
-//                                .blur(radius: 3)
-//                        }
+                        if (focusState || viewModel.nicknameValidationType == .empty || viewModel.nicknameValidationType == .none) {
+                            RoundedRectangle(cornerRadius: 10)
+                                .strokeBorder(viewModel.nicknameValidationType.textfieldBorderColor, lineWidth: 1)
+                                .shadow(color: Color.strokeBlue.opacity(0.15), radius: 2)
+                                .blur(radius: 3)
+                        }
                     }
                 }
                 .onAppear {
