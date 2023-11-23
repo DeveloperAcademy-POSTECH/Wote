@@ -88,7 +88,6 @@ enum ProfileSettingType {
 
 struct ProfileSettingsView: View {
     @State private var selectedPhoto: PhotosPickerItem?
-    //    @State private var selectedImageData: Data?
     @State private var isProfileSheetShowed = false
     @State private var retryProfileImage = false
     @State private var isRestricted = false
@@ -97,8 +96,6 @@ struct ProfileSettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(AppLoginState.self) private var loginStateManager
     @FocusState var focusState: Bool
-
-    var profile: ProfileModel?
     
     var body: some View {
         ZStack {
@@ -111,7 +108,7 @@ struct ProfileSettingsView: View {
                         .padding(.top, 40)
                 case .modfiy:
                     HStack {
-                        ConsumerTypeLabel(consumerType: profile?.consumerType ?? .adventurer, usage: .standard)
+                        ConsumerTypeLabel(consumerType: loginStateManager.appData.profile?.consumerType ?? .adventurer, usage: .standard)
                         Spacer()
                     }
                     .padding(.top, 30)
@@ -123,14 +120,14 @@ struct ProfileSettingsView: View {
                     .padding(.bottom, 34)
                 schoolInputView
                     .onAppear {
-                        if let school = profile?.school {
+                        if let school = loginStateManager.appData.profile?.school {
                             if viewModel.selectedSchoolInfo == nil {
                                 viewModel.selectedSchoolInfo = SchoolInfoModel(school: school, schoolAddress: nil)
                             }
                         }
                     }
                     .onAppear {
-                        if let lastSchoolRegisterDate = profile?.lastSchoolRegisterDate {
+                        if let lastSchoolRegisterDate = loginStateManager.appData.profile?.lastSchoolRegisterDate {
                             isRestricted = viewModel.checkSchoolRegisterDate(lastSchoolRegisterDate)
                         }
                     }
@@ -227,7 +224,7 @@ extension ProfileSettingsView {
                     .clipShape(Circle())
             } else {
                 photoPickerView {
-                    if let profileImage = profile?.profileImage {
+                    if let profileImage = loginStateManager.appData.profile?.profileImage {
                         ProfileImageView(imageURL: profileImage)
                             .frame(width: 130, height: 130)
                     } else {
@@ -303,7 +300,7 @@ extension ProfileSettingsView {
                     }
                 }
                 .onAppear {
-                    if let nickname = profile?.nickname {
+                    if let nickname = loginStateManager.appData.profile?.nickname {
                         viewModel.nickname = nickname
                     }
                 }
@@ -314,10 +311,6 @@ extension ProfileSettingsView {
             }
             nicknameValidationAlertMessage(for: viewModel.nicknameValidationType)
                 .padding(.top, 6)
-//            if viewModel.nicknameValidationType != .none {
-//                nicknameValidationAlertMessage(for: viewModel.nicknameValidationType != .none ? viewModel.nicknameValidationType : .none)
-//                    .padding(.top, 6)
-//            }
         }
     }
 
