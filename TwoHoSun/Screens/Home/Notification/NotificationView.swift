@@ -11,7 +11,10 @@ import Kingfisher
 
 struct NotificationView: View {
     @Environment(AppLoginState.self) private var stateManager
-    @State var viewModel: NotificationViewModel
+//    @Environment(\.managedObjectContext) var managedObjContext
+//    @FetchRequest(entity: NotificationModel.entity(),
+//                  sortDescriptors: [NSSortDescriptor(keyPath: \NotificationModel.date, ascending: true)]) var datas: FetchedResults<NotificationModel>
+    @ObservedObject var viewModel: DataController
     var body: some View {
         ZStack {
             Color.background
@@ -35,20 +38,34 @@ extension NotificationView {
     private var notificationList: some View {
         ScrollView {
             VStack(alignment: .leading) {
-                if !viewModel.within24HoursData.isEmpty {
-                    listHeader("오늘 알림")
-                    ForEach(viewModel.within24HoursData, id: \.notitime) { data in
-                        makenotificationCell(notiData: data)
-                    }
-                } else if !viewModel.beyond24HoursData.isEmpty {
-                    Divider()
-                        .foregroundStyle(Color.dividerGray)
-                    listHeader("이전 알림")
-                    ForEach(viewModel.beyond24HoursData, id: \.notitime) {data in
-                        makenotificationCell(notiData: data)
+                List {
+                    ForEach(viewModel.savedDatas) { data in
+                        Text(data.body!)
+                            .foregroundStyle(Color.white)
+//                        makenotificationCell(notiData: data)
+//                            .onAppear {
+//                                print(data)
+//                            }
                     }
                 }
+//                if !viewModel.within24HoursData.isEmpty {
+//                    listHeader("오늘 알림")
+//                    ForEach(viewModel.within24HoursData, id: \.notitime) { data in
+//                        makenotificationCell(notiData: data)
+//                    }
+//                } else if !viewModel.beyond24HoursData.isEmpty {
+//                    Divider()
+//                        .foregroundStyle(Color.dividerGray)
+//                    listHeader("이전 알림")
+//                    ForEach(viewModel.beyond24HoursData, id: \.notitime) {data in
+//                        makenotificationCell(notiData: data)
+//                    }
+//                }
             }
+
+//            .onAppear {
+//                print(datas)
+//            }
             .padding(.horizontal, 16)
         }
         .scrollIndicators(.hidden)
@@ -63,7 +80,7 @@ extension NotificationView {
 
     func makenotificationCell(notiData: NotificationModel) -> some View {
         var diffrentTime: (String, Int) {
-            notiData.notitime.toDate()!.differenceCurrentTime()
+            return (notiData.date?.differenceCurrentTime())!
         }
         return HStack(alignment: .top, spacing: 16) {
             if let profileImage = notiData.authorProfile {
@@ -81,7 +98,7 @@ extension NotificationView {
                     .clipShape(.circle)
             }
             VStack(alignment: .leading, spacing: 6) {
-                Text(notiData.aps.alert.body)
+                Text(notiData.body!)
                     .font(.system(size: 16, weight: .medium))
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .foregroundStyle(.white)

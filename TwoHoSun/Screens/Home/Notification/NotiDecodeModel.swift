@@ -6,7 +6,7 @@
 //
 
 import Foundation
-struct NotificationModel: Decodable {
+struct NotiDecodeModel: Decodable {
     let postid: Int
     let aps: Aps
     let postStatus: String

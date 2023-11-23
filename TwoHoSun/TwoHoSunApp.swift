@@ -17,6 +17,7 @@ enum Route {
 struct TwoHoSunApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @State private var appState = AppLoginState()
+    @StateObject private var dataController = DataController()
 
     var body: some Scene {
         WindowGroup {
@@ -25,11 +26,12 @@ struct TwoHoSunApp: App {
                 OnBoardingView(viewModel: LoginViewModel(appState: appState))
                     .environment(appState)
             case .loggedIn:
-                    WoteTabView(path: .constant([]))
-                        .environment(appState)
-                        .onAppear {
-                            appDelegate.app = self
-                        }
+                WoteTabView(path: .constant([]), notiManager: dataController)
+                    .environment(appState)
+//                    .environment(\.managedObjectContext, dataController.container.viewContext)
+                    .onAppear {
+                        appDelegate.app = self
+                    }
             }
         }
     }
@@ -37,8 +39,11 @@ struct TwoHoSunApp: App {
 }
 
 extension TwoHoSunApp {
-    func handleDeepPush(notiModel: NotificationModel) async {
-        appState.appData.notificationDatas.append(notiModel)
+    func handleDeepPush(notiModel: NotiDecodeModel) async {
+        if notiModel.isComment {
+            dataController.addNotificationData(model: notiModel)
+            NotificationCenter.default.post(name: Notification.Name("showComment"), object: nil)
+        }
         appState.serviceRoot.navigationManager.navigate(.detailView(postId: notiModel.postid, index: 0, dirrectComments: notiModel.isComment))
     }
 }
@@ -53,7 +58,7 @@ class ServiceRoot {
 
 @Observable
 class AppData {
-    var notificationDatas = [NotificationModel]() {
+    var notificationDatas = [NotiDecodeModel]() {
         didSet {
             print(notificationDatas)
         }
@@ -70,13 +75,13 @@ class AppLoginState {
         checkTokenValidity()
         serviceRoot.auth.relogin = relogin
     }
-    
+
     private func relogin() {
         DispatchQueue.main.async {
             self.serviceRoot.auth.authState = .none
         }
     }
-    
+
     private func checkTokenValidity() {
         if serviceRoot.apimanager.authenticator.accessToken != nil {
             serviceRoot.auth.authState = .loggedIn

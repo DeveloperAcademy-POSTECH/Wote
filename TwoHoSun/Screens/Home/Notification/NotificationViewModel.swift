@@ -11,8 +11,8 @@ import SwiftUI
 @Observable
 class NotificationViewModel {
     var notisavedDatas: AppData
-    var within24HoursData = [NotificationModel]()
-    var beyond24HoursData = [NotificationModel]()
+    var within24HoursData = [NotiDecodeModel]()
+    var beyond24HoursData = [NotiDecodeModel]()
     init(notisavedDatas: AppData) {
         self.notisavedDatas = notisavedDatas
         self.separteDatabyDate()

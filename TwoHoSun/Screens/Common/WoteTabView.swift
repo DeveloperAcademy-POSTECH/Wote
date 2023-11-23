@@ -50,6 +50,7 @@ struct WoteTabView: View {
     @State private var isVoteCategoryButtonDidTap = false
     @Environment(AppLoginState.self) private var appManager
     @Binding var path: [LoginNavigation]
+    @ObservedObject var notiManager: DataController
 
     var body: some View {
         @Bindable var navigationPath = appManager.serviceRoot.navigationManager
@@ -176,7 +177,7 @@ extension WoteTabView {
 
     private var notificationButton: some View {
         NavigationLink {
-            NotificationView(viewModel: NotificationViewModel(notisavedDatas: appManager.appData))
+            NotificationView(viewModel: notiManager)
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 6)
