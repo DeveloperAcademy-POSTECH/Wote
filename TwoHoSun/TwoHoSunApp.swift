@@ -23,7 +23,6 @@ struct TwoHoSunApp: App {
             case .loggedIn:
                 WoteTabView(notiManager: dataController)
                     .environment(appState)
-//                    .environment(\.managedObjectContext, dataController.container.viewContext)
                     .onAppear {
                         appDelegate.app = self
                     }
@@ -44,6 +43,14 @@ extension TwoHoSunApp {
     func savePush(notiModel: NotiDecodeModel) async {
         if notiModel.isComment {
             dataController.addNotificationData(model: notiModel)
+        }
+    }
+    func registerDevicetoken(deviceToken: String) {
+        appState.serviceRoot.apimanager.request(
+            .userService(.postDeviceTokens(deviceToken: deviceToken)), decodingType: NoData.self)
+        .sink { completion in
+            print(completion)
+        } receiveValue: { _ in
         }
     }
 }

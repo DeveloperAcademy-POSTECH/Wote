@@ -10,5 +10,3 @@ struct CommentPostModel: Codable {
     let postId: Int
     let contents: String
 }
-
-//struct

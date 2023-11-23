@@ -90,6 +90,7 @@ extension OnBoardingView {
                     let identifier = appleIDCredential.user
                     KeychainManager.shared.saveToken(key: "identifier", token: identifier)
                     let authorization = String(data: appleIDCredential.authorizationCode!, encoding:  .utf8)
+                
                     guard let authorizationCode = authorization else { return }
                     viewModel.setAuthorizationCode(authorizationCode)
                     viewModel.postAuthorCode()

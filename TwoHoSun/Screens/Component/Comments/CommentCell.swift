@@ -5,8 +5,6 @@
 //  Created by 235 on 10/19/23.
 //
 
-
-
 import SwiftUI
 struct CommentCell: View {
     let comment: CommentsModel

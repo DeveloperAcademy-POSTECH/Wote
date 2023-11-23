@@ -18,6 +18,7 @@ enum UserService {
     case getProfile
     case requestLogout
     case deleteUser
+    case postDeviceTokens(deviceToken: String)
 }
 
 extension UserService: TargetType {
@@ -44,6 +45,8 @@ extension UserService: TargetType {
             return "/api/auth/logout"
         case .deleteUser:
             return "/api/members"
+        case .postDeviceTokens:
+            return "/api/notifications/tokens"
         }
     }
     
@@ -57,6 +60,8 @@ extension UserService: TargetType {
             return .post
         case .deleteUser:
             return .delete
+        case .postDeviceTokens:
+            return .post
         default:
             return .post
         }
@@ -82,6 +87,8 @@ extension UserService: TargetType {
             return [:]
         case .deleteUser:
             return [:]
+        case .postDeviceTokens(let deviceToken):
+            return ["deviceToken" : deviceToken]
         }
     }
 
@@ -129,6 +136,8 @@ extension UserService: TargetType {
             return .requestPlain
         case .deleteUser:
             return .requestPlain
+        case .postDeviceTokens:
+            return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         default:
             return .requestParameters(parameters: parameters,
                                       encoding: URLEncoding.default)

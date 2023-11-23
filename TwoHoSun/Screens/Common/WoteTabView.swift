@@ -119,8 +119,6 @@ struct WoteTabView: View {
                                                           selectedVisibilityScope: selectedVisibilityScope))
                 case .notiView:
                     NotificationView( viewModel: notiManager)
-                default:
-                    Text("HI")
                 }
             }
         }
