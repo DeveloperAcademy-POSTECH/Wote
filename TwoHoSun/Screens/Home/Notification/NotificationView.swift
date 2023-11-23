@@ -37,51 +37,10 @@ extension NotificationView {
     private var notificationList: some View {
         List {
             if !viewModel.todayDatas.isEmpty {
-                Section {
-                    ForEach(viewModel.todayDatas) {data in
-                        Button {
-                            stateManager.serviceRoot.navigationManager.navigate(
-                                .detailView(postId: Int(data.postId), index: 0, dirrectComments: true))
-                        } label: {
-                            makenotificationCell(notiData: data)
-                        }
-                        .listRowSeparator(.hidden)
-                        .listRowInsets(EdgeInsets())
-                        .listRowBackground(Color.background)
-                    }
-                    .onDelete { index in
-                        viewModel.deleteData(indexSet: index, recentData: true)
-                    }
-                } header: {
-                    listHeader("오늘 알림")
-                } footer: {
-                    Divider()
-                        .foregroundStyle(Color.dividerGray)
-                        .listRowBackground(Color.background)
-                        .listRowInsets(EdgeInsets())
-                        .listRowSeparator(.hidden)
-                }
+                makeNotificationSection(title: "오늘 알림", data: viewModel.todayDatas, isRecentData: true)
             }
             if !viewModel.previousDatas.isEmpty {
-                Section {
-                    ForEach(viewModel.previousDatas) {data in
-                        Button {
-                            stateManager.serviceRoot.navigationManager.navigate(
-                                .detailView(postId: Int(data.postId), index: 0, dirrectComments: true))
-                        } label: {
-                            makenotificationCell(notiData: data)
-                        }
-                        .listRowSeparator(.hidden)
-                        .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
-                        .listRowBackground(Color.background)
-                    }
-                    .onDelete { index in
-                        viewModel.deleteData(indexSet: index, recentData: false)
-                    }
-                } header: {
-                    listHeader("이전 알림")
-                }
-                .listRowInsets(EdgeInsets())
+                makeNotificationSection(title: "이전 알림", data: viewModel.previousDatas, isRecentData: false)
             }
         }
         .listStyle(.plain)
@@ -92,10 +51,27 @@ extension NotificationView {
         Text(headerName)
             .font(.system(size: 14, weight: .medium))
             .foregroundStyle(.white)
-            .padding(.top, 16)
     }
 
-
+    func makeNotificationSection(title: String, data: [NotificationModel], isRecentData: Bool) -> some View {
+        Section(header: listHeader(title)) {
+            ForEach(data) { dataItem in
+                Button {
+                    stateManager.serviceRoot.navigationManager.navigate(
+                        .detailView(postId: Int(dataItem.postId), index: 0, dirrectComments: true))
+                } label: {
+                    makenotificationCell(notiData: dataItem)
+                }
+                .listRowSeparator(.hidden)
+                .listRowInsets(isRecentData ? EdgeInsets() : EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
+                .listRowBackground(Color.background)
+            }
+            .onDelete { index in
+                viewModel.deleteData(indexSet: index, recentData: isRecentData)
+            }
+        }
+        .listRowInsets(EdgeInsets())
+    }
     func makenotificationCell(notiData: NotificationModel) -> some View {
         var diffrentTime: (String, Int) {
             return (notiData.date?.differenceCurrentTime())!

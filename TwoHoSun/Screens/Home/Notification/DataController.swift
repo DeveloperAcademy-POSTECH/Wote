@@ -9,11 +9,6 @@ import CoreData
 
 class DataController: ObservableObject {
     let container: NSPersistentContainer
-//    @Published var savedDatas: [NotificationModel] = [] {
-//        didSet {
-//            print(savedDatas)
-//        }
-//    }
     @Published var todayDatas: [NotificationModel] = []
 
     @Published var previousDatas: [NotificationModel] = []
@@ -51,6 +46,7 @@ class DataController: ObservableObject {
         let request = NSFetchRequest<NotificationModel>(entityName: "NotificationModel")
         do {
             let allSavedDatas = try container.viewContext.fetch(request)
+            
             let today = Calendar.current.startOfDay(for: Date())
             todayDatas = allSavedDatas.filter { data in
                 guard let dataDate = data.date else { return false }
