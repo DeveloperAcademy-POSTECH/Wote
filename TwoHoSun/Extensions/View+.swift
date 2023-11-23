@@ -12,8 +12,9 @@ extension View {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 
-    func customConfirmDialog<A: View>(isPresented: Binding<Bool>, isMine: Binding<Bool>,
+    func customConfirmDialog<A: View>(isPresented: Binding<Bool>, isMine: Binding<Bool>?,
                                       @ViewBuilder actions: @escaping  (Binding<Bool>) -> A) -> some View {
-        return self.modifier(CustomConfirmModifier(isPresented: isPresented, actions: actions, isMine: isMine))
+        return self.modifier(CustomConfirmModifier(isPresented: isPresented, actions: actions,
+                                                   isMine: isMine ?? Binding.constant(true)))
     }
 }

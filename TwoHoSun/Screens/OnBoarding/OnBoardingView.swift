@@ -82,7 +82,7 @@ extension OnBoardingView {
     private var appleLoginButton: some View {
         SignInWithAppleButton( onRequest: { request in
             request.requestedScopes = [.fullName, .email]
-        }, onCompletion: {result in
+        }, onCompletion: { result in
             switch result {
             case .success(let authResults):
                 switch authResults.credential {

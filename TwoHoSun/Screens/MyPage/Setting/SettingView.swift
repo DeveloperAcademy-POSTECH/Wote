@@ -77,6 +77,8 @@ enum SettingType {
 struct SettingView: View {
     @State private var isSubmited: Bool = false
     @State private var showLogOut: Bool = false
+    @Environment(AppLoginState.self) private var loginStateManager
+    var viewModel: SettingViewModel
     
     var body: some View {
         ZStack {
@@ -99,7 +101,7 @@ struct SettingView: View {
                         SettingQuestionsView(viewModel: SettingQuestionsViewModel(), isSubmited: $isSubmited)
                     }
                     settingLinkView(.terms) {
-                        SettingTermsView()
+                        SettingTermsView(viewModel: SettingViewModel(loginStateManager: loginStateManager))
                     }
                     appVersionView
                 }
@@ -111,8 +113,7 @@ struct SettingView: View {
             .scrollContentBackground(.hidden)
             if showLogOut {
                 CustomAlertModalView(alertType: .logOut, isPresented: $showLogOut) {
-                    print("로그아웃 완료!")
-                    showLogOut = false
+                    viewModel.requestLogOut()
                 }
             }
             if isSubmited {
@@ -219,8 +220,4 @@ extension SettingView {
             .foregroundStyle(.white)
         }
     }
-}
-
-#Preview {
-    SettingView()
 }

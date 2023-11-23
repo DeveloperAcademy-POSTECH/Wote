@@ -63,6 +63,7 @@ struct SettingTermsView: View {
     @State private var openLink: [TermsType: Bool] = [.first: false, .second: false, .third: false]
     @State private var currentTermsType: TermsType?
     @State private var showWithdrawal: Bool = false
+    var viewModel: SettingViewModel
     
     var body: some View {
         ZStack {
@@ -95,8 +96,7 @@ struct SettingTermsView: View {
             .scrollContentBackground(.hidden)
             if showWithdrawal {
                 CustomAlertModalView(alertType: .withdrawal, isPresented: $showWithdrawal) {
-                    showWithdrawal = false
-                    print("탈퇴 완료!")
+                    viewModel.deleteUser()
                 }
             }
         }
@@ -158,11 +158,5 @@ extension SettingTermsView {
             }
             .foregroundStyle(.white)
         }
-    }
-}
-
-#Preview {
-    NavigationStack {
-        SettingTermsView()
     }
 }
