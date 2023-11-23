@@ -220,7 +220,7 @@ extension SearchView {
                         } label: {
                             VoteCardCell(cellType: .standard,
                                          progressType: .closed,
-                                         post: data)
+                                         data: data)
                         }
                         .onAppear {
                             if index == viewModel.searchedDatas.count - 4 {
@@ -245,11 +245,11 @@ extension SearchView {
                 LazyVStack {
                     ForEach(Array(viewModel.searchedDatas.enumerated()), id: \.offset) { index, data in
                         Button {
-                            loginState.serviceRoot.navigationManager.navigate(.detailView(postId: data.id, index: nil))
+                            loginState.serviceRoot.navigationManager.navigate(.detailView(postId: data.id))
                         } label: {
                             VoteCardCell(cellType: .standard,
                                          progressType: .closed,
-                                         post: data)
+                                         data: data)
                         }
                         .onAppear {
                             if index == viewModel.searchedDatas.count - 4 {

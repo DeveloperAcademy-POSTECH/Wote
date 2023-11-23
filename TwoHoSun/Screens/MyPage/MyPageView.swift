@@ -247,8 +247,8 @@ extension MyPageView {
                 } label: {
                     VStack(spacing: 0) {
                         VoteCardCell(cellType: .myVote,
-                                     progressType: .closed,
-                                     post: post)
+                                      progressType: PostStatus(rawValue: post.postStatus) ?? .closed,
+                                      data: post)
                         Divider()
                             .background(Color.dividerGray)
                             .padding(.horizontal, 8)

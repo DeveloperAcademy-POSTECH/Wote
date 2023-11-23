@@ -175,7 +175,7 @@ extension ReviewDetailView {
             } label: {
                 VoteCardCell(cellType: .simple,
                              progressType: .closed,
-                             post: data)
+                             data: data)
             }
         }
     }
