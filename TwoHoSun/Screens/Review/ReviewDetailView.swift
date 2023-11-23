@@ -14,7 +14,7 @@ struct ReviewDetailView: View {
     @State private var showCustomAlert = false
     @State private var showConfirm = false
     @State private var applyComplaint = false
-    @Environment(AppLoginState.self ) var loginmanager
+    @State private var showAlert = false
     @StateObject var viewModel: ReviewDetailViewModel
     var isShowingHeader = true
     var postId: Int?
@@ -60,6 +60,8 @@ struct ReviewDetailView: View {
                     }
                 }
             }
+            
+            AlertModalView(showAlert: $showAlert, viewModel: viewModel, loginState: loginState)
         }
         .frame(maxWidth: .infinity)
         .background(Color.background)
@@ -115,6 +117,7 @@ struct ReviewDetailView: View {
                     Divider()
                         .background(Color.gray300)
                     Button {
+                        showAlert.toggle()
                         showConfirm.toggle()
                     } label: {
                         Text("차단하기")
@@ -235,6 +238,20 @@ extension ReviewDetailView {
                     .padding(.vertical, 6)
                     .background(Color.lightBlue)
                     .clipShape(RoundedRectangle(cornerRadius: 34))
+            }
+        }
+    }
+}
+
+struct AlertModalView: View {
+    @Binding var showAlert: Bool
+    var viewModel: ReviewDetailViewModel
+    var loginState: AppLoginState
+
+    var body: some View {
+        if showAlert {
+            CustomAlertModalView(alertType: .ban(nickname: viewModel.reviewData?.reviewPost.author.nickname ?? ""), isPresented: $showAlert) {
+                loginState.serviceRoot.blockUser(memberId: viewModel.reviewData?.reviewPost.author.id ?? 0)
             }
         }
     }
