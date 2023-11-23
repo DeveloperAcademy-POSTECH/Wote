@@ -23,13 +23,13 @@ struct VoteWriteView: View {
     @State private var isMine: Bool = false
     @Bindable var viewModel: VoteWriteViewModel
     @Binding var tabselection: WoteTabType
+    @Environment(AppLoginState.self) private var loginState
 
     init(viewModel: VoteWriteViewModel, tabselection: Binding<WoteTabType> = Binding.constant(.consider)) {
         self.viewModel = viewModel
         self._tabselection = tabselection
     }
 
-    @Environment(\.dismiss) private var dismiss
     var body: some View {
         ZStack {
             Color.background
@@ -97,6 +97,11 @@ struct VoteWriteView: View {
         }
         .onAppear {
             tabselection = .consider
+        }
+        .onChange(of: viewModel.isPostCreated) { _, isPostCreated in
+            if isPostCreated {
+                loginState.serviceRoot.navigationManager.back()
+            }
         }
     }
 }
@@ -300,7 +305,6 @@ extension VoteWriteView {
             isRegisterButtonDidTap = true
             if viewModel.isTitleValid {
                 viewModel.createPost()
-                dismiss()
             }
         } label: {
             Text("등록하기")

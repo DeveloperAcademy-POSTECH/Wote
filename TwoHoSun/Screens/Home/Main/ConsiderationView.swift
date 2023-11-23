@@ -15,6 +15,7 @@ struct ConsiderationView: View {
     @State private var isRefreshing = false
     @StateObject var viewModel: ConsiderationViewModel
     @AppStorage("haveConsumerType") var haveConsumerType: Bool = false
+    @State var isPostCreated = false
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
@@ -112,13 +113,8 @@ extension ConsiderationView {
     }
 
     private var createVoteButton: some View {
-        NavigationLink {
-            VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: visibilityScope,
-                                                        apiManager: loginState.serviceRoot.apimanager))
-            .onDisappear {
-                viewModel.fetchPosts(visibilityScope: visibilityScope)
-                currentVote = 0
-            }
+        Button {
+            loginState.serviceRoot.navigationManager.navigate(.makeVoteView)
         } label: {
             HStack(spacing: 2) {
                 Image(systemName: "plus")
@@ -149,13 +145,13 @@ extension ConsiderationView {
             Spacer()
             Button {
                 withAnimation {
-//                    if currentVote != voteData.posts.count - 1 {
-//                        currentVote += 1
-//                    }
+                    if currentVote != loginState.appData.posts.count - 1 {
+                        currentVote += 1
+                    }
                 }
             } label: {
                 Image("icnCaretDown")
-//                    .opacity(currentVote != voteData.posts.count - 1 ? 1 : 0)
+                    .opacity(currentVote != loginState.appData.posts.count - 1 ? 1 : 0)
             }
             Spacer()
         }
