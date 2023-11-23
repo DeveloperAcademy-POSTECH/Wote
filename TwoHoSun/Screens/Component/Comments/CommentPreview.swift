@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CommentPreview: View {
+    @Environment(AppLoginState.self) private var loginStateManager
 
     var body: some View {
         VStack {
@@ -18,9 +19,14 @@ struct CommentPreview: View {
                 Spacer()
             }
             HStack(spacing: 7) {
-                Image("defaultProfile")
-                    .resizable()
-                    .frame(width: 24, height: 24)
+                if let image = loginStateManager.appData.profile?.profileImage {
+                    ProfileImageView(imageURL: image)
+                        .frame(width: 24, height: 24)
+                } else {
+                    Image("defaultProfile")
+                        .resizable()
+                        .frame(width: 24, height: 24)
+                }
                 HStack {
                     Text("댓글 추가...")
                         .font(.system(size: 12))
