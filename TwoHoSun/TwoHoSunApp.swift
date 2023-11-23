@@ -45,6 +45,8 @@ class ServiceRoot {
         let manager = NewApiManager(authenticator: auth)
         return manager
     }()
+    var navigationManager = NavigationManager()
+    lazy var memberManager = MemberManager(authenticator: auth)
     
     func blockUser(memberId: Int) {
         apimanager.request(.userService(.blockUser(memberId: memberId)), decodingType: NoData.self)
@@ -72,12 +74,13 @@ class AppData {
 class AppLoginState {
     var serviceRoot: ServiceRoot
     var appData: AppData
-
+    
     init() {
         appData = AppData()
         serviceRoot = ServiceRoot()
         checkTokenValidity()
         serviceRoot.auth.relogin = relogin
+        serviceRoot.memberManager.fetchProfile()
     }
     
     private func relogin() {

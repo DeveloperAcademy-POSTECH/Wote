@@ -224,11 +224,11 @@ extension ReviewWriteView {
                     .onTapGesture {
                         isEditing.toggle()
                     }
-                    .onAppear {
-                        if let imageData = croppedImage.jpegData(compressionQuality: 1.0) {
+                    .onChange(of: croppedImage, { _, newValue in
+                        if let imageData = newValue.jpegData(compressionQuality: 1.0) {
                             viewModel.image = imageData
                         }
-                    }
+                    })
             } else {
                 Button {
                     showPicker.toggle()
