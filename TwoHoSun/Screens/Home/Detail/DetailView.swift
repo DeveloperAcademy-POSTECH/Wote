@@ -9,11 +9,12 @@ import SwiftUI
 
 struct DetailView: View {
     @Environment(\.dismiss) var dismiss
+    @Environment(AppLoginState.self) private var loginStateManager
     @State private var showconfirm = false
     @State private var backgroundColor: Color = .background
     @State private var showCustomAlert = false
     @State private var applyComplaint = false
-    @Environment(AppLoginState.self) private var loginStateManager
+    @State private var showAlert = false
     @State private var currentAlert = AlertType.closeVote
     @StateObject var viewModel: DetailViewModel
     var isShowingHeader = true
@@ -138,7 +139,12 @@ struct DetailView: View {
                 .onTapGesture {
                     applyComplaint.toggle()
                 }
-
+            }
+            
+            if showAlert {
+                CustomAlertModalView(alertType: .ban(nickname: viewModel.postDetail?.post.author.nickname ?? ""), isPresented: $showAlert) {
+                    loginStateManager.serviceRoot.blockUser(memberId: viewModel.postDetail?.post.author.id ?? 0)
+                }
             }
         }
         .onReceive(commentNotification) {_ in
@@ -205,6 +211,7 @@ struct DetailView: View {
                     Divider()
                         .background(Color.gray300)
                     Button {
+                        showAlert.toggle()
                         showconfirm.toggle()
                     } label: {
                         Text("차단하기")

@@ -46,7 +46,7 @@ class ServiceRoot {
         return manager
     }()
     
-    private func blockUser(memberId: Int) {
+    func blockUser(memberId: Int) {
         apimanager.request(.userService(.blockUser(memberId: memberId)), decodingType: NoData.self)
             .sink { completion in
                 switch completion {
