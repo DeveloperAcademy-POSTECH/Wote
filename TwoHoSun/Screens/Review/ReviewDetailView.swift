@@ -81,7 +81,7 @@ struct ReviewDetailView: View {
             CommentsView(showComplaint: $showCustomAlert,
                          applyComplaint: $applyComplaint,
                          viewModel: CommentsViewModel(apiManager: loginState.serviceRoot.apimanager,
-                                                      postId: postId ?? 0))
+                                                      postId: reviewId ?? 0))
             .presentationDetents([.large,.fraction(0.9)])
             .presentationContentInteraction(.scrolls)
         }
