@@ -37,17 +37,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         logger.error("Failed to register for remote notifications: \(error.localizedDescription)")
     }
 
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        logger.log("Received remote notification: \(self.formatDictionary(userInfo))")
-        if let consumerType = userInfo["consumer_type_exist"] {
-            UserDefaults.standard.setValue(consumerType, forKey: "haveConsumerType")
-        }
-        completionHandler(.newData)
-    }
-
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification) async -> UNNotificationPresentationOptions {
         logger.log("Will present notification in foreground: \(self.formatDictionary(notification.request.content.userInfo))")
-        completionHandler([.banner, .sound]) // Updated for iOS 14 and later
+        let decoder = JSONDecoder()
+        do {
+            let data = try JSONSerialization.data(withJSONObject: notification.request.content.userInfo)
+            let notimodel = try decoder.decode(NotiDecodeModel.self, from: data)
+            await app?.savePush(notiModel: notimodel)
+        } catch {
+            print(error)
+        }
+        return [.banner, .sound]
     }
 
     private func formatDictionary(_ dictionary: [AnyHashable: Any]?) -> String {
@@ -74,10 +74,16 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         do {
             let data = try JSONSerialization.data(withJSONObject: response.notification.request.content.userInfo)
             let notimodel = try decoder.decode(NotiDecodeModel.self, from: data)
-         
             await app?.handleDeepPush(notiModel: notimodel)
         } catch {
             print(error)
         }
+    }
+
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) async -> UIBackgroundFetchResult {
+        if let consumerType = userInfo["consumer_type_exist"] {
+             UserDefaults.standard.setValue(consumerType, forKey: "haveConsumerType")
+        }
+        return .newData
     }
 }

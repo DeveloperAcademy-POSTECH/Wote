@@ -10,8 +10,8 @@ import CoreData
 class DataController: ObservableObject {
     let container: NSPersistentContainer
     @Published var todayDatas: [NotificationModel] = []
-
     @Published var previousDatas: [NotificationModel] = []
+    
     init() {
         container = NSPersistentContainer(name: "DataModel")
         container.loadPersistentStores { description, error in
@@ -62,6 +62,16 @@ class DataController: ObservableObject {
             previousDatas = allSavedDatas.filter { data in
                 guard let dataDate = data.date else { return false }
                 return !Calendar.current.isDate(dataDate, inSameDayAs: today)
+            }
+            todayDatas.sort { firstData, secondData in
+                guard let firstDate = firstData.date, let secondDate = secondData.date else { return false }
+                return firstDate < secondDate
+            }
+
+            // previousDatas를 날짜 순으로 정렬
+            previousDatas.sort { firstData, secondData in
+                guard let firstDate = firstData.date, let secondDate = secondData.date else { return false }
+                return firstDate < secondDate
             }
         } catch let error {
             print("wow \(error)")

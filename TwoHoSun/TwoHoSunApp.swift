@@ -36,10 +36,15 @@ struct TwoHoSunApp: App {
 extension TwoHoSunApp {
     func handleDeepPush(notiModel: NotiDecodeModel) async {
         if notiModel.isComment {
-            dataController.addNotificationData(model: notiModel)
+            await savePush(notiModel: notiModel)
             NotificationCenter.default.post(name: Notification.Name("showComment"), object: nil)
         }
         appState.serviceRoot.navigationManager.navigate(.detailView(postId: notiModel.postid, index: 0, dirrectComments: notiModel.isComment))
+    }
+    func savePush(notiModel: NotiDecodeModel) async {
+        if notiModel.isComment {
+            dataController.addNotificationData(model: notiModel)
+        }
     }
 }
 class ServiceRoot {
@@ -53,11 +58,7 @@ class ServiceRoot {
 
 @Observable
 class AppData {
-    var notificationDatas = [NotiDecodeModel]() {
-        didSet {
-            print(notificationDatas)
-        }
-    }
+    var notificationDatas = [NotiDecodeModel]() 
 }
 
 @Observable

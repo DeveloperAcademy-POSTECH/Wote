@@ -18,6 +18,7 @@ struct NotificationView: View {
             Color.background
                 .ignoresSafeArea()
             notificationList
+                .background(Color.background)
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.background, for: .navigationBar)
@@ -43,14 +44,15 @@ extension NotificationView {
                 makeNotificationSection(title: "이전 알림", data: viewModel.previousDatas.reversed(), isRecentData: false)
             }
         }
-        .listStyle(.plain)
-        .padding(.horizontal, 16)
+        .listStyle(DefaultListStyle())
+        .scrollContentBackground(.hidden)
     }
 
     private func listHeader(_ headerName: String) -> some View {
         Text(headerName)
             .font(.system(size: 14, weight: .medium))
             .foregroundStyle(.white)
+            .background(Color.background)
     }
 
     func makeNotificationSection(title: String, data: [NotificationModel], isRecentData: Bool) -> some View {
@@ -67,11 +69,15 @@ extension NotificationView {
                 .listRowBackground(Color.background)
             }
             .onDelete { index in
-                viewModel.deleteData(indexSet: index, recentData: isRecentData)
+                let reversedIndex = data.count - 1 - index.first!
+                viewModel.deleteData(indexSet: IndexSet(integer: reversedIndex), recentData: isRecentData)
             }
         }
+        .listRowBackground(Color.background)
+        .background(Color.background)
         .listRowInsets(EdgeInsets())
     }
+    
     func makenotificationCell(notiData: NotificationModel) -> some View {
         var diffrentTime: (String, Int) {
             return (notiData.date?.differenceCurrentTime())!
