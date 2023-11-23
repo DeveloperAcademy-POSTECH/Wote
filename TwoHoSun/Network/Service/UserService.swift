@@ -145,10 +145,7 @@ extension UserService: TargetType {
             APIConstants.headerWithOutToken
         default:
             APIConstants.headerWithAuthorization
-        case .requestLogout:
-            APIConstants.headerWithAuthorization
-        case .deleteUser:
-            APIConstants.headerWithAuthorization
+
         }
     }
 }

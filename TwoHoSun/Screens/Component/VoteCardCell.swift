@@ -48,7 +48,7 @@ struct VoteCardCell: View {
             if voteresult == "DRAW" {
                 return .draw
             } else if voteresult == "NOT_BUY" {
-                return .notbuy
+                return .notBuy
             } else {
                 return .buy
             }
@@ -69,7 +69,7 @@ struct VoteCardCell: View {
                         .font(.system(size: 16, weight: .bold))
                         .foregroundStyle(.white)
                     Spacer()
-                    if let consumerType = data.author?.consumerType {
+                    if let consumerType = post.author?.consumerType {
                         ConsumerTypeLabel(consumerType: ConsumerType(rawValue: consumerType) ?? .ecoWarrior ,usage: .cell)
                     }
                 }
@@ -77,37 +77,37 @@ struct VoteCardCell: View {
             HStack {
                 VStack(alignment: .leading, spacing: 6) {
                     HStack(spacing: 4) {
-                        if data.postStatus == PostStatus.closed.rawValue {
+                        if post.postStatus == PostStatus.closed.rawValue {
                             EndLabel()
                         }
-                        Text(data.title)
+                        Text(post.title)
                             .font(.system(size: 16, weight: .bold))
                             .foregroundStyle(.white)
                             .lineLimit(1)
                     }
-                    Text(data.contents ?? "")
+                    Text(post.contents ?? "")
                         .font(.system(size: 14, weight: .medium))
                         .foregroundStyle(.white)
                         .lineLimit(1)
                         .padding(.bottom, 9)
                     HStack(spacing: 0) {
-                        if let price = data.price {
+                        if let price = post.price {
                             Text("가격: \(price)원")
                             Text(" · ")
                         }
-                        Text(data.createDate.convertToStringDate() ?? "")
+                        Text(post.createDate.convertToStringDate() ?? "")
                     }
                     .font(.system(size: 14))
                     .foregroundStyle(Color.gray100)
                 }
                 Spacer()
                 ZStack {
-                    CardImageView(imageURL: data.image)
-                        .opacity(data.postStatus == PostStatus.closed.rawValue
+                    CardImageView(imageURL: post.image)
+                        .opacity(post.postStatus == PostStatus.closed.rawValue
                                  ? 0.5 : 1.0)
-                    if data.postStatus == PostStatus.closed.rawValue {
+                    if post.postStatus == PostStatus.closed.rawValue {
                         Group {
-                            if let voteResult = data.voteResult {
+                            if let voteResult = post.voteResult {
                                 switch VoteResultType(voteResult: voteResult) {
                                 case .buy:
                                     Image("imgBuy")
@@ -122,7 +122,6 @@ struct VoteCardCell: View {
                     }
                 }
             }
-            // TODO: - 후기를 작성한 투표라면 숨기기
             if progressType == .closed && cellType == .myVote && !(post.hasReview ?? false) {
                 NavigationLink {
                     ReviewWriteView(viewModel: ReviewWriteViewModel(post: post, apiManager: loginStateManager.serviceRoot.apimanager))

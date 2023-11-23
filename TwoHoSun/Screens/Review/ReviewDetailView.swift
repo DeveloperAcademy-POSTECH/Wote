@@ -173,8 +173,8 @@ extension ReviewDetailView {
                                                                               isShowingHeader: reviewId != nil ? false : true))
             } label: {
                 VoteCardCell(cellType: .simple,
-                             progressType: .end,
-                             data: data)
+                             progressType: .closed,
+                             post: data)
             }
         }
     }
