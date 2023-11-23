@@ -11,7 +11,7 @@ import SwiftUI
 @Observable
 final class MemberManager: NewApiManager {
     var profile: ProfileModel?
-    var cacellabels: Set<AnyCancellable> = []
+    var cancellable: Set<AnyCancellable> = []
     
     func fetchProfile() {
         request(.userService(.getProfile), decodingType: ProfileModel.self)
@@ -26,6 +26,21 @@ final class MemberManager: NewApiManager {
             } receiveValue: { data in
                 self.profile = data
             }
-            .store(in: &cacellabels)
+            .store(in: &cancellable)
+    }
+    
+    func blockUser(memberId: Int) {
+        request(.userService(.blockUser(memberId: memberId)), decodingType: NoData.self)
+            .sink { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    print(error)
+                }
+            } receiveValue: { _ in
+                print("block user successful!")
+            }
+            .store(in: &cancellable)
     }
 }

@@ -251,7 +251,7 @@ struct AlertModalView: View {
     var body: some View {
         if showAlert {
             CustomAlertModalView(alertType: .ban(nickname: viewModel.reviewData?.reviewPost.author.nickname ?? ""), isPresented: $showAlert) {
-                loginState.serviceRoot.blockUser(memberId: viewModel.reviewData?.reviewPost.author.id ?? 0)
+                loginState.serviceRoot.memberManager.blockUser(memberId: viewModel.reviewData?.reviewPost.author.id ?? 0)
             }
         }
     }

@@ -143,7 +143,7 @@ struct DetailView: View {
             
             if showAlert {
                 CustomAlertModalView(alertType: .ban(nickname: viewModel.postDetail?.post.author.nickname ?? ""), isPresented: $showAlert) {
-                    loginStateManager.serviceRoot.blockUser(memberId: viewModel.postDetail?.post.author.id ?? 0)
+                    loginStateManager.serviceRoot.memberManager.blockUser(memberId: viewModel.postDetail?.post.author.id ?? 0)
                 }
             }
         }

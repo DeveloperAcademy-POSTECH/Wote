@@ -44,7 +44,7 @@ struct CommentsView: View {
                         if ismyCellconfirm {
                             viewModel.deleteComments(commentId: scrollSpot)
                         } else {
-                            loginState.serviceRoot.blockUser(memberId: viewModel.commentsDatas.filter { $0.commentId == scrollSpot }.first?.author.id ?? 0)
+                            loginStateManager.serviceRoot.memberManager.blockUser(memberId: viewModel.commentsDatas.filter { $0.commentId == scrollSpot }.first?.author.id ?? 0)
                         }
                         print("신고접수됐습니다.")
                     }

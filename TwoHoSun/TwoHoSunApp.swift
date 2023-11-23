@@ -39,29 +39,12 @@ extension TwoHoSunApp {
 }
 class ServiceRoot {
     var auth = Authenticator()
-    var navigationManager = NavigationManager()
-    private var cancellable = Set<AnyCancellable>()
     lazy var apimanager: NewApiManager = {
         let manager = NewApiManager(authenticator: auth)
         return manager
     }()
     var navigationManager = NavigationManager()
     lazy var memberManager = MemberManager(authenticator: auth)
-    
-    func blockUser(memberId: Int) {
-        apimanager.request(.userService(.blockUser(memberId: memberId)), decodingType: NoData.self)
-            .sink { completion in
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let error):
-                    print(error)
-                }
-            } receiveValue: { _ in
-                print("block user successful!")
-            }
-            .store(in: &cancellable)
-    }
 }
 
 @Observable
