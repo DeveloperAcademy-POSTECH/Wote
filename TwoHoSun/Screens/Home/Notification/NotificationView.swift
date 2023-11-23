@@ -11,20 +11,14 @@ import Kingfisher
 
 struct NotificationView: View {
     @Environment(AppLoginState.self) private var stateManager
-    var notidummydata: [NotificationModel] = [
-        NotificationModel(profileImage: "https:/www.wote.social/images/profiles/de4cf718-bd4f-4a2e-b35c-234d69c11770.png", contents: "이거사실?", time: 1, postImage: nil),
-        NotificationModel(profileImage: "https:/www.wote.social/images/profiles/de4cf718-bd4f-4a2e-b35c-234d69c11770.png", contents: "ㅂ조고?", time: 2, postImage: nil),
-        NotificationModel(profileImage: "https:/www.wote.social/images/profiles/de4cf718-bd4f-4a2e-b35c-234d69c11770.png", contents: "헤입덜쟈ㅐㅓ대?", time: 1, postImage: nil),
-        NotificationModel(profileImage: "https:/www.wote.social/images/profiles/de4cf718-bd4f-4a2e-b35c-234d69c11770.png", contents: "럽ㄷ쟈ㅓㅐ?", time: 1, postImage: nil),
-        NotificationModel(profileImage: "https:/www.wote.social/images/profiles/de4cf718-bd4f-4a2e-b35c-234d69c11770.png", contents: "ㅓ랴ㅐㅓ뱆?", time: 1, postImage: nil),
-        NotificationModel(profileImage: "https:/www.wote.social/images/profiles/de4cf718-bd4f-4a2e-b35c-234d69c11770.png", contents: "러댜재러ㅐ?", time: 1, postImage: nil),
-    ]
+    @ObservedObject var viewModel: DataController
 
     var body: some View {
         ZStack {
             Color.background
                 .ignoresSafeArea()
             notificationList
+                .background(Color.background)
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.background, for: .navigationBar)
@@ -40,61 +34,81 @@ struct NotificationView: View {
 }
 
 extension NotificationView {
+    @ViewBuilder
     private var notificationList: some View {
-        ScrollView {
-            VStack(alignment: .leading) {
-                ForEach(notidummydata, id: \.id) { data in
-                    makenotificationCell(notiData: data)
-                }
-//                listHeader("오늘 알림")
-//                ForEach(0..<3) { _ in
-//                    notificationCell
-//                }
-//                Divider()
-//                    .foregroundStyle(Color.dividerGray)
-//                listHeader("이전 알림")
-//                ForEach(0..<10) { _ in
-//                    notificationCell
-//                }
+        List {
+            if !viewModel.todayDatas.isEmpty {
+                makeNotificationSection(title: "오늘 알림", data: viewModel.todayDatas.reversed(), isRecentData: true)
             }
-            .padding(.horizontal, 16)
+            if !viewModel.previousDatas.isEmpty {
+                makeNotificationSection(title: "이전 알림", data: viewModel.previousDatas.reversed(), isRecentData: false)
+            }
         }
-        .scrollIndicators(.hidden)
+        .listStyle(DefaultListStyle())
+        .scrollContentBackground(.hidden)
     }
 
     private func listHeader(_ headerName: String) -> some View {
         Text(headerName)
             .font(.system(size: 14, weight: .medium))
             .foregroundStyle(.white)
-            .padding(.top, 16)
+            .background(Color.background)
     }
 
+    func makeNotificationSection(title: String, data: [NotificationModel], isRecentData: Bool) -> some View {
+        Section(header: listHeader(title)) {
+            ForEach(data) { dataItem in
+                Button {
+                    stateManager.serviceRoot.navigationManager.navigate(
+                        .detailView(postId: Int(dataItem.postId), index: 0, dirrectComments: true))
+                } label: {
+                    makenotificationCell(notiData: dataItem)
+                }
+                .listRowSeparator(.hidden)
+                .listRowInsets(isRecentData ? EdgeInsets() : EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
+                .listRowBackground(Color.background)
+            }
+            .onDelete { index in
+                let reversedIndex = data.count - 1 - index.first!
+                viewModel.deleteData(indexSet: IndexSet(integer: reversedIndex), recentData: isRecentData)
+            }
+        }
+        .listRowBackground(Color.background)
+        .background(Color.background)
+        .listRowInsets(EdgeInsets())
+    }
+    
     func makenotificationCell(notiData: NotificationModel) -> some View {
-        HStack(alignment: .top, spacing: 16) {
-            KFImage(URL(string: notiData.profileImage)!)
-                .placeholder {
-                    ProgressView()
-                        .preferredColorScheme(.dark)
-                }
-                .onFailure { error in
-                    print(error.localizedDescription)
-                }
-                .cancelOnDisappear(true)
-                .resizable()
-                .frame(width: 46, height: 46)
-                .clipShape(.circle)
+        var diffrentTime: (String, Int) {
+            return (notiData.date?.differenceCurrentTime())!
+        }
+        return HStack(alignment: .top, spacing: 16) {
+            if let profileImage = notiData.authorProfile {
+                KFImage(URL(string: profileImage)!)
+                    .placeholder {
+                        ProgressView()
+                            .preferredColorScheme(.dark)
+                    }
+                    .onFailure { error in
+                        print(error.localizedDescription)
+                    }
+                    .cancelOnDisappear(true)
+                    .resizable()
+                    .frame(width: 46, height: 46)
+                    .clipShape(.circle)
+            }
             VStack(alignment: .leading, spacing: 6) {
-                Text(notiData.contents)
+                Text(notiData.body!)
                     .font(.system(size: 16, weight: .medium))
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .foregroundStyle(.white)
                     .lineSpacing(2)
-                Text("\(notiData.time)분 전")
+                Text("\(diffrentTime.1)\(diffrentTime.0)")
                     .font(.system(size: 14))
                     .foregroundStyle(Color.subGray5)
             }
-            if Bool.random() {
-                KFImage(URL(string: notiData.profileImage)!)
+            if let postImage = notiData.postImage {
+                KFImage(URL(string: postImage)!)
                     .placeholder {
                         ProgressView()
                             .preferredColorScheme(.dark)
@@ -109,11 +123,5 @@ extension NotificationView {
             }
         }
         .padding(.vertical, 16)
-    }
-}
-
-#Preview {
-    NavigationView {
-        NotificationView()
     }
 }

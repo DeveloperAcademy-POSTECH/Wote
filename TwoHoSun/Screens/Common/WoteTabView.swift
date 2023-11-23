@@ -49,6 +49,7 @@ struct WoteTabView: View {
     @State private var visibilityScope = VisibilityScopeType.global
     @State private var isVoteCategoryButtonDidTap = false
     @Environment(AppLoginState.self) private var loginStateManager
+    @ObservedObject var notiManager: DataController
 
     var body: some View {
         @Bindable var navigationPath = loginStateManager.serviceRoot.navigationManager
@@ -126,6 +127,8 @@ struct WoteTabView: View {
                                                                     apiManager: loginStateManager.serviceRoot.apimanager))
                 default:
                     EmptyView()
+                case .notiView:
+                    NotificationView( viewModel: notiManager)
                 }
             }
         }
