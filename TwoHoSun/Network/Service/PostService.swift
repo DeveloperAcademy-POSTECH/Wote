@@ -243,12 +243,10 @@ extension PostService: TargetType {
             return .uploadMultipart(formData)
         case .subscribeReview(let postId):
             return .requestParameters(parameters: ["postId": postId],
-                                      encoding: URLEncoding.default)
+                                      encoding: URLEncoding.queryString)
         case .deleteSubscribeReview(let postId):
             return .requestParameters(parameters: ["postId": postId],
-                                      encoding: URLEncoding.default)
-        default:
-            return .requestPlain
+                                      encoding: URLEncoding.queryString)
         }
     }
     

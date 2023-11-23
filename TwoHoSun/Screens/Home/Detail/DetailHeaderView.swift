@@ -58,12 +58,26 @@ enum ClosedPostStatus: Codable {
 struct DetailHeaderView: View {
     @Environment(AppLoginState.self) private var loginState
     @State var alertOn = false
+    @State var viewModel: DetailHeaderViewModel
     var data: PostDetailModel
 
     var body: some View {
         switch PostStatus(rawValue: data.post.postStatus) {
         case .active:
             activeVoteHeaderView(author: data.post.author, isMine: data.post.isMine)
+                .onChange(of: alertOn) { _, newValue in
+//                    if newValue {
+//                        viewModel.subscribeReview(postId: data.post.id)
+//                    } else {
+//                        viewModel.deleteSubscribeReview(postId: data.post.id)
+//                    }
+                    guard !newValue else {
+                        viewModel.subscribeReview(postId: data.post.id)
+                        return
+                    }
+
+                    viewModel.deleteSubscribeReview(postId: data.post.id)
+                }
         case .closed:
             if let isMine = data.post.isMine,
                 let hasReview = data.post.hasReview {

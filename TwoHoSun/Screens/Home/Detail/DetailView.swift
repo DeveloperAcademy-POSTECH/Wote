@@ -30,7 +30,8 @@ struct DetailView: View {
                 ScrollView {
                     VStack(spacing: 0) {
                         if isShowingItems {
-                            DetailHeaderView(alertOn: data.post.isNotified ?? false,
+                            DetailHeaderView(alertOn: data.post.isNotified ?? false, 
+                                             viewModel: DetailHeaderViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
                                              data: data)
                                 .padding(.top, 18)
                             Divider()
