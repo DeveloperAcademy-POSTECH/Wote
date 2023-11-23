@@ -22,7 +22,6 @@ final class MyPageViewModel {
     
     init(apiManager: NewApiManager) {
         self.apiManager = apiManager
-        self.fetchProfile()
     }
     
     func requestPosts(postType: PostService) {
@@ -63,21 +62,5 @@ final class MyPageViewModel {
         guard !isLastPage else { return }
         page += 1
         fetchPosts(isFirstFetch: false)
-    }
-    
-    func fetchProfile() {
-        apiManager.request(.userService(.getProfile), decodingType: ProfileModel.self)
-            .compactMap(\.data)
-            .sink { completion in
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let error):
-                    print(error)
-                }
-            } receiveValue: { data in
-                self.profile = data
-            }
-            .store(in: &cacellabels)
     }
 }

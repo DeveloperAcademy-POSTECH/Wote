@@ -143,11 +143,11 @@ extension UserService: TargetType {
             APIConstants.headerMultiPartForm
         case .refreshToken:
             APIConstants.headerWithOutToken
-        default:
-            APIConstants.headerWithAuthorization
         case .requestLogout:
             APIConstants.headerWithAuthorization
         case .deleteUser:
+            APIConstants.headerWithAuthorization
+        default:
             APIConstants.headerWithAuthorization
         }
     }

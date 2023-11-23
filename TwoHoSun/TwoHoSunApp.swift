@@ -5,6 +5,7 @@
 //  Created by 관식 on 10/15/23.
 //
 
+import Combine
 import SwiftUI
 import Observation
 
@@ -48,17 +49,21 @@ class ServiceRoot {
 @Observable
 class AppData {
     var notificationDatas = [NotificationModel]()
+    var profile: ProfileModel?
 }
 
 @Observable
 class AppLoginState {
     var serviceRoot: ServiceRoot
     var appData: AppData
+    var cacellabels: Set<AnyCancellable> = []
+    
     init() {
         appData = AppData()
         serviceRoot = ServiceRoot()
         checkTokenValidity()
         serviceRoot.auth.relogin = relogin
+        fetchProfile()
     }
     
     private func relogin() {
@@ -73,5 +78,21 @@ class AppLoginState {
         } else {
             serviceRoot.auth.authState = .none
         }
+    }
+    
+    private func fetchProfile() {
+        serviceRoot.apimanager.request(.userService(.getProfile), decodingType: ProfileModel.self)
+            .compactMap(\.data)
+            .sink { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    print(error)
+                }
+            } receiveValue: { data in
+                self.appData.profile = data
+            }
+            .store(in: &cacellabels)
     }
 }
