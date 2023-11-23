@@ -46,7 +46,7 @@ enum WoteTabType: Int, CaseIterable {
 
 struct WoteTabView: View {
     @State private var selection = WoteTabType.consider
-    @State private var selectedVisibilityScope = VisibilityScopeType.global
+    @State private var visibilityScope = VisibilityScopeType.global
     @State private var isVoteCategoryButtonDidTap = false
     @Environment(AppLoginState.self) private var loginStateManager
 
@@ -91,13 +91,13 @@ struct WoteTabView: View {
             }  
             .navigationDestination(for: AllNavigation.self) { destination in
                 switch destination {
-                case .detailView(let postId, let index, let directComments):
-                    DetailView(viewModel: VoteViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
+                case .detailView(let postId, let index, _, let isShowingHeader):
+                    DetailView(viewModel: DetailViewModel(appLoginState: loginStateManager),
+                               isShowingHeader: isShowingHeader, 
                                postId: postId,
-                               index: index,
-                               directComments: directComments)
+                               index: index)
                 case .makeVoteView:
-                    VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: selectedVisibilityScope, 
+                    VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: visibilityScope, 
                                                                 apiManager: loginStateManager.serviceRoot.apimanager), tabselection: $selection )
                 case .testIntroView:
                     TypeTestIntroView()
@@ -105,19 +105,25 @@ struct WoteTabView: View {
                 case .testView:
                     TypeTestView(viewModel: TypeTestViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
                 case .reveiwView:
-                    ReviewView(viewModel: ReviewTabViewModel(apiManger: loginStateManager.serviceRoot.apimanager))
+                    ReviewView(visibilityScope: $visibilityScope,
+                               viewModel: ReviewTabViewModel(apiManger: loginStateManager.serviceRoot.apimanager))
                 case .writeReiview:
                     Text("아직")
                 case .settingView:
                     SettingView(viewModel: SettingViewModel(loginStateManager: loginStateManager))
                 case .mypageView:
                     MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager), 
-                               selectedVisibilityScope: $selectedVisibilityScope)
+                               selectedVisibilityScope: $visibilityScope)
                 case .searchView:
                     SearchView(viewModel: SearchViewModel(apiManager: loginStateManager.serviceRoot.apimanager,
-                                                          selectedVisibilityScope: selectedVisibilityScope))
+                                                          selectedVisibilityScope: visibilityScope))
+                case .reviewDetailView(let postId, let reviewId, let isShowingHeader):
+                    ReviewDetailView(viewModel: ReviewDetailViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
+                                     isShowingHeader: isShowingHeader,
+                                     postId: postId,
+                                     reviewId: reviewId)
                 default:
-                    Text("HI")
+                    EmptyView()
                 }
             }
         }
@@ -131,6 +137,7 @@ struct WoteTabView: View {
         .navigationTitle(selection.tabTitle)
         .toolbar(.hidden, for: .navigationBar)
         .tint(Color.accentBlue)
+        
     }
 }
 
@@ -140,13 +147,14 @@ extension WoteTabView {
     private func tabDestinationView(for tab: WoteTabType) -> some View {
         switch tab {
         case .consider:
-            ConsiderationView(selectedVisibilityScope: $selectedVisibilityScope, 
-                              viewModel: VoteViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
+            ConsiderationView(visibilityScope: $visibilityScope,
+                              viewModel: ConsiderationViewModel(appLoginState: loginStateManager))
         case .review:
-            ReviewView(viewModel: ReviewTabViewModel(apiManger: loginStateManager.serviceRoot.apimanager))
+            ReviewView(visibilityScope: $visibilityScope,
+                       viewModel: ReviewTabViewModel(apiManger: loginStateManager.serviceRoot.apimanager))
         case .myPage:
             MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
-                       selectedVisibilityScope: $selectedVisibilityScope)
+                       selectedVisibilityScope: $visibilityScope)
         }
     }
 
@@ -226,7 +234,7 @@ extension WoteTabView {
     private var voteCategoryMenu: some View {
         VStack(alignment: .leading, spacing: 0) {
             Button {
-                selectedVisibilityScope = .global
+                visibilityScope = .global
                 isVoteCategoryButtonDidTap = false
             } label: {
                 Text("전국 투표")
@@ -238,7 +246,7 @@ extension WoteTabView {
             Divider()
                 .background(Color.gray300)
             Button {
-                selectedVisibilityScope = .school
+                visibilityScope = .school
                 isVoteCategoryButtonDidTap = false
             } label: {
                 Text("우리 학교 투표")
@@ -263,7 +271,7 @@ extension WoteTabView {
                 isVoteCategoryButtonDidTap.toggle()
             } label: {
                 HStack(spacing: 5) {
-                    Text(selectedVisibilityScope.title)
+                    Text(visibilityScope.title)
                         .font(.system(size: 20, weight: .bold))
                         .foregroundStyle(.white)
                     Image(systemName: "chevron.down")
