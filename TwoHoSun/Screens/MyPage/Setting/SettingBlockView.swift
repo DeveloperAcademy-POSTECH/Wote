@@ -22,6 +22,8 @@ struct SettingBlockView: View {
         BlockModel(userName: "얄루", isBlock: true),
         BlockModel(userName: "얄루", isBlock: true)
     ]
+    
+    var viewModel: SettingViewModel
 
     var body: some View {
         ZStack {
@@ -91,8 +93,4 @@ extension SettingBlockView {
                 .foregroundStyle(Color.dividerGray)
         }
     }
-}
-
-#Preview {
-    SettingBlockView()
 }
