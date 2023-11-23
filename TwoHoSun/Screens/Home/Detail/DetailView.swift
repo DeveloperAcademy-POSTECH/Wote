@@ -49,12 +49,12 @@ struct DetailView: View {
                                 IncompletedVoteButton(choice: .agree) {
                                     viewModel.votePost(postId: data.post.id,
                                                        choice: true,
-                                                       index: viewModel.searchIndex(with: data.post.id))
+                                                       index: viewModel.searchPostIndex(with: data.post.id))
                                 }
                                 IncompletedVoteButton(choice: .disagree) {
                                     viewModel.votePost(postId: data.post.id,
                                                        choice: false,
-                                                       index: viewModel.searchIndex(with: data.post.id))
+                                                       index: viewModel.searchPostIndex(with: data.post.id))
                                 }
                             }
                         }
@@ -88,6 +88,10 @@ struct DetailView: View {
                             .frame(height: 20)
                     }
                 }
+                .scrollIndicators(.hidden)
+                .refreshable {
+                    viewModel.fetchPostDetail(postId: postId)
+                }
             } else {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle(tint: Color.gray100))
@@ -108,7 +112,8 @@ struct DetailView: View {
                         switch currentAlert {
                         case .closeVote:
                             viewModel.closePost(postId: postId,
-                                                index: viewModel.searchIndex(with: postId))
+                                                index: (viewModel.searchPostIndex(with: postId),
+                                                        viewModel.searchMyPostIndex(with: postId)))
                             showCustomAlert.toggle()
                         case .deleteVote:
                             viewModel.deletePost(postId: postId)

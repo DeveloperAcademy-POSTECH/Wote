@@ -20,11 +20,13 @@ final class DetailViewModel: ObservableObject {
         self.appLoginState = appLoginState
     }
 
-    func searchIndex(with postId: Int) -> Int {
-        guard let index = appLoginState.appData.postManager.posts.firstIndex(where: { $0.id == postId }) 
-        else {
-            fatalError("post not found")
-        }
+    func searchPostIndex(with postId: Int) -> Int? {
+        guard let index = appLoginState.appData.postManager.posts.firstIndex(where: { $0.id == postId }) else { return nil }
+        return index
+    }
+
+    func searchMyPostIndex(with postId: Int) -> Int? {
+        guard let index = appLoginState.appData.postManager.myPosts.firstIndex(where: { $0.id == postId }) else { return nil }
         return index
     }
 
@@ -52,7 +54,7 @@ final class DetailViewModel: ObservableObject {
 
     func votePost(postId: Int,
                   choice: Bool,
-                  index: Int) {
+                  index: Int?) {
         appLoginState.serviceRoot.apimanager
             .request(.postService(.votePost(postId: postId, choice: choice)),
                            decodingType: VoteCountsModel.self)
@@ -66,9 +68,11 @@ final class DetailViewModel: ObservableObject {
                 print(failure)
             }
         } receiveValue: { data in
-            self.updatePost(index: index,
-                            myChoice: choice,
-                            voteCount: data)
+            if let postIndex = index {
+                self.updatePost(index: postIndex,
+                                myChoice: choice,
+                                voteCount: data)
+            }
             self.fetchPostDetail(postId: postId)
         }
         .store(in: &cancellables)
@@ -80,6 +84,10 @@ final class DetailViewModel: ObservableObject {
         appLoginState.appData.postManager.posts[index].myChoice = myChoice
         appLoginState.appData.postManager.posts[index].voteCounts = voteCount
         appLoginState.appData.postManager.posts[index].voteCount = voteCount.agreeCount + voteCount.disagreeCount
+    }
+
+    func updateMyPost(index: Int) {
+        appLoginState.appData.postManager.myPosts[index].postStatus = PostStatus.closed.rawValue
     }
 
     func deletePost(postId: Int) {
@@ -101,7 +109,7 @@ final class DetailViewModel: ObservableObject {
         appLoginState.appData.postManager.deleteReviews(postId: postId)
      }
 
-     func closePost(postId: Int, index: Int) {
+     func closePost(postId: Int, index: (Int?, Int?)) {
          appLoginState.serviceRoot.apimanager
              .request(.postService(.closeVote(postId: postId)),
                             decodingType: NoData.self)
@@ -113,8 +121,15 @@ final class DetailViewModel: ObservableObject {
                      print("error: \(error)")
                  }
              } receiveValue: { _ in
-                 self.appLoginState.appData.postManager.posts[index].postStatus
-                        = PostStatus.closed.rawValue
+                 if let postIndex = index.0 {
+                     self.appLoginState.appData.postManager.posts[postIndex].postStatus
+                            = PostStatus.closed.rawValue
+                 }
+
+                 if let myPostIndex = index.1 {
+                     self.appLoginState.appData.postManager.myPosts[myPostIndex].postStatus
+                            = PostStatus.closed.rawValue
+                 }
                  self.fetchPostDetail(postId: postId)
              }
              .store(in: &cancellables)
