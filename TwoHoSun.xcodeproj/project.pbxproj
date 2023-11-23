@@ -31,6 +31,7 @@
 		AB38A1CB2B0D505D004153B5 /* TestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1CA2B0D505D004153B5 /* TestViewModel.swift */; };
 		AB38A1CD2B0D5580004153B5 /* ReviewDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1CC2B0D5580004153B5 /* ReviewDetailModel.swift */; };
 		AB38A1CF2B0E788F004153B5 /* ReviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1CE2B0E788F004153B5 /* ReviewManager.swift */; };
+		AB38A1D12B0F4946004153B5 /* NSNotification+.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB38A1D02B0F4946004153B5 /* NSNotification+.swift */; };
 		AB3BACFD2AF7A5FC00E792BE /* SearchTextFieldState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3BACFC2AF7A5FC00E792BE /* SearchTextFieldState.swift */; };
 		AB4522532ADDD99500B69F24 /* SchoolSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */; };
 		AB4522562ADDDBC400B69F24 /* SchoolResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */; };
@@ -160,6 +161,7 @@
 		AB38A1CA2B0D505D004153B5 /* TestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewModel.swift; sourceTree = "<group>"; };
 		AB38A1CC2B0D5580004153B5 /* ReviewDetailModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewDetailModel.swift; sourceTree = "<group>"; };
 		AB38A1CE2B0E788F004153B5 /* ReviewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManager.swift; sourceTree = "<group>"; };
+		AB38A1D02B0F4946004153B5 /* NSNotification+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNotification+.swift"; sourceTree = "<group>"; };
 		AB3BACFC2AF7A5FC00E792BE /* SearchTextFieldState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTextFieldState.swift; sourceTree = "<group>"; };
 		AB4522522ADDD99500B69F24 /* SchoolSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolSearchView.swift; sourceTree = "<group>"; };
 		AB4522552ADDDBC400B69F24 /* SchoolResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolResponseModel.swift; sourceTree = "<group>"; };
@@ -492,6 +494,7 @@
 				C77113702AF0E7D500BAB128 /* Color+.swift */,
 				AB53CA6C2AF7AC4100FD850A /* UINavigationController+.swift */,
 				AB38A1022B0646F1004153B5 /* Double+.swift */,
+				AB38A1D02B0F4946004153B5 /* NSNotification+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -906,6 +909,7 @@
 				AB6845B22AFC145000C3F7C2 /* TypeTestView.swift in Sources */,
 				AB38A1C72B0BE1BE004153B5 /* DetailViewModel.swift in Sources */,
 				ABA1E8542AFEA640009051E0 /* GoToTypeTestButton.swift in Sources */,
+				AB38A1D12B0F4946004153B5 /* NSNotification+.swift in Sources */,
 				C77113712AF0E7D500BAB128 /* Color+.swift in Sources */,
 				AB6845B02AFC143700C3F7C2 /* TypeTestIntroView.swift in Sources */,
 				FD9DDB6E2B06F76D006D738A /* MyPageViewModel.swift in Sources */,

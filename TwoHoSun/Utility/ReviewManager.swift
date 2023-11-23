@@ -10,6 +10,7 @@ import SwiftUI
 @Observable
 final class ReviewManager {
     var reviews: ReviewTabModel?
+    var myReviews = [SummaryPostModel]()
 
     var recentReviews: [SummaryPostModel] {
         reviews?.recentReviews ?? []
@@ -27,10 +28,11 @@ final class ReviewManager {
         reviews?.notPurchasedReviews ?? []
     }
 
-    func deleteReviews(with postId: Int) {
+    func deleteReviews(postId: Int) {
         reviews?.allReviews.removeAll { $0.id == postId }
         reviews?.recentReviews.removeAll { $0.id == postId }
         reviews?.purchasedReviews.removeAll { $0.id == postId}
         reviews?.notPurchasedReviews.removeAll { $0.id == postId}
+        myReviews.removeAll { $0.id == postId }
     }
 }

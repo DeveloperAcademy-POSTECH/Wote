@@ -78,6 +78,6 @@ final class ReviewDetailViewModel: ObservableObject {
             }
             .store(in: &cancellable)
         
-        loginState.appData.reviewManager.deleteReviews(with: reviewPostId)
+        loginState.appData.reviewManager.deleteReviews(postId: reviewPostId)
     }
 }

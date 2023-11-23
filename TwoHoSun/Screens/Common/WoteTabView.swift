@@ -111,7 +111,7 @@ struct WoteTabView: View {
                 case .settingView:
                     SettingView()
                 case .mypageView:
-                    MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager), 
+                    MyPageView(viewModel: MyPageViewModel(loginState: loginStateManager),
                                selectedVisibilityScope: $visibilityScope)
                 case .searchView:
                     SearchView(viewModel: SearchViewModel(apiManager: loginStateManager.serviceRoot.apimanager,
@@ -155,7 +155,7 @@ extension WoteTabView {
             ReviewView(visibilityScope: $visibilityScope,
                        viewModel: ReviewTabViewModel(loginState: loginStateManager))
         case .myPage:
-            MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
+            MyPageView(viewModel: MyPageViewModel(loginState: loginStateManager),
                        selectedVisibilityScope: $visibilityScope)
         }
     }
