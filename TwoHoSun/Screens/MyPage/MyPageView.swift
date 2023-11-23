@@ -103,7 +103,6 @@ struct MyPageView: View {
         .background(Color.background)
         .onAppear {
             if !didFinishSetup {
-                viewModel.fetchProfile()
                 viewModel.fetchPosts()
                 didFinishSetup = true
             }
