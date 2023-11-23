@@ -48,7 +48,6 @@ class ServiceRoot {
 
 @Observable
 class AppData {
-    var posts = [PostModel]()
     var notificationDatas = [NotificationModel]()
     var reviewManager = ReviewManager()
     var postManager = PostManager()
