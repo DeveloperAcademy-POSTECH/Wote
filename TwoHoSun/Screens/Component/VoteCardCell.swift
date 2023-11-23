@@ -5,6 +5,7 @@
 //  Created by 김민 on 11/6/23.
 //
 import SwiftUI
+import Kingfisher
 
 struct VoteCardCell: View {
     enum VoteCardCellType {
@@ -62,10 +63,21 @@ struct VoteCardCell: View {
         VStack(alignment: .leading, spacing: 18) {
             if cellType == .standard {
                 HStack(spacing: 8) {
-                    Circle()
-                        .frame(width: 32, height: 32)
-                        .foregroundStyle(.gray)
-                    Text("얄루")
+                    if let profileImage = post.author?.profileImage {
+                        KFImage(URL(string: profileImage)!)
+                            .placeholder {
+                                ProgressView()
+                                    .preferredColorScheme(.dark)
+                            }
+                            .onFailure { error in
+                                print(error.localizedDescription)
+                            }
+                            .cancelOnDisappear(true)
+                            .resizable()
+                            .frame(width: 32, height: 32)
+                            .clipShape(.circle)
+                    }
+                    Text(post.author?.nickname ?? "")
                         .font(.system(size: 16, weight: .bold))
                         .foregroundStyle(.white)
                     Spacer()
