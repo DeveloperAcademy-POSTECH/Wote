@@ -39,6 +39,7 @@ struct CommentCell: View {
     @State private var isOpenComment: Bool = false
     @State private var isExpended = false
     @State private var canExpended: Bool?
+    @Environment(AppLoginState.self) private var loginStateManager
 
     init(comment: CommentsModel, onReplyButtonTapped: @escaping () -> Void, onConfirmDiaog: @escaping (Bool, Int) -> Void) {
         self.comment = comment
@@ -89,11 +90,14 @@ extension CommentCell {
 
     func makeCellView(comment: CommentsModel, parent: Bool) -> some View {
         HStack(alignment: .top) {
-            Image(systemName: "person")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 32, height: 32)
-                .clipShape(Circle())
+            if let image = comment.author.profileImage {
+                ProfileImageView(imageURL: image)
+                    .frame(width: 32, height: 32)
+            } else {
+                Image("defaultProfile")
+                    .resizable()
+                    .frame(width: 32, height: 32)
+            }
             VStack(alignment: .leading) {
                 HStack(spacing: 8) {
                     ConsumerTypeLabel(consumerType: ConsumerType(rawValue: comment.author.consumerType) ?? .adventurer, usage: .comments)
