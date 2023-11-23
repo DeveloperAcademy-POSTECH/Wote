@@ -101,6 +101,7 @@ struct VoteWriteView: View {
         .onChange(of: viewModel.isPostCreated) { _, isPostCreated in
             if isPostCreated {
                 loginState.serviceRoot.navigationManager.back()
+                NotificationCenter.default.post(name: NSNotification.voteCreated, object: nil)
             }
         }
     }

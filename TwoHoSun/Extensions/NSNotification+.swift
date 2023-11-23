@@ -9,4 +9,5 @@ import Foundation
 
 extension NSNotification {
     static let reviewCreated = Notification.Name.init("ReviewCreated")
+    static let voteCreated = Notification.Name.init("VoteCreated")
 }
