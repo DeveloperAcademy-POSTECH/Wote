@@ -17,6 +17,7 @@ struct CommentsView: View {
     @Binding var applyComplaint: Bool
     @ObservedObject var viewModel: CommentsViewModel
     @State private var replyForAnotherName: String?
+    @Environment(AppLoginState.self) private var loginStateManager
 
     var body: some View {
         ZStack {
@@ -128,9 +129,14 @@ extension CommentsView {
 
     var commentInputView: some View {
         HStack {
-            Image("defaultProfile")
-                .resizable()
-                .frame(width: 32, height: 32)
+            if let image = loginStateManager.serviceRoot.memberManager.profile?.profileImage {
+                ProfileImageView(imageURL: image)
+                    .frame(width: 32, height: 32)
+            } else {
+                Image("defaultProfile")
+                    .resizable()
+                    .frame(width: 32, height: 32)
+            }
             withAnimation(.easeInOut) {
                 TextField("", text: $viewModel.comments, prompt: Text("소비고민을 함께 나누어 보세요")
                     .foregroundStyle(viewModel.comments.isEmpty ? Color.subGray1 :Color.white)

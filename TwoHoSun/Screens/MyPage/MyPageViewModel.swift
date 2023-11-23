@@ -83,21 +83,4 @@ final class MyPageViewModel {
         }
         fetchPosts(isFirstFetch: false)
     }
-
-    func fetchProfile() {
-        loginState.serviceRoot.apimanager
-            .request(.userService(.getProfile), decodingType: ProfileModel.self)
-            .compactMap(\.data)
-            .sink { completion in
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let error):
-                    print(error)
-                }
-            } receiveValue: { data in
-                self.profile = data
-            }
-            .store(in: &cacellabels)
-    }
 }
