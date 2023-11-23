@@ -20,6 +20,7 @@ struct ReviewWriteView: View {
     @State private var showCropView: Bool = false
     @State private var isMine: Bool = false
     @Bindable var viewModel: ReviewWriteViewModel
+    @Environment(AppLoginState.self) private var loginState
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -91,6 +92,11 @@ struct ReviewWriteView: View {
                         .frame(maxWidth: .infinity)
                 }
                 .frame(height: 52)
+            }
+        }
+        .onChange(of: viewModel.isCompleted) { _, isCompleted in
+            if isCompleted {
+                loginState.serviceRoot.navigationManager.back()
             }
         }
     }
@@ -321,9 +327,6 @@ extension ReviewWriteView {
             isRegisterButtonDidTap = true
             if viewModel.isValid {
                 viewModel.createReview()
-                if viewModel.isCompleted {
-                    dismiss()
-                }
             }
         } label: {
             Text("등록하기")

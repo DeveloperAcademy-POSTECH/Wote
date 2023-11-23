@@ -144,22 +144,35 @@ struct DetailHeaderView: View {
         }
     }
 
+    private func calculateVoteResult(_ voteCounts: VoteCountsModel) -> String {
+        var voteResult = VoteResultType.buy
+        if voteCounts.agreeCount == voteCounts.disagreeCount {
+            voteResult = .draw
+        } else if voteCounts.agreeCount > voteCounts.disagreeCount {
+            voteResult = .buy
+        } else {
+            voteResult = .notBuy
+        }
+
+        return voteResult.rawValue
+    }
+
     private func destinationForHeaderButton(_ closedPostState: ClosedPostStatus, post: PostDetailModel) {
         switch closedPostState {
         case .myPostWithoutReview:
-            // TODO: - vote Result?
             let data = post.post
+            guard let voteCounts = data.voteCounts else { return }
             let summaryPost = SummaryPostModel(id: data.id,
                                                createDate: data.createDate,
                                                modifiedDate: data.modifiedDate,
                                                postStatus: data.postStatus,
+                                               voteResult: calculateVoteResult(voteCounts),
                                                title: data.title,
                                                image: data.image,
                                                contents: data.contents,
                                                price: data.price)
             loginState.serviceRoot.navigationManager.navigate(.reviewWriteView(post: summaryPost))
         case .othersPostWithoutReview:
-            // TODO: - Check
             break
         default:
             loginState.serviceRoot.navigationManager.navigate(.reviewDetailView(postId: post.post.id,

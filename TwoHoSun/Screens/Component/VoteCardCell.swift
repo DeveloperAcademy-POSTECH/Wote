@@ -6,39 +6,41 @@
 //
 import SwiftUI
 
+enum VoteResultType: String {
+    case buy = "BUY"
+    case draw = "NOT_BUY"
+    case notBuy = "DRAW"
+
+    init(voteResult: String) {
+        switch voteResult {
+        case "BUY":
+            self = .buy
+        case "NOT_BUY":
+            self = .notBuy
+        case "DRAW":
+            self = .draw
+        default:
+            self = .buy
+        }
+    }
+
+    var stampImage: Image {
+        switch self {
+        case .buy:
+            Image("imgBuy")
+        case .draw:
+            Image("imgDraw")
+        case .notBuy:
+            Image("imgNotBuy")
+        }
+    }
+}
+
 struct VoteCardCell: View {
     enum VoteCardCellType {
         case standard
         case simple
         case myVote
-    }
-
-    enum VoteResultType {
-        case buy, draw, notBuy
-
-        init(voteResult: String) {
-            switch voteResult {
-            case "BUY":
-                self = .buy
-            case "NOT_BUY":
-                self = .notBuy
-            case "DRAW":
-                self = .draw
-            default:
-                self = .buy
-            }
-        }
-
-        var stampImage: Image {
-            switch self {
-            case .buy:
-                Image("imgBuy")
-            case .draw:
-                Image("imgDraw")
-            case .notBuy:
-                Image("imgNotBuy")
-            }
-        }
     }
 
     var cellType: VoteCardCellType
@@ -124,8 +126,8 @@ struct VoteCardCell: View {
             }
             // TODO: - 후기를 작성한 투표라면 숨기기
             if progressType == .closed && cellType == .myVote && !(data.hasReview ?? false) {
-                NavigationLink {
-                    ReviewWriteView(viewModel: ReviewWriteViewModel(post: data, apiManager: loginStateManager.serviceRoot.apimanager))
+                Button {
+                    loginStateManager.serviceRoot.navigationManager.navigate(.reviewWriteView(post: data))
                 } label: {
                     Text("후기 작성하기")
                         .font(.system(size: 16, weight: .semibold))

@@ -261,7 +261,8 @@ extension MyPageView {
                                                                                                reviewId: data.id))
                 } label: {
                     VStack(spacing: 0) {
-                        ReviewCardCell(cellType: .myReview, data: data)
+                        ReviewCardCell(cellType: .myReview, 
+                                       data: data)
                         Divider()
                             .background(Color.dividerGray)
                             .padding(.horizontal, 8)

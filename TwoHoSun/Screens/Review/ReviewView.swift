@@ -47,43 +47,7 @@ struct ReviewView: View {
                     .progressViewStyle(CircularProgressViewStyle(tint: Color.gray100))
                     .scaleEffect(1.3, anchor: .center)
             }
-
-//            ScrollView {
-//                VStack(spacing: 0) {
-//                    if !viewModel.isFetching {
-//                        sameSpendTypeReviewView(datas: loginState.appData.reviewManager.reviews?.recentReviews,
-//                                                consumerType: viewModel.consumerType?.rawValue)
-//                            .padding(.top, 24)
-//                            .padding(.bottom, 20)
-//                            .padding(.leading, 24)
-//                        ScrollViewReader { proxy in
-//                            LazyVStack(pinnedViews: .sectionHeaders) {
-//                                Section {
-//                                    reviewListView(for: reviewType)
-//                                        .padding(.leading, 16)
-//                                        .padding(.trailing, 8)
-//                                } header: {
-//                                    reviewFilterView
-//                                }
-//                                .id("reviewTypeSection")
-//                            }
-//                            .onChange(of: reviewType) { _, _ in
-//                                proxy.scrollTo("reviewTypeSection", anchor: .top)
-//                            }
-//                        }
-//                    } else {
-//                        VStack {
-//                            Spacer()
-//                            ProgressView()
-//                                .progressViewStyle(CircularProgressViewStyle(tint: Color.gray100))
-//                                .scaleEffect(1.3, anchor: .center)
-//                            Spacer()
-//                        }
-//                    }
-//                }
-//            }
-        }
-//        .frame(maxWidth: .infinity)
+        } 
         .toolbarBackground(Color.background, for: .tabBar)
         .scrollIndicators(.hidden)
         .refreshable {
