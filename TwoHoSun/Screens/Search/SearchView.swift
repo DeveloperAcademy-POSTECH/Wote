@@ -17,6 +17,7 @@ struct SearchView: View {
     @State private var searchTextFieldState = SearchTextFieldState.inactive
     @FocusState private var isFocused: Bool
     @StateObject var viewModel: SearchViewModel
+    @State private var isOpen = true
 
     var body: some View {
         ZStack {
@@ -56,7 +57,10 @@ struct SearchView: View {
             }
         }
         .onAppear {
-            isFocused = true
+            isFocused = isOpen
+        }
+        .onDisappear {
+            isOpen = false
         }
         .toolbar(.hidden, for: .navigationBar)
     }
@@ -206,8 +210,8 @@ extension SearchView {
             ScrollViewReader { proxy in
                 LazyVStack {
                     ForEach(Array(viewModel.searchedDatas.enumerated()), id: \.offset) { index, data in
-                        NavigationLink {
-                            DetailView(viewModel: VoteViewModel(apiManager: loginState.serviceRoot.apimanager), postId: data.id, index: index)
+                        Button {
+                            loginState.serviceRoot.navigationManager.navigate(.detailView(postId: data.id, index: index))
                         } label: {
                             VoteCardCell(cellType: .standard,
                                          progressType: viewModel.selectedFilterType, post: data)

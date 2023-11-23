@@ -11,6 +11,10 @@ import Moya
 
 @Observable
 class Authenticator {
+    enum TokenState {
+        case none, allexpired, loggedIn, unfinishRegister
+    }
+
     var authState: TokenState = .none {
         didSet {
             authStateSubject.send(authState)
@@ -20,7 +24,7 @@ class Authenticator {
     var accessToken: String? {
         return KeychainManager.shared.readToken(key: "accessToken")
     }
-    private var refreshToken: String? {
+    var refreshToken: String? {
        return KeychainManager.shared.readToken(key: "refreshToken")
     }
     

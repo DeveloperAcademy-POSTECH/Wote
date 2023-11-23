@@ -9,17 +9,18 @@ import SwiftUI
 
 struct DetailView: View {
     @Environment(\.dismiss) var dismiss
-    @State private var showDetailComments = false
     @State private var showconfirm = false
     @State private var backgroundColor: Color = .background
     @State private var showCustomAlert = false
     @State private var applyComplaint = false
     @Environment(AppLoginState.self) private var loginStateManager
-    @ObservedObject var viewModel: VoteViewModel
+    @StateObject var viewModel: VoteViewModel
     @State private var currentAlert = AlertType.closeVote
+    @State var showDetailComments = false
     var postId: Int
     var index: Int
-
+    var directComments = false
+    let commentNotification = NotificationCenter.default.publisher(for: Notification.Name("showComment"))
     var body: some View {
         ZStack {
             backgroundColor
@@ -135,6 +136,9 @@ struct DetailView: View {
                     }
             }
         }
+        .onReceive(commentNotification) {_ in
+            self.showDetailComments.toggle()
+        }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -204,8 +208,14 @@ struct DetailView: View {
             }
         }
         .onAppear {
+            if directComments {
+                showDetailComments.toggle()
+            }
             viewModel.postData = nil
             viewModel.fetchPostDetail(postId: postId)
+        }
+        .onDisappear {
+            NotificationCenter.default.removeObserver(commentNotification)
         }
     }
 }

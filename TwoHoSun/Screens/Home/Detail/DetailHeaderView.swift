@@ -145,7 +145,8 @@ struct DetailHeaderView: View {
     private func destinationForHeaderButton(_ closedPostState: ClosedPostStatus) -> some View {
         switch closedPostState {
         case .myPostWithoutReview:
-            ReviewWriteView()
+            Text("임시")
+//            ReviewWriteView(viewModel: ReviewWriteViewModel(post: <#T##SummaryPostModel#>, apiManager: <#T##NewApiManager#>))
         case .othersPostWithoutReview:
             EmptyView()
         default:

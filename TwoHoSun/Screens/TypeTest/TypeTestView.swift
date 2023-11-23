@@ -11,7 +11,7 @@ struct TypeTestView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: TypeTestViewModel
     @State var successSpendType = false
-    @EnvironmentObject private var pathManger: NavigationManager
+
     var body: some View {
         ZStack {
             Color.background
@@ -50,7 +50,6 @@ struct TypeTestView: View {
                                 $viewModel.succeedPutData) {
             if let userType = viewModel.userType {
                 TypeTestResultView(spendType: userType)
-                    .environmentObject(pathManger)
             }
         }
     }

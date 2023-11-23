@@ -91,6 +91,7 @@
 		C7A95F192B01FFEC00F8595A /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A95F182B01FFEC00F8595A /* APIConstants.swift */; };
 		C7A95F1B2B03EB7B00F8595A /* NavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A95F1A2B03EB7B00F8595A /* NavigationManager.swift */; };
 		C7B5A8882B01641A00B73881 /* Authenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B5A8872B01641A00B73881 /* Authenticator.swift */; };
+		C7C596BB2B0D30AD000D1672 /* NotificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C596BA2B0D30AD000D1672 /* NotificationModel.swift */; };
 		C7DE44BD2AE0DCE7001639CB /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DE44BC2AE0DCE7001639CB /* CommentCell.swift */; };
 		C7DE44C22AE26109001639CB /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DE44C12AE26109001639CB /* View+.swift */; };
 		C7E30E2B2ADC40E4001AE89B /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E30E2A2ADC40E4001AE89B /* LoginViewModel.swift */; };
@@ -103,6 +104,7 @@
 		FD0E8B5A2B0DDCBB002CED68 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD0E8B592B0DDCBB002CED68 /* SettingViewModel.swift */; };
 		FD132BF22ADBE8FB00F31AAF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD132BF12ADBE8FB00F31AAF /* Assets.xcassets */; };
 		FD132BF52ADBE8FB00F31AAF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD132BF42ADBE8FB00F31AAF /* Preview Assets.xcassets */; };
+		FD1B6D462B0BEBC50097F789 /* ReviewCreateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD1B6D452B0BEBC50097F789 /* ReviewCreateModel.swift */; };
 		FD2C7D8C2B0705DA00B5B494 /* CardImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2C7D8B2B0705DA00B5B494 /* CardImageView.swift */; };
 		FD3205682ADD5C0D00B0D5F6 /* TwoHoSunApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3205672ADD5C0D00B0D5F6 /* TwoHoSunApp.swift */; };
 		FD3646F52ADD8E2D0064DF94 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FD3646F42ADD8E2D0064DF94 /* Alamofire */; };
@@ -215,6 +217,7 @@
 		C7A95F182B01FFEC00F8595A /* APIConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
 		C7A95F1A2B03EB7B00F8595A /* NavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationManager.swift; sourceTree = "<group>"; };
 		C7B5A8872B01641A00B73881 /* Authenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authenticator.swift; sourceTree = "<group>"; };
+		C7C596BA2B0D30AD000D1672 /* NotificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModel.swift; sourceTree = "<group>"; };
 		C7DE44BC2AE0DCE7001639CB /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		C7DE44C12AE26109001639CB /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
 		C7E30E2A2ADC40E4001AE89B /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
@@ -229,6 +232,7 @@
 		FD132BEA2ADBE8FA00F31AAF /* TwoHoSun.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwoHoSun.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD132BF12ADBE8FB00F31AAF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FD132BF42ADBE8FB00F31AAF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		FD1B6D452B0BEBC50097F789 /* ReviewCreateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewCreateModel.swift; sourceTree = "<group>"; };
 		FD2C7D8B2B0705DA00B5B494 /* CardImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardImageView.swift; sourceTree = "<group>"; };
 		FD32055D2ADD16AC00B0D5F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FD3205672ADD5C0D00B0D5F6 /* TwoHoSunApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoHoSunApp.swift; sourceTree = "<group>"; };
@@ -404,6 +408,7 @@
 			isa = PBXGroup;
 			children = (
 				ABB71D7B2AE2B3F100BE0671 /* NotificationView.swift */,
+				C7C596BA2B0D30AD000D1672 /* NotificationModel.swift */,
 			);
 			path = Notification;
 			sourceTree = "<group>";
@@ -584,6 +589,7 @@
 				C73F8E852AE55014001C6B07 /* FeedModel */,
 				C73F8E862AE550E4001C6B07 /* CommonModel */,
 				ABBBC67B2AE49CC800B1E614 /* PostCreateModel.swift */,
+				FD1B6D452B0BEBC50097F789 /* ReviewCreateModel.swift */,
 				AB6845AC2AFC13FF00C3F7C2 /* TypeTestModel.swift */,
 			);
 			path = Model;
@@ -790,6 +796,7 @@
 				C7974E0D2B0A869600BE9AF9 /* CommentPreview.swift in Sources */,
 				ABE51ED12B054ED5009C6CA5 /* DetailHeaderView.swift in Sources */,
 				ABDED87F2B00AFCC00D78BEA /* VoteViewModel.swift in Sources */,
+				C7C596BB2B0D30AD000D1672 /* NotificationModel.swift in Sources */,
 				C7EFA7D92AF9279200C9BEA0 /* ComplaintView.swift in Sources */,
 				AB7317EC2AF90F40008B5E41 /* ProfileSettingViewModel.swift in Sources */,
 				AB7317EA2AF90F00008B5E41 /* UIColor+.swift in Sources */,
@@ -840,6 +847,7 @@
 				C7F1FD862ADDA37E00C5A2A1 /* BottomSheetView.swift in Sources */,
 				ABA1E84A2AFD5C0B009051E0 /* ReviewWriteViewModel.swift in Sources */,
 				FD50A04C2B02084600CF7F59 /* SettingQuestionsView.swift in Sources */,
+				FD1B6D462B0BEBC50097F789 /* ReviewCreateModel.swift in Sources */,
 				FD2C7D8C2B0705DA00B5B494 /* CardImageView.swift in Sources */,
 				C782E7642AFED523006BCE59 /* ErrorResponse.swift in Sources */,
 				AB4522562ADDDBC400B69F24 /* SchoolResponseModel.swift in Sources */,

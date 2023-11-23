@@ -17,7 +17,7 @@ enum PostService {
     case deletePost(postId: Int)
     case getReviewDetail
     case modifyReview
-    case createReview
+    case createReview(postId: Int, review: ReviewCreateModel)
     case deleteReview
     case subscribeReview
     case votePost(postId: Int, choice: Bool)
@@ -25,10 +25,7 @@ enum PostService {
     case getMyPosts(page: Int, size: Int, myVoteCategoryType: String)
     case getMyReviews(page: Int, size: Int, myReviewCategoryType: String)
     case closeVote(postId: Int)
-    case getReviews(visibilityScope: String,
-                      reviewType: String,
-                      page: Int,
-                      size: Int)
+    case getReviews(visibilityScope: String, reviewType: String, page: Int, size: Int)
 }
 
 extension PostService: TargetType {
@@ -59,6 +56,8 @@ extension PostService: TargetType {
             return "/posts/\(postId)/complete"
         case .getReviews:
             return "/reviews"
+        case .createReview(let postId, _):
+            return "/posts/\(postId)/reviews"
         default:
             return ""
         }
@@ -91,6 +90,8 @@ extension PostService: TargetType {
             return ["page": page,
                     "size": size,
                     "visibilityScope": myReviewCategoryType]
+        case .createReview(let postId, _):
+            return ["postId": postId]
         default:
             return [:]
         }
@@ -114,6 +115,8 @@ extension PostService: TargetType {
             return .post
         case .getMyReviews:
             return .get
+        case .createReview:
+            return .post
         default:
             return .get
         }
@@ -169,6 +172,29 @@ extension PostService: TargetType {
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case .getMyReviews:
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
+        case .createReview(_, let review):
+            var formData: [MultipartFormData] = []
+            if let data = UIImage(data: review.image ?? Data())?.jpegData(compressionQuality: 0.3) {
+                let imageData = MultipartFormData(provider: .data(data), name: "imageFile", fileName: "temp.jpg", mimeType: "image/jpeg")
+                formData.append(imageData)
+            }
+            let postData: [String: Any] = [
+                "title": review.title,
+                "contents": review.contents ?? "",
+                "price": review.price ?? 0,
+                "isPurchased": review.isPurchased
+            ]
+            do {
+                let json = try JSONSerialization.data(withJSONObject: postData)
+                let jsonString = String(data: json, encoding: .utf8)!
+                let stringData = MultipartFormData(provider: .data(jsonString.data(using: String.Encoding.utf8)!),
+                                                   name: "reviewRequest",
+                                                   mimeType: "application/json")
+                formData.append(stringData)
+            } catch {
+                print("error: \(error)")
+            }
+            return .uploadMultipart(formData)
         default:
             return .requestPlain
         }
@@ -178,10 +204,8 @@ extension PostService: TargetType {
         switch self {
         case .createPost:
             APIConstants.headerMultiPartForm
-        case .getMyPosts:
-            APIConstants.headerWithAuthorization
-        case .getMyReviews:
-            APIConstants.headerWithAuthorization
+        case .createReview:
+            APIConstants.headerMultiPartForm
         default:
             APIConstants.headerWithAuthorization
         }

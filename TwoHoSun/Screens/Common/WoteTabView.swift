@@ -49,11 +49,10 @@ struct WoteTabView: View {
     @State private var selectedVisibilityScope = VisibilityScopeType.global
     @State private var isVoteCategoryButtonDidTap = false
     @Environment(AppLoginState.self) private var loginStateManager
-    @Binding var path: [LoginNavigation]
-    @StateObject private var navigatePath = NavigationManager()
 
     var body: some View {
-        NavigationStack(path: $navigatePath.navigatePath) {
+        @Bindable var navigationPath = loginStateManager.serviceRoot.navigationManager
+        NavigationStack(path: $navigationPath.navigatePath) {
             ZStack(alignment: .topLeading) {
                 VStack(spacing: 0) {
                     navigationBar
@@ -67,7 +66,6 @@ struct WoteTabView: View {
                                 }
                         }
                     }
-
                 }
 
                 if isVoteCategoryButtonDidTap {
@@ -93,34 +91,36 @@ struct WoteTabView: View {
             }  
             .navigationDestination(for: AllNavigation.self) { destination in
                 switch destination {
-                case .detailView(let postId, let index):
+                case .detailView(let postId, let index, let directComments):
                     DetailView(viewModel: VoteViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
                                postId: postId,
-                               index: index)
+                               index: index,
+                               directComments: directComments)
                 case .makeVoteView:
                     VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: selectedVisibilityScope, 
                                                                 apiManager: loginStateManager.serviceRoot.apimanager), tabselection: $selection )
                 case .testIntroView:
                     TypeTestIntroView()
                         .toolbar(.hidden, for: .navigationBar)
-                        .environmentObject(navigatePath)
                 case .testView:
                     TypeTestView(viewModel: TypeTestViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
-                        .environmentObject(navigatePath)
                 case .reveiwView:
                     ReviewView(viewModel: ReviewTabViewModel(apiManger: loginStateManager.serviceRoot.apimanager))
                 case .writeReiview:
-//                    VoteWriteView(viewModel: VoteWriteViewModel())
                     Text("아직")
                 case .settingView:
                     SettingView(viewModel: SettingViewModel(loginStateManager: loginStateManager))
                 case .mypageView:
-                    MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager), selectedVisibilityScope: $selectedVisibilityScope)
-                        .environmentObject(navigatePath)
+                    MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager), 
+                               selectedVisibilityScope: $selectedVisibilityScope)
+                case .searchView:
+                    SearchView(viewModel: SearchViewModel(apiManager: loginStateManager.serviceRoot.apimanager,
+                                                          selectedVisibilityScope: selectedVisibilityScope))
+                default:
+                    Text("HI")
                 }
             }
         }
-
         .onAppear {
             let appearance = UITabBarAppearance()
             appearance.configureWithOpaqueBackground()
@@ -135,20 +135,18 @@ struct WoteTabView: View {
 }
 
 extension WoteTabView {
+
     @ViewBuilder
     private func tabDestinationView(for tab: WoteTabType) -> some View {
         switch tab {
         case .consider:
             ConsiderationView(selectedVisibilityScope: $selectedVisibilityScope, 
                               viewModel: VoteViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
-                .environmentObject(navigatePath)
         case .review:
             ReviewView(viewModel: ReviewTabViewModel(apiManger: loginStateManager.serviceRoot.apimanager))
-                .environmentObject(navigatePath)
         case .myPage:
             MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
                        selectedVisibilityScope: $selectedVisibilityScope)
-                .environmentObject(navigatePath)
         }
     }
 
@@ -181,8 +179,8 @@ extension WoteTabView {
     }
 
     private var notificationButton: some View {
-        NavigationLink {
-            NotificationView()
+        Button {
+            loginStateManager.serviceRoot.navigationManager.navigate(.notiView)
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 6)
@@ -196,9 +194,8 @@ extension WoteTabView {
     }
 
     private var searchButton: some View {
-        NavigationLink {
-            SearchView(viewModel: SearchViewModel(apiManager: loginStateManager.serviceRoot.apimanager,
-                                                  selectedVisibilityScope: selectedVisibilityScope))
+        Button {
+            loginStateManager.serviceRoot.navigationManager.navigate(.searchView)
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 6)
@@ -212,8 +209,8 @@ extension WoteTabView {
     }
 
     private var settingButton: some View {
-        NavigationLink {
-            SettingView(viewModel: SettingViewModel(loginStateManager: loginStateManager))
+        Button {
+            loginStateManager.serviceRoot.navigationManager.navigate(.settingView)
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 6)

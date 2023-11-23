@@ -31,7 +31,6 @@ class KeychainManager {
         var dataTypeRef: AnyObject?
         let status = SecItemCopyMatching(query, &dataTypeRef)
         if status == errSecSuccess, let data = dataTypeRef as? Data, let value = String(data: data, encoding: .utf8) {
-            print(value)
             return value
         } else {
             return nil
@@ -46,7 +45,6 @@ class KeychainManager {
         let updateQuery: NSDictionary = [
             kSecValueData: token.data(using: .utf8, allowLossyConversion: false) as Any
         ]
-        print("update result of \(key): \(SecItemUpdate(previousQuery, updateQuery) == errSecSuccess)")
     }
     
     func deleteToken(key: String) {
@@ -54,6 +52,5 @@ class KeychainManager {
             kSecClass: kSecClassInternetPassword,
             kSecAttrAccount: key
         ]
-        print("delete result of \(key): \(SecItemDelete(query) == errSecSuccess)")
     }
 }

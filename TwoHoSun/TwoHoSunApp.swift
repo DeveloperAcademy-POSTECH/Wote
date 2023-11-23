@@ -8,11 +8,6 @@
 import SwiftUI
 import Observation
 
-enum Route {
-    case mainTabView
-    case profileView
-}
-
 @main
 struct TwoHoSunApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
@@ -25,30 +20,42 @@ struct TwoHoSunApp: App {
                 OnBoardingView(viewModel: LoginViewModel(appState: appState))
                     .environment(appState)
             case .loggedIn:
-                    WoteTabView(path: .constant([]))
+                    WoteTabView()
                         .environment(appState)
+                        .onAppear {
+                            appDelegate.app = self
+                        }
             }
         }
     }
+
 }
 
+extension TwoHoSunApp {
+    func handleDeepPush(postId: Int, _ isComment: Bool) async {
+        appState.serviceRoot.navigationManager.navigate(.detailView(postId: postId, index: 0, dirrectComments: isComment))
+    }
+}
 class ServiceRoot {
     var auth = Authenticator()
     lazy var apimanager: NewApiManager = {
         let manager = NewApiManager(authenticator: auth)
         return manager
     }()
+    var navigationManager = NavigationManager()
 }
 
-enum TokenState {
-    case none, allexpired, loggedIn, unfinishRegister
+@Observable
+class AppData {
+    var notificationDatas = [NotificationModel]()
 }
 
 @Observable
 class AppLoginState {
     var serviceRoot: ServiceRoot
-
+    var appData: AppData
     init() {
+        appData = AppData()
         serviceRoot = ServiceRoot()
         checkTokenValidity()
         serviceRoot.auth.relogin = relogin

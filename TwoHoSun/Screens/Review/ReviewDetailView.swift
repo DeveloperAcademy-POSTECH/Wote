@@ -13,6 +13,7 @@ struct ReviewDetailView: View {
     @State private var isDetailCommentShown = false
     @State private var showCustomAlert = false
     @State private var applyComplaint = false
+    @Environment(AppLoginState.self ) var loginmanager
 
     var body: some View {
         ScrollView {
@@ -80,6 +81,7 @@ extension ReviewDetailView {
                 Spacer()
                 NavigationLink {
                     // TODO: - postId 알맞게 변경
+                    DetailView(viewModel: VoteViewModel(apiManager: loginmanager.serviceRoot.apimanager), postId: 5252, index: 0)
 //                    DetailView(viewModel: DetailViewModel(apiManager: <#T##NewApiManager#>, postId: <#T##Int#>))
                 } label: {
                     HStack(spacing: 2) {
