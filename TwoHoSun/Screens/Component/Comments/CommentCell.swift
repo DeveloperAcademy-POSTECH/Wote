@@ -90,7 +90,7 @@ extension CommentCell {
 
     func makeCellView(comment: CommentsModel, parent: Bool) -> some View {
         HStack(alignment: .top) {
-            if let image = loginStateManager.appData.profile?.profileImage {
+            if let image = comment.author.profileImage {
                 ProfileImageView(imageURL: image)
                     .frame(width: 32, height: 32)
             } else {
