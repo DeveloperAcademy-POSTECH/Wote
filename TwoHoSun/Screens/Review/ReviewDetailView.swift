@@ -245,6 +245,7 @@ extension ReviewDetailView {
 
 struct AlertModalView: View {
     @Binding var showAlert: Bool
+    @Environment(\.dismiss) var dismiss
     var viewModel: ReviewDetailViewModel
     var loginState: AppLoginState
 
@@ -253,6 +254,7 @@ struct AlertModalView: View {
             CustomAlertModalView(alertType: .ban(nickname: viewModel.reviewData?.reviewPost.author.nickname ?? ""), isPresented: $showAlert) {
                 loginState.serviceRoot.memberManager.blockUser(memberId: viewModel.reviewData?.reviewPost.author.id ?? 0)
                 showAlert.toggle()
+                dismiss()
             }
         }
     }

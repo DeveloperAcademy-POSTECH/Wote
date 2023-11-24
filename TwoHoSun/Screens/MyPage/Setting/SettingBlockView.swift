@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SettingBlockView: View {
     var viewModel: SettingViewModel
-
+    
     var body: some View {
         ZStack {
             Color.background
@@ -22,7 +22,9 @@ struct SettingBlockView: View {
                 ScrollView {
                     Divider()
                         .foregroundStyle(Color.dividerGray)
-                    blockListView
+                    ForEach(viewModel.blockUsersList) { user in
+                        BlockListCell(blockUser: user, viewModel: viewModel)
+                    }
                 }
                 .padding(.horizontal, 16)
                 .padding(.top, 8)
@@ -44,42 +46,48 @@ struct SettingBlockView: View {
     }
 }
 
-extension SettingBlockView {
-    private var blockListView: some View {
-        ForEach(viewModel.blockUsersList) { user in
-            var isToggled = false
-            HStack {
-                Image("defaultProfile")
-                    .resizable()
-                    .frame(width: 32, height: 32)
-                    .padding(.trailing, 2)
-                Text(user.nickname)
-                    .foregroundStyle(.white)
-                    .font(.system(size: 16, weight: .bold))
-                Spacer()
-                Button {
-                    isToggled.toggle()
-                } label: {
-                    ZStack {
-                        if isToggled {
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(width: 103, height: 44)
-                                .foregroundStyle(Color.lightBlue)
-                        } else {
-                            RoundedRectangle(cornerRadius: 10)
-                                .strokeBorder(lineWidth: 1)
-                                .frame(width: 103, height: 44)
-                                .foregroundStyle(Color.lightBlue)
-                        }
-                        Text("차단중")
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundStyle(isToggled ? .white : Color.lightBlue)
+struct BlockListCell: View {
+    @State var isBlocked: Bool = true
+    var blockUser: BlockUserModel
+    var viewModel: SettingViewModel
+    
+    var body: some View {
+        HStack {
+            Image("defaultProfile")
+                .resizable()
+                .frame(width: 32, height: 32)
+                .padding(.trailing, 2)
+            Text(blockUser.nickname)
+                .foregroundStyle(.white)
+                .font(.system(size: 16, weight: .bold))
+            Spacer()
+            Button {
+                isBlocked.toggle()
+            } label: {
+                ZStack {
+                    if isBlocked {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(width: 103, height: 44)
+                            .foregroundStyle(Color.lightBlue)
+                    } else {
+                        RoundedRectangle(cornerRadius: 10)
+                            .strokeBorder(lineWidth: 1)
+                            .frame(width: 103, height: 44)
+                            .foregroundStyle(Color.lightBlue)
                     }
+                    Text(isBlocked ? "차단중" : "차단하기")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundStyle(isBlocked ? .white : Color.lightBlue)
                 }
             }
-            .padding(.horizontal, 8)
-            Divider()
-                .foregroundStyle(Color.dividerGray)
         }
+        .padding(.horizontal, 8)
+        .onDisappear {
+            if !isBlocked {
+                viewModel.deleteBlockUser(memberId: blockUser.id)
+            }
+        }
+        Divider()
+            .foregroundStyle(Color.dividerGray)
     }
 }

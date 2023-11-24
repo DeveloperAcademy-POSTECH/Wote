@@ -145,6 +145,7 @@ struct DetailView: View {
                 CustomAlertModalView(alertType: .ban(nickname: viewModel.postDetail?.post.author.nickname ?? ""), isPresented: $showAlert) {
                     loginStateManager.serviceRoot.memberManager.blockUser(memberId: viewModel.postDetail?.post.author.id ?? 0)
                     showAlert.toggle()
+                    dismiss()
                 }
             }
         }
