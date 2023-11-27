@@ -95,13 +95,11 @@ struct VoteWriteView: View {
                 .frame(height: 52)
             }
         }
-        .onAppear {
-            tabselection = .consider
-        }
         .onChange(of: viewModel.isPostCreated) { _, isPostCreated in
             if isPostCreated {
                 NotificationCenter.default.post(name: NSNotification.voteCreated, object: nil)
                 loginState.serviceRoot.navigationManager.back()
+                tabselection = .consider
             }
         }
     }

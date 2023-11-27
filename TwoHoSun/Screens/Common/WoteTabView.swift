@@ -56,7 +56,11 @@ struct WoteTabView: View {
             }  
             .navigationDestination(for: AllNavigation.self) { destination in
                 switch destination {
-                case .detailView(let postId, 
+                case .considerationView:
+                    ConsiderationView(visibilityScope: $visibilityScope,
+                                      scrollToTop: $tabScrollHandler.scrollToTop,
+                                      viewModel: ConsiderationViewModel(appLoginState: loginStateManager))
+                case .detailView(let postId,
                                  let showDetailComments,
                                  let isShowingItems):
                     DetailView(viewModel: DetailViewModel(appLoginState: loginStateManager),

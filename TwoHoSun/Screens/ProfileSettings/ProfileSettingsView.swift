@@ -108,7 +108,8 @@ struct ProfileSettingsView: View {
                         .padding(.top, 40)
                 case .modfiy:
                     HStack {
-                        ConsumerTypeLabel(consumerType: loginStateManager.serviceRoot.memberManager.profile?.consumerType ?? .adventurer, usage: .standard)
+                        ConsumerTypeLabel(consumerType: loginStateManager.serviceRoot.memberManager.profile?.consumerType ?? .adventurer,
+                                          usage: .standard)
                         Spacer()
                     }
                     .padding(.top, 30)
@@ -442,9 +443,8 @@ extension ProfileSettingsView {
     }
 
     private var goToTypeTestButton: some View {
-        NavigationLink {
-            TypeTestIntroView()
-
+        Button {
+            loginStateManager.serviceRoot.navigationManager.navigate(.testIntroView)
         } label: {
             HStack(spacing: 0) {
                 Text("소비 성향 테스트하러가기")
