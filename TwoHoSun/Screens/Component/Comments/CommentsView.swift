@@ -78,6 +78,7 @@ struct CommentsView: View {
         }
         .onTapGesture {
             isFocus = false
+            replyForAnotherName = nil
         }
         .fullScreenCover(isPresented: $showComplaint, content: {
             NavigationStack {
@@ -129,8 +130,11 @@ extension CommentsView {
                     .onChange(of: scrollSpot) { _, _ in
                         proxy.scrollTo(scrollSpot, anchor: .top)
                     }
+
                 }
+
             }
+            .padding(.bottom, isFocus ? 40 : 0)
             .scrollIndicators(.hidden)
         }
         .padding(.horizontal, 24)
