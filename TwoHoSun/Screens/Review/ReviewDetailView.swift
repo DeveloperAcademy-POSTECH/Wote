@@ -264,13 +264,3 @@ struct AlertModalView: View {
         }
     }
 }
-
-#Preview {
-    NavigationStack {
-        @Environment(AppLoginState.self) var loginState
-
-        ReviewDetailView(viewModel: ReviewDetailViewModel(loginState: loginState), 
-                         reviewId: 3030)
-            .environment(AppLoginState())
-    }
-}
