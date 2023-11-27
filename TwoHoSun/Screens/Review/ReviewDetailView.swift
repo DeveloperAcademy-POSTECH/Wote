@@ -19,6 +19,7 @@ struct ReviewDetailView: View {
     var isShowingItems = true
     var postId: Int?
     var reviewId: Int?
+    var directComments = false
 
     var body: some View {
         ZStack {
@@ -86,6 +87,9 @@ struct ReviewDetailView: View {
             .presentationContentInteraction(.scrolls)
         }
         .onAppear {
+            if directComments {
+                isDetailCommentShown.toggle()
+            }
             if let reviewId = reviewId {
                 viewModel.fetchReviewDetail(reviewId: reviewId)
             }

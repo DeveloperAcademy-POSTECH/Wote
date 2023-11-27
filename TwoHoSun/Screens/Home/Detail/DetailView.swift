@@ -19,7 +19,6 @@ struct DetailView: View {
     var isShowingItems = true
     @State var showDetailComments = false
     var postId: Int
-
     var directComments = false
     let commentNotification = NotificationCenter.default.publisher(for: Notification.Name("showComment"))
     var body: some View {
