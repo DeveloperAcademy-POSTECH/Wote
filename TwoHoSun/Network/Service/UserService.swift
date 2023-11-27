@@ -19,6 +19,9 @@ enum UserService {
     case requestLogout
     case deleteUser
     case postDeviceTokens(deviceToken: String)
+    case blockUser(memberId: Int)
+    case getBlockUsers
+    case deleteBlockUser(memberId: Int)
 }
 
 extension UserService: TargetType {
@@ -47,6 +50,12 @@ extension UserService: TargetType {
             return "/api/members"
         case .postDeviceTokens:
             return "/api/notifications/tokens"
+        case .blockUser(let memberId):
+            return "/api/members/block/\(memberId)"
+        case .getBlockUsers:
+            return "/api/members/block"
+        case .deleteBlockUser(let memberId):
+            return "/api/members/block/\(memberId)"
         }
     }
     
@@ -56,12 +65,14 @@ extension UserService: TargetType {
             return .put
         case .getProfile:
             return .get
-        case .requestLogout:
-            return .post
         case .deleteUser:
             return .delete
         case .postDeviceTokens:
             return .post
+        case .getBlockUsers:
+            return .get
+        case .deleteBlockUser:
+            return .delete
         default:
             return .post
         }
@@ -89,14 +100,17 @@ extension UserService: TargetType {
             return [:]
         case .postDeviceTokens(let deviceToken):
             return ["deviceToken" : deviceToken]
+        case .blockUser(let memberId):
+            return ["memberId": memberId]
+        case .getBlockUsers:
+            return [:]
+        case .deleteBlockUser(let memberId):
+            return ["memberId": memberId]
         }
     }
 
     var task: Moya.Task {
         switch self {
-        case .checkNicknameValid:
-            return .requestParameters(parameters: parameters,
-                                      encoding: JSONEncoding.default)
         case .postProfileSetting(let profile):
             var formData: [MultipartFormData] = []
 
@@ -128,8 +142,6 @@ extension UserService: TargetType {
                 print("error")
             }
             return .uploadMultipart(formData)
-        case .putConsumerType:
-            return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         case .getProfile:
             return .requestPlain
         case .requestLogout:
@@ -138,9 +150,10 @@ extension UserService: TargetType {
             return .requestPlain
         case .postDeviceTokens:
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
+        case .getBlockUsers:
+            return .requestPlain
         default:
-            return .requestParameters(parameters: parameters,
-                                      encoding: URLEncoding.default)
+            return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
         }
     }
     

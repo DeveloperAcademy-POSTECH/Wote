@@ -49,7 +49,6 @@ extension TwoHoSunApp {
 }
 class ServiceRoot {
     var auth = Authenticator()
-
     lazy var apimanager: NewApiManager = {
         let manager = NewApiManager(authenticator: auth)
         return manager

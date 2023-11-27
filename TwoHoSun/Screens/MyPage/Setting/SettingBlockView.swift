@@ -7,27 +7,14 @@
 
 import SwiftUI
 
-// MARK: 임시 데이터 모델
-struct BlockModel: Hashable, Identifiable {
-    let id: UUID = UUID()
-    let userName: String
-    var isBlock: Bool
-}
-
 struct SettingBlockView: View {
+    var viewModel: SettingViewModel
     
-    // MARK: 임시 데이터
-    @State private var blockList: [BlockModel] = [
-        BlockModel(userName: "얄루", isBlock: true),
-        BlockModel(userName: "얄루", isBlock: true),
-        BlockModel(userName: "얄루", isBlock: true)
-    ]
-
     var body: some View {
         ZStack {
             Color.background
                 .ignoresSafeArea()
-            if blockList.isEmpty {
+            if viewModel.blockUsersList.isEmpty {
                 Text("차단한 사용자가 없습니다.")
                     .font(.system(size: 16, weight: .medium))
                     .foregroundStyle(Color.subGray1)
@@ -35,7 +22,9 @@ struct SettingBlockView: View {
                 ScrollView {
                     Divider()
                         .foregroundStyle(Color.dividerGray)
-                    blockListView
+                    ForEach(viewModel.blockUsersList) { user in
+                        BlockListCell(blockUser: user, viewModel: viewModel)
+                    }
                 }
                 .padding(.horizontal, 16)
                 .padding(.top, 8)
@@ -51,48 +40,54 @@ struct SettingBlockView: View {
                     .font(.system(size: 18, weight: .medium))
             }
         }
-    }
-}
-
-extension SettingBlockView {
-    private var blockListView: some View {
-        ForEach($blockList) { $user in
-            HStack {
-                Image("defaultProfile")
-                    .resizable()
-                    .frame(width: 32, height: 32)
-                    .padding(.trailing, 2)
-                Text(user.userName)
-                    .foregroundStyle(.white)
-                    .font(.system(size: 16, weight: .bold))
-                Spacer()
-                Button {
-                    user.isBlock.toggle()
-                } label: {
-                    ZStack {
-                        if user.isBlock {
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(width: 103, height: 44)
-                                .foregroundStyle(Color.lightBlue)
-                        } else {
-                            RoundedRectangle(cornerRadius: 10)
-                                .strokeBorder(lineWidth: 1)
-                                .frame(width: 103, height: 44)
-                                .foregroundStyle(Color.lightBlue)
-                        }
-                        Text("차단중")
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundStyle(user.isBlock ? .white : Color.lightBlue)
-                    }
-                }
-            }
-            .padding(.horizontal, 8)
-            Divider()
-                .foregroundStyle(Color.dividerGray)
+        .onAppear {
+            viewModel.getBlockUsers()
         }
     }
 }
 
-#Preview {
-    SettingBlockView()
+struct BlockListCell: View {
+    @State var isBlocked: Bool = true
+    var blockUser: BlockUserModel
+    var viewModel: SettingViewModel
+    
+    var body: some View {
+        HStack {
+            Image("defaultProfile")
+                .resizable()
+                .frame(width: 32, height: 32)
+                .padding(.trailing, 2)
+            Text(blockUser.nickname)
+                .foregroundStyle(.white)
+                .font(.system(size: 16, weight: .bold))
+            Spacer()
+            Button {
+                isBlocked.toggle()
+            } label: {
+                ZStack {
+                    if isBlocked {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(width: 103, height: 44)
+                            .foregroundStyle(Color.lightBlue)
+                    } else {
+                        RoundedRectangle(cornerRadius: 10)
+                            .strokeBorder(lineWidth: 1)
+                            .frame(width: 103, height: 44)
+                            .foregroundStyle(Color.lightBlue)
+                    }
+                    Text(isBlocked ? "차단중" : "차단하기")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundStyle(isBlocked ? .white : Color.lightBlue)
+                }
+            }
+        }
+        .padding(.horizontal, 8)
+        .onDisappear {
+            if !isBlocked {
+                viewModel.deleteBlockUser(memberId: blockUser.id)
+            }
+        }
+        Divider()
+            .foregroundStyle(Color.dividerGray)
+    }
 }

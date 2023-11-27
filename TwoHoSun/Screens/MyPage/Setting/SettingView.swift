@@ -90,7 +90,7 @@ struct SettingView: View {
                         SettingNotificationView()
                     }
                     settingLinkView(.block) {
-                        SettingBlockView()
+                        SettingBlockView(viewModel: SettingViewModel(loginStateManager: loginStateManager))
                     }
                 }
                 settingSectionView {

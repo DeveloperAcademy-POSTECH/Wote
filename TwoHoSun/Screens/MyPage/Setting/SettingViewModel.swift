@@ -12,6 +12,7 @@ import SwiftUI
 class SettingViewModel {
     var loginStateManager: AppLoginState
     private var cancellable = Set<AnyCancellable>()
+    var blockUsersList: [BlockUserModel] = []
     
     init(loginStateManager: AppLoginState) {
         self.loginStateManager = loginStateManager
@@ -49,6 +50,37 @@ class SettingViewModel {
                 KeychainManager.shared.deleteToken(key: "accessToken")
                 KeychainManager.shared.deleteToken(key: "refreshToken")
                 self.loginStateManager.serviceRoot.auth.authState = .none
+            }
+            .store(in: &cancellable)
+    }
+    
+    func getBlockUsers() {
+        loginStateManager.serviceRoot.apimanager.request(.userService(.getBlockUsers), decodingType: [BlockUserModel].self)
+            .compactMap(\.data)
+            .sink { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    print(error)
+                }
+            } receiveValue: { data in
+                self.blockUsersList.append(contentsOf: data)
+            }
+            .store(in: &cancellable)
+    }
+    
+    func deleteBlockUser(memberId: Int) {
+        loginStateManager.serviceRoot.apimanager.request(.userService(.deleteBlockUser(memberId: memberId)), decodingType: NoData.self)
+            .sink { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    print(error)
+                }
+            } receiveValue: { _ in
+                print("delte block user(\(memberId)) successful!")
             }
             .store(in: &cancellable)
     }

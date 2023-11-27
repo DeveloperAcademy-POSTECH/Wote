@@ -40,9 +40,11 @@ struct CommentsView: View {
                 ZStack {
                     Color.black.opacity(0.7)
                         .ignoresSafeArea()
-                    CustomAlertModalView(alertType: ismyCellconfirm ? .erase : .ban(nickname: "선호"), isPresented: $viewModel.presentAlert) {
+                    CustomAlertModalView(alertType: ismyCellconfirm ? .erase : .ban(nickname: viewModel.commentsDatas.filter { $0.commentId == scrollSpot }.first?.author.nickname ?? ""), isPresented: $viewModel.presentAlert) {
                         if ismyCellconfirm {
                             viewModel.deleteComments(commentId: scrollSpot)
+                        } else {
+                            loginStateManager.serviceRoot.memberManager.blockUser(memberId: viewModel.commentsDatas.filter { $0.commentId == scrollSpot }.first?.author.id ?? 0)
                         }
                         print("신고접수됐습니다.")
                     }
@@ -76,9 +78,9 @@ struct CommentsView: View {
                 ComplaintView(isSheet: $showComplaint, isComplaintApply: $applyComplaint)
             }
         })
-        .customConfirmDialog(isPresented: $showConfirm, isMine: $ismyCellconfirm, actions: { bindismine in
-            let ismine = bindismine.wrappedValue
-            if !ismine {
+        .customConfirmDialog(isPresented: $showConfirm, isMine: $ismyCellconfirm, actions: { bindIsMine in
+            let isMine = bindIsMine.wrappedValue
+            if !isMine {
                 Button {
                     showComplaint.toggle()
                     showConfirm.toggle()
@@ -93,7 +95,7 @@ struct CommentsView: View {
                 viewModel.presentAlert.toggle()
                 showConfirm.toggle()
             } label: {
-                Text(ismine ? "삭제하기" : "차단하기")
+                Text(isMine ? "삭제하기" : "차단하기")
                     .frame(maxWidth: .infinity)
             }
         }
