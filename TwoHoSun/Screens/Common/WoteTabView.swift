@@ -49,6 +49,7 @@ struct WoteTabView: View {
     @State private var visibilityScope = VisibilityScopeType.global
     @State private var isVoteCategoryButtonDidTap = false
     @Environment(AppLoginState.self) private var loginStateManager
+    @ObservedObject var notiManager: DataController
 
     var body: some View {
         @Bindable var navigationPath = loginStateManager.serviceRoot.navigationManager
@@ -91,39 +92,41 @@ struct WoteTabView: View {
             }  
             .navigationDestination(for: AllNavigation.self) { destination in
                 switch destination {
-                case .detailView(let postId, let index, _, let isShowingHeader):
+                case .detailView(let postId, _, let isShowingItems):
                     DetailView(viewModel: DetailViewModel(appLoginState: loginStateManager),
-                               isShowingHeader: isShowingHeader, 
-                               postId: postId,
-                               index: index)
+                               isShowingItems: isShowingItems,
+                               postId: postId)
                 case .makeVoteView:
                     VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: visibilityScope, 
-                                                                apiManager: loginStateManager.serviceRoot.apimanager), tabselection: $selection )
+                                                                apiManager: loginStateManager.serviceRoot.apimanager), tabselection: $selection)
                 case .testIntroView:
                     TypeTestIntroView()
                         .toolbar(.hidden, for: .navigationBar)
                 case .testView:
                     TypeTestView(viewModel: TypeTestViewModel(apiManager: loginStateManager.serviceRoot.apimanager))
-                case .reveiwView:
+                case .reviewView:
                     ReviewView(visibilityScope: $visibilityScope,
-                               viewModel: ReviewTabViewModel(apiManger: loginStateManager.serviceRoot.apimanager))
+                               viewModel: ReviewTabViewModel(loginState: loginStateManager))
                 case .writeReiview:
                     Text("아직")
                 case .settingView:
                     SettingView(viewModel: SettingViewModel(loginStateManager: loginStateManager))
                 case .mypageView:
-                    MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager), 
+                    MyPageView(viewModel: MyPageViewModel(loginState: loginStateManager),
                                selectedVisibilityScope: $visibilityScope)
                 case .searchView:
                     SearchView(viewModel: SearchViewModel(apiManager: loginStateManager.serviceRoot.apimanager,
                                                           selectedVisibilityScope: visibilityScope))
-                case .reviewDetailView(let postId, let reviewId, let isShowingHeader):
-                    ReviewDetailView(viewModel: ReviewDetailViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
-                                     isShowingHeader: isShowingHeader,
+                case .reviewDetailView(let postId, let reviewId, let isShowingItems):
+                    ReviewDetailView(viewModel: ReviewDetailViewModel(loginState: loginStateManager),
+                                     isShowingItems: isShowingItems,
                                      postId: postId,
                                      reviewId: reviewId)
-                default:
-                    EmptyView()
+                case .reviewWriteView(let post):
+                    ReviewWriteView(viewModel: ReviewWriteViewModel(post: post,
+                                                                    apiManager: loginStateManager.serviceRoot.apimanager))
+                case .notiView:
+                    NotificationView( viewModel: notiManager)
                 }
             }
         }
@@ -151,9 +154,9 @@ extension WoteTabView {
                               viewModel: ConsiderationViewModel(appLoginState: loginStateManager))
         case .review:
             ReviewView(visibilityScope: $visibilityScope,
-                       viewModel: ReviewTabViewModel(apiManger: loginStateManager.serviceRoot.apimanager))
+                       viewModel: ReviewTabViewModel(loginState: loginStateManager))
         case .myPage:
-            MyPageView(viewModel: MyPageViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
+            MyPageView(viewModel: MyPageViewModel(loginState: loginStateManager),
                        selectedVisibilityScope: $visibilityScope)
         }
     }

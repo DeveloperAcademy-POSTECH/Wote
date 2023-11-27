@@ -20,14 +20,17 @@ final class ConsiderationViewModel: ObservableObject {
     }
 
     func fetchPosts(page: Int = 0,
-                    size: Int = 10,
+                    size: Int = 5,
                     visibilityScope: VisibilityScopeType,
                     isFirstFetch: Bool = true,
                     isRefresh: Bool = false) {
-
-        if isFirstFetch && !isRefresh {
-            self.appLoginState.appData.posts.removeAll()
+        if isFirstFetch {
+            appLoginState.appData.postManager.posts.removeAll()
             isLoading = true
+        }
+
+        if isRefresh {
+            appLoginState.appData.postManager.posts.removeAll()
         }
 
         appLoginState.serviceRoot.apimanager
@@ -45,8 +48,8 @@ final class ConsiderationViewModel: ObservableObject {
                 print(failure)
             }
         } receiveValue: { data in
-            self.appLoginState.appData.posts.append(contentsOf: data)
-            self.isLastPage = data.count < 10
+            self.appLoginState.appData.postManager.posts.append(contentsOf: data)
+            self.isLastPage = data.count < 5
             self.isLoading = false
         }
         .store(in: &cancellables)
@@ -87,9 +90,9 @@ final class ConsiderationViewModel: ObservableObject {
     func updatePost(index: Int,
                     myChoice: Bool,
                     voteCount: VoteCountsModel) {
-        appLoginState.appData.posts[index].myChoice = myChoice
-        appLoginState.appData.posts[index].voteCounts = voteCount
-        appLoginState.appData.posts[index].voteCount = voteCount.agreeCount + voteCount.disagreeCount
+        appLoginState.appData.postManager.posts[index].myChoice = myChoice
+        appLoginState.appData.postManager.posts[index].voteCounts = voteCount
+        appLoginState.appData.postManager.posts[index].voteCount = voteCount.agreeCount + voteCount.disagreeCount
     }
 
     func calculatVoteRatio(voteCounts: VoteCountsModel?) -> (agree: Double, disagree: Double) {

@@ -30,13 +30,7 @@ struct VoteContentCell: View {
             .padding(.bottom, 10)
             HStack(spacing: 4) {
                 if data.postStatus == PostStatus.closed.rawValue {
-                    Text("종료")
-                        .font(.system(size: 12, weight: .medium))
-                        .foregroundStyle(.white)
-                        .padding(.vertical, 4)
-                        .padding(.horizontal, 5)
-                        .background(Color.disableGray)
-                        .clipShape(RoundedRectangle(cornerRadius: 3))
+                    EndLabel()
                 }
                 Text(data.title)
                     .font(.system(size: 16, weight: .bold))
@@ -116,18 +110,16 @@ extension VoteContentCell {
     }
 
     private var detailResultButton: some View {
-        NavigationLink {
-            DetailView(viewModel: DetailViewModel(appLoginState: loginState),
-                       postId: data.id,
-                       index: index)
+        Button {
+            loginState.serviceRoot.navigationManager.navigate(.detailView(postId: data.id))
         } label: {
-            Text("상세보기")
-                .font(.system(size: 16, weight: .bold))
-                .foregroundStyle(.white)
-                .frame(maxWidth: .infinity)
-                .frame(height: 48)
-                .background(Color.blue100)
-                .clipShape(Capsule())
+                Text("상세보기")
+                    .font(.system(size: 16, weight: .bold))
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 48)
+                    .background(Color.blue100)
+                    .clipShape(Capsule())
         }
     }
 }

@@ -17,6 +17,7 @@ final class ReviewWriteViewModel {
     var image: Data?
     var post: SummaryPostModel
     var review: ReviewCreateModel?
+    var isCompleted = false
     private var apiManager: NewApiManager
     private var cancellable = Set<AnyCancellable>()
     var isValid: Bool {
@@ -51,8 +52,8 @@ final class ReviewWriteViewModel {
     func createReview() {
         setReview()
         guard let review = review else { return }
-        apiManager.request(.postService(.createReview(postId: post.id, review: review)), decodingType: NoData.self)
-            .compactMap(\.data)
+        apiManager.request(.postService(.createReview(postId: post.id, review: review)), 
+                           decodingType: NoData.self)
             .sink { completion in
                 switch completion {
                 case .finished:
@@ -61,7 +62,7 @@ final class ReviewWriteViewModel {
                     print("error: \(error)")
                 }
             } receiveValue: { _ in
-                print("create review finished!")
+                self.isCompleted = true
             }
             .store(in: &cancellable)
     }

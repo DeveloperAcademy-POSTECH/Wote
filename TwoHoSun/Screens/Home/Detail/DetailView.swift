@@ -17,10 +17,9 @@ struct DetailView: View {
     @State private var showAlert = false
     @State private var currentAlert = AlertType.closeVote
     @StateObject var viewModel: DetailViewModel
-    var isShowingHeader = true
+    var isShowingItems = true
     @State var showDetailComments = false
     var postId: Int
-    var index: Int?
 
     var directComments = false
     let commentNotification = NotificationCenter.default.publisher(for: Notification.Name("showComment"))
@@ -31,8 +30,10 @@ struct DetailView: View {
             if let data = viewModel.postDetail {
                 ScrollView {
                     VStack(spacing: 0) {
-                        if isShowingHeader {
-                            DetailHeaderView(data: data)
+                        if isShowingItems {
+                            DetailHeaderView(alertOn: data.post.isNotified ?? false, 
+                                             viewModel: DetailHeaderViewModel(apiManager: loginStateManager.serviceRoot.apimanager),
+                                             data: data)
                                 .padding(.top, 18)
                             Divider()
                                 .background(Color.disableGray)
@@ -51,12 +52,12 @@ struct DetailView: View {
                                 IncompletedVoteButton(choice: .agree) {
                                     viewModel.votePost(postId: data.post.id,
                                                        choice: true,
-                                                       index: index ?? 0)
+                                                       index: viewModel.searchPostIndex(with: data.post.id))
                                 }
                                 IncompletedVoteButton(choice: .disagree) {
                                     viewModel.votePost(postId: data.post.id,
                                                        choice: false,
-                                                       index: index ?? 0)
+                                                       index: viewModel.searchPostIndex(with: data.post.id))
                                 }
                             }
                         }
@@ -90,6 +91,10 @@ struct DetailView: View {
                             .frame(height: 20)
                     }
                 }
+                .scrollIndicators(.hidden)
+                .refreshable {
+                    viewModel.fetchPostDetail(postId: postId)
+                }
             } else {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle(tint: Color.gray100))
@@ -110,11 +115,11 @@ struct DetailView: View {
                         switch currentAlert {
                         case .closeVote:
                             viewModel.closePost(postId: postId,
-                                                index: index ?? 0)
+                                                index: (viewModel.searchPostIndex(with: postId),
+                                                        viewModel.searchMyPostIndex(with: postId)))
                             showCustomAlert.toggle()
                         case .deleteVote:
-                            viewModel.deletePost(postId: postId,
-                                                 index: index ?? 0)
+                            viewModel.deletePost(postId: postId)
                             showCustomAlert.toggle()
                             dismiss()
                         default:
@@ -155,16 +160,18 @@ struct DetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Text("상세보기")
+                Text("고민 상세보기")
                     .font(.system(size: 18, weight: .medium))
                     .foregroundStyle(Color.white)
             }
             ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    showconfirm.toggle()
-                } label: {
-                    Image(systemName: "ellipsis")
-                        .foregroundStyle(Color.subGray1)
+                if isShowingItems {
+                    Button {
+                        showconfirm.toggle()
+                    } label: {
+                        Image(systemName: "ellipsis")
+                            .foregroundStyle(Color.subGray1)
+                    }
                 }
             }
         }
@@ -239,7 +246,7 @@ struct DetailView: View {
 extension DetailView {
 
     var commentPreview: some View {
-        CommentPreview()
+        CommentPreview(previewComment: viewModel.postDetail?.commentPreview, commentCount: viewModel.postDetail?.commentCount)
             .onTapGesture {
                 showDetailComments.toggle()
             }

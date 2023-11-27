@@ -13,6 +13,7 @@ import Observation
 struct TwoHoSunApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @State private var appState = AppLoginState()
+    @StateObject private var dataController = DataController()
 
     var body: some Scene {
         WindowGroup {
@@ -21,11 +22,11 @@ struct TwoHoSunApp: App {
                 OnBoardingView(viewModel: LoginViewModel(appState: appState))
                     .environment(appState)
             case .loggedIn:
-                    WoteTabView()
-                        .environment(appState)
-                        .onAppear {
-                            appDelegate.app = self
-                        }
+                WoteTabView(notiManager: dataController)
+                    .environment(appState)
+                    .onAppear {
+                        appDelegate.app = self
+                    }
             }
         }
     }
@@ -33,8 +34,17 @@ struct TwoHoSunApp: App {
 }
 
 extension TwoHoSunApp {
-    func handleDeepPush(postId: Int, _ isComment: Bool) async {
-        appState.serviceRoot.navigationManager.navigate(.detailView(postId: postId, index: 0, dirrectComments: isComment))
+    func handleDeepPush(notiModel: NotiDecodeModel) async {
+        if notiModel.isComment {
+            await savePush(notiModel: notiModel)
+            NotificationCenter.default.post(name: Notification.Name("showComment"), object: nil)
+        }
+        appState.serviceRoot.navigationManager.navigate(.detailView(postId: notiModel.postid, dirrectComments: notiModel.isComment))
+    }
+    func savePush(notiModel: NotiDecodeModel) async {
+        if notiModel.isComment {
+            dataController.addNotificationData(model: notiModel)
+        }
     }
 }
 class ServiceRoot {
@@ -49,8 +59,9 @@ class ServiceRoot {
 
 @Observable
 class AppData {
-    var posts = [PostModel]()
     var notificationDatas = [NotificationModel]()
+    var reviewManager = ReviewManager()
+    var postManager = PostManager()
 }
 
 @Observable
@@ -65,13 +76,13 @@ class AppLoginState {
         serviceRoot.auth.relogin = relogin
         serviceRoot.memberManager.fetchProfile()
     }
-    
+
     private func relogin() {
         DispatchQueue.main.async {
             self.serviceRoot.auth.authState = .none
         }
     }
-    
+
     private func checkTokenValidity() {
         if serviceRoot.apimanager.authenticator.accessToken != nil {
             serviceRoot.auth.authState = .loggedIn

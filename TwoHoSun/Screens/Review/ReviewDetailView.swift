@@ -16,17 +16,19 @@ struct ReviewDetailView: View {
     @State private var applyComplaint = false
     @State private var showAlert = false
     @StateObject var viewModel: ReviewDetailViewModel
-    var isShowingHeader = true
+    var isShowingItems = true
     var postId: Int?
     var reviewId: Int?
 
     var body: some View {
         ZStack {
             Color.background
-            ScrollView {
-                if let data = viewModel.reviewData {
+                .ignoresSafeArea()
+
+            if let data = viewModel.reviewData {
+                ScrollView {
                     VStack(spacing: 0) {
-                        if isShowingHeader {
+                        if isShowingItems {
                             detailHeaderView(data.originalPost)
                                 .padding(.top, 24)
                                 .padding(.horizontal, 24)
@@ -39,14 +41,14 @@ struct ReviewDetailView: View {
                             .padding(.horizontal, 24)
                             .padding(.vertical, 30)
                     }
-                } else {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: Color.gray100))
-                        .scaleEffect(1.3, anchor: .center)
                 }
-            }
-            .refreshable {
-                viewModel.fetchReviewDetail(postId: viewModel.postId)
+                .refreshable {
+                    viewModel.fetchReviewDetail(postId: viewModel.postId)
+                }
+            } else {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: Color.gray100))
+                    .scaleEffect(1.3, anchor: .center)
             }
 
             if showCustomAlert {
@@ -63,11 +65,9 @@ struct ReviewDetailView: View {
             
             AlertModalView(showAlert: $showAlert, viewModel: viewModel, loginState: loginState)
         }
-        .frame(maxWidth: .infinity)
-        .background(Color.background)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Text("상세보기")
+                Text("후기 상세보기")
                     .font(.system(size: 18, weight: .medium))
                     .foregroundStyle(.white)
             }
@@ -83,7 +83,7 @@ struct ReviewDetailView: View {
             CommentsView(showComplaint: $showCustomAlert,
                          applyComplaint: $applyComplaint,
                          viewModel: CommentsViewModel(apiManager: loginState.serviceRoot.apimanager,
-                                                      postId: postId ?? 0))
+                                                      postId: reviewId ?? 0))
             .presentationDetents([.large,.fraction(0.9)])
             .presentationContentInteraction(.scrolls)
         }
@@ -132,12 +132,15 @@ struct ReviewDetailView: View {
 
 extension ReviewDetailView {
 
+    @ViewBuilder
     private var menuButton: some View {
-        Button {
-            showConfirm.toggle()
-        } label: {
-            Image(systemName: "ellipsis")
-                .foregroundStyle(Color.subGray1)
+        if isShowingItems {
+            Button {
+                showConfirm.toggle()
+            } label: {
+                Image(systemName: "ellipsis")
+                    .foregroundStyle(Color.subGray1)
+            }
         }
     }
 
@@ -156,9 +159,8 @@ extension ReviewDetailView {
                 Spacer()
                 Button {
                     loginState.serviceRoot.navigationManager.navigate(.detailView(postId: viewModel.postId,
-                                                                                  index: nil, 
                                                                                   dirrectComments: false, 
-                                                                                  isShowingHeader: reviewId != nil ? false : true))
+                                                                                  isShowingItems: reviewId != nil ? false : true))
 
                 } label: {
                     HStack(spacing: 2) {
@@ -171,13 +173,12 @@ extension ReviewDetailView {
             }
             Button {
                 loginState.serviceRoot.navigationManager.navigate(.detailView(postId: viewModel.postId,
-                                                                              index: nil,
                                                                               dirrectComments: false, 
-                                                                              isShowingHeader: reviewId != nil ? false : true))
+                                                                              isShowingItems: reviewId != nil ? false : true))
             } label: {
                 VoteCardCell(cellType: .simple,
                              progressType: .closed,
-                             post: data)
+                             data: data)
             }
         }
     }
@@ -218,7 +219,7 @@ extension ReviewDetailView {
                 ImageView(imageURL: image)
                     .padding(.bottom, 28)
             }
-            CommentPreview()
+            CommentPreview(previewComment: viewModel.reviewData?.commentPreview, commentCount: viewModel.reviewData?.commentCount)
                 .onTapGesture {
                     isDetailCommentShown.toggle()
                 }
@@ -264,7 +265,7 @@ struct AlertModalView: View {
     NavigationStack {
         @Environment(AppLoginState.self) var loginState
 
-        ReviewDetailView(viewModel: ReviewDetailViewModel(apiManager: loginState.serviceRoot.apimanager), 
+        ReviewDetailView(viewModel: ReviewDetailViewModel(loginState: loginState), 
                          reviewId: 3030)
             .environment(AppLoginState())
     }

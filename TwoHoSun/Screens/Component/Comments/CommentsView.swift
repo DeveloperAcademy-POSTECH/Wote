@@ -162,7 +162,7 @@ extension CommentsView {
             .animation(.easeInOut(duration: 0.3), value: viewModel.comments)
             if isFocus {
                 Button(action: {
-                    if let replyForAnotherName = replyForAnotherName {
+                    if replyForAnotherName != nil {
                         viewModel.postReply(commentId: scrollSpot)
                     } else {
                         viewModel.postComment()

@@ -18,6 +18,7 @@ enum UserService {
     case getProfile
     case requestLogout
     case deleteUser
+    case postDeviceTokens(deviceToken: String)
     case blockUser(memberId: Int)
     case getBlockUsers
     case deleteBlockUser(memberId: Int)
@@ -47,6 +48,8 @@ extension UserService: TargetType {
             return "/api/auth/logout"
         case .deleteUser:
             return "/api/members"
+        case .postDeviceTokens:
+            return "/api/notifications/tokens"
         case .blockUser(let memberId):
             return "/api/members/block/\(memberId)"
         case .getBlockUsers:
@@ -64,6 +67,8 @@ extension UserService: TargetType {
             return .get
         case .deleteUser:
             return .delete
+        case .postDeviceTokens:
+            return .post
         case .getBlockUsers:
             return .get
         case .deleteBlockUser:
@@ -93,6 +98,8 @@ extension UserService: TargetType {
             return [:]
         case .deleteUser:
             return [:]
+        case .postDeviceTokens(let deviceToken):
+            return ["deviceToken" : deviceToken]
         case .blockUser(let memberId):
             return ["memberId": memberId]
         case .getBlockUsers:
@@ -141,6 +148,8 @@ extension UserService: TargetType {
             return .requestPlain
         case .deleteUser:
             return .requestPlain
+        case .postDeviceTokens:
+            return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         case .getBlockUsers:
             return .requestPlain
         default:

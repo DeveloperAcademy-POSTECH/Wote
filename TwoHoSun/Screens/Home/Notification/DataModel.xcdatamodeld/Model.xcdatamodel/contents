@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22222" systemVersion="23B81" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="NotificationDatas" representedClassName="NotificationDatas" syncable="YES" codeGenerationType="class"/>
+    <entity name="NotificationModel" representedClassName="NotificationModel" syncable="YES" codeGenerationType="class">
+        <attribute name="authorProfile" optional="YES" attributeType="String"/>
+        <attribute name="body" attributeType="String"/>
+        <attribute name="date" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="postId" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="postImage" optional="YES" attributeType="String"/>
+    </entity>
+</model>

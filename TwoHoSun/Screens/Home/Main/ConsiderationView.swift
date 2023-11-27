@@ -15,6 +15,7 @@ struct ConsiderationView: View {
     @State private var isRefreshing = false
     @StateObject var viewModel: ConsiderationViewModel
     @AppStorage("haveConsumerType") var haveConsumerType: Bool = false
+    @State var isPostCreated = false
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
@@ -23,7 +24,7 @@ struct ConsiderationView: View {
             VStack(spacing: 0) {
                 Spacer()
                 if !viewModel.isLoading {
-                    if loginState.appData.posts.isEmpty {
+                    if loginState.appData.postManager.posts.isEmpty {
                         NoVoteView(selectedVisibilityScope: $visibilityScope)
                     } else {
                         votePagingView
@@ -57,6 +58,9 @@ struct ConsiderationView: View {
                 didFinishSetup = true
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: NSNotification.voteCreated)) { _ in
+            viewModel.fetchPosts(visibilityScope: visibilityScope)
+        }
     }
 }
 
@@ -64,7 +68,7 @@ extension ConsiderationView {
 
     private var votePagingView: some View {
         GeometryReader { proxy in
-            let datas = loginState.appData.posts
+            let datas = loginState.appData.postManager.posts
             TabView(selection: $currentVote) {
                 ForEach(Array(zip(datas.indices,
                                   datas)), id: \.0) { index, item in
@@ -112,13 +116,8 @@ extension ConsiderationView {
     }
 
     private var createVoteButton: some View {
-        NavigationLink {
-            VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: visibilityScope,
-                                                        apiManager: loginState.serviceRoot.apimanager))
-            .onDisappear {
-                viewModel.fetchPosts(visibilityScope: visibilityScope)
-                currentVote = 0
-            }
+        Button {
+            loginState.serviceRoot.navigationManager.navigate(.makeVoteView)
         } label: {
             HStack(spacing: 2) {
                 Image(systemName: "plus")
@@ -149,13 +148,13 @@ extension ConsiderationView {
             Spacer()
             Button {
                 withAnimation {
-//                    if currentVote != voteData.posts.count - 1 {
-//                        currentVote += 1
-//                    }
+                    if currentVote != loginState.appData.postManager.posts.count - 1 {
+                        currentVote += 1
+                    }
                 }
             } label: {
                 Image("icnCaretDown")
-//                    .opacity(currentVote != voteData.posts.count - 1 ? 1 : 0)
+                    .opacity(currentVote != loginState.appData.postManager.posts.count - 1 ? 1 : 0)
             }
             Spacer()
         }

@@ -8,7 +8,7 @@
 import Foundation
 
 struct Users: Codable {
-    var consumerTypeExist: Bool?
+    var consumerTypeExist: Bool
     var jwtToken : Tokens
 }
 

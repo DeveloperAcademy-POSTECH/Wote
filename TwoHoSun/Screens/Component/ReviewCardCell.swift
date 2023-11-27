@@ -34,7 +34,7 @@ struct ReviewCardCell: View {
                             .foregroundStyle(.white)
                             .lineLimit(1)
                     }
-                    Text(data.title)
+                    Text(data.contents ?? "")
                         .font(.system(size: 14, weight: .medium))
                         .foregroundStyle(.white)
                         .lineLimit(1)
