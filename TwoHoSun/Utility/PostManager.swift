@@ -11,6 +11,7 @@ import SwiftUI
 final class PostManager {
     var posts = [PostModel]()
     var myPosts = [SummaryPostModel]()
+    var removeCount = 0
 
     func deleteReviews(postId: Int) {
         posts.removeAll { $0.id == postId }

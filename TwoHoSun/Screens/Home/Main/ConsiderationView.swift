@@ -60,6 +60,7 @@ struct ConsiderationView: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.voteCreated)) { _ in
             viewModel.fetchPosts(visibilityScope: visibilityScope)
+            currentVote = 0
         }
     }
 }
