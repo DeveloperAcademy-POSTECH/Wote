@@ -234,11 +234,6 @@ extension ReviewWriteView {
                     .onTapGesture {
                         isEditing.toggle()
                     }
-                    .onChange(of: croppedImage, { _, newValue in
-                        if let imageData = newValue.jpegData(compressionQuality: 1.0) {
-                            viewModel.image = imageData
-                        }
-                    })
             } else {
                 Button {
                     showPicker.toggle()
@@ -270,6 +265,13 @@ extension ReviewWriteView {
             }
         }
         .cropImagePicker(show: $showPicker, showCropView: $showCropView, croppedImage: $croppedImage)
+        .onChange(of: croppedImage ) { _, newValue in
+            if let newValue = newValue {
+                if let imageData = newValue.jpegData(compressionQuality: 1.0) {
+                    viewModel.image = imageData
+                }
+            }
+        }
     }
     
     private var contentView: some View {

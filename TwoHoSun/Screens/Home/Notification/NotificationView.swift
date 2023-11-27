@@ -96,6 +96,10 @@ extension NotificationView {
                     .resizable()
                     .frame(width: 46, height: 46)
                     .clipShape(.circle)
+            } else {
+                Image("defaultProfile")
+                    .resizable()
+                    .frame(width: 46, height: 46)
             }
             VStack(alignment: .leading, spacing: 6) {
                 Text(notiData.body!)

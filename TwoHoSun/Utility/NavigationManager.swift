@@ -18,7 +18,7 @@ enum AllNavigation: Decodable, Hashable {
     case mypageView
     case searchView
     case notiView
-    case reviewDetailView(postId: Int?, reviewId: Int?, isShowingItems: Bool = true)
+    case reviewDetailView(postId: Int?, reviewId: Int?, directComments: Bool = false, isShowingItems: Bool = true )
     case reviewWriteView(post: SummaryPostModel)
 }
 

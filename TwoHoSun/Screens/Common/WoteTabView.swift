@@ -92,10 +92,12 @@ struct WoteTabView: View {
             }  
             .navigationDestination(for: AllNavigation.self) { destination in
                 switch destination {
-                case .detailView(let postId, _, let isShowingItems):
+                case .detailView(let postId, let showDetailComments, let isShowingItems):
                     DetailView(viewModel: DetailViewModel(appLoginState: loginStateManager),
                                isShowingItems: isShowingItems,
-                               postId: postId)
+                               postId: postId,
+                               directComments: showDetailComments
+                    )
                 case .makeVoteView:
                     VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: visibilityScope, 
                                                                 apiManager: loginStateManager.serviceRoot.apimanager), tabselection: $selection)
@@ -117,11 +119,13 @@ struct WoteTabView: View {
                 case .searchView:
                     SearchView(viewModel: SearchViewModel(apiManager: loginStateManager.serviceRoot.apimanager,
                                                           selectedVisibilityScope: visibilityScope))
-                case .reviewDetailView(let postId, let reviewId, let isShowingItems):
+                case .reviewDetailView(let postId, let reviewId, let isShowDetailComments, let isShowingItems):
                     ReviewDetailView(viewModel: ReviewDetailViewModel(loginState: loginStateManager),
                                      isShowingItems: isShowingItems,
                                      postId: postId,
-                                     reviewId: reviewId)
+                                     reviewId: reviewId,
+                                     directComments: isShowDetailComments
+                    )
                 case .reviewWriteView(let post):
                     ReviewWriteView(viewModel: ReviewWriteViewModel(post: post,
                                                                     apiManager: loginStateManager.serviceRoot.apimanager))
