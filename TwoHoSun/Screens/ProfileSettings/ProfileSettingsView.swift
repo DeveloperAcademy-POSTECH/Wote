@@ -107,11 +107,13 @@ struct ProfileSettingsView: View {
                     titleLabel
                         .padding(.top, 40)
                 case .modfiy:
-                    HStack {
-                        ConsumerTypeLabel(consumerType: loginStateManager.serviceRoot.memberManager.profile?.consumerType ?? .adventurer, usage: .standard)
-                        Spacer()
+                    if let consumerType = loginStateManager.serviceRoot.memberManager.profile?.consumerType {
+                        HStack {
+                            ConsumerTypeLabel(consumerType: consumerType, usage: .standard)
+                            Spacer()
+                        }
+                        .padding(.top, 30)
                     }
-                    .padding(.top, 30)
                 }
                 Spacer()
                 profileImageView
@@ -181,9 +183,6 @@ struct ProfileSettingsView: View {
             }
             .frame(height: 42)
         }
-        .navigationTitle("프로필 설정")
-        .toolbar(.hidden, for: .navigationBar)
-        .navigationBarBackButtonHidden()
     }
 }
 
