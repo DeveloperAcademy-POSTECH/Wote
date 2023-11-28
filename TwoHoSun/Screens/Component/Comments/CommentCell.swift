@@ -75,20 +75,14 @@ extension CommentCell {
             VStack(alignment: .leading) {
                 HStack(spacing: 8) {
                     if let validauthor = comment.author {
-                        if validauthor.isBaned ?? false || validauthor.isBlocked ?? false {
-                            ConsumerTypeLabel(consumerType: .banUser, usage: .comments)
-                            Text("차단된 사용자")
-                                .font(.system(size: 14, weight: .medium))
-                                .foregroundStyle(Color.white)
-                            lastEditTimeText(comment: comment)
-                            Spacer()
-                        } else {
-                            ConsumerTypeLabel(consumerType: ConsumerType(rawValue: validauthor.consumerType) ?? .adventurer, usage: .comments)
-                            Text(validauthor.nickname)
-                                .font(.system(size: 14, weight: .medium))
-                                .foregroundStyle(Color.white)
-                            lastEditTimeText(comment: comment)
-                            Spacer()
+                        let isBannedorBlocked = validauthor.isBaned ?? false || validauthor.isBlocked ?? false
+                        ConsumerTypeLabel(consumerType: isBannedorBlocked ? .banUser : ConsumerType(rawValue: validauthor.consumerType) ?? .adventurer, usage: .comments)
+                        Text(isBannedorBlocked ? "차단된 사용자" : validauthor.nickname)
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundStyle(Color.white)
+                        lastEditTimeText(comment: comment)
+                        Spacer()
+                        if !isBannedorBlocked {
                             Button(action: {
                                 onConfirmDiaog(comment.isMine, comment.commentId)
                             }, label: {
@@ -128,8 +122,8 @@ extension CommentCell {
                                 }
                         }
                 }
-                HStack {
-                    if parent {
+                if parent {
+                    HStack {
                         Button(action: {onReplyButtonTapped()}, label: {
                             Text("답글달기")
                                 .font(.system(size: 12))
@@ -152,6 +146,7 @@ extension CommentCell {
             }
         }
     }
+
     @ViewBuilder
     func moreToggleButton() -> some View {
         if let subcomments = comment.subComments {
