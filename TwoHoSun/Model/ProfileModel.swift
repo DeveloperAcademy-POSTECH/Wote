@@ -15,4 +15,5 @@ struct ProfileModel: Codable {
     var profileImage: String?
     var consumerType: ConsumerType?
     var school: SchoolModel
+    var canUpdateConsumerType: Bool
 }
