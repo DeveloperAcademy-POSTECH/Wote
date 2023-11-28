@@ -145,8 +145,9 @@ extension MyPageView {
                         Text(loginStateManager.serviceRoot.memberManager.profile?.nickname ?? "")
                             .font(.system(size: 20, weight: .medium))
                             .padding(.trailing, 12)
-                        ConsumerTypeLabel(consumerType: loginStateManager.serviceRoot.memberManager.profile?.consumerType ?? .adventurer,
-                                          usage: .standard)
+                        if let consumerType = loginStateManager.serviceRoot.memberManager.profile?.consumerType {
+                            ConsumerTypeLabel(consumerType: consumerType, usage: .standard)
+                        }
                         Spacer()
                         Image(systemName: "chevron.right")
                             .font(.system(size: 14))
