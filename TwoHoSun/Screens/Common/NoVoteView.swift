@@ -9,6 +9,7 @@ import SwiftUI
 
 struct NoVoteView: View {
     @Binding var selectedVisibilityScope: VisibilityScopeType
+    @AppStorage("haveConsumerType") var haveConsumerType: Bool = false
     @Environment(AppLoginState.self) private var loginState
 
     var body: some View {
@@ -21,6 +22,11 @@ struct NoVoteView: View {
                     .multilineTextAlignment(.center)
                     .padding(.top, 8)
                 Button {
+                    guard haveConsumerType else {
+                        loginState.serviceRoot.navigationManager.navigate(.testIntroView)
+                        return
+                    }
+
                     loginState.serviceRoot.navigationManager.navigate(.makeVoteView)
                 } label: {
                     Text("고민 등록하러 가기")
