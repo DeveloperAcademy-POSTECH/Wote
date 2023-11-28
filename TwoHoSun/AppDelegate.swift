@@ -93,6 +93,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
           guard UserDefaults.isFirstLaunch() else {
               return
           }
-        app?.deleteToken()
+        KeychainManager.shared.deleteToken(key: "accessToken")
+        KeychainManager.shared.deleteToken(key: "refreshToken")
       }
 }
