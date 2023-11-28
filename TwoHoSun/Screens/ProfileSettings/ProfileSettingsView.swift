@@ -92,6 +92,7 @@ struct ProfileSettingsView: View {
     @State private var retryProfileImage = false
     @State private var isRestricted = false
     @State var viewType: ProfileSettingType
+    @State var originalImage: String?
     @Bindable var viewModel: ProfileSettingViewModel
     @Environment(\.dismiss) private var dismiss
     @Environment(AppLoginState.self) private var loginStateManager
@@ -117,6 +118,11 @@ struct ProfileSettingsView: View {
                 }
                 Spacer()
                 profileImageView
+                    .onAppear {
+                        if let image = loginStateManager.serviceRoot.memberManager.profile?.profileImage {
+                            originalImage = image
+                        }
+                    }
                 Spacer()
                 nicknameInputView
                     .padding(.bottom, 34)
@@ -164,8 +170,19 @@ struct ProfileSettingsView: View {
         .toolbarBackground(Color.background, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .photosPicker(isPresented: $retryProfileImage, selection: $selectedPhoto)
+        .onChange(of: selectedPhoto) { _, newValue in
+            PHPhotoLibrary.requestAuthorization { status in
+                guard status == .authorized else { return }
+                Task {
+                    if let data = try? await newValue?.loadTransferable(type: Data.self) {
+                        viewModel.selectedImageData = data
+                    }
+                }
+            }
+        }
         .customConfirmDialog(isPresented: $isProfileSheetShowed, isMine: .constant(true)) {_ in
             Button {
+                originalImage = nil
                 selectedPhoto = nil
                 viewModel.selectedImageData = nil
                 isProfileSheetShowed.toggle()
@@ -178,6 +195,7 @@ struct ProfileSettingsView: View {
                 .background(Color.gray300)
             Button {
                 retryProfileImage = true
+                isProfileSheetShowed.toggle()
             } label: {
                 Text("프로필 재설정하기")
             }
@@ -215,30 +233,25 @@ extension ProfileSettingsView {
 
     private var profileImageView: some View {
         ZStack(alignment: .bottomTrailing) {
-            if let selectedData = viewModel.selectedImageData,
-               let uiImage = UIImage(data: selectedData) {
+            if let selectedData = viewModel.selectedImageData, let uiImage = UIImage(data: selectedData) {
                 Image(uiImage: uiImage)
                     .resizable()
                     .frame(width: 130, height: 130)
                     .clipShape(Circle())
+            } else if let originalImage = originalImage {
+                ProfileImageView(imageURL: originalImage)
+                    .frame(width: 130, height: 130)
             } else {
                 photoPickerView {
-                    if let profileImage = loginStateManager.serviceRoot.memberManager.profile?.profileImage {
-                        ProfileImageView(imageURL: profileImage)
-                            .frame(width: 130, height: 130)
-                    } else {
-                        Image("defaultProfile")
-                            .resizable()
-                            .frame(width: 130, height: 130)
-                    }
+                    Image("defaultProfile")
+                        .resizable()
+                        .frame(width: 130, height: 130)
                 }
             }
             selectProfileButton
         }
         .onTapGesture {
-            if viewModel.selectedImageData != nil {
-                isProfileSheetShowed = true
-            }
+            isProfileSheetShowed = true
         }
     }
 
