@@ -20,7 +20,6 @@ struct CommentsView: View {
     @Environment(AppLoginState.self) private var loginStateManager
     @State private var lastCommentClick = false
 
-
     var body: some View {
         ZStack {
             Color.lightGray

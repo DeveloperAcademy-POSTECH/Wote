@@ -11,4 +11,5 @@ struct PostDetailModel: Codable {
     var post: PostModel
     let commentCount: Int?
     let commentPreview: String?
+    let commentPreviewImage: String?
 }

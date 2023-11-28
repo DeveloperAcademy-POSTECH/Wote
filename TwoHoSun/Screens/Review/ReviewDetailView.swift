@@ -223,7 +223,8 @@ extension ReviewDetailView {
                 ImageView(imageURL: image)
                     .padding(.bottom, 28)
             }
-            CommentPreview(previewComment: viewModel.reviewData?.commentPreview, commentCount: viewModel.reviewData?.commentCount)
+            CommentPreview(previewComment: viewModel.reviewData?.commentPreview, commentCount: viewModel.reviewData?.commentCount,
+                           commentPreviewImage: viewModel.reviewData?.commentPreviewImage)
                 .onTapGesture {
                     isDetailCommentShown.toggle()
                 }
