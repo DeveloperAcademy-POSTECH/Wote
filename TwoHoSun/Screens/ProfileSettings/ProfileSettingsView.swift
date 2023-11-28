@@ -92,6 +92,7 @@ struct ProfileSettingsView: View {
     @State private var retryProfileImage = false
     @State private var isRestricted = false
     @State var viewType: ProfileSettingType
+    @State var firstNickname: String = ""
     @Bindable var viewModel: ProfileSettingViewModel
     @Environment(\.dismiss) private var dismiss
     @Environment(AppLoginState.self) private var loginStateManager
@@ -301,6 +302,7 @@ extension ProfileSettingsView {
                 .onAppear {
                     if let nickname = loginStateManager.serviceRoot.memberManager.profile?.nickname {
                         viewModel.nickname = nickname
+                        firstNickname = nickname
                     }
                 }
                 .onChange(of: viewModel.nickname) { _, newValue in
@@ -315,9 +317,13 @@ extension ProfileSettingsView {
 
     private var checkDuplicatedIdButton: some View {
         Button {
-            viewModel.postNickname()
-            if viewModel.nicknameValidationType == .valid {
-                endTextEditing()
+            if viewModel.nickname == firstNickname {
+                viewModel.nicknameValidationType = .valid
+            } else {
+                viewModel.postNickname()
+                if viewModel.nicknameValidationType == .valid {
+                    endTextEditing()
+                }
             }
         } label: {
             Text("중복확인")
