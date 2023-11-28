@@ -51,6 +51,7 @@ class SettingViewModel {
             } receiveValue: { _ in
                 self.loginStateManager.serviceRoot.auth.deleteTokens()
                 self.loginStateManager.serviceRoot.auth.authState = .none
+                self.loginStateManager.serviceRoot.memberManager.profile = nil
             }
             .store(in: &cancellable)
     }
