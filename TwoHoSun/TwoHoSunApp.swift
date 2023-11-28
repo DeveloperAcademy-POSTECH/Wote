@@ -51,6 +51,10 @@ extension TwoHoSunApp {
             dataController.addNotificationData(model: notiModel)
         }
     }
+
+    func deleteToken() {
+        appState.serviceRoot.auth.deleteTokens()
+    }
 }
 class ServiceRoot {
     var auth = Authenticator()

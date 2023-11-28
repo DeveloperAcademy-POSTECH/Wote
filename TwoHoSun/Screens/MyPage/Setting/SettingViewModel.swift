@@ -29,8 +29,7 @@ class SettingViewModel {
                     print(error)
                 }
             } receiveValue: { _ in
-                KeychainManager.shared.deleteToken(key: "accessToken")
-                KeychainManager.shared.deleteToken(key: "refreshToken")
+                self.loginStateManager.serviceRoot.auth.deleteTokens()
                 self.loginStateManager.serviceRoot.navigationManager.countPop(count: 1)
                 self.loginStateManager.serviceRoot.auth.authState = .none
                 cancellable?.cancel()
@@ -47,8 +46,7 @@ class SettingViewModel {
                     print(error)
                 }
             } receiveValue: { _ in
-                KeychainManager.shared.deleteToken(key: "accessToken")
-                KeychainManager.shared.deleteToken(key: "refreshToken")
+                self.loginStateManager.serviceRoot.auth.deleteTokens()
                 self.loginStateManager.serviceRoot.auth.authState = .none
             }
             .store(in: &cancellable)

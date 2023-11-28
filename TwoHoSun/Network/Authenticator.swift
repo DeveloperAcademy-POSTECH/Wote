@@ -43,4 +43,9 @@ class Authenticator {
         KeychainManager.shared.saveToken(key: "accessToken", token: token.accessToken)
         KeychainManager.shared.saveToken(key: "refreshToken", token: token.refreshToken)
     }
+
+    func deleteTokens() {
+        KeychainManager.shared.deleteToken(key: "accessToken")
+        KeychainManager.shared.deleteToken(key: "refreshToken")
+    }
 }
