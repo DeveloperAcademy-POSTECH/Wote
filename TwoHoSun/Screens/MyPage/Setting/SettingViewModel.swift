@@ -82,6 +82,7 @@ class SettingViewModel {
                 }
             } receiveValue: { _ in
                 print("delte block user(\(memberId)) successful!")
+                NotificationCenter.default.post(name: NSNotification.userBlockStateUpdated, object: nil)
             }
             .store(in: &cancellable)
     }

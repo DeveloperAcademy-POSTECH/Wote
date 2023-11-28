@@ -66,6 +66,9 @@ struct ReviewView: View {
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.reviewCreated)) { _ in
             viewModel.fetchReviews(for: visibilityScope)
         }
+        .onReceive(NotificationCenter.default.publisher(for: NSNotification.userBlockStateUpdated)) { _ in
+            viewModel.fetchReviews(for: visibilityScope)
+        }
     }
 }
 

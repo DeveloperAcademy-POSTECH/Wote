@@ -68,6 +68,10 @@ struct ConsiderationView: View {
             viewModel.fetchPosts(visibilityScope: visibilityScope)
             currentVote = 0
         }
+        .onReceive(NotificationCenter.default.publisher(for: NSNotification.userBlockStateUpdated)) { _ in
+            viewModel.fetchPosts(visibilityScope: visibilityScope)
+            currentVote = 0
+        }
     }
 }
 
@@ -88,7 +92,7 @@ extension ConsiderationView {
                     }
                     .tag(index)
                     .onAppear {
-                        if (index == datas.count - 4) {
+                        if (index == datas.count - 2) {
                             viewModel.fetchMorePosts(visibilityScope)
                         }
                     }

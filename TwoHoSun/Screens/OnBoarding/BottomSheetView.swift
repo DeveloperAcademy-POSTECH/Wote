@@ -57,6 +57,7 @@ struct BottomSheetView: View {
 
     struct CheckBoxView: View {
         @Binding var checked: Bool
+        @State private var isTermShown = false
         @State var agreeType: TermAgreeType
 
         var body: some View {
@@ -79,9 +80,8 @@ struct BottomSheetView: View {
                         self.checked.toggle()
                     }
                     Spacer()
-                    NavigationLink {
-                        LinkWebView(externalURL: agreeType.termURL)
-                            .navigationTitle("약관 보기")
+                    Button {
+                        isTermShown.toggle()
                     } label: {
                         Image(systemName: "chevron.right")
                             .font(.system(size: 16))
@@ -96,6 +96,9 @@ struct BottomSheetView: View {
                         .lineSpacing(2)
                         .padding(.leading, 28)
                 }
+            }
+            .fullScreenCover(isPresented: $isTermShown) {
+                LinkView(externalURL: agreeType.termURL)
             }
         }
     }

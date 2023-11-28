@@ -108,8 +108,6 @@ struct WoteTabView: View {
                                                                     apiManager: loginStateManager.serviceRoot.apimanager))
                 case .notiView:
                     NotificationView( viewModel: notiManager)
-                case .profileSettingView(type: let viewType):
-                    ProfileSettingsView(viewType: viewType, viewModel: ProfileSettingViewModel(appState: loginStateManager))
                 }
             }
         }
@@ -120,7 +118,6 @@ struct WoteTabView: View {
             UITabBar.appearance().unselectedItemTintColor = .gray400
             UITabBar.appearance().standardAppearance = appearance
         }
-//        .navigationTitle(selection.tabTitle)
         .navigationTitle(tabScrollHandler.selectedTab.tabTitle)
         .toolbar(.hidden, for: .navigationBar)
         .tint(Color.accentBlue)

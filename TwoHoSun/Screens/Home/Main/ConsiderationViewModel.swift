@@ -26,11 +26,15 @@ final class ConsiderationViewModel: ObservableObject {
                     isRefresh: Bool = false) {
         if isFirstFetch {
             appLoginState.appData.postManager.posts.removeAll()
+            isLastPage = false
             isLoading = true
+            self.page = 0
         }
 
         if isRefresh {
             appLoginState.appData.postManager.posts.removeAll()
+            isLastPage = false
+            self.page = 0
         }
 
         appLoginState.serviceRoot.apimanager
