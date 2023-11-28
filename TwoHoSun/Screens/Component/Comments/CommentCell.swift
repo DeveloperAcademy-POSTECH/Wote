@@ -64,45 +64,70 @@ extension CommentCell {
     }
 
     func makeCellView(comment: CommentsModel, parent: Bool) -> some View {
-        HStack(alignment: .top) {
-            if let image = comment.author.profileImage {
-                ProfileImageView(imageURL: image)
+        HStack(alignment: .top, spacing: 8) {
+            if let validauthor = comment.author, validauthor.isBaned == false, validauthor.isBlocked  == false {
+                ProfileImageView(imageURL: validauthor.profileImage ,validAuthor: true)
                     .frame(width: 32, height: 32)
             } else {
-                Image("defaultProfile")
-                    .resizable()
+                ProfileImageView(imageURL: nil ,validAuthor: false)
                     .frame(width: 32, height: 32)
             }
             VStack(alignment: .leading) {
                 HStack(spacing: 8) {
-                    ConsumerTypeLabel(consumerType: ConsumerType(rawValue: comment.author.consumerType) ?? .adventurer, usage: .comments)
-                    Text(comment.author.nickname)
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundStyle(Color.white)
-                    lastEditTimeText(comment: comment)
-                    Spacer()
-                    Button(action: {
-                        onConfirmDiaog(comment.isMine, comment.commentId)
-                    }, label: {
-                        Image(systemName: "ellipsis")
-                            .foregroundStyle(Color.subGray1)
-                    })
-                }
-                .padding(.bottom, 6)
-                Text("\(comment.content)")
-                    .foregroundStyle(Color.white)
-                    .font(.system(size: 14))
-                    .lineLimit(isExpended ? nil : 3)
-                    .padding(.bottom, 4)
-                    .padding(.trailing, 20)
-                    .background {
-                        Color.clear
-                            .onAppear {
-                            if comment.content.count > 75 {
-                                canExpended = true
-                            }
+                    if let validauthor = comment.author {
+                        if validauthor.isBaned ?? false || validauthor.isBlocked ?? false {
+                            ConsumerTypeLabel(consumerType: .banUser, usage: .comments)
+                            Text("차단된 사용자")
+                                .font(.system(size: 14, weight: .medium))
+                                .foregroundStyle(Color.white)
+                            lastEditTimeText(comment: comment)
+                            Spacer()
+                        } else {
+                            ConsumerTypeLabel(consumerType: ConsumerType(rawValue: validauthor.consumerType) ?? .adventurer, usage: .comments)
+                            Text(validauthor.nickname)
+                                .font(.system(size: 14, weight: .medium))
+                                .foregroundStyle(Color.white)
+                            lastEditTimeText(comment: comment)
+                            Spacer()
+                            Button(action: {
+                                onConfirmDiaog(comment.isMine, comment.commentId)
+                            }, label: {
+                                Image(systemName: "ellipsis")
+                                    .foregroundStyle(Color.subGray1)
+                            })
                         }
+                    } else {
+                        ConsumerTypeLabel(consumerType: .withDrawel, usage: .comments)
+                        Text("알 수 없음")
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundStyle(Color.white)
+                        lastEditTimeText(comment: comment)
+                        Spacer()
                     }
+                }.padding(.bottom,6)
+                if let validAuthor = comment.author,
+                   (validAuthor.isBaned ?? false) || (validAuthor.isBlocked ?? false) {
+                    Text("이 사용자는 차단되었습니다")
+                        .foregroundStyle(Color.white)
+                        .font(.system(size: 14))
+                        .padding(.bottom, 4)
+                        .padding(.trailing, 20)
+                } else {
+                    Text("\(comment.content)")
+                        .foregroundStyle(Color.white)
+                        .font(.system(size: 14))
+                        .lineLimit(isExpended ? nil : 3)
+                        .padding(.bottom, 4)
+                        .padding(.trailing, 20)
+                        .background {
+                            Color.clear
+                                .onAppear {
+                                    if comment.content.count > 75 {
+                                        canExpended = true
+                                    }
+                                }
+                        }
+                }
                 HStack {
                     if parent {
                         Button(action: {onReplyButtonTapped()}, label: {
@@ -127,7 +152,6 @@ extension CommentCell {
             }
         }
     }
-
     @ViewBuilder
     func moreToggleButton() -> some View {
         if let subcomments = comment.subComments {

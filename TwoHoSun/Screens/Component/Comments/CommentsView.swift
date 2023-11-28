@@ -43,15 +43,15 @@ struct CommentsView: View {
                     CustomAlertModalView(alertType: ismyCellconfirm ? 
                         .erase : .ban(nickname: viewModel.commentsDatas
                             .filter { $0.commentId == scrollSpot }
-                            .first?.author.nickname ?? ""), 
+                            .first?.author?.nickname ?? ""), 
                                          isPresented: $viewModel.presentAlert) {
-                        if ismyCellconfirm {
-                            viewModel.deleteComments(commentId: scrollSpot)
-                        } else {
-                            loginStateManager.serviceRoot.memberManager.blockUser(memberId: viewModel.commentsDatas
-                                .filter { $0.commentId == scrollSpot }
-                                .first?.author.id ?? 0)
-                        }
+//                        if ismyCellconfirm {
+//                            viewModel.deleteComments(commentId: scrollSpot)
+//                        } else {
+//                            loginStateManager.serviceRoot.memberManager.blockUser(memberId: viewModel.commentsDatas
+//                                .filter { $0.commentId == scrollSpot }
+//                                .first?.author.id ?? 0)
+//                        }
                         print("신고접수됐습니다.")
                     }
                     .padding(.bottom, UIScreen.main.bounds.height * 0.05)
@@ -118,7 +118,7 @@ extension CommentsView {
                     ForEach(viewModel.commentsDatas, id: \.commentId) { comment in
                         CommentCell(comment: comment) {
                             scrollSpot = comment.commentId
-                            replyForAnotherName = comment.author.nickname
+                            replyForAnotherName = comment.author?.nickname
                             isFocus = true
                         } onConfirmDiaog: { ismine, commentId in
                             scrollSpot = commentId

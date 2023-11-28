@@ -44,7 +44,7 @@ struct AuthorModel: Codable, Hashable {
     let profileImage: String?
     let consumerType: String
     let isBlocked: Bool?
-    let baned: Bool?
+    let isBaned: Bool?
 }
 
 extension AuthorModel: Equatable {

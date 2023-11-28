@@ -16,6 +16,8 @@ enum ConsumerType: String, Codable {
     case impulseBuyer = "IMPULSE_BUYER"
     case adventurer = "ADVENTURER"
     case riskAverse = "RISK_AVERSE"
+    case banUser
+    case withDrawel
 
     var title: String {
         switch self {
@@ -35,6 +37,10 @@ enum ConsumerType: String, Codable {
             return "프로도전러"
         case .riskAverse:
             return "안전소비러"
+        case .banUser:
+            return "차단된사용자"
+        case .withDrawel:
+            return "탈퇴한사용자"
         }
     }
 
@@ -56,6 +62,10 @@ enum ConsumerType: String, Codable {
             return "새로운 물건을 직접 경험해보는걸 좋아하는"
         case .riskAverse:
             return "내가 신뢰도가 있는 제품만 소비하는 안전러"
+        case .banUser:
+            return ""
+        case .withDrawel:
+            return ""
         }
     }
 
@@ -77,6 +87,8 @@ enum ConsumerType: String, Codable {
             return Image("icnAdventurer")
         case .riskAverse:
             return Image("icnSafetyShopper")
+        default:
+            return Image("icnBan")
         }
     }
 
@@ -98,6 +110,8 @@ enum ConsumerType: String, Codable {
             return Color.red100
         case .riskAverse:
             return Color.lightBlue100
+        default:
+            return Color.gray800
         }
     }
 
@@ -119,6 +133,11 @@ enum ConsumerType: String, Codable {
             return Color.lightRed100
         case .riskAverse:
             return Color.lightBlue400
+        case .banUser:
+            return Color.darkRed200
+        case .withDrawel:
+            return Color.gray900
+
         }
     }
 
@@ -140,6 +159,10 @@ enum ConsumerType: String, Codable {
             return Color.darkRed100
         case .riskAverse:
             return Color.darkBlue400
+        case .banUser:
+            return Color.darkRed200
+        case .withDrawel:
+            return Color.gray900
         }
     }
 }
