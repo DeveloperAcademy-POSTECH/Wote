@@ -216,8 +216,10 @@ extension VoteWriteView {
                 }
             }
         }
-        .cropImagePicker(show: $showPicker, showCropView: $showCropView, croppedImage: $croppedImage)
-    }
+        .cropImagePicker(show: $showPicker,
+                         showCropView: $showCropView,
+                         croppedImage: $croppedImage)
+    } 
     
     private var linkView: some View {
         VStack(alignment: .leading) {
@@ -326,6 +328,9 @@ extension VoteWriteView {
     }
     
     private func dismissKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
+                                        to: nil,
+                                        from: nil,
+                                        for: nil)
     }
 }

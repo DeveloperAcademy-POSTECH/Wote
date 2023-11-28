@@ -16,12 +16,15 @@ struct DetailView: View {
     @State private var applyComplaint = false
     @State private var showAlert = false
     @State private var currentAlert = AlertType.closeVote
+    @State private var isButtonTapped = false
+    @State private var isDuplicationAlertShown = false
     @StateObject var viewModel: DetailViewModel
     var isShowingItems = true
     @State var showDetailComments = false
     var postId: Int
     var directComments = false
     let commentNotification = NotificationCenter.default.publisher(for: Notification.Name("showComment"))
+
     var body: some View {
         ZStack {
             backgroundColor
@@ -49,14 +52,13 @@ struct DetailView: View {
 
                             } else {
                                 IncompletedVoteButton(choice: .agree) {
-                                    viewModel.votePost(postId: data.post.id,
-                                                       choice: true,
-                                                       index: viewModel.searchPostIndex(with: data.post.id))
+                                    votePost(id: data.post.id,
+                                                            choice: true)
+
                                 }
                                 IncompletedVoteButton(choice: .disagree) {
-                                    viewModel.votePost(postId: data.post.id,
-                                                       choice: false,
-                                                       index: viewModel.searchPostIndex(with: data.post.id))
+                                    votePost(id: data.post.id,
+                                                            choice: false)
                                 }
                             }
                         }
@@ -239,6 +241,9 @@ struct DetailView: View {
         .onDisappear {
             NotificationCenter.default.removeObserver(commentNotification)
         }
+        .alert(isPresented: $isDuplicationAlertShown) {
+            Alert(title: Text("투표는 1번만 가능합니다."))
+        }
     }
 }
 
@@ -316,6 +321,17 @@ extension DetailView {
         }
         .padding(.horizontal, 24)
         .padding(.bottom, 36)
+    }
+
+    private func votePost(id: Int, choice: Bool) {
+        if isButtonTapped {
+            isDuplicationAlertShown = true
+        } else {
+            isButtonTapped = true
+            viewModel.votePost(postId: id,
+                               choice: choice,
+                               index: viewModel.searchPostIndex(with: id))
+        }
     }
 }
 

@@ -11,6 +11,8 @@ import Kingfisher
 
 struct VoteContentCell: View {
     @Environment(AppLoginState.self) private var loginState
+    @State private var isButtonTapped = false
+    @State private var isAlertShown = false
     var viewModel: ConsiderationViewModel
     var data: PostModel
     var index: Int
@@ -75,14 +77,10 @@ struct VoteContentCell: View {
 
                     } else {
                         IncompletedVoteButton(choice: .agree) {
-                            viewModel.votePost(postId: data.id,
-                                               choice: true,
-                                               index: index)
+                            votePost(choice: true)
                         }
                         IncompletedVoteButton(choice: .disagree) {
-                            viewModel.votePost(postId: data.id,
-                                               choice: false,
-                                               index: index)
+                            votePost(choice: false)
                         }
                     }
                 }
@@ -91,6 +89,9 @@ struct VoteContentCell: View {
             .padding(.top, 2)
         }
         .padding(.horizontal, 24)
+        .alert(isPresented: $isAlertShown) {
+            Alert(title: Text("투표는 1번만 가능합니다."))
+        }
     }
 }
 
@@ -120,6 +121,17 @@ extension VoteContentCell {
                     .frame(height: 48)
                     .background(Color.blue100)
                     .clipShape(Capsule())
+        }
+    }
+
+    private func votePost(choice: Bool) {
+        if isButtonTapped {
+            isAlertShown = true
+        } else {
+            isButtonTapped = true
+            viewModel.votePost(postId: data.id,
+                               choice: choice,
+                               index: index)
         }
     }
 }
