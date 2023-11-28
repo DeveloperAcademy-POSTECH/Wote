@@ -11,9 +11,9 @@ import Kingfisher
 
 struct ProfileImageView: View {
     var imageURL: String?
-
+    var validAuthor: Bool = true
     var body: some View {
-        if let imageURL = imageURL {
+        if let imageURL = imageURL, validAuthor {
             KFImage(URL(string: imageURL))
                 .placeholder {
                     ProgressView()

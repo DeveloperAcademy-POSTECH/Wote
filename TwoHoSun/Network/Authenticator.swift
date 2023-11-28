@@ -22,6 +22,7 @@ class Authenticator {
     }
 
     var accessToken: String? {
+        print(KeychainManager.shared.readToken(key: "accessToken"))
         return KeychainManager.shared.readToken(key: "accessToken")
     }
     var refreshToken: String? {
