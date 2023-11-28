@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct NoReviewView: View {
+    @Environment(AppLoginState.self) private var loginState
+
     var body: some View {
         VStack(spacing: 16) {
             Image("imgNoReview")
@@ -15,9 +17,9 @@ struct NoReviewView: View {
             Text("아직 소비후기가 없어요.\n고민을 나눈 후 소비후기를 들려주세요.")
                 .font(.system(size: 16, weight: .medium))
                 .foregroundStyle(Color.subGray1)
-                .multilineTextAlignment(.center)
-            NavigationLink {
-//                VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: <#T##VisibilityScopeType#>, apiManager: <#T##NewApiManager#>)
+                .multilineTextAlignment(.center) 
+            Button {
+                loginState.serviceRoot.navigationManager.navigate(.makeVoteView)
             } label: {
                 Text("고민 등록하러 가기")
                     .font(.system(size: 16, weight: .semibold))
