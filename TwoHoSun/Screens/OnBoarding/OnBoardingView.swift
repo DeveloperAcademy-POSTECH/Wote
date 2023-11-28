@@ -93,7 +93,10 @@ extension OnBoardingView {
 
     private var hyeprLinkText: some View {
         HStack {
-            Text("[이용 약관](https://codeisfuture.tistory.com/59)")+Text(" 및 ") + Text("[개인정보 보호정책](https://codeisfuture.tistory.com/)") + Text(" 확인하기")
+            Text("[이용 약관](https://hansn97.notion.site/Wote-dcd81699a906483d8b91f88f88164d31)")
+            + Text(" 및 ")
+            + Text("[개인정보 보호정책](https://hansn97.notion.site/88ed8c9e4dd04f31b071c6b43d32a828?pvs=4)")
+            + Text(" 확인하기")
         }
         .font(.system(size: 12))
         .foregroundStyle(Color.subGray1)
