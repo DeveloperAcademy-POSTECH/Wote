@@ -40,6 +40,7 @@ final class MemberManager: NewApiManager {
                 }
             } receiveValue: { _ in
                 print("block user successful!")
+                NotificationCenter.default.post(name: NSNotification.userBlockStateUpdated, object: nil)
             }
             .store(in: &cancellables)
     }
