@@ -45,14 +45,13 @@ struct CommentsView: View {
                             .filter { $0.commentId == scrollSpot }
                             .first?.author?.nickname ?? ""), 
                                          isPresented: $viewModel.presentAlert) {
-//                        if ismyCellconfirm {
-//                            viewModel.deleteComments(commentId: scrollSpot)
-//                        } else {
-//                            loginStateManager.serviceRoot.memberManager.blockUser(memberId: viewModel.commentsDatas
-//                                .filter { $0.commentId == scrollSpot }
-//                                .first?.author.id ?? 0)
-//                        }
-                        print("신고접수됐습니다.")
+                        if ismyCellconfirm {
+                            viewModel.deleteComments(commentId: scrollSpot)
+                        } else {
+                            if let commentIDtoBlock = viewModel.commentsDatas.first(where: {$0.commentId == scrollSpot})?.author?.id {
+                                loginStateManager.serviceRoot.memberManager.blockUser(memberId: commentIDtoBlock)
+                            }
+                        }
                     }
                     .padding(.bottom, UIScreen.main.bounds.height * 0.05)
                 }
