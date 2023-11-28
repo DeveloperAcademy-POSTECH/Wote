@@ -18,7 +18,9 @@ struct CommentsView: View {
     @ObservedObject var viewModel: CommentsViewModel
     @State private var replyForAnotherName: String?
     @Environment(AppLoginState.self) private var loginStateManager
-    
+    @State private var lastCommentClick = false
+
+
     var body: some View {
         ZStack {
             Color.lightGray
@@ -40,10 +42,10 @@ struct CommentsView: View {
                 ZStack {
                     Color.black.opacity(0.7)
                         .ignoresSafeArea()
-                    CustomAlertModalView(alertType: ismyCellconfirm ? 
+                    CustomAlertModalView(alertType: ismyCellconfirm ?
                         .erase : .ban(nickname: viewModel.commentsDatas
                             .filter { $0.commentId == scrollSpot }
-                            .first?.author?.nickname ?? ""), 
+                            .first?.author?.nickname ?? ""),
                                          isPresented: $viewModel.presentAlert) {
                         if ismyCellconfirm {
                             viewModel.deleteComments(commentId: scrollSpot)
@@ -53,7 +55,7 @@ struct CommentsView: View {
                             }
                         }
                     }
-                                         .padding(.bottom, UIScreen.main.bounds.height * 0.05)
+                    .padding(.bottom, UIScreen.main.bounds.height * 0.05)
                 }
             }
             if applyComplaint {
@@ -117,7 +119,7 @@ extension CommentsView {
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 28) {
-                    ForEach(viewModel.commentsDatas, id: \.commentId) { comment in
+                    ForEach(Array(viewModel.commentsDatas.enumerated()), id: \.element.commentId) { index, comment in
                         CommentCell(comment: comment) {
                             scrollSpot = comment.commentId
                             replyForAnotherName = comment.author?.nickname
@@ -129,29 +131,26 @@ extension CommentsView {
                             showConfirm.toggle()
                         }
                     }
+                    Color.clear
+                        .frame(height:1, alignment: .bottom)
+                        .onAppear {
+                            lastCommentClick = true
+                        }
                     .onChange(of: scrollSpot) { _, _ in
                         proxy.scrollTo(scrollSpot, anchor: .top)
                     }
-                    
+                    .padding(.bottom, isFocus && lastCommentClick ? 20 : 0)
                 }
-                
             }
-            .padding(.bottom, isFocus ? 40 : 0)
             .scrollIndicators(.hidden)
         }
         .padding(.horizontal, 24)
     }
-    
+
     var commentInputView: some View {
         HStack {
-            if let image = loginStateManager.serviceRoot.memberManager.profile?.profileImage {
-                ProfileImageView(imageURL: image)
-                    .frame(width: 32, height: 32)
-            } else {
-                Image("defaultProfile")
-                    .resizable()
-                    .frame(width: 32, height: 32)
-            }
+            ProfileImageView(imageURL: loginStateManager.serviceRoot.memberManager.profile?.profileImage)
+                .frame(width: 32, height: 32)
             withAnimation(.easeInOut) {
                 TextField("", text: $viewModel.comments, prompt: Text("소비고민을 함께 나누어 보세요")
                     .foregroundStyle(viewModel.comments.isEmpty ? Color.subGray1 :Color.white)
@@ -169,7 +168,7 @@ extension CommentsView {
                             .background(isFocus ? Color.darkblue2325 : Color.textFieldGray)
                     }
                 }
-                
+
             }
             .cornerRadius(12)
             .animation(.easeInOut(duration: 0.3), value: viewModel.comments)
