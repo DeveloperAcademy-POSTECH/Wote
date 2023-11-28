@@ -31,8 +31,7 @@ class SettingViewModel {
                     print(error)
                 }
             } receiveValue: { _ in
-                KeychainManager.shared.deleteToken(key: "accessToken")
-                KeychainManager.shared.deleteToken(key: "refreshToken")
+                self.loginStateManager.serviceRoot.auth.deleteTokens()
                 self.loginStateManager.serviceRoot.navigationManager.countPop(count: 1)
                 self.loginStateManager.serviceRoot.auth.authState = .none
                 cancellable?.cancel()
@@ -41,6 +40,7 @@ class SettingViewModel {
     
     func deleteUser() {
         loginStateManager.serviceRoot.apimanager.request(.userService(.deleteUser), decodingType: NoData.self)
+            .debounce(for: 1, scheduler: RunLoop.main)
             .sink { completion in
                 switch completion {
                 case .finished:
@@ -49,8 +49,7 @@ class SettingViewModel {
                     print(error)
                 }
             } receiveValue: { _ in
-                KeychainManager.shared.deleteToken(key: "accessToken")
-                KeychainManager.shared.deleteToken(key: "refreshToken")
+                self.loginStateManager.serviceRoot.auth.deleteTokens()
                 self.loginStateManager.serviceRoot.auth.authState = .none
             }
             .store(in: &cancellable)

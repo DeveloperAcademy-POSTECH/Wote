@@ -131,6 +131,7 @@ final class ProfileSettingViewModel {
             .sink { completion in
                 print("끝남? \(completion)")
             } receiveValue: { _ in
+                self.appState.serviceRoot.memberManager.fetchProfile()
                 self.appState.serviceRoot.auth.authState = .loggedIn
                 cancellable?.cancel()
             }

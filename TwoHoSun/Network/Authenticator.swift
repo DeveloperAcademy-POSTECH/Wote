@@ -22,7 +22,6 @@ class Authenticator {
     }
 
     var accessToken: String? {
-        print(KeychainManager.shared.readToken(key: "accessToken"))
         return KeychainManager.shared.readToken(key: "accessToken")
     }
     var refreshToken: String? {
@@ -43,5 +42,10 @@ class Authenticator {
     func saveTokens(_ token: Tokens) {
         KeychainManager.shared.saveToken(key: "accessToken", token: token.accessToken)
         KeychainManager.shared.saveToken(key: "refreshToken", token: token.refreshToken)
+    }
+
+    func deleteTokens() {
+        KeychainManager.shared.deleteToken(key: "accessToken")
+        KeychainManager.shared.deleteToken(key: "refreshToken")
     }
 }
