@@ -122,7 +122,11 @@ extension CommentsView {
                     ForEach(Array(viewModel.commentsDatas.enumerated()), id: \.element.commentId) { index, comment in
                         CommentCell(comment: comment) {
                             scrollSpot = comment.commentId
-                            replyForAnotherName = comment.author?.nickname
+                            if let author = comment.author {
+                                replyForAnotherName = author.nickname
+                            } else {
+                                replyForAnotherName = "알 수 없음"
+                            }
                             isFocus = true
                         } onConfirmDiaog: { ismine, commentId in
                             scrollSpot = commentId
