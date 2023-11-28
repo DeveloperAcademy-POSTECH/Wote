@@ -128,6 +128,9 @@ extension ConsiderationView {
 
     private var createVoteButton: some View {
         Button {
+            guard haveConsumerType else {
+                return loginState.serviceRoot.navigationManager.navigate(.testIntroView)
+            }
             loginState.serviceRoot.navigationManager.navigate(.makeVoteView)
         } label: {
             HStack(spacing: 2) {

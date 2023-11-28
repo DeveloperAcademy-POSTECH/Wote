@@ -13,6 +13,7 @@ struct VoteContentCell: View {
     @Environment(AppLoginState.self) private var loginState
     @State private var isButtonTapped = false
     @State private var isAlertShown = false
+    @AppStorage("haveConsumerType") var haveConsumerType: Bool = false
     var viewModel: ConsiderationViewModel
     var data: PostModel
     var index: Int
@@ -125,6 +126,12 @@ extension VoteContentCell {
     }
 
     private func votePost(choice: Bool) {
+        guard haveConsumerType else {
+            loginState.serviceRoot.navigationManager.countDeque(count: 1)
+            loginState.serviceRoot.navigationManager.navigate(.testIntroView)
+            return
+        }
+
         if isButtonTapped {
             isAlertShown = true
         } else {
@@ -132,6 +139,7 @@ extension VoteContentCell {
             viewModel.votePost(postId: data.id,
                                choice: choice,
                                index: index)
+
         }
     }
 }

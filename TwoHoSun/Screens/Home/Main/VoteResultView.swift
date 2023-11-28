@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct IncompletedVoteButton: View {
+    @AppStorage("haveConsumerType") var haveConsumerType: Bool = false
     var choice: VoteType
     let action: () -> Void
 

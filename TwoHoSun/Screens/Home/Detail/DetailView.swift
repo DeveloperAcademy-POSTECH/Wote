@@ -19,6 +19,7 @@ struct DetailView: View {
     @State private var isButtonTapped = false
     @State private var isDuplicationAlertShown = false
     @StateObject var viewModel: DetailViewModel
+    @AppStorage("haveConsumerType") var haveConsumerType: Bool = false
     var isShowingItems = true
     @State var showDetailComments = false
     var postId: Int
@@ -52,13 +53,11 @@ struct DetailView: View {
 
                             } else {
                                 IncompletedVoteButton(choice: .agree) {
-                                    votePost(id: data.post.id,
-                                                            choice: true)
+                                    votePost(id: data.post.id, choice: true)
 
                                 }
                                 IncompletedVoteButton(choice: .disagree) {
-                                    votePost(id: data.post.id,
-                                                            choice: false)
+                                    votePost(id: data.post.id, choice: false)
                                 }
                             }
                         }
@@ -254,6 +253,11 @@ extension DetailView {
                        commentCount: viewModel.postDetail?.commentCount,
                        commentPreviewImage: viewModel.postDetail?.commentPreviewImage)
             .onTapGesture {
+                guard haveConsumerType else {
+                    loginStateManager.serviceRoot.navigationManager.countDeque(count: 1)
+                    loginStateManager.serviceRoot.navigationManager.navigate(.testIntroView)
+                    return
+                }
                 showDetailComments.toggle()
             }
     }
@@ -326,6 +330,12 @@ extension DetailView {
     }
 
     private func votePost(id: Int, choice: Bool) {
+        guard haveConsumerType else {
+            loginStateManager.serviceRoot.navigationManager.countDeque(count: 1)
+            loginStateManager.serviceRoot.navigationManager.navigate(.testIntroView)
+            return
+        }
+
         if isButtonTapped {
             isDuplicationAlertShown = true
         } else {
