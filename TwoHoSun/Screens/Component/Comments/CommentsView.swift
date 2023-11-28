@@ -18,7 +18,7 @@ struct CommentsView: View {
     @ObservedObject var viewModel: CommentsViewModel
     @State private var replyForAnotherName: String?
     @Environment(AppLoginState.self) private var loginStateManager
-
+    
     var body: some View {
         ZStack {
             Color.lightGray
@@ -53,7 +53,7 @@ struct CommentsView: View {
                             }
                         }
                     }
-                    .padding(.bottom, UIScreen.main.bounds.height * 0.05)
+                                         .padding(.bottom, UIScreen.main.bounds.height * 0.05)
                 }
             }
             if applyComplaint {
@@ -86,24 +86,27 @@ struct CommentsView: View {
         })
         .customConfirmDialog(isPresented: $showConfirm, isMine: $ismyCellconfirm, actions: { bindIsMine in
             let isMine = bindIsMine.wrappedValue
-            if !isMine {
+            VStack(spacing: 15) {
+                if !isMine {
+                    Button {
+                        showComplaint.toggle()
+                        showConfirm.toggle()
+                    } label: {
+                        Text("신고하기")
+                            .frame(maxWidth: .infinity)
+                    }
+                    Divider()
+                        .background(Color.gray300)
+                }
                 Button {
-                    showComplaint.toggle()
+                    viewModel.presentAlert.toggle()
                     showConfirm.toggle()
                 } label: {
-                    Text("신고하기")
+                    Text(isMine ? "삭제하기" : "차단하기")
                         .frame(maxWidth: .infinity)
                 }
-                Divider()
-                    .background(Color.gray300)
             }
-            Button {
-                viewModel.presentAlert.toggle()
-                showConfirm.toggle()
-            } label: {
-                Text(isMine ? "삭제하기" : "차단하기")
-                    .frame(maxWidth: .infinity)
-            }
+            .padding(.vertical, 15)
         }
         )
     }
@@ -129,16 +132,16 @@ extension CommentsView {
                     .onChange(of: scrollSpot) { _, _ in
                         proxy.scrollTo(scrollSpot, anchor: .top)
                     }
-
+                    
                 }
-
+                
             }
             .padding(.bottom, isFocus ? 40 : 0)
             .scrollIndicators(.hidden)
         }
         .padding(.horizontal, 24)
     }
-
+    
     var commentInputView: some View {
         HStack {
             if let image = loginStateManager.serviceRoot.memberManager.profile?.profileImage {
@@ -166,7 +169,7 @@ extension CommentsView {
                             .background(isFocus ? Color.darkblue2325 : Color.textFieldGray)
                     }
                 }
-
+                
             }
             .cornerRadius(12)
             .animation(.easeInOut(duration: 0.3), value: viewModel.comments)
