@@ -40,6 +40,7 @@ class SettingViewModel {
     
     func deleteUser() {
         loginStateManager.serviceRoot.apimanager.request(.userService(.deleteUser), decodingType: NoData.self)
+            .debounce(for: 1, scheduler: RunLoop.main)
             .sink { completion in
                 switch completion {
                 case .finished:

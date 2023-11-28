@@ -51,6 +51,8 @@ struct CommentsView: View {
                         } else {
                             if let commentIDtoBlock = viewModel.commentsDatas.first(where: {$0.commentId == scrollSpot})?.author?.id {
                                 loginStateManager.serviceRoot.memberManager.blockUser(memberId: commentIDtoBlock)
+                                viewModel.presentAlert.toggle()
+                                viewModel.refreshComments()
                             }
                         }
                     }
