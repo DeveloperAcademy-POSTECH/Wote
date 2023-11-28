@@ -32,7 +32,6 @@ extension CommentPreview {
             Text("댓글")
                 .foregroundColor(.priceGray)
                 .font(.system(size: 14, weight: .medium))
-
             if let count = commentCount {
                 Text("\(count)개")
                     .foregroundColor(.white)
