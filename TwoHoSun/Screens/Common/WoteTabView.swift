@@ -56,6 +56,9 @@ struct WoteTabView: View {
             }  
             .navigationDestination(for: AllNavigation.self) { destination in
                 switch destination {
+                case .profileSettingView(let viewType):
+                    ProfileSettingsView(viewType: viewType,
+                                        viewModel: ProfileSettingViewModel(appState: loginStateManager))
                 case .considerationView:
                     ConsiderationView(visibilityScope: $visibilityScope,
                                       scrollToTop: $tabScrollHandler.scrollToTop,

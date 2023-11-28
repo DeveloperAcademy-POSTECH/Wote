@@ -128,8 +128,8 @@ struct MyPageView: View {
 extension MyPageView {
 
     private var profileHeaderView: some View {
-        NavigationLink {
-            ProfileSettingsView(viewType: .modfiy, viewModel: ProfileSettingViewModel(appState: loginStateManager))
+        Button {
+            loginStateManager.serviceRoot.navigationManager.navigate(.profileSettingView(type: .modfiy))
         } label: {
             HStack(spacing: 14) {
                 if let image = loginStateManager.serviceRoot.memberManager.profile?.profileImage {
@@ -160,6 +160,39 @@ extension MyPageView {
             .padding(.leading, 24)
             .padding(.trailing, 16)
         }
+
+//        NavigationLink {
+//            ProfileSettingsView(viewType: .modfiy, viewModel: ProfileSettingViewModel(appState: loginStateManager))
+//        } label: {
+//            HStack(spacing: 14) {
+//                if let image = loginStateManager.serviceRoot.memberManager.profile?.profileImage {
+//                    ProfileImageView(imageURL: image)
+//                        .frame(width: 103, height: 103)
+//                } else {
+//                    Image("defaultProfile")
+//                        .resizable()
+//                        .frame(width: 103, height: 103)
+//                }
+//                VStack(alignment: .leading, spacing: 8) {
+//                    HStack(spacing: 0) {
+//                        Text(loginStateManager.serviceRoot.memberManager.profile?.nickname ?? "")
+//                            .font(.system(size: 20, weight: .medium))
+//                            .padding(.trailing, 12)
+//                        ConsumerTypeLabel(consumerType: loginStateManager.serviceRoot.memberManager.profile?.consumerType ?? .adventurer,
+//                                          usage: .standard)
+//                        Spacer()
+//                        Image(systemName: "chevron.right")
+//                            .font(.system(size: 14))
+//                            .foregroundStyle(Color.subGray1)
+//                    }
+//                    Text(loginStateManager.serviceRoot.memberManager.profile?.school.schoolName ?? "")
+//                        .font(.system(size: 14))
+//                }
+//                .foregroundStyle(.white)
+//            }
+//            .padding(.leading, 24)
+//            .padding(.trailing, 16)
+//        }
     }
 
     private var sectionHeaderView: some View {

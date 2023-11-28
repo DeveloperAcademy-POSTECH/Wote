@@ -82,7 +82,7 @@ enum ProfileInputType {
     }
 }
 
-enum ProfileSettingType {
+enum ProfileSettingType: Decodable {
     case setting, modfiy
 }
 
@@ -182,9 +182,6 @@ struct ProfileSettingsView: View {
             }
             .frame(height: 42)
         }
-        .navigationTitle("프로필 설정")
-        .toolbar(.hidden, for: .navigationBar)
-        .navigationBarBackButtonHidden()
     }
 }
 

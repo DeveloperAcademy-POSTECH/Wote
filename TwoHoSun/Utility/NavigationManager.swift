@@ -26,6 +26,7 @@ enum AllNavigation: Decodable, Hashable {
                           directComments: Bool = false,
                           isShowingItems: Bool = true)
     case reviewWriteView(post: SummaryPostModel)
+    case profileSettingView(type: ProfileSettingType)
 }
 
 @Observable
