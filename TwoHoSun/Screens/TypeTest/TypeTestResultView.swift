@@ -54,24 +54,6 @@ struct TypeTestResultView: View {
 
 extension TypeTestResultView {
 
-    private var retryButton: some View {
-        Button {
-            print("retry button")
-        } label: {
-            HStack(spacing: 4) {
-                Image(systemName: "arrow.clockwise")
-                    .font(.system(size: 16, weight: .medium))
-                Text("다시하기")
-                    .font(.system(size: 16, weight: .semibold))
-            }
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity)
-            .frame(height: 52)
-            .background(Color.disableGray)
-            .clipShape(.rect(cornerRadius: 10))
-        }
-    }
-
     private var pushToHomeButton: some View {
         Button {
             loginStateManager.serviceRoot.navigationManager.navigate(.makeVoteView)

@@ -82,7 +82,7 @@ enum ProfileInputType {
     }
 }
 
-enum ProfileSettingType {
+enum ProfileSettingType: Decodable {
     case setting, modfiy
 }
 
@@ -107,11 +107,13 @@ struct ProfileSettingsView: View {
                     titleLabel
                         .padding(.top, 40)
                 case .modfiy:
-                    HStack {
-                        ConsumerTypeLabel(consumerType: loginStateManager.serviceRoot.memberManager.profile?.consumerType ?? .adventurer, usage: .standard)
-                        Spacer()
+                    if let consumerType = loginStateManager.serviceRoot.memberManager.profile?.consumerType {
+                        HStack {
+                            ConsumerTypeLabel(consumerType: consumerType, usage: .standard)
+                            Spacer()
+                        }
+                        .padding(.top, 30)
                     }
-                    .padding(.top, 30)
                 }
                 Spacer()
                 profileImageView
@@ -124,12 +126,12 @@ struct ProfileSettingsView: View {
                             if viewModel.selectedSchoolInfo == nil {
                                 viewModel.selectedSchoolInfo = SchoolInfoModel(school: school, schoolAddress: nil)
                             }
+                            viewModel.firstSchool = SchoolInfoModel(school: school, schoolAddress: nil)
                         }
-                    }
-                    .onAppear {
                         if let lastSchoolRegisterDate = loginStateManager.serviceRoot.memberManager.profile?.lastSchoolRegisterDate {
                             isRestricted = viewModel.checkSchoolRegisterDate(lastSchoolRegisterDate)
                         }
+                        
                     }
                 Spacer()
                 switch viewType {
@@ -181,9 +183,6 @@ struct ProfileSettingsView: View {
             }
             .frame(height: 42)
         }
-        .navigationTitle("프로필 설정")
-        .toolbar(.hidden, for: .navigationBar)
-        .navigationBarBackButtonHidden()
     }
 }
 
@@ -302,6 +301,7 @@ extension ProfileSettingsView {
                 .onAppear {
                     if let nickname = loginStateManager.serviceRoot.memberManager.profile?.nickname {
                         viewModel.nickname = nickname
+                        viewModel.firstNickname = nickname
                     }
                 }
                 .onChange(of: viewModel.nickname) { _, newValue in
@@ -316,9 +316,13 @@ extension ProfileSettingsView {
 
     private var checkDuplicatedIdButton: some View {
         Button {
-            viewModel.postNickname()
-            if viewModel.nicknameValidationType == .valid {
-                endTextEditing()
+            if viewModel.nickname == viewModel.firstNickname {
+                viewModel.nicknameValidationType = .valid
+            } else {
+                viewModel.postNickname()
+                if viewModel.nicknameValidationType == .valid {
+                    endTextEditing()
+                }
             }
         } label: {
             Text("중복확인")
@@ -442,9 +446,8 @@ extension ProfileSettingsView {
     }
 
     private var goToTypeTestButton: some View {
-        NavigationLink {
-            TypeTestIntroView()
-
+        Button {
+            loginStateManager.serviceRoot.navigationManager.navigate(.testIntroView)
         } label: {
             HStack(spacing: 0) {
                 Text("소비 성향 테스트하러가기")

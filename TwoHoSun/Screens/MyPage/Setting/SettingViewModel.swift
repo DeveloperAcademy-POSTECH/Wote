@@ -20,7 +20,9 @@ class SettingViewModel {
     
     func requestLogOut() {
         var cancellable: AnyCancellable?
-        cancellable =  loginStateManager.serviceRoot.apimanager.request(.userService(.requestLogout), decodingType: NoData.self)
+        cancellable =  loginStateManager.serviceRoot.apimanager
+            .request(.userService(.requestLogout(deviceToken: KeychainManager.shared.readToken(key: "deviceToken")!)),
+                                                                                     decodingType: NoData.self)
             .sink { completion in
                 switch completion {
                 case .finished:

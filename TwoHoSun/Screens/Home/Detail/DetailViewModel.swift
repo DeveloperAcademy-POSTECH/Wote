@@ -94,7 +94,6 @@ final class DetailViewModel: ObservableObject {
         appLoginState.serviceRoot.apimanager
             .request(.postService(.deletePost(postId: postId)),
                             decodingType: NoData.self)
-             .compactMap(\.data)
              .sink { completion in
                  switch completion {
                  case .finished:
@@ -103,10 +102,10 @@ final class DetailViewModel: ObservableObject {
                      print("error: \(error)")
                  }
              } receiveValue: { _ in
+                 self.appLoginState.appData.postManager.deleteReviews(postId: postId)
+                 self.appLoginState.appData.postManager.removeCount += 1
              }
              .store(in: &cancellables)
-
-        appLoginState.appData.postManager.deleteReviews(postId: postId)
      }
 
      func closePost(postId: Int, index: (Int?, Int?)) {

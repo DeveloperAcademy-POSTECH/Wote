@@ -8,47 +8,6 @@
 import SwiftUI
 
 struct BottomSheetView: View {
-    
-    enum AgreeType: Int {
-        case needs, personalData, marketing
-        static func fromRawValue(_ rawValue: Int) -> AgreeType? {
-            return AgreeType(rawValue: rawValue)
-        }
-
-        var text: String {
-            switch self {
-            case .needs:
-                return "서비스 이용약관, 개인정보 수집 및 이용 동의"
-            case .personalData:
-                return "개인정보 수집 및 이용 동의"
-            case .marketing:
-                return "마케팅 정보 수신 동의"
-            }
-        }
-
-        var isRequired: Bool {
-            switch self {
-            case .needs:
-                return true
-            case .personalData:
-                return false
-            case .marketing:
-                return false
-            }
-        }
-
-        var nextPage: some View {
-            switch self {
-            case .needs:
-                return DescriptionView()
-            case .personalData:
-                return DescriptionView()
-            case .marketing:
-                return DescriptionView()
-            }
-        }
-    }
-
     @Environment(\.dismiss) var dismiss
     @State private var checked: [Bool]  = [false, false, false]
     @State private var showAlert = false
@@ -78,7 +37,7 @@ struct BottomSheetView: View {
                 allCheckBoxView
                     .padding(.vertical, 8)
                 ForEach(0..<3) { index in
-                    if let agreeType = AgreeType.fromRawValue(index) {
+                    if let agreeType = TermAgreeType.fromRawValue(index) {
                         CheckBoxView(checked: $checked[index], agreeType: agreeType)
                     }
                 }
@@ -98,7 +57,7 @@ struct BottomSheetView: View {
 
     struct CheckBoxView: View {
         @Binding var checked: Bool
-        var agreeType: AgreeType
+        @State var agreeType: TermAgreeType
 
         var body: some View {
             VStack(alignment: .leading, spacing: 6) {
@@ -120,11 +79,14 @@ struct BottomSheetView: View {
                         self.checked.toggle()
                     }
                     Spacer()
-                    NavigationLink(destination: agreeType.nextPage, label: {
+                    NavigationLink {
+                        LinkWebView(externalURL: agreeType.termURL)
+                            .navigationTitle("약관 보기")
+                    } label: {
                         Image(systemName: "chevron.right")
                             .font(.system(size: 16))
                             .foregroundStyle(Color.subGray3)
-                    })
+                    }
                 }
                 if agreeType.rawValue == 2 {
                     Text("마케팅 정보는 문자, E-mail, Push알림으로 받을 수 있으면\n동의 여부는 알림설정에서 확인 가능합니다.")
@@ -184,5 +146,11 @@ extension BottomSheetView {
             .frame(maxWidth: .infinity)
             .frame(height: 58, alignment: .leading)
         }
+    }
+}
+
+#Preview {
+    NavigationStack {
+        BottomSheetView(goProfileView: .constant(false))
     }
 }

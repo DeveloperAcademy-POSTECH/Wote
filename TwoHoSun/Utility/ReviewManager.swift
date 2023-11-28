@@ -11,6 +11,7 @@ import SwiftUI
 final class ReviewManager {
     var reviews: ReviewTabModel?
     var myReviews = [SummaryPostModel]()
+    var removeCount = 0
 
     var recentReviews: [SummaryPostModel] {
         reviews?.recentReviews ?? []

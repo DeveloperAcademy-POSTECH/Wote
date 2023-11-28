@@ -82,7 +82,11 @@ extension ExpandableList {
                 Image("announcement")
                     .resizable()
                     .scaledToFit()
-                Text("안녕하세요.\n청소년들의 소비 문화에 관심을 가지고 기획하게 된 소비고민 투표 서비스 Wote 입니다. 만나서 반갑습니다. :)\n\n청소년 여러분들의 소비 고민을 자유롭게 투표로 알아보고, 투표를 해준 친구들에게 실 사용 후기를 공유해 서로의 소비 가치관을 Wote와 함께 알아가보죠!")
+                Text("""
+                    안녕하세요.\n청소년들의 소비 문화에 관심을 가지고 기획하게 된 소비고민 투표 서비스 Wote 입니다. 
+                    만나서 반갑습니다.:)\n\n청소년 여러분들의 소비 고민을 자유롭게 투표로 알아보고,
+                    투표를 해준 친구들에게 실 사용 후기를 공유해 서로의 소비 가치관을 Wote와 함께 알아가보죠!
+                    """)
                     .foregroundStyle(Color.subGray5)
                     .font(.system(size: 12))
                     .lineSpacing(4)
