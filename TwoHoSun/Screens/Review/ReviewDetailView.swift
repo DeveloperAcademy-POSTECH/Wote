@@ -16,6 +16,7 @@ struct ReviewDetailView: View {
     @State private var applyComplaint = false
     @State private var showAlert = false
     @StateObject var viewModel: ReviewDetailViewModel
+    @AppStorage("haveConsumerType") var haveConsumerType: Bool = false
     var isShowingItems = true
     var postId: Int?
     var reviewId: Int?
@@ -225,6 +226,11 @@ extension ReviewDetailView {
             CommentPreview(previewComment: viewModel.reviewData?.commentPreview, commentCount: viewModel.reviewData?.commentCount,
                            commentPreviewImage: viewModel.reviewData?.commentPreviewImage)
                 .onTapGesture {
+                    guard haveConsumerType else {
+                        loginState.serviceRoot.navigationManager.countPop(count: 1)
+                        loginState.serviceRoot.navigationManager.navigate(.testIntroView)
+                        return
+                    }
                     isDetailCommentShown.toggle()
                 }
         }
