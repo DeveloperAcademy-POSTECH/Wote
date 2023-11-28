@@ -56,7 +56,8 @@ extension Color {
     static let gray500 = Color(UIColor(hexCode: "A9BDDA"))
     static let gray600 = Color(UIColor(hexCode: "3A393F"))
     static let gray700 = Color(UIColor(hexCode: "8E8D93"))
-    
+    static let gray800 = Color(UIColor(hexCode: "CDCDCD"))
+    static let gray900 = Color(UIColor(hexCode: "7D7D7D"))
     static let settingYellow = Color(UIColor(hexCode: "DEAE31"))
     static let settingRed = Color(UIColor(hexCode: "FE463C"))
     static let settingBlue = Color(UIColor(hexCode: "0C84FE"))
@@ -72,7 +73,6 @@ extension Color {
     static let purple100 = Color(UIColor(hexCode: "8277FF"))
     static let darkBlue100 = Color(UIColor(hexCode: "5690FF"))
     static let lightBlue100 = Color(UIColor(hexCode: "9DDAFF"))
-
     // MARK: - label light background
 
     static let lightRed100 = Color(UIColor(hexCode: "3B2D2D"))
@@ -87,6 +87,7 @@ extension Color {
     // MARK: - label dark background
     
     static let darkRed100 = Color(UIColor(hexCode: "2B2222"))
+    static let darkRed200 = Color(UIColor(hexCode: "833D3D"))
     static let darkBlue200 = Color(UIColor(hexCode: "22292B"))
     static let darkPink100 = Color(UIColor(hexCode: "2A222B"))
     static let darkGreen100 = Color(UIColor(hexCode: "232B22"))

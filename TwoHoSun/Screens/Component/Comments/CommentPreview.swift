@@ -11,6 +11,7 @@ struct CommentPreview: View {
     @Environment(AppLoginState.self) private var loginStateManager
     var previewComment: String?
     var commentCount: Int?
+    var commentPreviewImage: String?
 
     var body: some View {
         VStack {
@@ -31,7 +32,6 @@ extension CommentPreview {
             Text("댓글")
                 .foregroundColor(.priceGray)
                 .font(.system(size: 14, weight: .medium))
-
             if let count = commentCount {
                 Text("\(count)개")
                     .foregroundColor(.white)
@@ -54,12 +54,11 @@ extension CommentPreview {
 
     @ViewBuilder
        private func profileImageView() -> some View {
-           if let image = loginStateManager.serviceRoot.memberManager.profile?.profileImage {
-               ProfileImageView(imageURL: image)
+           if let previewImage = commentPreviewImage {
+               ProfileImageView(imageURL: previewImage)
                    .frame(width: 24, height: 24)
            } else {
-               Image("defaultProfile")
-                   .resizable()
+               ProfileImageView(imageURL: loginStateManager.serviceRoot.memberManager.profile?.profileImage)
                    .frame(width: 24, height: 24)
            }
        }

@@ -13,4 +13,5 @@ struct ReviewDetailModel: Codable {
     let isMine: Bool
     let commentCount: Int?
     let commentPreview: String?
+    let commentPreviewImage: String?
 }
