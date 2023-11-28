@@ -82,7 +82,7 @@ enum ProfileInputType {
     }
 }
 
-enum ProfileSettingType {
+enum ProfileSettingType: Decodable {
     case setting, modfiy
 }
 

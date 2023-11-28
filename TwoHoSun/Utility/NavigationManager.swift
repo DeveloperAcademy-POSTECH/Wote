@@ -20,6 +20,7 @@ enum AllNavigation: Decodable, Hashable {
     case notiView
     case reviewDetailView(postId: Int?, reviewId: Int?, directComments: Bool = false, isShowingItems: Bool = true )
     case reviewWriteView(post: SummaryPostModel)
+    case profileSettingView(type: ProfileSettingType)
 }
 
 @Observable
