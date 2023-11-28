@@ -154,6 +154,8 @@ extension UserService: TargetType {
             return .requestPlain
         case .putConsumerType:
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
+        case .checkNicknameValid:
+            return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         default:
             return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
         }

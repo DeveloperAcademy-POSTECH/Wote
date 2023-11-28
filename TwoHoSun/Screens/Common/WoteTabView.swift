@@ -108,6 +108,8 @@ struct WoteTabView: View {
                                                                     apiManager: loginStateManager.serviceRoot.apimanager))
                 case .notiView:
                     NotificationView( viewModel: notiManager)
+                case .profileSettingView(type: let viewType):
+                    ProfileSettingsView(viewType: viewType, viewModel: ProfileSettingViewModel(appState: loginStateManager))
                 }
             }
         }
