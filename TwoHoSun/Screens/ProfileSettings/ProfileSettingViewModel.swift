@@ -24,6 +24,8 @@ final class ProfileSettingViewModel {
     var model: ProfileSetting? 
     private let forbiddenWord = ["금지어1", "금지어2"]
     var bag = Set<AnyCancellable>()
+    var firstNickname = ""
+    var firstSchool: SchoolInfoModel?
 
     private var appState: AppLoginState
     init(appState: AppLoginState) {
@@ -33,8 +35,9 @@ final class ProfileSettingViewModel {
         return selectedSchoolInfo != nil
     }
     var isAllInputValid: Bool {
-        return nicknameValidationType == .valid
-        && isSchoolFilled
+        return (nicknameValidationType == .valid
+        && isSchoolFilled)
+        || (selectedImageData != nil && nickname == firstNickname && selectedSchoolInfo?.school.schoolName == firstSchool?.school.schoolName)
     }
 
     private func isNicknameLengthValid(_ text: String) -> Bool {

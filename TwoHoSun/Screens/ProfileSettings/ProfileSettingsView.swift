@@ -92,7 +92,6 @@ struct ProfileSettingsView: View {
     @State private var retryProfileImage = false
     @State private var isRestricted = false
     @State var viewType: ProfileSettingType
-    @State var firstNickname: String = ""
     @Bindable var viewModel: ProfileSettingViewModel
     @Environment(\.dismiss) private var dismiss
     @Environment(AppLoginState.self) private var loginStateManager
@@ -127,12 +126,12 @@ struct ProfileSettingsView: View {
                             if viewModel.selectedSchoolInfo == nil {
                                 viewModel.selectedSchoolInfo = SchoolInfoModel(school: school, schoolAddress: nil)
                             }
+                            viewModel.firstSchool = SchoolInfoModel(school: school, schoolAddress: nil)
                         }
-                    }
-                    .onAppear {
                         if let lastSchoolRegisterDate = loginStateManager.serviceRoot.memberManager.profile?.lastSchoolRegisterDate {
                             isRestricted = viewModel.checkSchoolRegisterDate(lastSchoolRegisterDate)
                         }
+                        
                     }
                 Spacer()
                 switch viewType {
@@ -302,7 +301,7 @@ extension ProfileSettingsView {
                 .onAppear {
                     if let nickname = loginStateManager.serviceRoot.memberManager.profile?.nickname {
                         viewModel.nickname = nickname
-                        firstNickname = nickname
+                        viewModel.firstNickname = nickname
                     }
                 }
                 .onChange(of: viewModel.nickname) { _, newValue in
@@ -317,7 +316,7 @@ extension ProfileSettingsView {
 
     private var checkDuplicatedIdButton: some View {
         Button {
-            if viewModel.nickname == firstNickname {
+            if viewModel.nickname == viewModel.firstNickname {
                 viewModel.nicknameValidationType = .valid
             } else {
                 viewModel.postNickname()
