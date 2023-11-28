@@ -31,14 +31,13 @@ extension LinkView {
         } label: {
             Image(systemName: "xmark")
                 .font(.system(size: 20))
-                .foregroundStyle(.black)
+                .foregroundStyle(.white)
         }
         .padding(.leading, 16)
     }
 }
 
 struct LinkWebView: UIViewRepresentable {
-
     var externalURL: String
 
     func makeUIView(context: Context) -> WKWebView {

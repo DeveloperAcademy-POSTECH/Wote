@@ -14,7 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let logger = Logger(subsystem: "com.twohosun.TwoHoSun", category: "PushNotifications")
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-        logger.log("Application did finish launching with options: \(self.formatDictionary(launchOptions))")
+        removeKeychainAtFirstLaunch()
         let center = UNUserNotificationCenter.current()
         center.delegate = self
         center.requestAuthorization(options: [.badge, .sound, .alert]) { granted, error in
@@ -88,4 +88,12 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         }
         return .newData
     }
+
+    private func removeKeychainAtFirstLaunch() {
+          guard UserDefaults.isFirstLaunch() else {
+              return
+          }
+        KeychainManager.shared.deleteToken(key: "accessToken")
+        KeychainManager.shared.deleteToken(key: "refreshToken")
+      }
 }

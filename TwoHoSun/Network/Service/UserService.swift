@@ -16,7 +16,7 @@ enum UserService {
     case refreshToken
     case putConsumerType(consumertype: ConsumerType)
     case getProfile
-    case requestLogout
+    case requestLogout(deviceToken: String)
     case deleteUser
     case postDeviceTokens(deviceToken: String)
     case blockUser(memberId: Int)
@@ -94,8 +94,8 @@ extension UserService: TargetType {
             return ["consumerType": consumerType.rawValue]
         case .getProfile:
             return [:]
-        case .requestLogout:
-            return [:]
+        case .requestLogout(let deviceToken):
+            return ["deviceToken" : deviceToken]
         case .deleteUser:
             return [:]
         case .postDeviceTokens(let deviceToken):
@@ -145,7 +145,7 @@ extension UserService: TargetType {
         case .getProfile:
             return .requestPlain
         case .requestLogout:
-            return .requestPlain
+            return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         case .deleteUser:
             return .requestPlain
         case .postDeviceTokens:
