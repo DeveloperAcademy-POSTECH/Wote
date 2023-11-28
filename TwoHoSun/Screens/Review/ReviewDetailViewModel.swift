@@ -12,6 +12,7 @@ final class ReviewDetailViewModel: ObservableObject {
     @Published var reviewData: ReviewDetailModel?
     @Published var postId = 0
     @Published var isMine = false
+    @Published var reviewId = 0
     private var loginState: AppLoginState
     private var cancellable = Set<AnyCancellable>()
     private var reviewPostId = 0
@@ -34,6 +35,8 @@ final class ReviewDetailViewModel: ObservableObject {
                 }
             } receiveValue: { data in
                 self.reviewData = data
+                print(self.reviewData?.commentPreviewImage)
+                self.reviewId = data.reviewPost.id
                 self.postId = data.originalPost.id
                 self.reviewPostId = data.reviewPost.id
                 self.isMine = data.isMine
@@ -55,6 +58,7 @@ final class ReviewDetailViewModel: ObservableObject {
                 }
             } receiveValue: { data in
                 self.reviewData = data
+                self.reviewId = data.reviewPost.id
                 self.postId = data.originalPost.id
                 self.reviewPostId = data.reviewPost.id
                 self.isMine = data.isMine
