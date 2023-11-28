@@ -66,7 +66,6 @@ final class ReviewDetailViewModel: ObservableObject {
         loginState.serviceRoot.apimanager
             .request(.postService(.deleteReviewWithPostId(postId: postId)), 
                      decodingType: NoData.self)
-            .compactMap(\.data)
             .sink { completion in
                 switch completion {
                 case .finished:
@@ -75,9 +74,9 @@ final class ReviewDetailViewModel: ObservableObject {
                     print(failure)
                 }
             } receiveValue: { _ in
+                self.loginState.appData.reviewManager.deleteReviews(postId: self.reviewPostId)
+                self.loginState.appData.reviewManager.removeCount += 1
             }
             .store(in: &cancellable)
-        
-        loginState.appData.reviewManager.deleteReviews(postId: reviewPostId)
     }
 }

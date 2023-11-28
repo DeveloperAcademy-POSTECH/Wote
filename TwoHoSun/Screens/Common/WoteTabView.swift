@@ -7,49 +7,13 @@
 
 import SwiftUI
 
-enum WoteTabType: Int, CaseIterable {
-    case consider, review, myPage
-
-    var tabTitle: String {
-        switch self {
-        case .consider:
-            return "소비고민"
-        case .review:
-            return "소비후기"
-        case .myPage:
-            return "마이페이지"
-        }
-    }
-
-    var selectedTabIcon: String {
-        switch self {
-        case .consider:
-            return "icnTabConsiderSelected"
-        case .review:
-            return "icnTabReviewSelected"
-        case .myPage:
-            return "icnTabMyPageSelected"
-        }
-    }
-
-    var unselectedTabIcon: String {
-        switch self {
-        case .consider:
-            return "icnTabConsider"
-        case .review:
-            return "icnTabReview"
-        case .myPage:
-            return "icnTabMyPage"
-        }
-    }
-}
-
 struct WoteTabView: View {
     @State private var selection = WoteTabType.consider
     @State private var visibilityScope = VisibilityScopeType.global
     @State private var isVoteCategoryButtonDidTap = false
     @Environment(AppLoginState.self) private var loginStateManager
     @ObservedObject var notiManager: DataController
+    @State private var tabScrollHandler = WoteTabHandler()
 
     var body: some View {
         @Bindable var navigationPath = loginStateManager.serviceRoot.navigationManager
@@ -57,11 +21,11 @@ struct WoteTabView: View {
             ZStack(alignment: .topLeading) {
                 VStack(spacing: 0) {
                     navigationBar
-                    TabView(selection: $selection) {
+                    TabView(selection: $tabScrollHandler.selectedTab) {
                         ForEach(WoteTabType.allCases, id: \.self) { tab in
                             tabDestinationView(for: tab)
                                 .tabItem {
-                                    Image(selection == tab ?
+                                    Image(tabScrollHandler.selectedTab == tab ?
                                           tab.selectedTabIcon : tab.unselectedTabIcon)
                                     Text(tab.tabTitle)
                                 }
@@ -92,7 +56,13 @@ struct WoteTabView: View {
             }  
             .navigationDestination(for: AllNavigation.self) { destination in
                 switch destination {
-                case .detailView(let postId, let showDetailComments, let isShowingItems):
+                case .considerationView:
+                    ConsiderationView(visibilityScope: $visibilityScope,
+                                      scrollToTop: $tabScrollHandler.scrollToTop,
+                                      viewModel: ConsiderationViewModel(appLoginState: loginStateManager))
+                case .detailView(let postId,
+                                 let showDetailComments,
+                                 let isShowingItems):
                     DetailView(viewModel: DetailViewModel(appLoginState: loginStateManager),
                                isShowingItems: isShowingItems,
                                postId: postId,
@@ -100,7 +70,8 @@ struct WoteTabView: View {
                     )
                 case .makeVoteView:
                     VoteWriteView(viewModel: VoteWriteViewModel(visibilityScope: visibilityScope, 
-                                                                apiManager: loginStateManager.serviceRoot.apimanager), tabselection: $selection)
+                                                                apiManager: loginStateManager.serviceRoot.apimanager), 
+                                  tabselection: $tabScrollHandler.selectedTab)
                 case .testIntroView:
                     TypeTestIntroView()
                         .toolbar(.hidden, for: .navigationBar)
@@ -119,7 +90,10 @@ struct WoteTabView: View {
                 case .searchView:
                     SearchView(viewModel: SearchViewModel(apiManager: loginStateManager.serviceRoot.apimanager,
                                                           selectedVisibilityScope: visibilityScope))
-                case .reviewDetailView(let postId, let reviewId, let isShowDetailComments, let isShowingItems):
+                case .reviewDetailView(let postId, 
+                                       let reviewId,
+                                       let isShowDetailComments,
+                                       let isShowingItems):
                     ReviewDetailView(viewModel: ReviewDetailViewModel(loginState: loginStateManager),
                                      isShowingItems: isShowingItems,
                                      postId: postId,
@@ -141,7 +115,8 @@ struct WoteTabView: View {
             UITabBar.appearance().unselectedItemTintColor = .gray400
             UITabBar.appearance().standardAppearance = appearance
         }
-        .navigationTitle(selection.tabTitle)
+//        .navigationTitle(selection.tabTitle)
+        .navigationTitle(tabScrollHandler.selectedTab.tabTitle)
         .toolbar(.hidden, for: .navigationBar)
         .tint(Color.accentBlue)
         
@@ -154,7 +129,8 @@ extension WoteTabView {
     private func tabDestinationView(for tab: WoteTabType) -> some View {
         switch tab {
         case .consider:
-            ConsiderationView(visibilityScope: $visibilityScope,
+            ConsiderationView(visibilityScope: $visibilityScope, 
+                              scrollToTop: $tabScrollHandler.scrollToTop,
                               viewModel: ConsiderationViewModel(appLoginState: loginStateManager))
         case .review:
             ReviewView(visibilityScope: $visibilityScope,
@@ -167,7 +143,7 @@ extension WoteTabView {
 
     @ViewBuilder
     private var navigationBar: some View {
-        switch selection {
+        switch tabScrollHandler.selectedTab {
         case .consider, .review:
             HStack(spacing: 0) {
                 voteCategoryButton

@@ -11,6 +11,7 @@ struct ConsiderationView: View {
     @State private var didFinishSetup = false
     @State private var currentVote = 0
     @Binding var visibilityScope: VisibilityScopeType
+    @Binding var scrollToTop: Bool
     @Environment(AppLoginState.self) private var loginState
     @State private var isRefreshing = false
     @StateObject var viewModel: ConsiderationViewModel
@@ -52,6 +53,11 @@ struct ConsiderationView: View {
             viewModel.fetchPosts(visibilityScope: newScope)
             currentVote = 0
         }
+        .onChange(of: scrollToTop) { _, _ in
+            withAnimation {
+                currentVote = 0
+            }
+        }
         .onAppear {
             if !didFinishSetup {
                 viewModel.fetchPosts(visibilityScope: visibilityScope)
@@ -60,6 +66,7 @@ struct ConsiderationView: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.voteCreated)) { _ in
             viewModel.fetchPosts(visibilityScope: visibilityScope)
+            currentVote = 0
         }
     }
 }

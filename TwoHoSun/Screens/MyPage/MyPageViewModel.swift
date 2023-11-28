@@ -21,6 +21,16 @@ final class MyPageViewModel {
     private var reviewPage = 0
     private var isLastPage: Bool = false
 
+    var postCount: Int {
+        let removeCount = switch selectedMyPageListType {
+                        case .myVote:
+                            loginState.appData.postManager.removeCount
+                        case .myReview:
+                            loginState.appData.reviewManager.removeCount
+                        }
+        return total - removeCount
+    }
+
     init(loginState: AppLoginState) {
         self.loginState = loginState
     }
@@ -56,6 +66,8 @@ final class MyPageViewModel {
         if isFirstFetch {
             loginState.appData.reviewManager.myReviews.removeAll()
             loginState.appData.postManager.myPosts.removeAll()
+            loginState.appData.postManager.removeCount = 0
+            loginState.appData.reviewManager.removeCount = 0
             votePage = 0
             reviewPage = 0
             isLastPage = false

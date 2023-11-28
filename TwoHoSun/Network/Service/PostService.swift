@@ -76,8 +76,6 @@ extension PostService: TargetType {
             return "/posts/\(postId)/subscribe"
         case .deleteSubscribeReview(let postId):
             return "/posts/\(postId)/subscribe"
-        default:
-            return ""
         }
     }
 
