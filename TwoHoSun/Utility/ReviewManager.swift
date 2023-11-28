@@ -31,7 +31,7 @@ final class ReviewManager {
 
     func deleteReviews(postId: Int) {
         reviews?.allReviews.removeAll { $0.id == postId }
-        reviews?.recentReviews.removeAll { $0.id == postId }
+        reviews?.recentReviews?.removeAll { $0.id == postId }
         reviews?.purchasedReviews.removeAll { $0.id == postId}
         reviews?.notPurchasedReviews.removeAll { $0.id == postId}
         myReviews.removeAll { $0.id == postId }
