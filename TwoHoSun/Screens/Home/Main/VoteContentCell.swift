@@ -127,7 +127,6 @@ extension VoteContentCell {
 
     private func votePost(choice: Bool) {
         guard haveConsumerType else {
-            loginState.serviceRoot.navigationManager.countDeque(count: 1)
             loginState.serviceRoot.navigationManager.navigate(.testIntroView)
             return
         }
