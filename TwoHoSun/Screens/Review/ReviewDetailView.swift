@@ -63,7 +63,6 @@ struct ReviewDetailView: View {
                     }
                 }
             }
-            
             AlertModalView(showAlert: $showAlert, viewModel: viewModel, loginState: loginState)
         }
         .toolbar {
@@ -84,7 +83,7 @@ struct ReviewDetailView: View {
             CommentsView(showComplaint: $showCustomAlert,
                          applyComplaint: $applyComplaint,
                          viewModel: CommentsViewModel(apiManager: loginState.serviceRoot.apimanager,
-                                                      postId: reviewId ?? 0))
+                                                      postId: viewModel.reviewId))
             .presentationDetents([.large,.fraction(0.9)])
             .presentationContentInteraction(.scrolls)
         }
@@ -223,7 +222,8 @@ extension ReviewDetailView {
                 ImageView(imageURL: image)
                     .padding(.bottom, 28)
             }
-            CommentPreview(previewComment: viewModel.reviewData?.commentPreview, commentCount: viewModel.reviewData?.commentCount)
+            CommentPreview(previewComment: viewModel.reviewData?.commentPreview, commentCount: viewModel.reviewData?.commentCount,
+                           commentPreviewImage: viewModel.reviewData?.commentPreviewImage)
                 .onTapGesture {
                     isDetailCommentShown.toggle()
                 }
@@ -262,15 +262,5 @@ struct AlertModalView: View {
                 dismiss()
             }
         }
-    }
-}
-
-#Preview {
-    NavigationStack {
-        @Environment(AppLoginState.self) var loginState
-
-        ReviewDetailView(viewModel: ReviewDetailViewModel(loginState: loginState), 
-                         reviewId: 3030)
-            .environment(AppLoginState())
     }
 }

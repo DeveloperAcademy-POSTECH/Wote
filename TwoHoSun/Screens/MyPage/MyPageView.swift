@@ -145,7 +145,8 @@ extension MyPageView {
                         Text(loginStateManager.serviceRoot.memberManager.profile?.nickname ?? "")
                             .font(.system(size: 20, weight: .medium))
                             .padding(.trailing, 12)
-                        ConsumerTypeLabel(consumerType: loginStateManager.serviceRoot.memberManager.profile?.consumerType ?? .adventurer, usage: .standard)
+                        ConsumerTypeLabel(consumerType: loginStateManager.serviceRoot.memberManager.profile?.consumerType ?? .adventurer,
+                                          usage: .standard)
                         Spacer()
                         Image(systemName: "chevron.right")
                             .font(.system(size: 14))
@@ -172,7 +173,7 @@ extension MyPageView {
                 .padding(.bottom, 9)
                 .padding(.horizontal, 24)
                 HStack {
-                    Text("\(viewModel.total)건")
+                    Text("\(viewModel.postCount)건")
                         .font(.system(size: 14))
                         .foregroundStyle(.white)
                     Spacer()

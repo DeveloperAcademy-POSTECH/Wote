@@ -43,6 +43,8 @@ struct AuthorModel: Codable, Hashable {
     let nickname: String
     let profileImage: String?
     let consumerType: String
+    let isBlocked: Bool?
+    let isBaned: Bool?
 }
 
 extension AuthorModel: Equatable {

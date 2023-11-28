@@ -18,6 +18,7 @@ struct CommentsView: View {
     @ObservedObject var viewModel: CommentsViewModel
     @State private var replyForAnotherName: String?
     @Environment(AppLoginState.self) private var loginStateManager
+    @State private var lastCommentClick = false
 
     var body: some View {
         ZStack {
@@ -40,13 +41,18 @@ struct CommentsView: View {
                 ZStack {
                     Color.black.opacity(0.7)
                         .ignoresSafeArea()
-                    CustomAlertModalView(alertType: ismyCellconfirm ? .erase : .ban(nickname: viewModel.commentsDatas.filter { $0.commentId == scrollSpot }.first?.author.nickname ?? ""), isPresented: $viewModel.presentAlert) {
+                    CustomAlertModalView(alertType: ismyCellconfirm ?
+                        .erase : .ban(nickname: viewModel.commentsDatas
+                            .filter { $0.commentId == scrollSpot }
+                            .first?.author?.nickname ?? ""),
+                                         isPresented: $viewModel.presentAlert) {
                         if ismyCellconfirm {
                             viewModel.deleteComments(commentId: scrollSpot)
                         } else {
-                            loginStateManager.serviceRoot.memberManager.blockUser(memberId: viewModel.commentsDatas.filter { $0.commentId == scrollSpot }.first?.author.id ?? 0)
+                            if let commentIDtoBlock = viewModel.commentsDatas.first(where: {$0.commentId == scrollSpot})?.author?.id {
+                                loginStateManager.serviceRoot.memberManager.blockUser(memberId: commentIDtoBlock)
+                            }
                         }
-                        print("신고접수됐습니다.")
                     }
                     .padding(.bottom, UIScreen.main.bounds.height * 0.05)
                 }
@@ -72,6 +78,7 @@ struct CommentsView: View {
         }
         .onTapGesture {
             isFocus = false
+            replyForAnotherName = nil
         }
         .fullScreenCover(isPresented: $showComplaint, content: {
             NavigationStack {
@@ -80,24 +87,27 @@ struct CommentsView: View {
         })
         .customConfirmDialog(isPresented: $showConfirm, isMine: $ismyCellconfirm, actions: { bindIsMine in
             let isMine = bindIsMine.wrappedValue
-            if !isMine {
+            VStack(spacing: 15) {
+                if !isMine {
+                    Button {
+                        showComplaint.toggle()
+                        showConfirm.toggle()
+                    } label: {
+                        Text("신고하기")
+                            .frame(maxWidth: .infinity)
+                    }
+                    Divider()
+                        .background(Color.gray300)
+                }
                 Button {
-                    showComplaint.toggle()
+                    viewModel.presentAlert.toggle()
                     showConfirm.toggle()
                 } label: {
-                    Text("신고하기")
+                    Text(isMine ? "삭제하기" : "차단하기")
                         .frame(maxWidth: .infinity)
                 }
-                Divider()
-                    .background(Color.gray300)
             }
-            Button {
-                viewModel.presentAlert.toggle()
-                showConfirm.toggle()
-            } label: {
-                Text(isMine ? "삭제하기" : "차단하기")
-                    .frame(maxWidth: .infinity)
-            }
+            .padding(.vertical, 15)
         }
         )
     }
@@ -108,10 +118,14 @@ extension CommentsView {
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 28) {
-                    ForEach(viewModel.commentsDatas, id: \.commentId) { comment in
+                    ForEach(Array(viewModel.commentsDatas.enumerated()), id: \.element.commentId) { index, comment in
                         CommentCell(comment: comment) {
                             scrollSpot = comment.commentId
-                            replyForAnotherName = comment.author.nickname
+                            if let author = comment.author {
+                                replyForAnotherName = author.nickname
+                            } else {
+                                replyForAnotherName = "알 수 없음"
+                            }
                             isFocus = true
                         } onConfirmDiaog: { ismine, commentId in
                             scrollSpot = commentId
@@ -120,25 +134,26 @@ extension CommentsView {
                             showConfirm.toggle()
                         }
                     }
+                    Color.clear
+                        .frame(height:1, alignment: .bottom)
+                        .onAppear {
+                            lastCommentClick = true
+                        }
                     .onChange(of: scrollSpot) { _, _ in
                         proxy.scrollTo(scrollSpot, anchor: .top)
                     }
+                    .padding(.bottom, isFocus && lastCommentClick ? 20 : 0)
                 }
             }
+            .scrollIndicators(.hidden)
         }
         .padding(.horizontal, 24)
     }
 
     var commentInputView: some View {
         HStack {
-            if let image = loginStateManager.serviceRoot.memberManager.profile?.profileImage {
-                ProfileImageView(imageURL: image)
-                    .frame(width: 32, height: 32)
-            } else {
-                Image("defaultProfile")
-                    .resizable()
-                    .frame(width: 32, height: 32)
-            }
+            ProfileImageView(imageURL: loginStateManager.serviceRoot.memberManager.profile?.profileImage)
+                .frame(width: 32, height: 32)
             withAnimation(.easeInOut) {
                 TextField("", text: $viewModel.comments, prompt: Text("소비고민을 함께 나누어 보세요")
                     .foregroundStyle(viewModel.comments.isEmpty ? Color.subGray1 :Color.white)
