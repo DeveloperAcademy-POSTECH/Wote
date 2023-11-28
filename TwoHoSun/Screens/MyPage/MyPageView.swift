@@ -128,8 +128,8 @@ struct MyPageView: View {
 extension MyPageView {
 
     private var profileHeaderView: some View {
-        NavigationLink {
-            ProfileSettingsView(viewType: .modfiy, viewModel: ProfileSettingViewModel(appState: loginStateManager))
+        Button {
+            loginStateManager.serviceRoot.navigationManager.navigate(.profileSettingView(type: .modfiy))
         } label: {
             HStack(spacing: 14) {
                 if let image = loginStateManager.serviceRoot.memberManager.profile?.profileImage {

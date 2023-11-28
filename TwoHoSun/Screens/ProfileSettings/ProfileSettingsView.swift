@@ -82,7 +82,7 @@ enum ProfileInputType {
     }
 }
 
-enum ProfileSettingType {
+enum ProfileSettingType: Decodable {
     case setting, modfiy
 }
 
@@ -92,6 +92,7 @@ struct ProfileSettingsView: View {
     @State private var retryProfileImage = false
     @State private var isRestricted = false
     @State var viewType: ProfileSettingType
+    @State var originalImage: String?
     @Bindable var viewModel: ProfileSettingViewModel
     @Environment(\.dismiss) private var dismiss
     @Environment(AppLoginState.self) private var loginStateManager
@@ -107,15 +108,21 @@ struct ProfileSettingsView: View {
                     titleLabel
                         .padding(.top, 40)
                 case .modfiy:
-                    HStack {
-                        ConsumerTypeLabel(consumerType: loginStateManager.serviceRoot.memberManager.profile?.consumerType ?? .adventurer,
-                                          usage: .standard)
-                        Spacer()
+                    if let consumerType = loginStateManager.serviceRoot.memberManager.profile?.consumerType {
+                        HStack {
+                            ConsumerTypeLabel(consumerType: consumerType, usage: .standard)
+                            Spacer()
+                        }
+                        .padding(.top, 30)
                     }
-                    .padding(.top, 30)
                 }
                 Spacer()
                 profileImageView
+                    .onAppear {
+                        if let image = loginStateManager.serviceRoot.memberManager.profile?.profileImage {
+                            originalImage = image
+                        }
+                    }
                 Spacer()
                 nicknameInputView
                     .padding(.bottom, 34)
@@ -125,12 +132,12 @@ struct ProfileSettingsView: View {
                             if viewModel.selectedSchoolInfo == nil {
                                 viewModel.selectedSchoolInfo = SchoolInfoModel(school: school, schoolAddress: nil)
                             }
+                            viewModel.firstSchool = SchoolInfoModel(school: school, schoolAddress: nil)
                         }
-                    }
-                    .onAppear {
                         if let lastSchoolRegisterDate = loginStateManager.serviceRoot.memberManager.profile?.lastSchoolRegisterDate {
                             isRestricted = viewModel.checkSchoolRegisterDate(lastSchoolRegisterDate)
                         }
+                        
                     }
                 Spacer()
                 switch viewType {
@@ -163,8 +170,19 @@ struct ProfileSettingsView: View {
         .toolbarBackground(Color.background, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .photosPicker(isPresented: $retryProfileImage, selection: $selectedPhoto)
+        .onChange(of: selectedPhoto) { _, newValue in
+            PHPhotoLibrary.requestAuthorization { status in
+                guard status == .authorized else { return }
+                Task {
+                    if let data = try? await newValue?.loadTransferable(type: Data.self) {
+                        viewModel.selectedImageData = data
+                    }
+                }
+            }
+        }
         .customConfirmDialog(isPresented: $isProfileSheetShowed, isMine: .constant(true)) {_ in
             Button {
+                originalImage = nil
                 selectedPhoto = nil
                 viewModel.selectedImageData = nil
                 isProfileSheetShowed.toggle()
@@ -177,14 +195,12 @@ struct ProfileSettingsView: View {
                 .background(Color.gray300)
             Button {
                 retryProfileImage = true
+                isProfileSheetShowed.toggle()
             } label: {
                 Text("프로필 재설정하기")
             }
             .frame(height: 42)
         }
-        .navigationTitle("프로필 설정")
-        .toolbar(.hidden, for: .navigationBar)
-        .navigationBarBackButtonHidden()
     }
 }
 
@@ -217,30 +233,25 @@ extension ProfileSettingsView {
 
     private var profileImageView: some View {
         ZStack(alignment: .bottomTrailing) {
-            if let selectedData = viewModel.selectedImageData,
-               let uiImage = UIImage(data: selectedData) {
+            if let selectedData = viewModel.selectedImageData, let uiImage = UIImage(data: selectedData) {
                 Image(uiImage: uiImage)
                     .resizable()
                     .frame(width: 130, height: 130)
                     .clipShape(Circle())
+            } else if let originalImage = originalImage {
+                ProfileImageView(imageURL: originalImage)
+                    .frame(width: 130, height: 130)
             } else {
                 photoPickerView {
-                    if let profileImage = loginStateManager.serviceRoot.memberManager.profile?.profileImage {
-                        ProfileImageView(imageURL: profileImage)
-                            .frame(width: 130, height: 130)
-                    } else {
-                        Image("defaultProfile")
-                            .resizable()
-                            .frame(width: 130, height: 130)
-                    }
+                    Image("defaultProfile")
+                        .resizable()
+                        .frame(width: 130, height: 130)
                 }
             }
             selectProfileButton
         }
         .onTapGesture {
-            if viewModel.selectedImageData != nil {
-                isProfileSheetShowed = true
-            }
+            isProfileSheetShowed = true
         }
     }
 
@@ -303,6 +314,7 @@ extension ProfileSettingsView {
                 .onAppear {
                     if let nickname = loginStateManager.serviceRoot.memberManager.profile?.nickname {
                         viewModel.nickname = nickname
+                        viewModel.firstNickname = nickname
                     }
                 }
                 .onChange(of: viewModel.nickname) { _, newValue in
@@ -317,9 +329,13 @@ extension ProfileSettingsView {
 
     private var checkDuplicatedIdButton: some View {
         Button {
-            viewModel.postNickname()
-            if viewModel.nicknameValidationType == .valid {
-                endTextEditing()
+            if viewModel.nickname == viewModel.firstNickname {
+                viewModel.nicknameValidationType = .valid
+            } else {
+                viewModel.postNickname()
+                if viewModel.nicknameValidationType == .valid {
+                    endTextEditing()
+                }
             }
         } label: {
             Text("중복확인")
