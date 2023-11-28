@@ -46,15 +46,4 @@ enum TermAgreeType: Int {
             return "https://hansn97.notion.site/3a21b194a622480b88e60a066f71c44f"
         }
     }
-
-//    var nextPage: some View {
-//        switch self {
-//        case .needs:
-//            return DescriptionView()
-//        case .personalData:
-//            return DescriptionView()
-//        case .marketing:
-//            return DescriptionView()
-//        }
-//    }
 }
