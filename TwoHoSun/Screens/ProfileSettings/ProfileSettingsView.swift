@@ -94,6 +94,7 @@ struct ProfileSettingsView: View {
     @State var viewType: ProfileSettingType
     @State var originalImage: String?
     @Bindable var viewModel: ProfileSettingViewModel
+    @AppStorage("haveConsumerType") var haveConsumerType: Bool = false
     @Environment(\.dismiss) private var dismiss
     @Environment(AppLoginState.self) private var loginStateManager
     @FocusState var focusState: Bool
@@ -144,9 +145,10 @@ struct ProfileSettingsView: View {
                 case .setting:
                     nextButton
                 case .modfiy:
-                    // TODO: - 테스트 1회 다시하기 로직 추가 필요
-                    goToTypeTestButton
-                        .padding(.bottom, 12)
+                    if haveConsumerType && loginStateManager.serviceRoot.memberManager.profile?.canUpdateConsumerType ?? false {
+                        goToTypeTestButton
+                            .padding(.bottom, 12)
+                    }
                     completeButton
                 }
             }
