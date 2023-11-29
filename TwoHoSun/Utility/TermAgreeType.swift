@@ -30,7 +30,7 @@ enum TermAgreeType: Int {
         case .needs:
             return true
         case .personalData:
-            return false
+            return true
         case .marketing:
             return false
         }
