@@ -107,7 +107,7 @@ extension ConsiderationView {
             .gesture(
                 DragGesture()
                     .onChanged { value in
-                        if currentVote == 0 && value.translation.height > 0 {
+                        if currentVote == 0 && value.translation.height > 0 && !isRefreshing {
                             isRefreshing = true
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                                 viewModel.fetchPosts(visibilityScope: visibilityScope,

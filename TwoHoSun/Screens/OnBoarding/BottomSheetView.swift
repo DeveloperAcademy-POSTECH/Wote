@@ -107,7 +107,7 @@ struct BottomSheetView: View {
 extension BottomSheetView {
     private var nextButtonView: some View {
         Button(action: {
-            if checked[0] == false {
+            if !checked[0] || !checked[1] {
                 showAlert = true
             } else {
                 goProfileView = true
@@ -116,10 +116,10 @@ extension BottomSheetView {
         }, label: {
             Text("동의하고 계속하기")
                 .font(.system(size: 18, weight: .semibold))
-                .foregroundStyle(checked[0] ? .white : .black)
+                .foregroundStyle(checked[0] && checked[1] ? .white : .black)
                 .frame(maxWidth: .infinity)
                 .frame(height: 54)
-                .background(checked[0] ? Color.lightBlue : Color.whiteGray)
+                .background(checked[0] && checked[1] ? Color.lightBlue : Color.whiteGray)
         })
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .buttonStyle(PlainButtonStyle())
