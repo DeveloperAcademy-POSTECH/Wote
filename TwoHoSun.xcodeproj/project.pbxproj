@@ -1097,6 +1097,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TwoHoSun/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Wote;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "유저 앨범 접근";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -1138,6 +1139,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TwoHoSun/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Wote;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "유저 앨범 접근";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
