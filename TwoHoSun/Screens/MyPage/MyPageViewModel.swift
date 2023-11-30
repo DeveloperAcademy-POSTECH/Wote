@@ -22,13 +22,12 @@ final class MyPageViewModel {
     private var isLastPage: Bool = false
 
     var postCount: Int {
-        let removeCount: Int
-        switch selectedMyPageListType {
-        case .myVote:
-            removeCount = loginState.appData.postManager.removeCount
-        case .myReview:
-            removeCount = loginState.appData.reviewManager.removeCount
-        }
+        let removeCount = switch selectedMyPageListType {
+                          case .myVote:
+                            loginState.appData.postManager.removeCount
+                          case .myReview:
+                            loginState.appData.reviewManager.removeCount
+                            }
         return total - removeCount
     }
 

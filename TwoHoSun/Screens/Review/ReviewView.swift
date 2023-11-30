@@ -13,7 +13,6 @@ struct ReviewView: View {
     @State private var reviewType = ReviewType.all
     @Environment(AppLoginState.self) private var loginState
     @StateObject var viewModel: ReviewTabViewModel
-    @State private var reviewDatas = [SummaryPostModel]()
 
     var body: some View {
         ZStack {
@@ -30,7 +29,7 @@ struct ReviewView: View {
                     ScrollViewReader { proxy in
                         LazyVStack(pinnedViews: .sectionHeaders) {
                             Section {
-                                reviewListView(for: reviewType, datas: reviewDatas)
+                                reviewListView(for: reviewType)
                                     .padding(.leading, 16)
                                     .padding(.trailing, 8)
                             } header: {
@@ -42,12 +41,6 @@ struct ReviewView: View {
                             proxy.scrollTo("reviewTypeSection", anchor: .top)
                         }
                     }
-                }
-                .onAppear {
-                    updateReviewDatas()
-                }
-                .onChange(of: reviewType) {
-                    updateReviewDatas()
                 }
             } else {
                 ProgressView()
@@ -156,7 +149,15 @@ extension ReviewView {
     }
 
     @ViewBuilder
-    private func reviewListView(for filter: ReviewType, datas: [SummaryPostModel]) -> some View {
+    private func reviewListView(for filter: ReviewType) -> some View {
+        let datas = switch filter {
+                    case .all:
+                       loginState.appData.reviewManager.allReviews
+                    case .purchased:
+                       loginState.appData.reviewManager.purchasedReviews
+                    case .notPurchased:
+                       loginState.appData.reviewManager.notPurchasedReviews
+                   }
         if datas.isEmpty {
             NoReviewView()
                 .padding(.top, 70)
@@ -180,16 +181,6 @@ extension ReviewView {
                     }
                 }
             }
-        }
-    }
-    private func updateReviewDatas() {
-        switch reviewType {
-        case .all:
-            reviewDatas = loginState.appData.reviewManager.allReviews
-        case .purchased:
-            reviewDatas = loginState.appData.reviewManager.purchasedReviews
-        case .notPurchased:
-            reviewDatas = loginState.appData.reviewManager.notPurchasedReviews
         }
     }
 }
