@@ -99,16 +99,19 @@ struct VoteContentCell: View {
 extension VoteContentCell {
 
     private func voteInfoButton(label: String, icon: String) -> some View {
-        HStack(spacing: 2) {
-            Image(systemName: icon)
-            Text(label)
+        Button {
+            loginState.serviceRoot.navigationManager.navigate(.detailView(postId: data.id, dirrectComments: true))
+        } label: {
+            HStack(spacing: 2) {
+                Image(systemName: icon)
+                Text(label)
+            }
+            .font(.system(size: 14))
+            .foregroundStyle(.white)
+            .padding(.vertical, 7)
+            .padding(.horizontal, 10)
+            .background(Color.darkGray2, in: .rect(cornerRadius: 34))
         }
-        .font(.system(size: 14))
-        .foregroundStyle(.white)
-        .padding(.vertical, 7)
-        .padding(.horizontal, 10)
-        .background(Color.darkGray2)
-        .clipShape(.rect(cornerRadius: 34))
     }
 
     private var detailResultButton: some View {
