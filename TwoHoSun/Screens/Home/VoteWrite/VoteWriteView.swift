@@ -102,6 +102,9 @@ struct VoteWriteView: View {
                 tabselection = .consider
             }
         }
+        .onDisappear {
+            NotificationCenter.default.removeObserver(NSNotification.voteCreated)
+        }
     }
 }
 

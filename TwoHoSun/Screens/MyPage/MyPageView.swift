@@ -122,6 +122,9 @@ struct MyPageView: View {
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.voteCreated)) { _ in
             viewModel.fetchPosts()
         }
+        .onDisappear {
+            NotificationCenter.default.removeObserver(NSNotification.voteCreated)
+        }
     }
 }
 

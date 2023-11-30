@@ -101,6 +101,9 @@ struct ReviewWriteView: View {
                 loginState.serviceRoot.navigationManager.back()
             }
         }
+        .onDisappear {
+            NotificationCenter.default.removeObserver(NSNotification.reviewCreated)
+        }
     }
 }
 

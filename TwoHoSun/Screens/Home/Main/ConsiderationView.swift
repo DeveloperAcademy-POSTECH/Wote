@@ -64,11 +64,19 @@ struct ConsiderationView: View {
                 didFinishSetup = true
             }
         }
+        .onDisappear {
+            NotificationCenter.default.removeObserver(NSNotification.voteCreated)
+            NotificationCenter.default.removeObserver(NSNotification.userBlockStateUpdated)
+        }
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.voteCreated)) { _ in
             viewModel.fetchPosts(visibilityScope: visibilityScope)
             currentVote = 0
         }
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.userBlockStateUpdated)) { _ in
+            viewModel.fetchPosts(visibilityScope: visibilityScope)
+            currentVote = 0
+        }
+        .errorAlert(error: $viewModel.error) {
             viewModel.fetchPosts(visibilityScope: visibilityScope)
             currentVote = 0
         }

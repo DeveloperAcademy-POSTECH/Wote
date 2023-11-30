@@ -63,6 +63,10 @@ struct ReviewView: View {
                 didFinishSetup = true
             }
         }
+        .onDisappear {
+            NotificationCenter.default.removeObserver(NSNotification.reviewCreated)
+            NotificationCenter.default.removeObserver(NSNotification.userBlockStateUpdated)
+        }
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.reviewCreated)) { _ in
             viewModel.fetchReviews(for: visibilityScope)
         }
