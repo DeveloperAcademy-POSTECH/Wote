@@ -72,8 +72,6 @@ extension CommentService: TargetType {
             return .requestPlain
         case .postReply:
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
-        default:
-            return .requestPlain
         }
     }
     

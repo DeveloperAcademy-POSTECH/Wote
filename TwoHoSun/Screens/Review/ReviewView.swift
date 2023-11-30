@@ -13,12 +13,13 @@ struct ReviewView: View {
     @State private var reviewType = ReviewType.all
     @Environment(AppLoginState.self) private var loginState
     @StateObject var viewModel: ReviewTabViewModel
-    
+    @State private var reviewDatas = [SummaryPostModel]()
+
     var body: some View {
         ZStack {
             Color.background
                 .ignoresSafeArea()
-            
+
             if !viewModel.isFetching {
                 ScrollView {
                     sameSpendTypeReviewView(datas: loginState.appData.reviewManager.reviews?.recentReviews,
@@ -29,7 +30,7 @@ struct ReviewView: View {
                     ScrollViewReader { proxy in
                         LazyVStack(pinnedViews: .sectionHeaders) {
                             Section {
-                                reviewListView(for: reviewType)
+                                reviewListView(for: reviewType, datas: reviewDatas)
                                     .padding(.leading, 16)
                                     .padding(.trailing, 8)
                             } header: {
@@ -42,12 +43,18 @@ struct ReviewView: View {
                         }
                     }
                 }
+                .onAppear {
+                    updateReviewDatas()
+                }
+                .onChange(of: reviewType) {
+                    updateReviewDatas()
+                }
             } else {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle(tint: Color.gray100))
                     .scaleEffect(1.3, anchor: .center)
             }
-        } 
+        }
         .toolbarBackground(Color.background, for: .tabBar)
         .scrollIndicators(.hidden)
         .refreshable {
@@ -73,7 +80,7 @@ struct ReviewView: View {
 }
 
 extension ReviewView {
-    
+
     @ViewBuilder
     private func sameSpendTypeReviewView(datas: [SummaryPostModel]?,
                                          consumerType: String?) -> some View {
@@ -105,7 +112,7 @@ extension ReviewView {
             }
         }
     }
-    
+
     private func simpleReviewCell(title: String,
                                   content: String?,
                                   isPurchased: Bool?) -> some View {
@@ -116,7 +123,7 @@ extension ReviewView {
                     .font(.system(size: 16, weight: .bold))
                     .foregroundStyle(.white)
                     .lineLimit(1)
-                Spacer() 
+                Spacer()
             }
             .padding(.horizontal, 20)
             Text(content ?? "")
@@ -130,7 +137,7 @@ extension ReviewView {
         .background(Color.disableGray)
         .clipShape(.rect(cornerRadius: 12))
     }
-    
+
     private var reviewFilterView: some View {
         HStack(spacing: 8) {
             ForEach(ReviewType.allCases, id: \.self) { reviewType in
@@ -147,17 +154,9 @@ extension ReviewView {
         .padding(.leading, 24)
         .background(Color.background)
     }
-    
+
     @ViewBuilder
-    private func reviewListView(for filter: ReviewType) -> some View {
-        let datas = switch filter {
-        case .all:
-            loginState.appData.reviewManager.allReviews
-        case .purchased:
-            loginState.appData.reviewManager.purchasedReviews
-        case .notPurchased:
-            loginState.appData.reviewManager.notPurchasedReviews
-        }
+    private func reviewListView(for filter: ReviewType, datas: [SummaryPostModel]) -> some View {
         if datas.isEmpty {
             NoReviewView()
                 .padding(.top, 70)
@@ -181,6 +180,16 @@ extension ReviewView {
                     }
                 }
             }
+        }
+    }
+    private func updateReviewDatas() {
+        switch reviewType {
+        case .all:
+            reviewDatas = loginState.appData.reviewManager.allReviews
+        case .purchased:
+            reviewDatas = loginState.appData.reviewManager.purchasedReviews
+        case .notPurchased:
+            reviewDatas = loginState.appData.reviewManager.notPurchasedReviews
         }
     }
 }
