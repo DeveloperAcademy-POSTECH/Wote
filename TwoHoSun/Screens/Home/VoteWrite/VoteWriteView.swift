@@ -97,13 +97,13 @@ struct VoteWriteView: View {
         }
         .onChange(of: viewModel.isPostCreated) { _, isPostCreated in
             if isPostCreated {
-                NotificationCenter.default.post(name: NSNotification.voteCreated, object: nil)
+                NotificationCenter.default.post(name: NSNotification.voteStateUpdated, object: nil)
                 loginState.serviceRoot.navigationManager.back()
                 tabselection = .consider
             }
         }
         .onDisappear {
-            NotificationCenter.default.removeObserver(NSNotification.voteCreated)
+            NotificationCenter.default.removeObserver(NSNotification.voteStateUpdated)
         }
     }
 }

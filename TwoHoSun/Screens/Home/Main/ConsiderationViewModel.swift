@@ -10,6 +10,8 @@ import SwiftUI
 
 final class ConsiderationViewModel: ObservableObject {
     @Published var isLoading = true
+    @Published var error: NetworkError?
+    @Published var currentVote = 0
     private var cancellables: Set<AnyCancellable> = []
     private var isLastPage = false
     private var page = 0
@@ -28,6 +30,7 @@ final class ConsiderationViewModel: ObservableObject {
             appLoginState.appData.postManager.posts.removeAll()
             isLastPage = false
             isLoading = true
+            currentVote = 0
             self.page = 0
         }
 
@@ -81,7 +84,9 @@ final class ConsiderationViewModel: ObservableObject {
             case .finished:
                 break
             case .failure(let failure):
-                print(failure)
+                if failure == .noMember || failure == .noPost {
+                    self.error = failure
+                }
             }
         } receiveValue: { data in
             self.updatePost(index: index,

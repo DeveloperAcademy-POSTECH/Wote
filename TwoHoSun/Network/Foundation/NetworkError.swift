@@ -73,4 +73,13 @@ enum NetworkError: Error {
             fatalError("Unknown division code: \(divisionCode)")
         }
     }
+
+    var errorDescription: String {
+        switch self {
+        case .noMember, .noPost:
+            return "삭제된 게시글입니다."
+        default:
+            return "error "
+        }
+    }
 }

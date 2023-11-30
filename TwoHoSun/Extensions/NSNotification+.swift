@@ -8,7 +8,7 @@
 import Foundation
 
 extension NSNotification {
-    static let reviewCreated = Notification.Name.init("ReviewCreated")
-    static let voteCreated = Notification.Name.init("VoteCreated")
+    static let reviewStateUpdated = Notification.Name.init("ReviewCreated")
+    static let voteStateUpdated = Notification.Name.init("VoteCreated")
     static let userBlockStateUpdated = Notification.Name.init("UserBlockStateUpdated")
 }
