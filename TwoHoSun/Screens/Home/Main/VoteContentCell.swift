@@ -123,8 +123,7 @@ extension VoteContentCell {
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
                     .frame(height: 48)
-                    .background(Color.blue100)
-                    .clipShape(Capsule())
+                    .background(Color.blue100, in: Capsule())
         }
     }
 

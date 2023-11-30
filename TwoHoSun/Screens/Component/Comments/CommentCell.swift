@@ -76,7 +76,9 @@ extension CommentCell {
                 HStack(spacing: 8) {
                     if let validauthor = comment.author {
                         let isBannedorBlocked = validauthor.isBaned ?? false || validauthor.isBlocked ?? false
-                        ConsumerTypeLabel(consumerType: isBannedorBlocked ? .banUser : ConsumerType(rawValue: validauthor.consumerType) ?? .adventurer, usage: .comments)
+                        ConsumerTypeLabel(consumerType: isBannedorBlocked ? .banUser : 
+                                            ConsumerType(rawValue: validauthor.consumerType) ?? .adventurer,
+                                          usage: .comments)
                         Text(isBannedorBlocked ? "차단된 사용자" : validauthor.nickname)
                             .font(.system(size: 14, weight: .medium))
                             .foregroundStyle(Color.white)

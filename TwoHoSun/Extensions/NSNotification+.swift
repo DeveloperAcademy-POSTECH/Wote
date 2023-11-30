@@ -12,4 +12,3 @@ extension NSNotification {
     static let voteCreated = Notification.Name.init("VoteCreated")
     static let userBlockStateUpdated = Notification.Name.init("UserBlockStateUpdated")
 }
-

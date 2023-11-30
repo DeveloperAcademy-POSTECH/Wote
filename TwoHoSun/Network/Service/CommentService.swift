@@ -46,8 +46,6 @@ extension CommentService: TargetType {
             return ["commentId" : commentId]
         case .postReply(_, let contents):
             return ["contents" : contents]
-        default:
-            return [:]
         }
     }
     var method: Moya.Method {

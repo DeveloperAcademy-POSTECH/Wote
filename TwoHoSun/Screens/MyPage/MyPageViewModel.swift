@@ -22,12 +22,13 @@ final class MyPageViewModel {
     private var isLastPage: Bool = false
 
     var postCount: Int {
-        let removeCount = switch selectedMyPageListType {
-                        case .myVote:
-                            loginState.appData.postManager.removeCount
-                        case .myReview:
-                            loginState.appData.reviewManager.removeCount
-                        }
+        let removeCount: Int
+        switch selectedMyPageListType {
+        case .myVote:
+            removeCount = loginState.appData.postManager.removeCount
+        case .myReview:
+            removeCount = loginState.appData.reviewManager.removeCount
+        }
         return total - removeCount
     }
 
@@ -61,7 +62,7 @@ final class MyPageViewModel {
             }
             .store(in: &cacellabels)
     }
-    
+
     func fetchPosts(isFirstFetch: Bool = true) {
         if isFirstFetch {
             loginState.appData.reviewManager.myReviews.removeAll()
@@ -72,7 +73,7 @@ final class MyPageViewModel {
             reviewPage = 0
             isLastPage = false
         }
-        
+
         switch selectedMyPageListType {
         case .myVote:
             requestPosts(postType: .getMyPosts(page: votePage,
@@ -84,7 +85,7 @@ final class MyPageViewModel {
                                                  myReviewCategoryType: selectedMyReviewCategoryType.parameter))
         }
     }
-    
+
     func fetchMorePosts() {
         guard !isLastPage else { return }
         switch selectedMyPageListType {

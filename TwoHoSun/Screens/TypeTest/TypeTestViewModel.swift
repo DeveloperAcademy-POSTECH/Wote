@@ -57,7 +57,7 @@ final class TypeTestViewModel: ObservableObject {
         cancellable = apiManager.request(.userService(.putConsumerType(consumertype: userType)), decodingType: NoData.self)
             .sink { completion in
                 print(completion)
-            } receiveValue: { response in
+            } receiveValue: { _ in
                 self.haveConsumerType = true
                 self.succeedPutData.toggle()
                 cancellable?.cancel()

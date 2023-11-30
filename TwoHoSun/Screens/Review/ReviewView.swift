@@ -13,19 +13,19 @@ struct ReviewView: View {
     @State private var reviewType = ReviewType.all
     @Environment(AppLoginState.self) private var loginState
     @StateObject var viewModel: ReviewTabViewModel
-
+    
     var body: some View {
         ZStack {
             Color.background
                 .ignoresSafeArea()
-
+            
             if !viewModel.isFetching {
                 ScrollView {
                     sameSpendTypeReviewView(datas: loginState.appData.reviewManager.reviews?.recentReviews,
                                             consumerType: viewModel.consumerType?.rawValue)
-                        .padding(.top, 24)
-                        .padding(.bottom, 20)
-                        .padding(.leading, 24)
+                    .padding(.top, 24)
+                    .padding(.bottom, 20)
+                    .padding(.leading, 24)
                     ScrollViewReader { proxy in
                         LazyVStack(pinnedViews: .sectionHeaders) {
                             Section {
@@ -73,7 +73,7 @@ struct ReviewView: View {
 }
 
 extension ReviewView {
-
+    
     @ViewBuilder
     private func sameSpendTypeReviewView(datas: [SummaryPostModel]?,
                                          consumerType: String?) -> some View {
@@ -105,7 +105,7 @@ extension ReviewView {
             }
         }
     }
-
+    
     private func simpleReviewCell(title: String,
                                   content: String?,
                                   isPurchased: Bool?) -> some View {
@@ -130,7 +130,7 @@ extension ReviewView {
         .background(Color.disableGray)
         .clipShape(.rect(cornerRadius: 12))
     }
-
+    
     private var reviewFilterView: some View {
         HStack(spacing: 8) {
             ForEach(ReviewType.allCases, id: \.self) { reviewType in
@@ -147,17 +147,17 @@ extension ReviewView {
         .padding(.leading, 24)
         .background(Color.background)
     }
-
+    
     @ViewBuilder
     private func reviewListView(for filter: ReviewType) -> some View {
         let datas = switch filter {
-                    case .all:
-                    loginState.appData.reviewManager.allReviews
-                    case .purchased:
-                    loginState.appData.reviewManager.purchasedReviews
-                    case .notPurchased:
-                    loginState.appData.reviewManager.notPurchasedReviews
-                    }
+        case .all:
+            loginState.appData.reviewManager.allReviews
+        case .purchased:
+            loginState.appData.reviewManager.purchasedReviews
+        case .notPurchased:
+            loginState.appData.reviewManager.notPurchasedReviews
+        }
         if datas.isEmpty {
             NoReviewView()
                 .padding(.top, 70)
