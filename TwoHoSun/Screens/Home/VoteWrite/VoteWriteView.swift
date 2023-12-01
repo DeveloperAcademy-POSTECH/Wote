@@ -21,7 +21,7 @@ struct VoteWriteView: View {
     @State private var isEditing: Bool = false
     @State private var showCropView: Bool = false
     @State private var isMine: Bool = false
-    @Bindable var viewModel: VoteWriteViewModel
+    @State var viewModel: VoteWriteViewModel
     @Binding var tabselection: WoteTabType
     @Environment(AppLoginState.self) private var loginState
 
