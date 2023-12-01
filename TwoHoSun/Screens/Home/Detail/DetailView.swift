@@ -398,16 +398,16 @@ struct DetailContentView: View {
                     .background(Color.darkGray2)
                     .clipShape(RoundedRectangle(cornerRadius: 34))
                 Spacer()
-                Button {
-                    print("이야 공유하자")
-                } label: {
-                    Label("공유", systemImage: "square.and.arrow.up")
-                        .font(.system(size: 14))
-                        .foregroundStyle(Color.white)
-                        .frame(width: 63, height: 29)
-                        .background(Color.lightBlue)
-                        .clipShape(RoundedRectangle(cornerRadius: 34))
-                }
+//                Button {
+//                    print("이야 공유하자")
+//                } label: {
+//                    Label("공유", systemImage: "square.and.arrow.up")
+//                        .font(.system(size: 14))
+//                        .foregroundStyle(Color.white)
+//                        .frame(width: 63, height: 29)
+//                        .background(Color.lightBlue)
+//                        .clipShape(RoundedRectangle(cornerRadius: 34))
+//                }
             }
             .padding(.bottom, 4)
 

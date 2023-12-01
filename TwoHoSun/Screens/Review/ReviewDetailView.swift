@@ -224,8 +224,8 @@ extension ReviewDetailView {
             .font(.system(size: 14))
             .foregroundStyle(Color.gray100)
             .padding(.bottom, 20)
-            shareButton
-                .padding(.bottom, 4)
+//            shareButton
+//                .padding(.bottom, 4)
             if let image = data.image {
                 ImageView(imageURL: image)
                     .padding(.bottom, 28)
