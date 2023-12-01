@@ -203,9 +203,6 @@ struct ProfileSettingsView: View {
             }
             .frame(height: 42)
         }
-//        .onDisappear {
-//            loginStateManager.serviceRoot.memberManager.fetchProfile()
-//        }
     }
 }
 
