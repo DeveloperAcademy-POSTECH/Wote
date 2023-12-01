@@ -67,7 +67,7 @@ final class MyPageViewModel {
             }
             .store(in: &cacellabels)
     }
-    
+
     func fetchPosts(isFirstFetch: Bool = true) {
         if isFirstFetch {
             loginState.appData.reviewManager.myReviews.removeAll()
@@ -79,7 +79,7 @@ final class MyPageViewModel {
             isVoteLastPage = false
             isReviewLastPage = false
         }
-        
+
         switch selectedMyPageListType {
         case .myVote:
             requestPosts(postType: .getMyPosts(page: votePage,
@@ -91,7 +91,7 @@ final class MyPageViewModel {
                                                  myReviewCategoryType: selectedMyReviewCategoryType.parameter))
         }
     }
-    
+
     func fetchMorePosts() {
         switch selectedMyPageListType {
         case .myVote:

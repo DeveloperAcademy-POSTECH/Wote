@@ -203,9 +203,9 @@ struct ProfileSettingsView: View {
             }
             .frame(height: 42)
         }
-        .onDisappear {
-            loginStateManager.serviceRoot.memberManager.fetchProfile()
-        }
+//        .onDisappear {
+//            loginStateManager.serviceRoot.memberManager.fetchProfile()
+//        }
     }
 }
 
@@ -397,7 +397,7 @@ extension ProfileSettingsView {
                 viewModel.setInvalidCondition()
                 return
             }
-            viewModel.setProfile(isRestricted)
+            viewModel.setProfile(isRestricted, true)
         } label: {
             Text("완료")
                 .font(.system(size: 20, weight: .semibold))
@@ -415,7 +415,7 @@ extension ProfileSettingsView {
                 viewModel.setInvalidCondition()
                 return
             }
-            viewModel.setProfile(isRestricted)
+            viewModel.setProfile(isRestricted, false)
             dismiss()
         } label: {
             Text("완료")

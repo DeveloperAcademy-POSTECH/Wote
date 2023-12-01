@@ -18,6 +18,7 @@ final class VoteWriteViewModel {
     var visibilityScope: VisibilityScopeType
     var postCreateModel: PostCreateModel?
     var isPostCreated = false
+    var isPostToserver = false
     private var apiManager: NewApiManager
     private var cancellable = Set<AnyCancellable>()
     var isTitleValid: Bool {
@@ -42,6 +43,7 @@ final class VoteWriteViewModel {
     func createPost() {
         setPost()
         guard let postCreateModel = postCreateModel else { return }
+        isPostToserver.toggle()
         apiManager.request(.postService(.createPost(post: postCreateModel)), decodingType: NoData.self)
             .sink { completion in
                 switch completion {
@@ -52,6 +54,7 @@ final class VoteWriteViewModel {
                 }
             } receiveValue: { _ in
                 self.isPostCreated = true
+                self.isPostToserver.toggle()
             }
             .store(in: &cancellable)
     }

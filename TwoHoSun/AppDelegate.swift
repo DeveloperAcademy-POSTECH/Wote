@@ -13,7 +13,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var app: TwoHoSunApp?
     let logger = Logger(subsystem: "com.twohosun.TwoHoSun", category: "PushNotifications")
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+    func application(_ application: UIApplication, 
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         removeKeychainAtFirstLaunch()
         let center = UNUserNotificationCenter.current()
         center.delegate = self

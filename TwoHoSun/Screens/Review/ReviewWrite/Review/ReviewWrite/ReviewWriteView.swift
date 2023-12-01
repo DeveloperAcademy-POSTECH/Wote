@@ -344,6 +344,7 @@ extension ReviewWriteView {
                 .background(viewModel.isValid ? Color.lightBlue : Color.disableGray)
                 .cornerRadius(10)
         }
+        .disabled(viewModel.isCreatingReview)
     }
     
     private func headerLabel(_ title: String, essential: Bool) -> some View {

@@ -319,6 +319,7 @@ extension VoteWriteView {
                 .background(viewModel.title != "" ? Color.lightBlue : Color.disableGray)
                 .cornerRadius(10)
         }
+        .disabled(viewModel.isPostToserver)
     }
     
     private func headerLabel(_ title: String, essential: Bool) -> some View {

@@ -370,6 +370,7 @@ struct DetailContentView: View {
                 }
                 if let contents = postDetailData.post.contents {
                     Text(contents)
+                        .font(.system(size: 16, weight: .medium))
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .lineLimit(3)
                         .multilineTextAlignment(.leading)

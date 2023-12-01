@@ -14,7 +14,7 @@ class DataController: ObservableObject {
     
     init() {
         container = NSPersistentContainer(name: "DataModel")
-        container.loadPersistentStores { description, error in
+        container.loadPersistentStores { _, error in
             if let error = error {
                 print("COREDATA\(error.localizedDescription)")
             }

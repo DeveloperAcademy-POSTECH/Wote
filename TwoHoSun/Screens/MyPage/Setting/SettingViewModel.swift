@@ -49,6 +49,7 @@ class SettingViewModel {
                     print(error)
                 }
             } receiveValue: { _ in
+                self.loginStateManager.serviceRoot.navigationManager.gotoMain()
                 self.loginStateManager.serviceRoot.auth.deleteTokens()
                 self.loginStateManager.serviceRoot.auth.authState = .none
                 self.loginStateManager.serviceRoot.memberManager.profile = nil

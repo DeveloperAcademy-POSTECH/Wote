@@ -108,33 +108,7 @@ extension CropView {
         GeometryReader { geo in
             let size = geo.size
             if let image {
-                Image(uiImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .overlay {
-                        GeometryReader { proxy in
-                            let rect = proxy.frame(in: .named("CROPVIEW"))
-                            Color.clear
-                                .onChange(of: isInteracting) {
-                                    withAnimation(.easeInOut(duration: 0.3)) {
-                                        if rect.minX > 0 {
-                                            offset.width = (offset.width - rect.minX)
-                                        }
-                                        if rect.minY > 0 {
-                                            offset.height = (offset.height - rect.minY)
-                                        }
-                                        if rect.maxX < size.width {
-                                            offset.width = (rect.minX - offset.width)
-                                        }
-                                        if rect.maxY < size.height {
-                                            offset.height = (rect.minY - offset.height)
-                                        }
-                                    }
-                                    lastStoredOffset = offset
-                                }
-                        }
-                    }
-                    .frame(size)
+                imageContent(for: image, size: size)
             }
         }
         .scaleEffect(scale)
@@ -175,6 +149,35 @@ extension CropView {
         .clipShape(.rect(cornerRadius: 0))
     }
     
+    private func imageContent(for image: UIImage, size: CGSize) -> some View {
+        Image(uiImage: image)
+               .resizable()
+               .aspectRatio(contentMode: .fill)
+               .overlay {
+                   GeometryReader { proxy in
+                       let rect = proxy.frame(in: .named("CROPVIEW"))
+                       Color.clear
+                           .onChange(of: isInteracting) {
+                               withAnimation(.easeInOut(duration: 0.3)) {
+                                   if rect.minX > 0 {
+                                       offset.width = (offset.width - rect.minX)
+                                   }
+                                   if rect.minY > 0 {
+                                       offset.height = (offset.height - rect.minY)
+                                   }
+                                   if rect.maxX < size.width {
+                                       offset.width = (rect.minX - offset.width)
+                                   }
+                                   if rect.maxY < size.height {
+                                       offset.height = (rect.minY - offset.height)
+                                   }
+                               }
+                               lastStoredOffset = offset
+                           }
+                   }
+               }
+               .frame(size)
+    }
     private var imageToolbar: some View {
         ZStack(alignment: .top) {
             Color.background
