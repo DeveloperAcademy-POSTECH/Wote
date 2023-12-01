@@ -91,7 +91,7 @@ final class ProfileSettingViewModel {
         return false
     }
     
-    func setProfile(_ isRestricted: Bool) {
+    func setProfile(_ isRestricted: Bool, _ isRegsiter: Bool) {
         guard let school = selectedSchoolInfo?.school else { return }
         if isRestricted {
             model = ProfileSetting(imageFile: selectedImageData ?? Data(),
@@ -102,7 +102,7 @@ final class ProfileSettingViewModel {
                                    nickname: nickname,
                                    school: school)
         }
-        postProfileSetting()
+        postProfileSetting(isRegister: isRegsiter)
     }
     
     func postNickname() {
@@ -123,7 +123,7 @@ final class ProfileSettingViewModel {
             .store(in: &bag)
     }
     
-    func postProfileSetting() {
+    func postProfileSetting(isRegister: Bool = false) {
         guard let model = model else { return }
         var cancellable: AnyCancellable?
         cancellable = appState.serviceRoot.apimanager.request(.userService(.postProfileSetting(profile: model)),
@@ -132,9 +132,10 @@ final class ProfileSettingViewModel {
                 print("끝남? \(completion)")
             } receiveValue: { _ in
                 self.appState.serviceRoot.memberManager.fetchProfile()
-                self.appState.serviceRoot.auth.authState = .loggedIn
+                if isRegister {
+                    self.appState.serviceRoot.auth.authState = .loggedIn
+                }
                 cancellable?.cancel()
             }
-
     }
 }
