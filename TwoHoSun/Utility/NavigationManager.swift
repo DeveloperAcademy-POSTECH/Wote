@@ -51,4 +51,8 @@ final class NavigationManager {
     func countDeque(count: Int) {
         navigatePath.removeFirst(count)
     }
+
+    func gotoMain() {
+        navigatePath.removeAll()
+    }
 }
