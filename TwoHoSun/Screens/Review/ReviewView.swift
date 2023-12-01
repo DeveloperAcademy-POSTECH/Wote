@@ -23,9 +23,9 @@ struct ReviewView: View {
                 ScrollView {
                     sameSpendTypeReviewView(datas: loginState.appData.reviewManager.reviews?.recentReviews,
                                             consumerType: viewModel.consumerType?.rawValue)
-                        .padding(.top, 24)
-                        .padding(.bottom, 20)
-                        .padding(.leading, 24)
+                    .padding(.top, 24)
+                    .padding(.bottom, 20)
+                    .padding(.leading, 24)
                     ScrollViewReader { proxy in
                         LazyVStack(pinnedViews: .sectionHeaders) {
                             Section {
@@ -47,7 +47,7 @@ struct ReviewView: View {
                     .progressViewStyle(CircularProgressViewStyle(tint: Color.gray100))
                     .scaleEffect(1.3, anchor: .center)
             }
-        } 
+        }
         .toolbarBackground(Color.background, for: .tabBar)
         .scrollIndicators(.hidden)
         .refreshable {
@@ -116,7 +116,7 @@ extension ReviewView {
                     .font(.system(size: 16, weight: .bold))
                     .foregroundStyle(.white)
                     .lineLimit(1)
-                Spacer() 
+                Spacer()
             }
             .padding(.horizontal, 20)
             Text(content ?? "")
@@ -152,12 +152,12 @@ extension ReviewView {
     private func reviewListView(for filter: ReviewType) -> some View {
         let datas = switch filter {
                     case .all:
-                    loginState.appData.reviewManager.allReviews
+                       loginState.appData.reviewManager.allReviews
                     case .purchased:
-                    loginState.appData.reviewManager.purchasedReviews
+                       loginState.appData.reviewManager.purchasedReviews
                     case .notPurchased:
-                    loginState.appData.reviewManager.notPurchasedReviews
-                    }
+                       loginState.appData.reviewManager.notPurchasedReviews
+                   }
         if datas.isEmpty {
             NoReviewView()
                 .padding(.top, 70)

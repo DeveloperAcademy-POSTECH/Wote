@@ -39,10 +39,15 @@ extension TwoHoSunApp {
             await savePush(notiModel: notiModel)
             NotificationCenter.default.post(name: Notification.Name("showComment"), object: nil)
         }
-        if notiModel.postStatus == "REVIEW" {
+        switch notiModel.postStatus {
+        case "REVIEW":
             appState.serviceRoot.navigationManager.navigate(.reviewDetailView(
                 postId: nil, reviewId: notiModel.postid, directComments: notiModel.isComment))
-        } else {
+        case "CLOSED":
+            appState.serviceRoot.navigationManager.navigate(
+                .reviewDetailView(postId: notiModel.postid,
+                                  reviewId: nil, directComments: notiModel.isComment))
+        default:
             appState.serviceRoot.navigationManager.navigate(.detailView(postId: notiModel.postid, dirrectComments: notiModel.isComment))
         }
     }
@@ -73,7 +78,7 @@ class AppData {
 class AppLoginState {
     var serviceRoot: ServiceRoot
     var appData: AppData
-    
+
     init() {
         appData = AppData()
         serviceRoot = ServiceRoot()

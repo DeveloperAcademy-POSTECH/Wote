@@ -35,7 +35,6 @@ final class ReviewDetailViewModel: ObservableObject {
                 }
             } receiveValue: { data in
                 self.reviewData = data
-                print(self.reviewData?.commentPreviewImage)
                 self.reviewId = data.reviewPost.id
                 self.postId = data.originalPost.id
                 self.reviewPostId = data.reviewPost.id

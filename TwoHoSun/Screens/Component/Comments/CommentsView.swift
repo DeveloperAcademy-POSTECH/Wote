@@ -120,7 +120,7 @@ extension CommentsView {
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 28) {
-                    ForEach(Array(viewModel.commentsDatas.enumerated()), id: \.element.commentId) { index, comment in
+                    ForEach(viewModel.commentsDatas, id: \.commentId) { comment in
                         CommentCell(comment: comment) {
                             scrollSpot = comment.commentId
                             if let author = comment.author {

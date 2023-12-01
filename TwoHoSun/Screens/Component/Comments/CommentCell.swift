@@ -7,6 +7,10 @@
 
 import SwiftUI
 struct CommentCell: View {
+    enum UserCommentType {
+        case normal, banned, deletedUser
+    }
+
     let comment: CommentsModel
     var onReplyButtonTapped: () -> Void
     var onConfirmDiaog: (Bool, Int) -> Void
@@ -51,7 +55,7 @@ struct CommentCell: View {
 }
 
 extension CommentCell {
-    func lastEditTimeText(comment: CommentsModel) -> some View {
+    private func lastEditTimeText(comment: CommentsModel) -> some View {
         var isEdited: String {
             return comment.modifiedDate != comment.createDate ? "수정됨" : ""
         }
@@ -63,85 +67,105 @@ extension CommentCell {
             .foregroundStyle(Color.subGray1)
     }
 
-    func makeCellView(comment: CommentsModel, parent: Bool) -> some View {
-        HStack(alignment: .top, spacing: 8) {
-            if let validauthor = comment.author, validauthor.isBaned == false, validauthor.isBlocked  == false {
-                ProfileImageView(imageURL: validauthor.profileImage ,validAuthor: true)
+    private func makeCellView(comment: CommentsModel, parent: Bool) -> some View {
+        let userType = determineUserType(comment: comment)
+        return HStack(alignment: .top, spacing: 8) {
+            ProfileImageView(imageURL: comment.author?.profileImage ,validAuthor: userType == .normal)
                     .frame(width: 32, height: 32)
-            } else {
-                ProfileImageView(imageURL: nil ,validAuthor: false)
-                    .frame(width: 32, height: 32)
-            }
             VStack(alignment: .leading) {
-                HStack(spacing: 8) {
-                    if let validauthor = comment.author {
-                        let isBannedorBlocked = validauthor.isBaned ?? false || validauthor.isBlocked ?? false
-                        ConsumerTypeLabel(consumerType: isBannedorBlocked ? .banUser : ConsumerType(rawValue: validauthor.consumerType) ?? .adventurer, usage: .comments)
-                        Text(isBannedorBlocked ? "차단된 사용자" : validauthor.nickname)
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundStyle(Color.white)
-                        lastEditTimeText(comment: comment)
-                        Spacer()
-                        if !isBannedorBlocked {
-                            Button(action: {
-                                onConfirmDiaog(comment.isMine, comment.commentId)
-                            }, label: {
-                                Image(systemName: "ellipsis")
-                                    .foregroundStyle(Color.subGray1)
-                            })
-                        }
-                    } else {
-                        ConsumerTypeLabel(consumerType: .withDrawel, usage: .comments)
-                        Text("알 수 없음")
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundStyle(Color.white)
-                        lastEditTimeText(comment: comment)
-                        Spacer()
-                    }
-                }.padding(.bottom,6)
-                if let validAuthor = comment.author,
-                   (validAuthor.isBaned ?? false) || (validAuthor.isBlocked ?? false) {
-                    Text("이 사용자는 차단되었습니다")
-                        .foregroundStyle(Color.white)
-                        .font(.system(size: 14))
-                        .padding(.bottom, 4)
-                        .padding(.trailing, 20)
-                } else {
-                    Text("\(comment.content)")
-                        .foregroundStyle(Color.white)
-                        .font(.system(size: 14))
-                        .lineLimit(isExpended ? nil : 3)
-                        .padding(.bottom, 4)
-                        .padding(.trailing, 20)
-                        .background {
-                            Color.clear
-                                .onAppear {
-                                    if comment.content.count > 75 {
-                                        canExpended = true
-                                    }
-                                }
-                        }
-                }
+                userInformationView(comment: comment, userType: userType)
+                userContentsView(comment: comment, userType: userType)
                 if parent {
-                    HStack {
-                        Button(action: {onReplyButtonTapped()}, label: {
-                            Text("답글달기")
-                                .font(.system(size: 12))
-                                .foregroundStyle(Color.subGray1)
-                        })
-                        Spacer()
-                        if canExpended != nil {
-                            Button {
-                                withAnimation(nil) {
-                                    isExpended.toggle()
+                    replyButtonView
+                }
+            }
+        }
+    }
+
+    private func userContentsView(comment: CommentsModel, userType: UserCommentType) -> some View {
+        return Group {
+            if userType == .banned {
+                Text("이 사용자는 차단되었습니다")
+                    .foregroundStyle(Color.white)
+                    .font(.system(size: 14))
+                    .padding(.bottom, 4)
+                    .padding(.trailing, 20)
+            } else {
+                Text("\(comment.content)")
+                    .foregroundStyle(Color.white)
+                    .font(.system(size: 14))
+                    .lineLimit(isExpended ? nil : 3)
+                    .padding(.bottom, 4)
+                    .padding(.trailing, 20)
+                    .background {
+                        Color.clear
+                            .onAppear {
+                                if comment.content.count > 75 {
+                                    canExpended = true
                                 }
-                            } label: {
-                                Text(isExpended ? "줄이기" : "자세히보기")
-                                    .font(.system(size: 12))
-                                    .foregroundStyle(Color.subGray1)
                             }
-                        }
                     }
+            }
+        }
+    }
+    private func userInformationView(comment: CommentsModel, userType: UserCommentType) -> some View {
+        return HStack(spacing: 8) {
+            if let validauthor = comment.author {
+                ConsumerTypeLabel(consumerType: userType == .banned ? .banUser :
+                                    ConsumerType(rawValue: validauthor.consumerType) ?? .adventurer,
+                                  usage: .comments)
+                Text(userType == .banned ? "차단된 사용자" : validauthor.nickname)
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundStyle(Color.white)
+                lastEditTimeText(comment: comment)
+                Spacer()
+                if userType != .banned {
+                    Button(action: {
+                        onConfirmDiaog(comment.isMine, comment.commentId)
+                    }, label: {
+                        Image(systemName: "ellipsis")
+                            .foregroundStyle(Color.subGray1)
+                    })
+                }
+            } else {
+                ConsumerTypeLabel(consumerType: .withDrawel, usage: .comments)
+                Text("알 수 없음")
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundStyle(Color.white)
+                lastEditTimeText(comment: comment)
+                Spacer()
+            }
+        }.padding(.bottom,6)
+    }
+
+    private func determineUserType(comment: CommentsModel) -> UserCommentType {
+        guard let author = comment.author else {
+            return .deletedUser
+        }
+        if !(author.isBaned ?? false) && !(author.isBlocked ?? false) {
+            return .normal
+        } else {
+            return .banned
+        }
+    }
+
+    var replyButtonView: some View {
+        HStack {
+            Button(action: {onReplyButtonTapped()}, label: {
+                Text("답글달기")
+                    .font(.system(size: 12))
+                    .foregroundStyle(Color.subGray1)
+            })
+            Spacer()
+            if canExpended != nil {
+                Button {
+                    withAnimation(nil) {
+                        isExpended.toggle()
+                    }
+                } label: {
+                    Text(isExpended ? "줄이기" : "자세히보기")
+                        .font(.system(size: 12))
+                        .foregroundStyle(Color.subGray1)
                 }
             }
         }
