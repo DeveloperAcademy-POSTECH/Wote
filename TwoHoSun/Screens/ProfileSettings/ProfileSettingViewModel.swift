@@ -108,7 +108,6 @@ final class ProfileSettingViewModel {
     func postNickname() {
         appState.serviceRoot.apimanager.request(.userService(.checkNicknameValid(nickname: nickname)),
                            decodingType: NicknameValidation.self)
-        .compactMap(\.data)
             .sink { completion in
                 switch completion {
                 case .finished:
@@ -117,7 +116,8 @@ final class ProfileSettingViewModel {
                     print(error)
                 }
             } receiveValue: { data in
-                self.isNicknameDuplicated = data.isExist
+                guard let isExist = data.data?.isExist else { return }
+                self.isNicknameDuplicated = isExist
                 self.nicknameValidationType = self.isNicknameDuplicated ? .duplicated : .valid
             }
             .store(in: &bag)
