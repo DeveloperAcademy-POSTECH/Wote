@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ConsiderationView: View {
     @State private var didFinishSetup = false
-    @State private var currentVote = 0
     @Binding var visibilityScope: VisibilityScopeType
     @Binding var scrollToTop: Bool
     @Environment(AppLoginState.self) private var loginState
@@ -51,11 +50,10 @@ struct ConsiderationView: View {
         }
         .onChange(of: visibilityScope) { _, newScope in
             viewModel.fetchPosts(visibilityScope: newScope)
-            currentVote = 0
         }
         .onChange(of: scrollToTop) { _, _ in
             withAnimation {
-                currentVote = 0
+                viewModel.currentVote = 0
             }
         }
         .onAppear {
@@ -64,13 +62,18 @@ struct ConsiderationView: View {
                 didFinishSetup = true
             }
         }
-        .onReceive(NotificationCenter.default.publisher(for: NSNotification.voteCreated)) { _ in
+        .onDisappear {
+            NotificationCenter.default.removeObserver(NSNotification.voteStateUpdated)
+            NotificationCenter.default.removeObserver(NSNotification.userBlockStateUpdated)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: NSNotification.voteStateUpdated)) { _ in
             viewModel.fetchPosts(visibilityScope: visibilityScope)
-            currentVote = 0
         }
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.userBlockStateUpdated)) { _ in
             viewModel.fetchPosts(visibilityScope: visibilityScope)
-            currentVote = 0
+        }
+        .errorAlert(error: $viewModel.error) {
+            viewModel.fetchPosts(visibilityScope: visibilityScope)
         }
     }
 }
@@ -80,7 +83,7 @@ extension ConsiderationView {
     private var votePagingView: some View {
         GeometryReader { proxy in
             let datas = loginState.appData.postManager.posts
-            TabView(selection: $currentVote) {
+            TabView(selection: $viewModel.currentVote) {
                 ForEach(Array(zip(datas.indices,
                                   datas)), id: \.0) { index, item in
                     VStack(spacing: 0) {
@@ -107,7 +110,7 @@ extension ConsiderationView {
             .gesture(
                 DragGesture()
                     .onChanged { value in
-                        if currentVote == 0 && value.translation.height > 0 && !isRefreshing {
+                        if viewModel.currentVote == 0 && value.translation.height > 0 && !isRefreshing {
                             isRefreshing = true
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                                 viewModel.fetchPosts(visibilityScope: visibilityScope,
@@ -162,13 +165,13 @@ extension ConsiderationView {
             Spacer()
             Button {
                 withAnimation {
-                    if currentVote != loginState.appData.postManager.posts.count - 1 {
-                        currentVote += 1
+                    if viewModel.currentVote != loginState.appData.postManager.posts.count - 1 {
+                        viewModel.currentVote += 1
                     }
                 }
             } label: {
                 Image("icnCaretDown")
-                    .opacity(currentVote != loginState.appData.postManager.posts.count - 1 ? 1 : 0)
+                    .opacity(viewModel.currentVote != loginState.appData.postManager.posts.count - 1 ? 1 : 0)
             }
             Spacer()
         }

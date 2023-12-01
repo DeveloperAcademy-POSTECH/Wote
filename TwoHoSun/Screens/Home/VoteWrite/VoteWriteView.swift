@@ -21,7 +21,7 @@ struct VoteWriteView: View {
     @State private var isEditing: Bool = false
     @State private var showCropView: Bool = false
     @State private var isMine: Bool = false
-    @Bindable var viewModel: VoteWriteViewModel
+    @State var viewModel: VoteWriteViewModel
     @Binding var tabselection: WoteTabType
     @Environment(AppLoginState.self) private var loginState
 
@@ -97,10 +97,13 @@ struct VoteWriteView: View {
         }
         .onChange(of: viewModel.isPostCreated) { _, isPostCreated in
             if isPostCreated {
-                NotificationCenter.default.post(name: NSNotification.voteCreated, object: nil)
+                NotificationCenter.default.post(name: NSNotification.voteStateUpdated, object: nil)
                 loginState.serviceRoot.navigationManager.back()
                 tabselection = .consider
             }
+        }
+        .onDisappear {
+            NotificationCenter.default.removeObserver(NSNotification.voteStateUpdated)
         }
     }
 }

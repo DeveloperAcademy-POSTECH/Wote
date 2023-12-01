@@ -239,9 +239,14 @@ struct DetailView: View {
         }
         .onDisappear {
             NotificationCenter.default.removeObserver(commentNotification)
+            NotificationCenter.default.removeObserver(NSNotification.voteStateUpdated)
         }
         .alert(isPresented: $isDuplicationAlertShown) {
             Alert(title: Text("투표는 1번만 가능합니다."))
+        }
+        .errorAlert(error: $viewModel.error) {
+            loginStateManager.serviceRoot.navigationManager.back()
+            NotificationCenter.default.post(name: NSNotification.voteStateUpdated, object: nil)
         }
     }
 }

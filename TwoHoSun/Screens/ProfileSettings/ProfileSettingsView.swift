@@ -331,13 +331,9 @@ extension ProfileSettingsView {
 
     private var checkDuplicatedIdButton: some View {
         Button {
-            if viewModel.nickname == viewModel.firstNickname {
-                viewModel.nicknameValidationType = .valid
-            } else {
-                viewModel.postNickname()
-                if viewModel.nicknameValidationType == .valid {
-                    endTextEditing()
-                }
+            viewModel.postNickname()
+            if viewModel.nicknameValidationType == .valid {
+                endTextEditing()
             }
         } label: {
             Text("중복확인")

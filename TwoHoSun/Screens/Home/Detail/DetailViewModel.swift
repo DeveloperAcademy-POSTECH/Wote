@@ -12,6 +12,7 @@ final class DetailViewModel: ObservableObject {
     private var appLoginState: AppLoginState
     private var cancellables: Set<AnyCancellable> = []
     @Published var isMine = false
+    @Published var error: NetworkError? 
     @Published var postDetail: PostDetailModel?
     @Published var agreeTopConsumerTypes = [ConsumerType]()
     @Published var disagreeTopConsumerTypes = [ConsumerType]()
@@ -41,7 +42,9 @@ final class DetailViewModel: ObservableObject {
             case .finished:
                 break
             case .failure(let failure):
-                print(failure)
+                if failure == .noMember || failure == .noPost {
+                    self.error = failure
+                }
             }
         } receiveValue: { data in
             self.postDetail = data
@@ -65,7 +68,9 @@ final class DetailViewModel: ObservableObject {
             case .finished:
                 break
             case .failure(let failure):
-                print(failure)
+                if failure == .noMember || failure == .noPost {
+                    self.error = failure
+                }
             }
         } receiveValue: { data in
             if let postIndex = index {
@@ -102,8 +107,9 @@ final class DetailViewModel: ObservableObject {
                      print("error: \(error)")
                  }
              } receiveValue: { _ in
-                 self.appLoginState.appData.postManager.deleteReviews(postId: postId)
-                 self.appLoginState.appData.postManager.removeCount += 1
+//                 self.appLoginState.appData.postManager.deleteReviews(postId: postId)
+//                 self.appLoginState.appData.postManager.removeCount += 1
+                 NotificationCenter.default.post(name: NSNotification.voteStateUpdated, object: nil)
              }
              .store(in: &cancellables)
      }

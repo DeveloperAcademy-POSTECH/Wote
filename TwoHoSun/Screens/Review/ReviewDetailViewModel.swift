@@ -13,6 +13,7 @@ final class ReviewDetailViewModel: ObservableObject {
     @Published var postId = 0
     @Published var isMine = false
     @Published var reviewId = 0
+    @Published var error: NetworkError?
     private var loginState: AppLoginState
     private var cancellable = Set<AnyCancellable>()
     private var reviewPostId = 0
@@ -31,7 +32,9 @@ final class ReviewDetailViewModel: ObservableObject {
                 case .finished:
                     break
                 case .failure(let failure):
-                    print(failure)
+                    if failure == .noMember || failure == .noPost {
+                        self.error = failure
+                    }
                 }
             } receiveValue: { data in
                 self.reviewData = data
@@ -53,7 +56,9 @@ final class ReviewDetailViewModel: ObservableObject {
                 case .finished:
                     break
                 case .failure(let failure):
-                    print(failure)
+                    if failure == .noMember || failure == .noPost {
+                        self.error = failure
+                    }
                 }
             } receiveValue: { data in
                 self.reviewData = data
@@ -77,8 +82,7 @@ final class ReviewDetailViewModel: ObservableObject {
                     print(failure)
                 }
             } receiveValue: { _ in
-                self.loginState.appData.reviewManager.deleteReviews(postId: self.reviewPostId)
-                self.loginState.appData.reviewManager.removeCount += 1
+                NotificationCenter.default.post(name: NSNotification.reviewStateUpdated, object: nil)
             }
             .store(in: &cancellable)
     }

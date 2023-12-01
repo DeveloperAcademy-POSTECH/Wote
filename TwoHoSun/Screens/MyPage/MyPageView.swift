@@ -119,8 +119,11 @@ struct MyPageView: View {
         .refreshable {
             viewModel.fetchPosts()
         }
-        .onReceive(NotificationCenter.default.publisher(for: NSNotification.voteCreated)) { _ in
+        .onReceive(NotificationCenter.default.publisher(for: NSNotification.voteStateUpdated)) { _ in
             viewModel.fetchPosts()
+        }
+        .onDisappear {
+            NotificationCenter.default.removeObserver(NSNotification.voteStateUpdated)
         }
     }
 }
@@ -174,7 +177,7 @@ extension MyPageView {
                 .padding(.bottom, 9)
                 .padding(.horizontal, 24)
                 HStack {
-                    Text("\(viewModel.postCount)건")
+                    Text("\(viewModel.total)건")
                         .font(.system(size: 14))
                         .foregroundStyle(.white)
                     Spacer()
