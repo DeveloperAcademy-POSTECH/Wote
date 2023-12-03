@@ -22,6 +22,7 @@ enum UserService {
     case blockUser(memberId: Int)
     case getBlockUsers
     case deleteBlockUser(memberId: Int)
+    case detach
 }
 
 extension UserService: TargetType {
@@ -56,6 +57,8 @@ extension UserService: TargetType {
             return "/api/members/block"
         case .deleteBlockUser(let memberId):
             return "/api/members/block/\(memberId)"
+        case .detach:
+            return "/api/showcase/detach"
         }
     }
     
@@ -73,6 +76,8 @@ extension UserService: TargetType {
             return .get
         case .deleteBlockUser:
             return .delete
+        case .detach:
+            return .put
         default:
             return .post
         }
@@ -106,6 +111,8 @@ extension UserService: TargetType {
             return [:]
         case .deleteBlockUser(let memberId):
             return ["memberId": memberId]
+        case .detach:
+            return [:]
         }
     }
 
@@ -155,6 +162,8 @@ extension UserService: TargetType {
         case .putConsumerType:
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         case .checkNicknameValid:
+            return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
+        case .detach:
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         default:
             return .requestParameters(parameters: parameters, encoding: URLEncoding.default)

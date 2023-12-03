@@ -89,7 +89,7 @@ extension ConsiderationView {
                     VStack(spacing: 0) {
                         VoteContentCell(viewModel: viewModel,
                                         data: item,
-                                        index: index)
+                                        index: index, visibilityScope: $visibilityScope)
                         nextVoteButton
                             .padding(.top, 16)
                     }

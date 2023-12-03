@@ -61,7 +61,19 @@ final class ConsiderationViewModel: ObservableObject {
         }
         .store(in: &cancellables)
     }
+//    func refreshVote() {
+//        postst
+//    }
+    func detachPost() {
+        appLoginState.serviceRoot.apimanager.request(.userService(.detach), decodingType: NoData.self)
+            .sink { completion in
+                print(completion)
+            } receiveValue: { _ in
+             print("success detach")
+            }
+            .store(in: &cancellables)
 
+    }
     func fetchMorePosts(_ visibilityScope: VisibilityScopeType) {
         guard !isLastPage else { return }
 

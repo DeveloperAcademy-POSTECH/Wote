@@ -17,6 +17,7 @@ struct VoteContentCell: View {
     var viewModel: ConsiderationViewModel
     var data: PostModel
     var index: Int
+    @Binding var visibilityScope: VisibilityScopeType
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -29,6 +30,14 @@ struct VoteContentCell: View {
                 Spacer()
                 ConsumerTypeLabel(consumerType: ConsumerType(rawValue: data.author.consumerType) ?? .adventurer,
                                   usage: .standard)
+            }
+            .onTapGesture {
+
+                    viewModel.detachPost()
+                viewModel.fetchPosts(visibilityScope: visibilityScope)
+//                    data.postStatus = "OPEN"
+//                    data.myChoice = nil
+
             }
             .padding(.bottom, 10)
             HStack(spacing: 4) {

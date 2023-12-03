@@ -36,6 +36,7 @@ struct PostModel: Codable, Identifiable {
              externalURL, voteCount, commentCount, price,
              myChoice, voteCounts, isMine, isNotified, isPurchased, hasReview, voteInfoList
     } 
+
 }
 
 struct AuthorModel: Codable, Hashable {
