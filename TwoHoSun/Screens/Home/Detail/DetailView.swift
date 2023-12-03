@@ -76,7 +76,7 @@ struct DetailView: View {
                                                    isHigher: agreeRatio >= disagreeRatio)
                                 consumerTypeLabels(.disagree,
                                                    topConsumerTypes: viewModel.disagreeTopConsumerTypes)
-                                resultProgressView(.agree,
+                                resultProgressView(.disagree,
                                                    ratio: disagreeRatio,
                                                    isHigher: disagreeRatio >= agreeRatio)
                             } else {
