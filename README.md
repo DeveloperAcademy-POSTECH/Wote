@@ -1,11 +1,11 @@
 ![](https://velog.velcdn.com/images/snack/post/1289cfaa-174a-4aa0-9050-ff8d86fa9c86/image.jpg)
 # Wote
----
+
 ### 📱 청소년들의 소비 고민을 도와주는 투표 커뮤니티 앱
 청소년들이 또래 친구들과 함께 소비 고민을 나누어 합리적인 소비를 할 수 있도록 돕고, 타인의 소비 성향을 확인하며 본인의 소비 가치관을 확립할 수 있는 커뮤니티 플랫폼 앱입니다.
 
 <a href="https://apps.apple.com/kr/app/wote/id6470252868">
-  <img src="https://velog.velcdn.com/images/snack/post/5dd5ad14-2b3e-43ae-aec9-3bc9ce4ecf03/image.png"width="150"/>
+  <img src="https://velog.velcdn.com/images/snack/post/94ad7dd8-81cb-4b05-8ad8-31a8d579d23e/image.png"width="150"/>
 </a>
 
 ![](https://velog.velcdn.com/images/snack/post/d76069e9-fefb-477d-91e4-9ed5eb029a22/image.jpg)
